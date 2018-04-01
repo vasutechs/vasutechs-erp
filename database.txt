@@ -1,0 +1,19 @@
+CREATE DATABASE vashuTechsDb;
+
+CREATE TABLE vashuTechsDb.part_master ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, part_no VARCHAR(255), part_name VARCHAR(255), raw_material VARCHAR(255), input_weight VARCHAR(255), finished_weight VARCHAR(255), hsn_no VARCHAR(255), uom VARCHAR(255), prod_rate_hr VARCHAR(255), rate VARCHAR(255), gst VARCHAR(255), sgst VARCHAR(255), csgt VARCHAR(255) );
+
+CREATE TABLE vashuTechsDb.customer_master ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, customer_code INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, customer_name VARCHAR(255), address VARCHAR(255), contact_no VARCHAR(255), gstin VARCHAR(255), part_mapping VARCHAR(255) );
+
+CREATE TABLE vashuTechsDb.employee_master ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, employee_code INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, employee_name VARCHAR(255), address VARCHAR(255), contact_no VARCHAR(255), mail_dd VARCHAR(255), qualification VARCHAR(255), designation VARCHAR(255), basic_salary VARCHAR(255), hra VARCHAR(255), ca VARCHAR(255), ot VARCHAR(255), total_salary VARCHAR(255) );
+
+CREATE TABLE vashuTechsDb.raw_material_master ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, rm_code INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, rm_name VARCHAR(255), grade VARCHAR(255), type VARCHAR(255), hsn_code VARCHAR(255), uom VARCHAR(255), rate VARCHAR(255), gst VARCHAR(255), sgst VARCHAR(255), csgt VARCHAR(255) );
+
+CREATE TABLE vashuTechsDb.supplier_master ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, supplier_code INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, supplier_name VARCHAR(255), address VARCHAR(255), contact_no VARCHAR(255), gstin VARCHAR(255), rm_mapping VARCHAR(255) );
+
+CREATE TABLE vashuTechsDb.purchase_order_supplier ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, po_no INT(6), Date NOW(), s_no VARCHAR(255), raw_material_mapping VARCHAR(255), total VARCHAR(255) );
+
+CREATE TABLE vashuTechsDb.goods_receipt_note_supplier ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, grn_no INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, po_no INT(6), Date NOW(), supplier_name  VARCHAR(255), supplier_DC_no VARCHAR(255), supp_DC_date VARCHAR(255), PO_no VARCHAR(255), rm _code VARCHAR(255), total VARCHAR(255) );
+
+CREATE TABLE vashuTechsDb.operation_master ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, operation_no INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, operation_name  VARCHAR(255), source VARCHAR(255) );
+
+CREATE TABLE vashuTechsDb.bom ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, part_no  VARCHAR(255), rm_code VARCHAR(255) );
