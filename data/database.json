@@ -1,0 +1,41 @@
+{
+    "dbName": "Vasutechs-ERP",
+    "tables":
+    {
+        "partMasterList":
+        {
+            "name": "partMaster",
+            "fields": ["partNo",
+                "partName",
+                "rawMaterial",
+                "inputWeight",
+                "finishedWeight",
+                "finishedWeight",
+                "hsnNo",
+                "uom",
+                "prodRateHr",
+                "rate",
+                "gst",
+                "sgst",
+                "cgst"
+            ],
+            "data": [
+            {
+                "partNo": "1",
+                "partName": "4” SWR",
+                "rawMaterial": "RM-001 -- 2 x 16 MS- HR coil",
+                "inputWeight": "",
+                "finishedWeight": "",
+                "finishedWeight": "",
+                "hsnNo": "",
+                "uom": "",
+                "prodRateHr": "",
+                "rate": "",
+                "gst": "",
+                "sgst": "",
+                "cgst": ""
+
+            }]
+        }
+    }
+}

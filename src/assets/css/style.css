@@ -476,3 +476,13 @@ footer.sticky-footer {
     width: calc(100% - 55px);
   }
 }
+
+.pull-right {
+  margin-right: 20px;
+}
+
+/*.logo{
+  background-image: url("../img/logo.png");
+  background-repeat: no-repeat;
+    background-size: 200px 100px;
+}*/

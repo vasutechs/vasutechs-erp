@@ -1,24 +1,28 @@
 {
-  "name": "sampleapp",
+  "name": "vasuteshs-erp",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "Vasutechs ERP",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "app-update": "npm update",
-    "app-start": "node_modules\\.bin\\gulp clean && node_modules\\.bin\\gulp build-js-minify && node_modules\\.bin\\gulp server"
+    "app-update": "npm install",
+    "app-start": "npm run app-update && node_modules\\.bin\\gulp clean && node_modules\\.bin\\gulp build-js-minify && node_modules\\.bin\\gulp server",
+    "app-build": "node_modules\\.bin\\gulp clean && node_modules\\.bin\\gulp build",
+    "app-server": "node_modules\\.bin\\gulp server"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "del": "^3.0.0",
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-connect": "^5.5.0",
-    "gulp-server-livereload": "^1.9.2",
-    "gulp-uglify": "^3.0.0",
-    "mysql": "^2.15.0"
+  "devDependencies": {
+    "connect": "^3.6.6",
+    "del": "3.0.0",
+    "glob": "7.1.2",
+    "gulp": "3.9.1",
+    "gulp-concat": "2.6.1",
+    "gulp-uglify": "3.0.0",
+    "http": "0.0.0",
+    "node-json-db": "0.7.5",
+    "open": "0.0.5",
+    "serve-static": "1.13.2"
   }
 }
