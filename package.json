@@ -7,7 +7,7 @@
   },
   "scripts": {
     "app-update": "npm install",
-    "app-start": "npm run app-update && node_modules\\.bin\\gulp clean && node_modules\\.bin\\gulp build-js-minify && node_modules\\.bin\\gulp server",
+    "app-start": "npm run app-update && node_modules\\.bin\\gulp clean && node_modules\\.bin\\gulp build && node_modules\\.bin\\gulp server",
     "app-build": "node_modules\\.bin\\gulp clean && node_modules\\.bin\\gulp build",
     "app-server": "node_modules\\.bin\\gulp server"
   },
