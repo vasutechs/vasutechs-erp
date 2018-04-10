@@ -30,6 +30,13 @@ module.exports = function(gulp, config, task) {
             .pipe(gulp.dest(config.dist.js));
     });
 
+    gulp.task('build-js-minify', ['clean'], task.buildJsMinify = function() {
+        return gulp.src([config.src.js + '/**/**.js'])
+            .pipe(gp_concat('app.js'))
+            .pipe(gp_uglify())
+            .pipe(gulp.dest(config.dist.js));
+    });
+
 
     gulp.task('build-index', task.buildIndex = function() {
         return gulp.src('src/index.html').pipe(gulp.dest('dist'));
@@ -44,10 +51,12 @@ module.exports = function(gulp, config, task) {
         task.buildJs();
     });
 
-    gulp.task('build-minify', task.buildJsMinify = function() {
-        task.build();
-        return gulp.src([config.dist.js + '/app.js'])
-            .pipe(gp_uglify())
-            .pipe(gulp.dest(config.dist.js));
+    gulp.task('build-minify', ['build'], task.buildMinify = function() {
+        task.buildIndex();
+        task.buildTemplate();
+        task.buildLib();
+        task.buildAssets();
+        task.buildData();
+        task.buildJsMinify();
     });
 };
