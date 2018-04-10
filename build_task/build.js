@@ -9,7 +9,6 @@ module.exports = function(gulp, config, task) {
     });
 
     gulp.task('build-template', task.buildTemplate = function() {
-        console.log(config.src.template);
         return gulp.src(config.src.template + '/**/**.html').pipe(gulp.dest(config.dist.template));
     });
 
@@ -37,20 +36,18 @@ module.exports = function(gulp, config, task) {
     });
 
     gulp.task('build', ['build-js'], task.build = function() {
-        gulp.src('src/index.html').pipe(gulp.dest('dist'));
-        gulp.src(config.src.template + '/**/**.html').pipe(gulp.dest(config.dist.template));
-        gulp.src(config.src.lib + '/**/**.**').pipe(gulp.dest(config.dist.lib));
-        gulp.src(config.src.assets + '/**/**.**').pipe(gulp.dest(config.dist.assets));
-        gulp.src(config.src.data + '/**/**.**').pipe(gulp.dest(config.dist.data));
+        task.buildIndex();
+        task.buildTemplate();
+        task.buildLib();
+        task.buildAssets();
+        task.buildData();
+        task.buildJs();
     });
 
-    gulp.task('build-js-minify', ['build'], task.buildJsMinify = function() {
+    gulp.task('build-minify', task.buildJsMinify = function() {
+        task.build();
         return gulp.src([config.dist.js + '/app.js'])
             .pipe(gp_uglify())
             .pipe(gulp.dest(config.dist.js));
-    });
-
-    gulp.task('build-minify', ['build-js-minify'], task.buildMinify = function() {
-
     });
 };
