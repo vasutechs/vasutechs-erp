@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-controller="partMasterCtrl">
+<div class="container-fluid">
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
@@ -9,13 +9,13 @@
     <!-- Example DataTables Card-->
     <div class="mb-3">
         <h3>{{ctrlScope.title}}</h3>
-        <div ng-if="ctrlScope.pagePath=='entry'">
+        <div ng-if="ctrlScope.pagePath.name=='add' || ctrlScope.pagePath.name=='edit'">
             <h4>Add/Edit</h4>
             <custom-form></custom-form>
         </div>
-        <div ng-if="ctrlScope.pagePath=='list'">
+        <div ng-if="ctrlScope.pagePath.name=='list'">
             <h4>List</h4>
-            <div><a href="#/partMaster/add" class="pull-right fa fa-fw fa-plus-square">Add</a></div>
+            <div class="pull-right"><a href="#{{erpAppConfig.pages.master.partMaster.add.link}}" class="fa fa-fw fa-plus-square-o">Add</a></div>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -25,12 +25,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="list in ctrlScope.partMasterData">
+                    <tr ng-repeat="(key,list) in ctrlScope.partMasterData">
                         <td>{{list.partName}}</td>
                         <td>{{list.rawMaterial}}</td>
-                        <td><a href="#/partMaster/edit?partNo={{list.partNo}}" class="fa fa-fw fa-edit
+                        <td><a href="#{{erpAppConfig.pages.master.partMaster.edit.link}}?id={{list.id}}" class="fa fa-fw fa-edit
 ">Edit</a></td>
-                        <td> <a href="#/partMaster/de;ete?partNo={{list.partNo}}" class="fa fa-fw fa-times
+                        <td> <a href="#{{erpAppConfig.pages.master.partMaster.delete.link}}?id={{list.id}}" class="fa fa-fw fa-times
 ">Delete</a></td>
                     </tr>
                 </tbody>

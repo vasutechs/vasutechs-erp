@@ -7,129 +7,23 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-                <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" ng-repeat="menu in navMenus">
-                    <a class="nav-link  nav-link-collapse collapsed" href="#{{menu.description.url}}" data-toggle="collapse" data-parent="#exampleAccordion">
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" ng-repeat="menu in appNavMenus">
+                    <a ng-if="menu.description.child=='yes'" class="nav-link  nav-link-collapse collapsed" href="#{{menu.description.url}}" data-toggle="collapse" data-parent="#exampleAccordion">
+                    <i class="fa fa-fw fa-{{menu.description.icon}}"></i>
+                    <span class="nav-link-text">{{menu.description.name}}</span>
+                  </a>
+                    <a ng-if="menu.description.child=='no'" class="nav-link" href="#{{menu.description.url}}">
                     <i class="fa fa-fw fa-{{menu.description.icon}}"></i>
                     <span class="nav-link-text">{{menu.description.name}}</span>
                   </a>
                     <ul ng-if="menu.childs" class="sidenav-second-level collapse" id="{{menu.description.url}}">
                         <li ng-repeat="submenu in menu.childs">
-                            <a href="#">{{submenu.description.name}}</a>
+                            <a href="#{{submenu.description.url}}">{{submenu.description.name}}</a>
                         </li>
                     </ul>
-                </li> -->
+                </li>
+                <!-- 
                 
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                    <a class="nav-link" href="#/">
-                    <i class="fa fa-fw fa-dashboard"></i>
-                    <span class="nav-link-text">Dashboard</span>
-                  </a>
-                </li>
-
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Markets">
-                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMarakets" data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-stack-exchange"></i>
-                    <span class="nav-link-text">Marketing</span>
-                </a>
-                    <ul class="sidenav-second-level collapse" id="collapseMarakets">
-                        <li>
-                            <a href="#/partMaster">Part Master</a>
-                        </li>
-                        <li>
-                            <a href="#">Employee Master</a>
-                        </li>
-                        <li>
-                            <a href="#">Customer Master</a>
-                        </li>
-                        <li>
-                            <a href="#">UOM Master</a>
-                        </li>
-                        <li>
-                            <a href="#">Invoice</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Purchase">
-                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePurchase" data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-money"></i>
-                    <span class="nav-link-text">Purchase</span>
-                </a>
-                    <ul class="sidenav-second-level collapse" id="collapsePurchase">
-                        <li>
-                            <a href="#">Raw Material Master</a>
-                        </li>
-                        <li>
-                            <a href="#">Supplier Master</a>
-                        </li>
-                        <li>
-                            <a href="#">Subcontractor master</a>
-                        </li>
-                        <li>
-                            <a href="#">PURCHASE ORDER- Supplier</a>
-                        </li>
-                        <li>
-                            <a href="#">PURCHASE ORDER- Subcontractor</a>
-                        </li>
-                        <li>
-                            <a href="#">PURCHASE ORDER- Supplier General</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Store">
-                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseStore" data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-suitcase"></i>
-                    <span class="nav-link-text">Store</span>
-                </a>
-                    <ul class="sidenav-second-level collapse" id="collapseStore">
-                        <li>
-                            <a href="#">Opening Raw material Stock</a>
-                        </li>
-                        <li>
-                            <a href="#">Opening Part Stock</a>
-                        </li>
-                        <li>
-                            <a href="#">Sub Contractor Opening Stock</a>
-                        </li>
-                        <li>
-                            <a href="#">Delivery Challan</a>
-                        </li>
-                        <li>
-                            <a href="#">Goods Receipt Note- Supplier</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Production">
-                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseProduction" data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-cogs"></i>
-                    <span class="nav-link-text">Production</span>
-                </a>
-                    <ul class="sidenav-second-level collapse" id="collapseProduction">
-                        <li>
-                            <a href="#">Operation Master</a>
-                        </li>
-                        <li>
-                            <a href="#">Machine Master</a>
-                        </li>
-                        <li>
-                            <a href="#">BOM</a>
-                        </li>
-                        <li>
-                            <a href="#">Tool Master</a>
-                        </li>
-                        <li>
-                            <a href="#">Flow Process</a>
-                        </li>
-                        <li>
-                            <a href="#">Material issue note</a>
-                        </li>
-                        <li>
-                            <a href="#">PRODUCTION Entry</a>
-                        </li>
-                        <li>
-                            <a href="#">PRODUCTION Entry for packing</a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Quality">
                     <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseQuality" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-check-square"></i>
@@ -149,7 +43,7 @@
                             <a href="#">Receiving Inspection- Subcontractor</a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
