@@ -19,6 +19,7 @@ erpApp.controller('partMasterCtrl', ['erpAppConfig', '$scope', 'serviceApi', '$l
         $location.path(erpAppConfig.pages.master.partMaster.list.link).search({});
     };
     $scope.ctrlScope = erpAppConfig.master.partMaster;
+    $scope.ctrlScope.pages = erpAppConfig.pages;
     $scope.formScope = $scope.ctrlScope.form;
     $scope.ctrlScope.pagePath = commonFact.getPage();
     $scope.submit = function() {

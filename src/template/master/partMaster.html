@@ -15,7 +15,7 @@
         </div>
         <div ng-if="ctrlScope.pagePath.name=='list'">
             <h4>List</h4>
-            <div class="pull-right"><a href="#{{erpAppConfig.pages.master.partMaster.add.link}}" class="fa fa-fw fa-plus-square-o">Add</a></div>
+            <div class="pull-right"><a href="#{{ctrlScope.pages.master.partMaster.add.link}}" class="fa fa-fw fa-plus-square-o">Add</a></div>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -28,9 +28,9 @@
                     <tr ng-repeat="(key,list) in ctrlScope.partMasterData">
                         <td>{{list.partName}}</td>
                         <td>{{list.rawMaterial}}</td>
-                        <td><a href="#{{erpAppConfig.pages.master.partMaster.edit.link}}?id={{list.id}}" class="fa fa-fw fa-edit
+                        <td><a href="#{{ctrlScope.pages.master.partMaster.edit.link}}?id={{list.id}}" class="fa fa-fw fa-edit
 ">Edit</a></td>
-                        <td> <a href="#{{erpAppConfig.pages.master.partMaster.delete.link}}?id={{list.id}}" class="fa fa-fw fa-times
+                        <td> <a href="#{{ctrlScope.pages.master.partMaster.delete.link}}?id={{list.id}}" class="fa fa-fw fa-times
 ">Delete</a></td>
                     </tr>
                 </tbody>
