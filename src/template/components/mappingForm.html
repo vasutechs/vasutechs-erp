@@ -1,0 +1,22 @@
+<div class="card">
+    <div class="card-header">{{context.mappingForm.name}}</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col" ng-repeat="mappingFieldKey in context.mappingForm.fields"><b>{{mappingFieldKey.name}}</b></div>
+            <div class="col"></div>
+        </div>
+        <div class="row" ng-repeat="(key, mapping) in context.data.mapping">
+            <div class="col" ng-switch="field.type" ng-repeat="field in context.mappingForm.fields">
+                <input ng-switch-when="text" type="text" id="{{field.id}}-{{key}}" class="form-control" ng-model="mapping[field.id]" />
+                <select ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="actions.changeMapping(context, mapping)" ng-model="mapping[field.id]">
+                    <option value="">---Select---</option>
+                    <option ng-repeat="option in field.options" value="{{option.id}}" ng-selected="option.id==mapping[field.id]">{{option.name}}</option>
+                </select>
+            </div>
+            <div class="col"><a class="fa fa-fw fa-times" href="javascript: void(0);" ng-click="actions.removeMapping(context, key)"> </a></div>
+        </div>
+        <div class="row">
+            <div class="col"><a class="fa fa-fw fa-plus-square-o" href="javascript: void(0);" ng-click="actions.addMapping(context)"> </a></div>
+        </div>
+    </div>
+</div>

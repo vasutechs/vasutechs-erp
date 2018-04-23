@@ -10,12 +10,7 @@
     <div class="mb-3">
         <h3>{{context.title}}</h3>
         <div ng-if="context.pagePath.name=='add' || context.pagePath.name=='edit'">
-            <div class="card">
-                <div class="card-header">Add/Edit</div>
-                <div class="card-body">
-                    <custom-form></custom-form>
-                </div>
-            </div>
+            <entry-invoice></entry-invoice>
         </div>
         <div ng-if="context.pagePath.name=='list'">
             <h4>List</h4>
@@ -23,15 +18,15 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Part Name</th>
-                        <th>Raw Meterial</th>
+                        <th>Invoice No</th>
+                        <th>Customer</th>
                         <th colspan="2"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="(key,list) in context.listData">
-                        <td>{{list.partName}}</td>
-                        <td>{{list.rawMaterial}}</td>
+                        <td>{{list.invoiceNo}}</td>
+                        <td>{{list.customerCode}}</td>
                         <td><a href="#{{context.pages.edit.link}}?id={{list.id}}" class="fa fa-fw fa-edit
 ">Edit</a></td>
                         <td> <a href="#{{context.pages.delete.link}}?id={{list.id}}" class="fa fa-fw fa-times

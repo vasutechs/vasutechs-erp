@@ -1,10 +1,14 @@
-erpApp.factory('commonFact', ['erpAppConfig', '$location', function(erpAppConfig, $location) {
-    var getPage = function() {
-    	var pagePathArr = $location.path().split('/').join('.'),
-    	page = eval('erpAppConfig.pages'+ pagePathArr);
+erpApp.factory('commonFact', function() {
+    var getPage = function(pages, location) {
+    	var pagePathArr = location.path().split('/'),
+    	page;
+    	if(pages.link){
+    		return pages;
+    	}
+    	page = pages[pagePathArr[pagePathArr.length - 1]];
         return page;
     };
     return {
         getPage: getPage
     };
-}]);
+});

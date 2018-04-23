@@ -1,33 +1,39 @@
 'use strict'
 
-var erpApp = angular.module('erpApp', ['ngRoute']) 
+var erpApp = angular.module('erpApp', ['ngRoute'])
     .directive('myApp', function() {
         return {
             restrict: 'E',
             templateUrl: 'template/app.html'
         };
     })
-    .config(function($routeProvider) {
-
+    .config(['$routeProvider', 'erpAppConfig', function($routeProvider, erpAppConfig) {
+        var buildRoute = function(modules) {
+            var module,
+                buildPage = function(page) {
+                    if (page.link) {
+                        $routeProvider.when('/' + page.link, {
+                            templateUrl: page.templateUrl,
+                            controller: page.controller
+                        });
+                    } else {
+                        for (var i in page) {
+                            buildPage(page[i]);
+                        }
+                    }
+                };
+            for (var i in modules) {
+                module = modules[i];
+                if (module.pages) {
+                    buildPage(module.pages);
+                } else {
+                    buildRoute(module);
+                }
+            }
+        };
         $routeProvider
             .when('/', {
-                templateUrl: 'template/dashboard.html',
-                controller: 'dashboardCtrl'
-            })
-            .when('/master/partMaster/list', {
-                templateUrl: 'template/master/partMaster.html',
-                controller: 'partMasterCtrl'
-            })
-            .when('/master/partMaster/edit', {
-                templateUrl: 'template/master/partMaster.html',
-                controller: 'partMasterCtrl'
-            })
-            .when('/master/partMaster/add', {
-                templateUrl: 'template/master/partMaster.html',
-                controller: 'partMasterCtrl'
-            })
-            .when('/master/partMaster/delete', {
-                templateUrl: 'template/master/partMaster.html',
-                controller: 'partMasterCtrl'
+                redirectTo: erpAppConfig.appBaseUrl
             });
-    });
+        buildRoute(erpAppConfig.modules);
+    }]);

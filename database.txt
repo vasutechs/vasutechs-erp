@@ -4,7 +4,7 @@ CREATE TABLE vashuTechsDb.part_master ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMAR
 
 CREATE TABLE vashuTechsDb.customer_master ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, customer_code INT(6) UNSIGNED AUTO_INCREMENT, customer_name VARCHAR(255), address TEXT, contact_no VARCHAR(255), gstin VARCHAR(255));
 
-CREATE TABLE vashuTechsDb.customer_part_mapping ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, part_no  VARCHAR(255), rate VARCHAR(255), tax VARCHAR(255), customer_no VARCHAR(255) );
+CREATE TABLE vashuTechsDb.customer_part_mapping ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, part_no  VARCHAR(255), rate VARCHAR(255), tax VARCHAR(255), customer_code VARCHAR(255) );
 
 CREATE TABLE vashuTechsDb.employee_master ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, employee_code INT(6) UNSIGNED AUTO_INCREMENT, employee_name VARCHAR(255), address TEXT, contact_no VARCHAR(255), mail_id VARCHAR(255), qualification VARCHAR(255), designation VARCHAR(255), basic_salary VARCHAR(255), hra VARCHAR(255), ca VARCHAR(255), ot VARCHAR(255), total_salary VARCHAR(255) );
 

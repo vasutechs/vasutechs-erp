@@ -27,16 +27,19 @@ module.exports = function(gulp, config, task) {
         } else {
             dataObject = inputData;
             dataPath = dataPath + '/' + inputData.id;
+            db.delete('/tables' + dataPath);
         }
         try {
             if (inputData.delete) {
                 db.delete('/tables' + dataPath);
-            } else {
-                db.push('/tables' + dataPath, dataObject, false);
-            }
-            data = {
+                data = {
+                    status: 'success',
                     data: 'Success'
                 };
+            } else {
+                db.push('/tables' + dataPath, dataObject, false);
+                data = db.getData('/tables' + dataPath);
+            }
 
         } catch (error) {
             data = error;
