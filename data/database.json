@@ -1,31 +1,14 @@
 {
     "dbName": "Vasutechs-ERP",
-    "tables":
-    {
-        "partMasterList":
-        {
+    "tables": {
+        "partMaster": {
             "name": "partMaster",
-            "fields": ["partNo",
-                "partName",
-                "rawMaterial",
-                "inputWeight",
-                "finishedWeight",
-                "finishedWeight",
-                "hsnNo",
-                "uom",
-                "prodRateHr",
-                "rate",
-                "gst",
-                "sgst",
-                "cgst"
-            ],
-            "data": [
-            {
-                "partNo": "1",
-                "partName": "4” SWR",
-                "rawMaterial": "RM-001 -- 2 x 16 MS- HR coil",
+            "fields": {
+                "id": "",
+                "partNo": "",
+                "partName": "",
+                "rawMaterial": "",
                 "inputWeight": "",
-                "finishedWeight": "",
                 "finishedWeight": "",
                 "hsnNo": "",
                 "uom": "",
@@ -34,8 +17,224 @@
                 "gst": "",
                 "sgst": "",
                 "cgst": ""
-
-            }]
+            },
+            "data": {
+                "1": {
+                    "id": "1",
+                    "partNo": "4” SWR",
+                    "partName": "SWR Clamp",
+                    "rawMaterial": "RM-001 -- 2 x 16 MS- HR coil",
+                    "inputWeight": "2",
+                    "finishedWeight": "2",
+                    "hsnNo": "1",
+                    "uom": "",
+                    "prodRateHr": "1",
+                    "rate": "1",
+                    "gst": "1",
+                    "sgst": "1",
+                    "cgst": "1"
+                },
+                "2": {
+                    "partNo": "Test",
+                    "partName": "Test",
+                    "rawMaterial": "2",
+                    "inputWeight": "22",
+                    "finishedWeight": "22",
+                    "hsnNo": "22",
+                    "uom": "",
+                    "prodRateHr": "22",
+                    "rate": "22",
+                    "gst": "22",
+                    "sgst": "22",
+                    "cgst": "22",
+                    "id": 2
+                },
+                "3": {
+                    "partNo": "Test1",
+                    "partName": "Test1",
+                    "rawMaterial": "3",
+                    "inputWeight": "33",
+                    "finishedWeight": "3",
+                    "hsnNo": "3",
+                    "uom": "",
+                    "prodRateHr": "3",
+                    "rate": "3",
+                    "gst": "3",
+                    "sgst": "3",
+                    "cgst": "3",
+                    "id": 3
+                }
+            }
+        },
+        "customerMaster": {
+            "name": "customerMaster",
+            "fields": {
+                "customerCode": "",
+                "customerName": "",
+                "address": "",
+                "contactNo": "",
+                "gstin": "",
+                "mapping": [
+                    {
+                        "partNo": "",
+                        "rate": "",
+                        "tax": ""
+                    }
+                ]
+            },
+            "data": {
+                "1": {
+                    "customerCode": "1",
+                    "customerName": "Test",
+                    "address": "sadsad",
+                    "contactNo": "sadasd",
+                    "gstin": "sadasd",
+                    "mapping": [
+                        {
+                            "partNo": "1",
+                            "rate": "1",
+                            "gst": "1"
+                        }
+                    ],
+                    "id": 1
+                },
+                "2": {
+                    "customerCode": "2",
+                    "customerName": "test1",
+                    "address": "",
+                    "contactNo": "",
+                    "gstin": "",
+                    "mapping": [
+                        {
+                            "partNo": "2",
+                            "rate": "2",
+                            "gst": "2"
+                        },
+                        {
+                            "partNo": "3",
+                            "rate": "3",
+                            "gst": "3"
+                        },
+                        {
+                            "partNo": "1",
+                            "rate": "2",
+                            "gst": "1"
+                        }
+                    ],
+                    "id": 2
+                },
+                "3": {
+                    "customerCode": "3",
+                    "customerName": "Test3",
+                    "address": "zxsdzsd1",
+                    "contactNo": "dsfsdf",
+                    "gstin": "sdsad",
+                    "mapping": [
+                        {
+                            "partNo": "3",
+                            "rate": "3",
+                            "gst": "3"
+                        }
+                    ],
+                    "id": 3
+                }
+            }
+        },
+        "empMaster": {
+            "name": "empMaster",
+            "fields": {
+                "id": "",
+                "employeeCode": "",
+                "employeeName": "",
+                "address": "",
+                "contactNo": "",
+                "mailId": "",
+                "qualification": "",
+                "designation": "",
+                "basicSalary": "",
+                "hra": "",
+                "ca": "",
+                "ot": "",
+                "totalSalary": ""
+            },
+            "data": {
+                "1": {
+                    "id": 1,
+                    "employeeCode": "1",
+                    "employeeName": "Test",
+                    "address": "sdasd",
+                    "contactNo": "dsfsdf",
+                    "mailId": "dsfsdf",
+                    "qualification": "sdfdsdf",
+                    "designation": "sdsd",
+                    "basicSalary": "dsfsd",
+                    "hra": "sdfsdf",
+                    "ca": "sdfsf",
+                    "ot": "sdfsdf",
+                    "totalSalary": "",
+                    "total": "sdfsdf"
+                }
+            }
+        },
+        "uomMaster": {
+            "name": "uomMaster",
+            "fields": {
+                "id": "",
+                "uomCode": "",
+                "uomName": ""
+            },
+            "data": {
+                "1": {
+                    "uomCode": "1",
+                    "uomName": "Test",
+                    "id": 1
+                }
+            }
+        },
+        "invoice": {
+            "name": "uomMaster",
+            "fields": {
+                "id": "",
+                "invoiceNo": "",
+                "date": "",
+                "customerCode": "",
+                "partyGstin": "",
+                "partyArnNo": "",
+                "taxRate": "",
+                "cgst": "",
+                "sgst": "",
+                "total": "",
+                "details": {
+                    "sNo": "",
+                    "partNo": "",
+                    "unit": "",
+                    "rate": "",
+                    "amount": ""
+                }
+            },
+            "data": {
+                "1": {
+                    "id": 1,
+                    "invoiceNo": "1",
+                    "date": "1",
+                    "customerCode": "customerCode",
+                    "partyGstin": "1",
+                    "partyArnNo": "",
+                    "taxRate": "",
+                    "cgst": "",
+                    "sgst": "",
+                    "total": "",
+                    "mapping": [
+                        {
+                            "sNo": 1,
+                            "partNo": "1",
+                            "unit": "",
+                            "rate": "",
+                            "amount": ""
+                        }
+                    ]
+                }
+            }
         }
     }
 }

@@ -23,15 +23,15 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Part Name</th>
-                        <th>Raw Meterial</th>
+                        <th>UOM Code</th>
+                        <th>UOM Name</th>
                         <th colspan="2"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="(key,list) in context.listData">
-                        <td>{{list.partName}}</td>
-                        <td>{{list.rawMaterial}}</td>
+                        <td>{{list.uomCode}}</td>
+                        <td>{{list.uomName}}</td>
                         <td><a href="#{{context.pages.edit.link}}?id={{list.id}}" class="fa fa-fw fa-edit
 ">Edit</a></td>
                         <td> <a href="#{{context.pages.delete.link}}?id={{list.id}}" class="fa fa-fw fa-times

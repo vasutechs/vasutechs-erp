@@ -1,4 +1,4 @@
-erpApp.controller('partMasterCtrl', ['erpAppConfig', '$scope', 'serviceApi', '$location', 'commonFact', function(erpAppConfig, $scope, serviceApi, $location, commonFact) {
+erpApp.controller('uomMasterCtrl', ['erpAppConfig', '$scope', 'serviceApi', '$location', 'commonFact', function(erpAppConfig, $scope, serviceApi, $location, commonFact) {
     var actions = {
         list: function(context) {
             serviceApi.callServiceApi(context.services.list).then(function(res) {
@@ -32,23 +32,10 @@ erpApp.controller('partMasterCtrl', ['erpAppConfig', '$scope', 'serviceApi', '$l
         },
         cancel: function(context){
              $location.path(context.pages.list.link).search({});
-        },
-        updateOptionFields: function(context, erpAppConfig) {
-            //Get Part master data
-            serviceApi.callServiceApi(erpAppConfig.modules.master.uomMaster.services.list).then(function(res) {
-                context.uomMasterList = res.data;
-                for (var i in context.uomMasterList) {
-                    context.form.fields[6].options[i] = {
-                        id: res.data[i].id,
-                        name: res.data[i].uomName
-                    };
-                }
-            });
         }
     };
-    $scope.context = erpAppConfig.modules.master.partMaster;
+    $scope.context = erpAppConfig.modules.master.uomMaster;
     $scope.context.pagePath = commonFact.getPage($scope.context.pages, $location);
     $scope.actions = actions;
-    $scope.actions.updateOptionFields($scope.context, erpAppConfig);
     $scope.actions[$scope.context.pagePath.name] && $scope.actions[$scope.context.pagePath.name]($scope.context);
 }]);
