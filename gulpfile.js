@@ -4,18 +4,24 @@ var config = {
     src: {
         js: './src/js',
         template: './src/template',
-        lib: './src/vendor',
+        lib: [
+            './node_modules/angular/**/**.**',
+            './node_modules/angular-route/**/**.**',
+            './node_modules/bootstrap/**/**.**',
+            './node_modules/jquery/**/**.**',
+            './node_modules/font-awesome/**/**.**'
+        ],
         data: './src/data',
         assets: './src/assets'
     },
     dist: {
         js: './dist/js',
         template: './dist/template',
-        lib: './dist/vendor',
+        lib: './dist/vendor/',
         data: './dist/data',
         assets: './dist/assets'
     },
-    webServer:{
+    webServer: {
         distPath: 'dist',
         serverPort: '9000',
         serverPath: 'http://localhost:9000'

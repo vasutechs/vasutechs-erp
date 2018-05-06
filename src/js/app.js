@@ -12,10 +12,13 @@ var erpApp = angular.module('erpApp', ['ngRoute'])
             var module,
                 buildPage = function(page) {
                     if (page.link) {
-                        $routeProvider.when('/' + page.link, {
-                            templateUrl: page.templateUrl,
-                            controller: page.controller
-                        });
+                        if (page.controller && page.templateUrl) {
+                            $routeProvider.when('/' + page.link, {
+                                templateUrl: page.templateUrl,
+                                controller: page.controller
+                            });
+                        }
+
                     } else {
                         for (var i in page) {
                             buildPage(page[i]);
@@ -24,15 +27,15 @@ var erpApp = angular.module('erpApp', ['ngRoute'])
                 };
             for (var i in modules) {
                 module = modules[i];
-                if (module.pages) {
-                    buildPage(module.pages);
-                } else {
+                if (module.page) {
+                    buildPage(module.page);
+                } else if (typeof(module) === 'object') {
                     buildRoute(module);
                 }
             }
         };
         $routeProvider
-            .when('/', {
+            .otherwise({
                 redirectTo: erpAppConfig.appBaseUrl
             });
         buildRoute(erpAppConfig.modules);

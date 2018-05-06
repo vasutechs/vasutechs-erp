@@ -1,17 +1,17 @@
 erpApp.constant('erpAppConfig', {
     appName: 'Vasutechs-ERP',
     appBaseUrl: '/dashboard',
-    appNavMenus: {
-        '0-dashboard': {
+    appNavMenus: [{
             description: {
                 name: 'Dashboard',
                 title: 'Dashboard',
                 url: '/',
                 icon: 'dashboard',
+                order: 0,
                 child: 'no'
             }
         },
-        '1-marketing': {
+        {
             description: {
                 name: 'Marketing',
                 title: 'Marketing',
@@ -20,45 +20,44 @@ erpApp.constant('erpAppConfig', {
                 order: 1,
                 child: 'yes'
             },
-            childs: {
-                partMaster: {
+            childs: [{
                     description: {
                         name: 'Part Master',
-                        url: 'master/partMaster/list',
+                        url: 'marketing/partMaster/list',
                         order: 0
                     }
                 },
-                employeeMaster: {
+                {
                     description: {
                         name: 'Employee Master',
-                        url: 'master/empMaster/list',
+                        url: 'marketing/empMaster/list',
                         order: 1
                     }
                 },
-                customerMaster: {
+                {
                     description: {
                         name: 'Customer Master',
-                        url: 'master/customerMaster/list',
+                        url: 'marketing/customerMaster/list',
                         order: 2
                     }
                 },
-                uomMaster: {
+                {
                     description: {
                         name: 'UOM Master',
-                        url: 'master/uomMaster/list',
+                        url: 'marketing/uomMaster/list',
                         order: 3
                     }
                 },
-                invoice: {
+                {
                     description: {
                         name: 'Invoice',
-                        url: 'master/invoice/list',
+                        url: 'marketing/invoice/list',
                         order: 4
                     }
                 }
-            }
+            ]
         },
-        '2-purchase': {
+        {
             description: {
                 name: 'Purchase',
                 title: 'Purchase',
@@ -67,52 +66,51 @@ erpApp.constant('erpAppConfig', {
                 order: 2,
                 child: 'yes'
             },
-            childs: {
-                rawMaterialMaster: {
+            childs: [{
                     description: {
                         name: 'Raw Material Master',
-                        url: 'master/partMaster/list',
+                        url: 'purchase/rmMaster/list',
                         order: 0
                     }
                 },
-                supplierMaster: {
+                {
                     description: {
                         name: 'Supplier Master',
-                        url: 'master/empMaster/list',
+                        url: 'purchase/supplierMaster/list',
                         order: 1
                     }
                 },
-                subcontractorMaster: {
+                {
                     description: {
                         name: 'Subcontractor Master',
-                        url: 'master/customerMaster/list',
+                        url: 'purchase/subContractorMaster/list',
                         order: 2
                     }
                 },
-                poSupplier: {
+                {
                     description: {
                         name: 'PURCHASE ORDER- Supplier',
-                        url: 'master/uomMaster/list',
+                        url: 'purchase/poSupplier/list',
                         order: 3
                     }
                 },
-                poSubcontractor: {
+                {
                     description: {
                         name: 'PURCHASE ORDER- Subcontractor',
-                        url: 'master/invoice/list',
+                        url: 'purchase/poSubContractor/list',
                         order: 4
                     }
                 },
-                poSupplierGeneral: {
+                {
                     description: {
                         name: 'PURCHASE ORDER- Supplier General',
-                        url: 'master/invoice/list',
+                        url: '/',
                         order: 5
                     }
                 }
-            }
+            ]
         },
-        '3-store': {
+        {
             description: {
                 name: 'Store',
                 title: 'Store',
@@ -121,52 +119,51 @@ erpApp.constant('erpAppConfig', {
                 order: 3,
                 child: 'yes'
             },
-            childs: {
-                openingRawMaterialStock: {
+            childs: [{
                     description: {
                         name: 'Opening Raw material Stock',
                         url: 'master/partMaster/list',
                         order: 0
                     }
                 },
-                openingPartStock: {
+                {
                     description: {
                         name: 'Opening Part Stock',
                         url: 'master/empMaster/list',
                         order: 1
                     }
                 },
-                subcontractorMaster: {
+                {
                     description: {
                         name: 'Sub Contractor Opening Stock',
                         url: 'master/customerMaster/list',
                         order: 2
                     }
                 },
-                subContractorOpeningStock: {
+                {
                     description: {
                         name: 'Sub Contractor Opening Stock',
                         url: 'master/uomMaster/list',
                         order: 3
                     }
                 },
-                deliveryChallan: {
+                {
                     description: {
                         name: 'Delivery Challan',
                         url: 'master/invoice/list',
                         order: 4
                     }
                 },
-                goodsReceiptNoteSupplier: {
+                {
                     description: {
                         name: 'Goods Receipt Note- Supplier',
                         url: 'master/invoice/list',
                         order: 5
                     }
                 }
-            }
+            ]
         },
-        '4-production': {
+        {
             description: {
                 name: 'Production',
                 title: 'Production',
@@ -175,66 +172,65 @@ erpApp.constant('erpAppConfig', {
                 order: 4,
                 child: 'yes'
             },
-            childs: {
-                operationMaster: {
+            childs: [{
                     description: {
                         name: 'Operation Master',
                         url: 'master/partMaster/list',
                         order: 0
                     }
                 },
-                machineMaster: {
+                {
                     description: {
                         name: 'Machine Master',
                         url: 'master/empMaster/list',
                         order: 1
                     }
                 },
-                bom: {
+                {
                     description: {
                         name: 'BOM',
                         url: 'master/customerMaster/list',
                         order: 2
                     }
                 },
-                toolMaster: {
+                {
                     description: {
                         name: 'Tool Master',
                         url: 'master/uomMaster/list',
                         order: 3
                     }
                 },
-                flowProcess: {
+                {
                     description: {
                         name: 'Flow Process',
                         url: 'master/invoice/list',
                         order: 4
                     }
                 },
-                materialIssueNote: {
+                {
                     description: {
                         name: 'Material issue note',
                         url: 'master/invoice/list',
                         order: 5
                     }
                 },
-                productionEntry: {
+                {
                     description: {
                         name: 'PRODUCTION Entry',
                         url: 'master/invoice/list',
                         order: 6
                     }
                 },
-                productionEntryPacking: {
+                {
                     description: {
                         name: 'PRODUCTION Entry for packing',
                         url: 'master/invoice/list',
                         order: 7
                     }
                 }
-            }
+            ]
         },
-        '5-quality': {
+        {
             description: {
                 name: 'Quality',
                 title: 'Quality',
@@ -243,48 +239,47 @@ erpApp.constant('erpAppConfig', {
                 order: 5,
                 child: 'yes'
             },
-            childs: {
-                rawMaterialSpecification: {
+            childs: [{
                     description: {
                         name: 'Raw material Specification',
                         url: 'master/partMaster/list',
                         order: 0
                     }
                 },
-                partSpecification: {
+                {
                     description: {
                         name: 'Part Specification',
                         url: 'master/empMaster/list',
                         order: 1
                     }
                 },
-                receivingInspectionSupplier: {
+                {
                     description: {
                         name: 'Receiving Inspection- Supplier',
                         url: 'master/customerMaster/list',
                         order: 2
                     }
                 },
-                receivingInspectionSubcontractor: {
+                {
                     description: {
                         name: 'Receiving Inspection- Subcontractor',
                         url: 'master/uomMaster/list',
                         order: 3
                     }
                 }
-            }
+            ]
         }
-    },
+    ],
     modules: {
         dashboard: {
-            pages: {
+            page: {
                 link: 'dashboard',
                 name: 'dashboard',
                 templateUrl: 'template/dashboard.html',
                 controller: 'dashboardCtrl'
             }
         },
-        master: {
+        marketing: {
             partMaster: {
                 title: 'Part Master',
                 data: {
@@ -294,7 +289,7 @@ erpApp.constant('erpAppConfig', {
                     inputWeight: '',
                     finishedWeight: '',
                     finishedWeight: '',
-                    hsnNo: '',
+                    hsnCode: '',
                     uom: '',
                     prodRateHr: '',
                     rate: '',
@@ -308,32 +303,38 @@ erpApp.constant('erpAppConfig', {
                     fields: [{
                         name: 'Part No',
                         id: 'partNo',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }, {
                         name: 'Part Name',
                         id: 'partName',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }, {
                         name: 'Raw material',
                         id: 'rawMaterial',
                         type: 'select',
-                        options: [
-                            { id: '1', name: 'Option A' },
-                            { id: '2', name: 'Option B' },
-                            { id: '3', name: 'Option C' }
-                        ]
+                        options: {}
                     }, {
                         name: 'Input weight',
                         id: 'inputWeight',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'Finished weight',
                         id: 'finishedWeight',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
-                        name: 'HSN No',
-                        id: 'hsnNo',
-                        type: 'text'
+                        name: 'HSN Code',
+                        id: 'hsnCode',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }, {
                         name: 'UOM',
                         id: 'uom',
@@ -342,55 +343,52 @@ erpApp.constant('erpAppConfig', {
                     }, {
                         name: 'Prod Rate/ hr',
                         id: 'prodRateHr',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'Rate',
                         id: 'rate',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'GST',
                         id: 'gst',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'SGST',
                         id: 'sgst',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'CGST',
                         id: 'cgst',
-                        type: 'text'
-                    }, {
-                        name: 'Submit',
-                        id: 'submit',
-                        type: 'submit',
-                        action: 'submit'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }]
                 },
-                pages: {
-                    list: {
-                        link: 'master/partMaster/list',
-                        name: 'list',
-                        templateUrl: 'template/master/partMaster.html',
-                        controller: 'partMasterCtrl'
+                listView: [{
+                        title: 'Part No',
+                        value: 'partNo'
                     },
-                    edit: {
-                        link: 'master/partMaster/edit',
-                        name: 'edit',
-                        templateUrl: 'template/master/partMaster.html',
-                        controller: 'partMasterCtrl'
+                    {
+                        title: 'Part Name',
+                        value: 'partName'
                     },
-                    add: {
-                        link: 'master/partMaster/add',
-                        name: 'add',
-                        templateUrl: 'template/master/partMaster.html',
-                        controller: 'partMasterCtrl'
-                    },
-                    delete: {
-                        link: 'master/partMaster/delete',
-                        name: 'delete',
-                        templateUrl: 'template/master/partMaster.html',
-                        controller: 'partMasterCtrl'
+                    {
+                        action: true
                     }
+                ],
+                page: {
+                    link: 'marketing/partMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'partMasterCtrl'
                 },
                 services: {
                     list: {
@@ -408,81 +406,88 @@ erpApp.constant('erpAppConfig', {
                     contactNo: '',
                     gstin: '',
                     mapping: [{
-                        partNo: '',
+                        id: '',
+                        partName: '',
                         rate: '',
                         gst: ''
                     }]
                 },
-                mappingForm: {
-                    name: 'Part Mapping',
-                    fields: [{
-                            name: 'Part No',
-                            id: 'partNo',
-                            type: 'select',
-                            options: {}
-                        },
-                        {
-                            name: 'Rate',
-                            id: 'rate',
-                            type: 'text'
-                        },
-                        {
-                            name: 'GST %',
-                            id: 'gst',
-                            type: 'text'
-                        }
-                    ]
-                },
                 form: {
                     name: 'customerMaster',
                     id: 'customerMaster',
+                    autoGenKey: 'customerCode',
                     fields: [{
                         name: 'Customer Code',
                         id: 'customerCode',
-                        type: 'text'
+                        type: 'span'
                     }, {
                         name: 'Customer Name',
                         id: 'customerName',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }, {
                         name: 'Address',
                         id: 'address',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }, {
                         name: 'Contact No',
                         id: 'contactNo',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'GSTIN',
                         id: 'gstin',
-                        type: 'text'
-                    }]
-                },
-                pages: {
-                    list: {
-                        link: 'master/customerMaster/list',
-                        name: 'list',
-                        templateUrl: 'template/master/customerMaster.html',
-                        controller: 'customerMasterCtrl'
-                    },
-                    edit: {
-                        link: 'master/customerMaster/edit',
-                        name: 'edit',
-                        templateUrl: 'template/master/customerMaster.html',
-                        controller: 'customerMasterCtrl'
-                    },
-                    add: {
-                        link: 'master/customerMaster/add',
-                        name: 'add',
-                        templateUrl: 'template/master/customerMaster.html',
-                        controller: 'customerMasterCtrl'
-                    },
-                    delete: {
-                        link: 'master/customerMaster/delete',
-                        name: 'delete',
-                        templateUrl: 'template/master/customerMaster.html',
-                        controller: 'customerMasterCtrl'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }],
+                    mapping: {
+                        name: 'Part Mapping',
+                        fields: [{
+                                name: 'Part No',
+                                id: 'id',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Part Name',
+                                id: 'partName',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Rate',
+                                id: 'rate',
+                                type: 'span'
+                            },
+                            {
+                                name: 'GST %',
+                                id: 'gst',
+                                type: 'span'
+                            }
+                        ]
                     }
+                },
+                listView: [{
+                        title: 'Customer Code',
+                        value: 'customerCode'
+                    },
+                    {
+                        title: 'Customer Name',
+                        value: 'customerName'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'marketing/customerMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'customerMasterCtrl'
                 },
                 services: {
                     list: {
@@ -511,86 +516,97 @@ erpApp.constant('erpAppConfig', {
                 form: {
                     name: 'empMaster',
                     id: 'empMaster',
+                    autoGenKey: 'employeeCode',
                     fields: [{
                         name: 'Employee Code',
                         id: 'employeeCode',
-                        type: 'text'
+                        valuePrefix: 'VT-EMP-',
+                        type: 'span'
                     }, {
                         name: 'Employee Name',
                         id: 'employeeName',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }, {
                         name: 'Address',
                         id: 'address',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }, {
                         name: 'Contact No',
                         id: 'contactNo',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'Mail Id',
                         id: 'mailId',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'email',
+                        required: true
                     }, {
                         name: 'Qualification',
                         id: 'qualification',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }, {
                         name: 'Designation',
                         id: 'designation',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }, {
                         name: 'BasicSalary',
                         id: 'basicSalary',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'HRA',
                         id: 'hra',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'CA',
                         id: 'ca',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'OT',
                         id: 'ot',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }, {
                         name: 'Total',
                         id: 'total',
-                        type: 'text'
-                    }, {
-                        name: 'Submit',
-                        id: 'submit',
-                        type: 'submit',
-                        action: 'submit'
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
                     }]
                 },
-                pages: {
-                    list: {
-                        link: 'master/empMaster/list',
-                        name: 'list',
-                        templateUrl: 'template/master/empMaster.html',
-                        controller: 'empMasterCtrl'
+                listView: [{
+                        title: 'Employee Name',
+                        value: 'employeeName'
                     },
-                    edit: {
-                        link: 'master/empMaster/edit',
-                        name: 'edit',
-                        templateUrl: 'template/master/empMaster.html',
-                        controller: 'empMasterCtrl'
+                    {
+                        title: 'Mail Id',
+                        value: 'mailId'
                     },
-                    add: {
-                        link: 'master/empMaster/add',
-                        name: 'add',
-                        templateUrl: 'template/master/empMaster.html',
-                        controller: 'empMasterCtrl'
-                    },
-                    delete: {
-                        link: 'master/empMaster/delete',
-                        name: 'delete',
-                        templateUrl: 'template/master/empMaster.html',
-                        controller: 'empMasterCtrl'
+                    {
+                        action: true
                     }
+                ],
+                page: {
+                    link: 'marketing/empMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'empMasterCtrl'
                 },
                 services: {
                     list: {
@@ -611,43 +627,34 @@ erpApp.constant('erpAppConfig', {
                     fields: [{
                         name: 'UOM Code',
                         id: 'uomCode',
-                        type: 'text'
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }, {
                         name: 'UOM Name',
                         id: 'uomName',
-                        type: 'text'
-                    }, {
-                        name: 'Submit',
-                        id: 'submit',
-                        type: 'submit',
-                        action: 'submit'
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
                     }]
                 },
-                pages: {
-                    list: {
-                        link: 'master/uomMaster/list',
-                        name: 'list',
-                        templateUrl: 'template/master/uomMaster.html',
-                        controller: 'uomMasterCtrl'
+                listView: [{
+                        title: 'UOM Code',
+                        value: 'uomCode'
                     },
-                    edit: {
-                        link: 'master/uomMaster/edit',
-                        name: 'edit',
-                        templateUrl: 'template/master/uomMaster.html',
-                        controller: 'uomMasterCtrl'
+                    {
+                        title: 'UOM Name',
+                        value: 'uomName'
                     },
-                    add: {
-                        link: 'master/uomMaster/add',
-                        name: 'add',
-                        templateUrl: 'template/master/uomMaster.html',
-                        controller: 'uomMasterCtrl'
-                    },
-                    delete: {
-                        link: 'master/uomMaster/delete',
-                        name: 'delete',
-                        templateUrl: 'template/master/uomMaster.html',
-                        controller: 'uomMasterCtrl'
+                    {
+                        action: true
                     }
+                ],
+                page: {
+                    link: 'marketing/uomMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'uomMasterCtrl'
                 },
                 services: {
                     list: {
@@ -659,7 +666,6 @@ erpApp.constant('erpAppConfig', {
             invoice: {
                 title: 'Invoice',
                 data: {
-                    id: '',
                     invoiceNo: '',
                     date: '',
                     customerCode: '',
@@ -670,65 +676,35 @@ erpApp.constant('erpAppConfig', {
                     sgst: '',
                     total: '',
                     mapping: [{
-                        sNo: 1,
+                        id: '',
+                        sNo: '',
                         partNo: '',
+                        partName: '',
                         unit: '',
                         rate: '',
                         amount: ''
                     }]
                 },
-                mappingForm: {
-                    name: 'Part Mapping',
-                    fields: [{
-                            name: 'SNo',
-                            id: 'sNo',
-                            type: 'span'
-                        }, {
-                            name: 'Part No',
-                            id: 'partNo',
-                            type: 'select',
-                            options: {}
-                        },
-                        {
-                            name: 'Part Name',
-                            id: 'partName',
-                            type: 'span'
-                        },
-                        {
-                            name: 'HSN Code',
-                            id: 'hsnNo',
-                            type: 'span'
-                        },
-                        {
-                            name: 'Unit',
-                            id: 'unit',
-                            type: 'span'
-                        },
-                        {
-                            name: 'Rate',
-                            id: 'rate',
-                            type: 'span'
-                        },
-                        {
-                            name: 'Amount',
-                            id: 'amount',
-                            type: 'span'
-                        }
-                    ]
-                },
-                invoiceForm: {
+                form: {
                     name: 'Invoice',
                     id: 'invoice',
+                    autoGenKey: 'invoiceNo',
                     fields: {
                         'invoiceNo': {
                             name: 'Invoice No',
                             id: 'invoiceNo',
-                            type: 'text'
+                            type: 'input',
+                            inputtype: 'input',
+                            inputType: 'text',
+                            required: true,
+                            valuePrefix: 'H-'
                         },
                         'date': {
                             name: 'Date',
                             id: 'date',
-                            type: 'text'
+                            type: 'input',
+                            inputType: 'date',
+                            required: true
                         },
                         'customerCode': {
                             name: 'To',
@@ -739,17 +715,23 @@ erpApp.constant('erpAppConfig', {
                         'partyGstin': {
                             name: 'Party GSTIN',
                             id: 'partyGstin',
-                            type: 'text'
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
                         },
                         'partyArnNo': {
                             name: 'Party ARN No',
                             id: 'partyArnNo',
-                            type: 'text'
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
                         },
                         'taxRate': {
                             name: 'Tax Rate',
                             id: 'taxRate',
-                            type: 'text'
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
                         },
                         'cgst': {
                             name: 'CGST',
@@ -764,17 +746,23 @@ erpApp.constant('erpAppConfig', {
                         'sgst': {
                             name: 'SGST',
                             id: 'sgst',
-                            type: 'text'
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
                         },
                         'sgstTotal': {
                             name: 'SGST Total',
                             id: 'sgstTotal',
-                            type: 'text'
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
                         },
                         'total': {
                             name: 'Total',
                             id: 'total',
-                            type: 'text'
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
                         },
                         'submit': {
                             name: 'Submit',
@@ -782,37 +770,771 @@ erpApp.constant('erpAppConfig', {
                             type: 'submit',
                             action: 'submit'
                         }
+                    },
+                    mapping: {
+                        name: 'Part Mapping',
+                        fields: [{
+                                name: 'SNo',
+                                id: 'sNo',
+                                type: 'span'
+                            }, {
+                                name: 'Part No',
+                                id: 'id',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Part Name',
+                                id: 'partName',
+                                type: 'span'
+                            },
+                            {
+                                name: 'HSN Code',
+                                id: 'hsnCode',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Unit',
+                                id: 'unit',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Rate',
+                                id: 'rate',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Amount',
+                                id: 'amount',
+                                type: 'span'
+                            }
+                        ]
                     }
                 },
-                pages: {
-                    list: {
-                        link: 'master/invoice/list',
-                        name: 'list',
-                        templateUrl: 'template/master/invoice.html',
-                        controller: 'invoiceCtrl'
+                listView: [{
+                        title: 'Invoice No',
+                        value: 'invoiceNo',
+                        valuePrefix: 'H-'
                     },
-                    edit: {
-                        link: 'master/invoice/edit',
-                        name: 'edit',
-                        templateUrl: 'template/master/invoice.html',
-                        controller: 'invoiceCtrl'
+                    {
+                        title: 'Customer',
+                        value: 'customerCode'
                     },
-                    add: {
-                        link: 'master/invoice/add',
-                        name: 'add',
-                        templateUrl: 'template/master/invoice.html',
-                        controller: 'invoiceCtrl'
-                    },
-                    delete: {
-                        link: 'master/invoice/delete',
-                        name: 'delete',
-                        templateUrl: 'template/master/invoice.html',
-                        controller: 'invoiceCtrl'
+                    {
+                        action: true
                     }
+                ],
+                page: {
+                    link: 'marketing/invoice/list',
+                    name: 'list',
+                    templateUrl: 'template/marketing/invoice.html',
+                    controller: 'invoiceCtrl'
                 },
                 services: {
                     list: {
                         url: 'api/invoice/data',
+                        method: 'GET'
+                    }
+                }
+            }
+        },
+        purchase: {
+            rmMaster: {
+                title: 'Raw Material Master',
+                data: {
+                    rmCode: '',
+                    rmName: '',
+                    grade: '',
+                    type: '',
+                    hsnCode: '',
+                    uom: '',
+                    rate: '',
+                    gst: '',
+                    sgst: '',
+                    cgst: ''
+                },
+                form: {
+                    name: 'rmMaster',
+                    id: 'rmMaster',
+                    autoGenKey: 'rmCode',
+                    fields: [{
+                        name: 'RM Code',
+                        id: 'rmCode',
+                        valuePrefix: 'RM-',
+                        type: 'span'
+                    }, {
+                        name: 'RM Name',
+                        id: 'rmName',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Grade',
+                        id: 'grade',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Type',
+                        id: 'type',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'HSN Code',
+                        id: 'hsnCode',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'UOM',
+                        id: 'uom',
+                        type: 'select',
+                        options: {}
+                    }, {
+                        name: 'Rate',
+                        id: 'rate',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }, {
+                        name: 'GST',
+                        id: 'gst',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }, {
+                        name: 'SGST',
+                        id: 'sgst',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }, {
+                        name: 'CGST',
+                        id: 'cgst',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }]
+                },
+                listView: [{
+                        title: 'RM Code',
+                        value: 'rmCode',
+                        valuePrefix: 'RM-'
+                    },
+                    {
+                        title: 'RM Name',
+                        value: 'rmName'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'purchase/rmMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'rmMasterCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/rmMaster/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            supplierMaster: {
+                title: 'Supplier Master',
+                data: {
+                    supplierCode: '',
+                    supplierName: '',
+                    address: '',
+                    contactNo: '',
+                    gstin: '',
+                    mapping: [{
+                        id: '',
+                        rmCode: '',
+                        rate: '',
+                        gst: ''
+                    }]
+                },
+                form: {
+                    name: 'supplierMaster',
+                    id: 'supplierMaster',
+                    autoGenKey: 'supplierCode',
+                    fields: [{
+                        name: 'Supplier Code',
+                        id: 'supplierCode',
+                        type: 'span',
+                        valuePrefix: 'VT-SP-'
+                    }, {
+                        name: 'Supplier Name',
+                        id: 'supplierName',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Address',
+                        id: 'address',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Contact No',
+                        id: 'contactNo',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }, {
+                        name: 'GSTIN',
+                        id: 'gstin',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }],
+                    mapping: {
+                        name: 'RM Mapping',
+                        fields: [{
+                                name: 'RM Code',
+                                id: 'id',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Rate',
+                                id: 'rate',
+                                type: 'input',
+                                inputType: 'text',
+                                required: true
+                            },
+                            {
+                                name: 'GST %',
+                                id: 'gst',
+                                type: 'input',
+                                inputType: 'text',
+                                required: true
+                            }
+                        ]
+                    }
+                },
+                listView: [{
+                        title: 'Supplier Code',
+                        value: 'supplierCode',
+                        valuePrefix: 'VT-SP-'
+                    },
+                    {
+                        title: 'Supplier Name',
+                        value: 'supplierName'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'purchase/supplierMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'supplierMasterCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/supplierMaster/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            poSupplier: {
+                title: 'Purchase Order - Supplier',
+                data: {
+                    poNo: '',
+                    date: '',
+                    supplierCode: '',
+                    partyGstin: '',
+                    mapping: [{
+                        id: '',
+                        rmName: '',
+                        qty: '',
+                        uom: '',
+                        rate: '',
+                        gst: '',
+                        cgst: '',
+                        sgst: '',
+                        total: ''
+                    }]
+                },
+                form: {
+                    name: 'poSupplier',
+                    id: 'poSupplier',
+                    autoGenKey: 'poNo',
+                    fields: [{
+                        name: 'PO Code',
+                        id: 'poNo',
+                        type: 'span',
+                        valuePrefix: 'VT-SP-PO-'
+                    }, {
+                        name: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date',
+                        required: true
+                    }, {
+                        name: 'Supplier Code',
+                        id: 'supplierCode',
+                        type: 'select',
+                        options: {}
+                    }, {
+                        name: 'Party Gstin',
+                        id: 'partyGstin',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }],
+                    mapping: {
+                        name: 'RM Mapping',
+                        fields: [{
+                                name: 'RM Code',
+                                id: 'id',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'RM Name',
+                                id: 'rmName',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Qty',
+                                id: 'qty',
+                                type: 'input',
+                                inputType: 'text',
+                                required: true
+                            },
+                            {
+                                name: 'UOM',
+                                id: 'uom',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Rate',
+                                id: 'rate',
+                                type: 'span'
+                            },
+                            {
+                                name: 'GST%',
+                                id: 'gst',
+                                type: 'span'
+                            },
+                            {
+                                name: 'CGST%',
+                                id: 'cgst',
+                                type: 'span'
+                            },
+                            {
+                                name: 'SGST%',
+                                id: 'sgst',
+                                type: 'span'
+                            },
+                            {
+                                name: 'total',
+                                id: 'total',
+                                type: 'span'
+                            }
+                        ]
+                    }
+                },
+                listView: [{
+                        title: 'PO NO',
+                        value: 'poNo',
+                        valuePrefix: 'VT-SP-PO-'
+                    },
+                    {
+                        title: 'Supplier Code',
+                        value: 'supplierCode'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'purchase/poSupplier/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'poSupplierCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/poSupplier/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            subContractorMaster: {
+                title: 'Sub Contractor Master',
+                data: {
+                    subContractorCode: '',
+                    subContractorName: '',
+                    address: '',
+                    contactNo: '',
+                    gstin: '',
+                    mapping: [{
+                        id: '',
+                        partName: '',
+                        oppCode: '',
+                        rate: '',
+                        gst: ''
+                    }]
+                },
+                form: {
+                    name: 'subContractorMaster',
+                    id: 'subContractorMaster',
+                    autoGenKey: 'subContractorCode',
+                    fields: [{
+                        name: 'Sub Contractor Code',
+                        id: 'subContractorCode',
+                        type: 'span',
+                        valuePrefix: 'VT-SC-'
+                    }, {
+                        name: 'Sub Contractor Name',
+                        id: 'subContractorName',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Address',
+                        id: 'address',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Contact No',
+                        id: 'contactNo',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }, {
+                        name: 'GSTIN',
+                        id: 'gstin',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }],
+                    mapping: {
+                        name: 'Part Mapping',
+                        fields: [{
+                                name: 'Part No',
+                                id: 'id',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Part Name',
+                                id: 'partName',
+                                type: 'span'
+                            }, {
+                                name: 'Opp Name',
+                                id: 'oppCode',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Rate',
+                                id: 'rate',
+                                type: 'span'
+                            },
+                            {
+                                name: 'GST %',
+                                id: 'gst',
+                                type: 'span'
+                            }
+                        ]
+                    }
+                },
+                listView: [{
+                        title: 'Sub Contractor Code',
+                        value: 'subContractorCode',
+                        valuePrefix: 'VT-SC-'
+                    },
+                    {
+                        title: 'Sub Contractor Name',
+                        value: 'subContractorName'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'purchase/subContractorMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'subContractorMasterCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/subContractorMaster/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            poSubContractor: {
+                title: 'Purchase Order - Sub Contractor',
+                data: {
+                    poNo: '',
+                    date: '',
+                    subContractorCode: '',
+                    partyGstin: '',
+                    mapping: [{
+                        id: '',
+                        partName: '',
+                        oppCode: '',
+                        qty: '',
+                        uom: '',
+                        rate: '',
+                        gst: '',
+                        cgst: '',
+                        sgst: '',
+                        total: ''
+                    }]
+                },
+                form: {
+                    name: 'poSubContractor',
+                    id: 'poSubContractor',
+                    autoGenKey: 'poNo',
+                    fields: [{
+                        name: 'PO Code',
+                        id: 'poNo',
+                        type: 'span',
+                        valuePrefix: 'VT-SC-PO-'
+                    }, {
+                        name: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date',
+                        required: true
+                    }, {
+                        name: 'Sub Contractor Code',
+                        id: 'subContractorCode',
+                        type: 'select',
+                        options: {}
+                    }, {
+                        name: 'Party Gstin',
+                        id: 'partyGstin',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }],
+                    mapping: {
+                        name: 'Part Mapping',
+                        fields: [{
+                                name: 'Part No',
+                                id: 'id',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Part Name',
+                                id: 'partName',
+                                type: 'span'
+                            }, {
+                                name: 'Opp Name',
+                                id: 'oppCode',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Qty',
+                                id: 'qty',
+                                type: 'input',
+                                inputType: 'text',
+                                required: true
+                            },
+                            {
+                                name: 'UOM',
+                                id: 'uom',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Rate',
+                                id: 'rate',
+                                type: 'span'
+                            },
+                            {
+                                name: 'GST%',
+                                id: 'gst',
+                                type: 'span'
+                            },
+                            {
+                                name: 'CGST%',
+                                id: 'cgst',
+                                type: 'span'
+                            },
+                            {
+                                name: 'SGST%',
+                                id: 'sgst',
+                                type: 'span'
+                            },
+                            {
+                                name: 'total',
+                                id: 'total',
+                                type: 'span'
+                            }
+                        ]
+                    }
+                },
+                listView: [{
+                        title: 'PO NO',
+                        value: 'poNo',
+                        valuePrefix: 'VT-SC-PO-'
+                    },
+                    {
+                        title: 'SubContractor Code',
+                        value: 'subContractorCode'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'purchase/poSubContractor/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'poSubContractorCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/poSubContractor/data',
+                        method: 'GET'
+                    }
+                }
+            }
+        },
+        store: {
+            grnSupplier: {
+                title: 'Good Receipt Note - Supplier',
+                data: {
+                    grnNo: '',
+                    date: '',
+                    supplierCode: '',
+                    partyGstin: '',
+                    mapping: [{
+                        id: '',
+                        partName: '',
+                        oppCode: '',
+                        qty: '',
+                        uom: '',
+                        rate: '',
+                        gst: '',
+                        cgst: '',
+                        sgst: '',
+                        total: ''
+                    }]
+                },
+                form: {
+                    name: 'grnSupplier',
+                    id: 'grnSupplier',
+                    autoGenKey: 'poNo',
+                    fields: [{
+                        name: 'PO Code',
+                        id: 'poNo',
+                        type: 'span',
+                        valuePrefix: 'VT-SC-PO-'
+                    }, {
+                        name: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Supplier Code',
+                        id: 'supplierCode',
+                        type: 'select',
+                        options: {}
+                    }, {
+                        name: 'Party Gstin',
+                        id: 'partyGstin',
+                        type: 'input',
+                        inputType: 'number',
+                        required: true
+                    }],
+                    mapping: {
+                        name: 'Part Mapping',
+                        fields: [{
+                                name: 'Part No',
+                                id: 'id',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Part Name',
+                                id: 'partName',
+                                type: 'span'
+                            }, {
+                                name: 'Opp Name',
+                                id: 'oppCode',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Qty',
+                                id: 'qty',
+                                type: 'input',
+                                inputType: 'text',
+                                required: true
+                            },
+                            {
+                                name: 'UOM',
+                                id: 'uom',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Rate',
+                                id: 'rate',
+                                type: 'span'
+                            },
+                            {
+                                name: 'GST%',
+                                id: 'gst',
+                                type: 'span'
+                            },
+                            {
+                                name: 'CGST%',
+                                id: 'cgst',
+                                type: 'span'
+                            },
+                            {
+                                name: 'SGST%',
+                                id: 'sgst',
+                                type: 'span'
+                            },
+                            {
+                                name: 'total',
+                                id: 'total',
+                                type: 'span'
+                            }
+                        ]
+                    }
+                },
+                listView: [{
+                        title: 'PO NO',
+                        value: 'poNo',
+                        valuePrefix: 'VT-SC-PO-'
+                    },
+                    {
+                        title: 'SubContractor Code',
+                        value: 'subContractorCode'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'purchase/poSubContractor/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'poSubContractorCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/poSubContractor/data',
                         method: 'GET'
                     }
                 }

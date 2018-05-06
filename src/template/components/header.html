@@ -7,18 +7,36 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+
+                <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" ng-repeat="module in modules">
+                    {{module}}
+                    <a ng-if="module.child=='yes'" class="nav-link  nav-link-collapse collapsed" href="#{{module.page.link}}" data-toggle="collapse" data-parent="#exampleAccordion">
+                    <i class="fa fa-fw fa-{{module.icon}}"></i>
+                    <span class="nav-link-text">{{module.title}}</span>
+                  </a>
+                    <a ng-if="module.child=='no'" class="nav-link" href="#{{module.page.link}}">
+                    <i class="fa fa-fw fa-{{module.icon}}"></i>
+                    <span class="nav-link-text">{{module.title}}</span>
+                  </a>
+                    <ul ng-if="typeof(module) === 'object'" class="sidenav-second-level collapse" id="{{module.page.link}}">
+                        <li ng-repeat="subModule in module | orderBy: 'order'">
+                            <a href="#{{subModule.page.link}}">{{subModule.title}}</a>
+                        </li>
+                    </ul>
+                </li> -->
+
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" ng-repeat="menu in appNavMenus">
                     <a ng-if="menu.description.child=='yes'" class="nav-link  nav-link-collapse collapsed" href="#{{menu.description.url}}" data-toggle="collapse" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-{{menu.description.icon}}"></i>
                     <span class="nav-link-text">{{menu.description.name}}</span>
                   </a>
-                    <a ng-if="menu.description.child=='no'" class="nav-link" href="#{{menu.description.url}}">
+                    <a ng-if="menu.description.child=='no'" class="nav-link" href="#!{{menu.description.url}}">
                     <i class="fa fa-fw fa-{{menu.description.icon}}"></i>
                     <span class="nav-link-text">{{menu.description.name}}</span>
                   </a>
                     <ul ng-if="menu.childs" class="sidenav-second-level collapse" id="{{menu.description.url}}">
-                        <li ng-repeat="submenu in menu.childs | orderBy:submenu.description.order">
-                            <a href="#{{submenu.description.url}}">{{submenu.description.name}}</a>
+                        <li ng-repeat="submenu in menu.childs | orderBy: 'description.order'">
+                            <a href="#!{{submenu.description.url}}">{{submenu.description.name}}</a>
                         </li>
                     </ul>
                 </li>

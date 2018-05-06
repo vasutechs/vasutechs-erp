@@ -1,0 +1,25 @@
+<div>
+    <div class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.add(context)" class="fa fa-fw fa-plus-square-o">Add</a></div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th ng-repeat="(key, list) in context.listView">
+                    <div ng-if="!list.action">{{list.title}}</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="(dataKey, dataList) in context.listViewData">
+                <td ng-repeat="(key, list) in context.listView">
+                    <div ng-if="!list.action">{{list.valuePrefix}}{{dataList[list.value]}}</div>
+                    <div ng-if="list.action" class="row">
+                        <div class="col"><a href="javascript: void(0);" ng-click="context.actions.edit(context, dataKey)" class="fa fa-fw fa-edit
+">Edit</a></div> |
+                        <div class="col"><a href="javascript: void(0);" ng-click="context.actions.delete(context, dataKey)" class="fa fa-fw fa-times
+">Delete</a></div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
