@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#/">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">{{context.title}}</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="mb-3">
+        <h3>{{context.title}}</h3>
+        <div ng-if="context.page.name=='add' || context.page.name=='edit'">
+            <div class="card">
+                <div class="card-header"><b>Add/Edit</b>
+                    <button type="button" class="close float-right" aria-label="Close" ng-click="context.actions.cancel(context)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <custom-form></custom-form>
+                </div>
+            </div>
+        </div>
+        <div ng-if="context.page.name=='list'">
+            <list-view></list-view>
+        </div>
+    </div>
+</div>

@@ -14,30 +14,24 @@ module.exports = function(gulp, config, task) {
 
     var setTableData = function(dataPath, inputData) {
         var lastData,
-            dataKeys,
-            newId,
-            dataObject = {};
+            newId;
         inputData = JSON.parse(inputData);
-        if (!inputData.id) {
-            dataKeys = Object.keys(db.getData('/tables' + dataPath));
-            lastData = dataKeys[dataKeys.length - 1];
-            newId = lastData > 0 && parseInt(lastData) + 1 || 1;
+        if (!inputData.id && !inputData.delete) {
+            lastData = db.getData('/tables' + dataPath);
+            lastData = lastData && lastData[lastData.length - 1];
+            newId = lastData && lastData.id && parseInt(lastData.id) + 1 || 1;
             inputData['id'] = newId;
-            dataObject[newId] = inputData;
-        } else {
-            dataObject = inputData;
-            dataPath = dataPath + '/' + inputData.id;
-            db.delete('/tables' + dataPath);
+            dataPath = dataPath + '[]';
         }
         try {
             if (inputData.delete) {
-                db.delete('/tables' + dataPath);
+                db.delete('/tables' + dataPath + '[' + inputData.key + ']');
                 data = {
                     status: 'success',
                     data: 'Success'
                 };
             } else {
-                db.push('/tables' + dataPath, dataObject, false);
+                db.push('/tables' + dataPath, inputData, true);
                 data = db.getData('/tables' + dataPath);
             }
 

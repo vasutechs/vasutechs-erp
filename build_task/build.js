@@ -13,7 +13,7 @@ module.exports = function(gulp, config, task) {
     });
 
     gulp.task('build-lib', task.buildLib = function() {
-        return gulp.src(config.src.lib + '/**/**.**').pipe(gulp.dest(config.dist.lib));
+        return gulp.src(config.src.lib, { base: './node_modules' }).pipe(gulp.dest(config.dist.lib));
     });
 
     gulp.task('build-assets', task.buildAssets = function() {

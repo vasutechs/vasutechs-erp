@@ -2,11 +2,12 @@ erpApp.directive('header', ['erpAppConfig', function(erpAppConfig) {
     var headerComp = function($scope, element, attrs) {
         $scope.appName = erpAppConfig.appName;
         $scope.appNavMenus = erpAppConfig.appNavMenus;
+        $scope.modules = erpAppConfig.modules;
         // Force the toggled class to be removed when a collapsible nav link is clicked
         element.ready(function() {
-            element.find(".navbar-sidenav .nav-link-collapse").click(function(e) {
+            element.find('.navbar-sidenav .nav-link-collapse').click(function(e) {
                 e.preventDefault();
-                $("body").removeClass("sidenav-toggled");
+                //$('.nav-item ul').removeClass('show');
             });
         });
     };

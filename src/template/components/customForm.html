@@ -1,21 +1,36 @@
 <div>
-    <form id="{{context.form.id}}">
+    <form id="{{context.form.id}}" name="customForm" novalidate>
         <div class="form-group row" ng-switch="field.type" ng-repeat="field in context.form.fields">
-            <label ng-switch-when="text" for="{{field.id}}" class="col-2 col-form-label">{{field.name}}</label>
-            <div ng-switch-when="text" class="col-10">
-                <input type="text" id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" />
+            <label ng-switch-when="span" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
+            <div ng-switch-when="span" class="col-10">
+                <span id="{{field.id}}">{{field.valuePrefix}}{{context.data[field.id]}}</span>
             </div>
-            <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label">{{field.name}}</label>
-            <div ng-switch-when="select" class="col-10">
-                <select id="{{field.id}}" ng-model="context.data[field.id]">
+            <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
+            <div ng-switch-when="input" class="col-6">
+                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" />
+            </div>
+            <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
+            <div ng-switch-when="select" class="col-6">
+                <select id="{{field.id}}" ng-model="context.data[field.id]" ng-required="{{field.required}}">
                     <option value="">---Select---</option>
                     <option ng-repeat="option in field.options" value="{{option.id}}" ng-selected="option.id==context.data[field.id]">{{option.name}}</option>
                 </select>
             </div>
-            <div ng-switch-when="button" class="col-2">
+            <div class="col-2">
+                 <span style="color:red" ng-show="customForm[field.id].$invalid">*Required</span>
             </div>
-            <div ng-switch-when="submit" class="col-10">
-                <button type="button" class="btn btn-primary" id="{{field.id}}" ng-click="actions.submit(context)">{{field.name}}</button> <button type="button" class="btn btn-primary" id="cancel" ng-click="actions.cancel(context)">Cancel</button>              
+        </div>
+        <div class="form-group row" ng-if="context.form.mapping">
+            <div class="col-12">
+                <mapping-form></mapping-form>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+            </div>
+            <div class="col-10">
+                <button type="button" class="btn btn-primary" id="submit" ng-click="context.actions.submit(context)" ng-disabled="customForm.$invalid">Submit</button>
+                <button type="button" class="btn btn-primary" id="cancel" ng-click="context.actions.cancel(context)">Cancel</button>
             </div>
         </div>
     </form>
