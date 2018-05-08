@@ -57,7 +57,7 @@ module.exports = function(gulp, config, task) {
                 });
 
                 req.on('end', function(data) {
-                    data = req.method === 'GET' ? getTableData(apiPath[1]) : setTableData(apiPath[1], inputData);
+                    data = apiPath[1] === '/download' ? db.getData('/') : req.method === 'POST' ? setTableData(apiPath[1], inputData) : getTableData(apiPath[1]);
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify(data));
                 });

@@ -1,114 +1,10 @@
 erpApp.constant('erpAppConfig', {
     appName: 'Vasutechs-ERP',
     appBaseUrl: '/dashboard',
-    appNavMenus: [{
-            description: {
-                name: 'Dashboard',
-                title: 'Dashboard',
-                url: '/',
-                icon: 'dashboard',
-                order: 0,
-                child: 'no'
-            }
-        },
+    dataDownloadUrl: '/api/download',
+    appNavMenus: [{},
         {
-            description: {
-                name: 'Marketing',
-                title: 'Marketing',
-                url: 'collapseMarakets',
-                icon: 'stack-exchange',
-                order: 1,
-                child: 'yes'
-            },
-            childs: [{
-                    description: {
-                        name: 'Part Master',
-                        url: 'marketing/partMaster/list',
-                        order: 0
-                    }
-                },
-                {
-                    description: {
-                        name: 'Employee Master',
-                        url: 'marketing/empMaster/list',
-                        order: 1
-                    }
-                },
-                {
-                    description: {
-                        name: 'Customer Master',
-                        url: 'marketing/customerMaster/list',
-                        order: 2
-                    }
-                },
-                {
-                    description: {
-                        name: 'UOM Master',
-                        url: 'marketing/uomMaster/list',
-                        order: 3
-                    }
-                },
-                {
-                    description: {
-                        name: 'Invoice',
-                        url: 'marketing/invoice/list',
-                        order: 4
-                    }
-                }
-            ]
-        },
-        {
-            description: {
-                name: 'Purchase',
-                title: 'Purchase',
-                url: 'collapsePurchase',
-                icon: 'money',
-                order: 2,
-                child: 'yes'
-            },
-            childs: [{
-                    description: {
-                        name: 'Raw Material Master',
-                        url: 'purchase/rmMaster/list',
-                        order: 0
-                    }
-                },
-                {
-                    description: {
-                        name: 'Supplier Master',
-                        url: 'purchase/supplierMaster/list',
-                        order: 1
-                    }
-                },
-                {
-                    description: {
-                        name: 'Subcontractor Master',
-                        url: 'purchase/subContractorMaster/list',
-                        order: 2
-                    }
-                },
-                {
-                    description: {
-                        name: 'PURCHASE ORDER- Supplier',
-                        url: 'purchase/poSupplier/list',
-                        order: 3
-                    }
-                },
-                {
-                    description: {
-                        name: 'PURCHASE ORDER- Subcontractor',
-                        url: 'purchase/poSubContractor/list',
-                        order: 4
-                    }
-                },
-                {
-                    description: {
-                        name: 'PURCHASE ORDER- Supplier General',
-                        url: '/',
-                        order: 5
-                    }
-                }
-            ]
+
         },
         {
             description: {
@@ -272,6 +168,9 @@ erpApp.constant('erpAppConfig', {
     ],
     modules: {
         dashboard: {
+            name: 'Dashboard',
+            title: 'Dashboard',
+            icon: 'dashboard',
             page: {
                 link: 'dashboard',
                 name: 'dashboard',
@@ -280,6 +179,9 @@ erpApp.constant('erpAppConfig', {
             }
         },
         marketing: {
+            name: 'Marketing',
+            title: 'Marketing',
+            icon: 'stack-exchange',
             partMaster: {
                 title: 'Part Master',
                 data: {
@@ -839,6 +741,9 @@ erpApp.constant('erpAppConfig', {
             }
         },
         purchase: {
+            name: 'Purchase',
+            title: 'Purchase',
+            icon: 'money',
             rmMaster: {
                 title: 'Raw Material Master',
                 data: {
@@ -1408,40 +1313,134 @@ erpApp.constant('erpAppConfig', {
             }
         },
         store: {
+            name: 'Store',
+            title: 'Store',
+            icon: 'suitcase',
+            dcSupplier: {
+                title: 'Delivery Chellan - Supplier',
+                data: {
+                    dcNo: '',
+                    date: '',
+                    supplierCode: '',
+                    mapping: [{
+                        id: '',
+                        rmCode: '',
+                        rmName: '',
+                        poQty: '',
+                        total: ''
+                    }]
+                },
+                form: {
+                    name: 'dcSupplier',
+                    id: 'dcSupplier',
+                    autoGenKey: 'dcNo',
+                    fields: [{
+                        name: 'DC No',
+                        id: 'dcNo',
+                        type: 'span'
+                    }, {
+                        name: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date',
+                        required: true
+                    }, {
+                        name: 'Supplier Code',
+                        id: 'supplierCode',
+                        type: 'select',
+                        options: {}
+                    }],
+                    mapping: {
+                        name: 'Detail Mapping',
+                        fields: [{
+                                name: 'PO No',
+                                id: 'id',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'RM Code',
+                                id: 'rmCode',
+                                type: 'span'
+                            },
+                            {
+                                name: 'RM Name',
+                                id: 'rmName',
+                                type: 'span'
+                            },
+                            {
+                                name: 'PO Qty',
+                                id: 'poQty',
+                                type: 'span'
+                            },
+                            {
+                                name: 'total',
+                                id: 'total',
+                                type: 'span'
+                            }
+                        ]
+                    }
+                },
+                listView: [{
+                        title: 'DC NO',
+                        value: 'dcNo'
+                    },
+                    {
+                        title: 'Supplier Code',
+                        value: 'supplierCode'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'store/dcSupplier/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'dcSupplierCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/dcSupplier/data',
+                        method: 'GET'
+                    }
+                }
+            },
             grnSupplier: {
                 title: 'Good Receipt Note - Supplier',
                 data: {
                     grnNo: '',
                     date: '',
                     supplierCode: '',
-                    partyGstin: '',
+                    supplierDCNo: '',
+                    supplierDCDate: '',
                     mapping: [{
                         id: '',
-                        partName: '',
-                        oppCode: '',
-                        qty: '',
+                        rmCode: '',
+                        rmName: '',
+                        poQty: '',
                         uom: '',
+                        receivedQty: '',
+                        acceptedQty: '',
                         rate: '',
                         gst: '',
-                        cgst: '',
-                        sgst: '',
+                        cost: '',
                         total: ''
                     }]
                 },
                 form: {
                     name: 'grnSupplier',
                     id: 'grnSupplier',
-                    autoGenKey: 'poNo',
+                    autoGenKey: 'grnNo',
                     fields: [{
-                        name: 'PO Code',
-                        id: 'poNo',
-                        type: 'span',
-                        valuePrefix: 'VT-SC-PO-'
+                        name: 'GRN No',
+                        id: 'grnNo',
+                        type: 'span'
                     }, {
                         name: 'Date',
                         id: 'date',
                         type: 'input',
-                        inputType: 'text',
+                        inputType: 'date',
                         required: true
                     }, {
                         name: 'Supplier Code',
@@ -1449,40 +1448,54 @@ erpApp.constant('erpAppConfig', {
                         type: 'select',
                         options: {}
                     }, {
-                        name: 'Party Gstin',
-                        id: 'partyGstin',
+                        name: 'Supplier DC Code',
+                        id: 'supplierDCCode',
                         type: 'input',
-                        inputType: 'number',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Supplier DC Date',
+                        id: 'supplierDCDate',
+                        type: 'input',
+                        inputType: 'date',
                         required: true
                     }],
                     mapping: {
-                        name: 'Part Mapping',
+                        name: 'Detail Mapping',
                         fields: [{
-                                name: 'Part No',
+                                name: 'PO No',
                                 id: 'id',
                                 type: 'select',
                                 options: {}
                             },
                             {
-                                name: 'Part Name',
-                                id: 'partName',
+                                name: 'RM Code',
+                                id: 'rmCode',
                                 type: 'span'
-                            }, {
-                                name: 'Opp Name',
-                                id: 'oppCode',
-                                type: 'select',
-                                options: {}
                             },
                             {
-                                name: 'Qty',
-                                id: 'qty',
-                                type: 'input',
-                                inputType: 'text',
-                                required: true
+                                name: 'RM Name',
+                                id: 'rmName',
+                                type: 'span'
+                            },
+                            {
+                                name: 'PO Qty',
+                                id: 'poQty',
+                                type: 'span'
                             },
                             {
                                 name: 'UOM',
                                 id: 'uom',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Received Qty',
+                                id: 'receivedQty',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Accepted Qty',
+                                id: 'acceptedQty',
                                 type: 'span'
                             },
                             {
@@ -1496,13 +1509,8 @@ erpApp.constant('erpAppConfig', {
                                 type: 'span'
                             },
                             {
-                                name: 'CGST%',
-                                id: 'cgst',
-                                type: 'span'
-                            },
-                            {
-                                name: 'SGST%',
-                                id: 'sgst',
+                                name: 'Cost',
+                                id: 'cost',
                                 type: 'span'
                             },
                             {
@@ -1514,12 +1522,113 @@ erpApp.constant('erpAppConfig', {
                     }
                 },
                 listView: [{
-                        title: 'PO NO',
-                        value: 'poNo',
-                        valuePrefix: 'VT-SC-PO-'
+                        title: 'GRN NO',
+                        value: 'grnNo'
                     },
                     {
-                        title: 'SubContractor Code',
+                        title: 'Supplier DC Code',
+                        value: 'supplierDCCode'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'store/grnSupplier/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'grnSupplierCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/grnSupplier/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            dcSubContractor: {
+                title: 'Delivery Chellan - Sub Contractor',
+                data: {
+                    dcNo: '',
+                    date: '',
+                    subContractorCode: '',
+                    mapping: [{
+                        id: '',
+                        partNo: '',
+                        partFrom: '',
+                        forPurpose: '',
+                        qty: '',
+                        uom: '',
+                        appCost: ''
+                    }]
+                },
+                form: {
+                    name: 'dcSubContractor',
+                    id: 'dcSubContractor',
+                    autoGenKey: 'dcNo',
+                    fields: [{
+                        name: 'DC No',
+                        id: 'dcNo',
+                        type: 'span'
+                    }, {
+                        name: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date',
+                        required: true
+                    }, {
+                        name: 'Sub Contractor Code',
+                        id: 'subContractorCode',
+                        type: 'select',
+                        options: {}
+                    }],
+                    mapping: {
+                        name: 'Detail Mapping',
+                        fields: [{
+                                name: 'PO No',
+                                id: 'id',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Part No',
+                                id: 'partNo',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Part From',
+                                id: 'partFrom',
+                                type: 'span'
+                            },
+                            {
+                                name: 'For the purpose',
+                                id: 'poQty',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Qty',
+                                id: 'qty',
+                                type: 'span'
+                            },
+                            {
+                                name: 'UOM',
+                                id: 'uom',
+                                type: 'span'
+                            },
+                            {
+                                name: 'App Cost',
+                                id: 'appCost',
+                                type: 'span'
+                            }
+                        ]
+                    }
+                },
+                listView: [{
+                        title: 'DC NO',
+                        value: 'dcNo'
+                    },
+                    {
+                        title: 'Sub Contractor Code',
                         value: 'subContractorCode'
                     },
                     {
@@ -1527,14 +1636,166 @@ erpApp.constant('erpAppConfig', {
                     }
                 ],
                 page: {
-                    link: 'purchase/poSubContractor/list',
+                    link: 'store/dcSubContractor/list',
                     name: 'list',
                     templateUrl: 'template/defaultController.html',
-                    controller: 'poSubContractorCtrl'
+                    controller: 'dcSubContractorCtrl'
                 },
                 services: {
                     list: {
-                        url: 'api/poSubContractor/data',
+                        url: 'api/dcSubContractor/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            grnSubContractor: {
+                title: 'Good Receipt Note - Sub Contractor',
+                data: {
+                    grnNo: '',
+                    date: '',
+                    subContractorCode: '',
+                    subContractorDCNo: '',
+                    subContractorDCDate: '',
+                    mapping: [{
+                        id: '',
+                        partNo: '',
+                        partName: '',
+                        partFrom: '',
+                        ourDCNo: '',
+                        dcQty: '',
+                        uom: '',
+                        receivedQty: '',
+                        acceptedQty: '',
+                        rate: '',
+                        gst: '',
+                        cost: '',
+                        total: ''
+                    }]
+                },
+                form: {
+                    name: 'grnSubContractor',
+                    id: 'grnSubContractor',
+                    autoGenKey: 'grnNo',
+                    fields: [{
+                        name: 'GRN No',
+                        id: 'grnNo',
+                        type: 'span'
+                    }, {
+                        name: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date',
+                        required: true
+                    }, {
+                        name: 'Sub Contractor Code',
+                        id: 'subContractorCode',
+                        type: 'select',
+                        options: {}
+                    }, {
+                        name: 'Sub Contractor DC Code',
+                        id: 'subContractorDCCode',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Sub Contractor DC Date',
+                        id: 'subContractorDCDate',
+                        type: 'input',
+                        inputType: 'date',
+                        required: true
+                    }],
+                    mapping: {
+                        name: 'Detail Mapping',
+                        fields: [{
+                                name: 'PO No',
+                                id: 'id',
+                                type: 'select',
+                                options: {}
+                            },
+                            {
+                                name: 'Part No',
+                                id: 'partNo',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Part Name',
+                                id: 'partName',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Part From',
+                                id: 'partFrom',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Our DC No',
+                                id: 'ourDCNo',
+                                type: 'span'
+                            },
+                            {
+                                name: 'DC Qty',
+                                id: 'dcQty',
+                                type: 'span'
+                            },
+                            {
+                                name: 'UOM',
+                                id: 'uom',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Received Qty',
+                                id: 'receivedQty',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Accepted Qty',
+                                id: 'acceptedQty',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Rate',
+                                id: 'rate',
+                                type: 'span'
+                            },
+                            {
+                                name: 'GST%',
+                                id: 'gst',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Cost',
+                                id: 'cost',
+                                type: 'span'
+                            },
+                            {
+                                name: 'total',
+                                id: 'total',
+                                type: 'span'
+                            }
+                        ]
+                    }
+                },
+                listView: [{
+                        title: 'GRN NO',
+                        value: 'grnNo'
+                    },
+                    {
+                        title: 'Sub Contractor Code',
+                        value: 'subContractorCode'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'store/grnSubContractor/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'grnSubContractorCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/grnSubContractor/data',
                         method: 'GET'
                     }
                 }
