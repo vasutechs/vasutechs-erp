@@ -23,15 +23,15 @@
                     "partNo": "4” SWR",
                     "partName": "SWR Clamp",
                     "rawMaterial": "1",
-                    "inputWeight": "1",
-                    "finishedWeight": "1",
+                    "inputWeight": 0.1,
+                    "finishedWeight": 0.1,
                     "hsnCode": "1",
                     "uom": "1",
-                    "prodRateHr": "1",
-                    "rate": "1",
-                    "gst": "1",
-                    "sgst": "1",
-                    "cgst": "1",
+                    "prodRateHr": 100,
+                    "rate": 13,
+                    "gst": 18,
+                    "sgst": 9,
+                    "cgst": 9,
                     "id": 1
                 },
                 {
@@ -77,10 +77,10 @@
                     "gstin": 2,
                     "mapping": [
                         {
-                            "id": 2,
-                            "partName": "TestPartName",
-                            "rate": 1,
-                            "gst": 2
+                            "id": 1,
+                            "partName": "SWR Clamp",
+                            "rate": 13,
+                            "gst": 18
                         }
                     ],
                     "id": 1
@@ -379,6 +379,139 @@
                     "id": 1
                 }
             ]
+        },
+        "grnSupplier": {
+            "name": "grnSupplier",
+            "fields": {
+                "grnNo": "",
+                "date": "",
+                "supplierCode": "",
+                "supplierDCNo": "",
+                "supplierDCDate": "",
+                "mapping": [
+                    {
+                        "id": "",
+                        "rmCode": "",
+                        "rmName": "",
+                        "poQty": "",
+                        "uom": "",
+                        "receivedQty": "",
+                        "acceptedQty": "",
+                        "rate": "",
+                        "gst": "",
+                        "cost": "",
+                        "total": ""
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "grnNo": 1,
+                    "date": "2018-05-06T04:00:00.000Z",
+                    "supplierCode": "",
+                    "supplierDCNo": "",
+                    "supplierDCDate": "2018-05-01T04:00:00.000Z",
+                    "mapping": [
+                        {
+                            "id": "",
+                            "rmCode": "",
+                            "rmName": "",
+                            "poQty": "",
+                            "uom": "",
+                            "receivedQty": "",
+                            "acceptedQty": "",
+                            "rate": "",
+                            "gst": "",
+                            "cost": "",
+                            "total": ""
+                        }
+                    ],
+                    "supplierDCCode": "1",
+                    "id": 1
+                }
+            ]
+        },
+        "dcSupplier": {
+            "name": "dcSupplier",
+            "fields": {
+                "dcNo": "",
+                "date": "",
+                "supplierCode": "",
+                "mapping": [
+                    {
+                        "id": "",
+                        "rmCode": "",
+                        "rmName": "",
+                        "poQty": "",
+                        "total": ""
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "dcNo": 1,
+                    "date": "2018-05-07T04:00:00.000Z",
+                    "supplierCode": "",
+                    "mapping": [
+                        {
+                            "id": "",
+                            "rmCode": "",
+                            "rmName": "",
+                            "poQty": "",
+                            "total": ""
+                        }
+                    ],
+                    "id": 1
+                }
+            ]
+        },
+        "grnSubContractor": {
+            "name": "grnSubContractor",
+            "fields": {
+                "grnNo": "",
+                "date": "",
+                "subContractorCode": "",
+                "subContractorDCNo": "",
+                "subContractorDCDate": "",
+                "mapping": [
+                    {
+                        "id": "",
+                        "partNo": "",
+                        "partName": "",
+                        "partFrom": "",
+                        "ourDCNo": "",
+                        "dcQty": "",
+                        "uom": "",
+                        "receivedQty": "",
+                        "acceptedQty": "",
+                        "rate": "",
+                        "gst": "",
+                        "cost": "",
+                        "total": ""
+                    }
+                ]
+            },
+            "data": []
+        },
+        "dcSubContractor": {
+            "name": "dcSubContractor",
+            "fields": {
+                "dcNo": "",
+                "date": "",
+                "subContractorCode": "",
+                "mapping": [
+                    {
+                        "id": "",
+                        "partNo": "",
+                        "partFrom": "",
+                        "forPurpose": "",
+                        "qty": "",
+                        "uom": "",
+                        "appCost": ""
+                    }
+                ]
+            },
+            "data": []
         }
     }
 }

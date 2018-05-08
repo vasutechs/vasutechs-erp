@@ -7,24 +7,22 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-
-                <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" ng-repeat="module in modules">
-                    {{module}}
-                    <a ng-if="module.child=='yes'" class="nav-link  nav-link-collapse collapsed" href="#{{module.page.link}}" data-toggle="collapse" data-parent="#exampleAccordion">
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" ng-repeat="(key, module) in modules">
+                    <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
                     <i class="fa fa-fw fa-{{module.icon}}"></i>
                     <span class="nav-link-text">{{module.title}}</span>
                   </a>
-                    <a ng-if="module.child=='no'" class="nav-link" href="#{{module.page.link}}">
+                    <a ng-if="!module.page" class="nav-link  nav-link-collapse collapsed" href="#collapse{{module.title}}" data-toggle="collapse" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-{{module.icon}}"></i>
                     <span class="nav-link-text">{{module.title}}</span>
                   </a>
-                    <ul ng-if="typeof(module) === 'object'" class="sidenav-second-level collapse" id="{{module.page.link}}">
-                        <li ng-repeat="subModule in module | orderBy: 'order'">
-                            <a href="#{{subModule.page.link}}">{{subModule.title}}</a>
+                    <ul ng-if="showSubModule(module)" class="sidenav-second-level collapse" id="collapse{{module.title}}">
+                        <li ng-repeat="subModule in subModules">
+                            <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>
                         </li>
                     </ul>
-                </li> -->
-
+                </li>
+                <!-- 
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" ng-repeat="menu in appNavMenus">
                     <a ng-if="menu.description.child=='yes'" class="nav-link  nav-link-collapse collapsed" href="#{{menu.description.url}}" data-toggle="collapse" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-{{menu.description.icon}}"></i>
@@ -39,16 +37,20 @@
                             <a href="#!{{submenu.description.url}}">{{submenu.description.name}}</a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item">
+                    <a class="nav-link" title="Import data">
+                        <i class="fa fa-fw fa-upload"></i> 
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+                    <a class="nav-link" title="Download data" href="{{dataDownloadUrl}}" download="database.json">
+                        <i class="fa fa-fw fa-download"></i> 
+                    </a>
                 </li>
             </ul>
         </div>

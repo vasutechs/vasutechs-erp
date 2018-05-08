@@ -16,10 +16,8 @@
                     <td ng-switch="field.type" ng-repeat="field in context.form.mapping.fields">
                         <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>
                         <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" />
-
-                        <select ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="context.actions.changeMapping(map, map[field.id], field.options)">
-                            <option value="">---Select---</option>
-                            <option ng-repeat="option in field.options" value="{{option.id}}" ng-selected="option.id==map[field.id]">{{option.name}}</option>
+                        <select ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="context.actions.changeMapping(map, map[field.id], field.options)" ng-model="field.options[map[field.id]]" ng-options="option.name for option in field.options">
+                            <option value="">-- choose color --</option>
                         </select>
                     </td>
                     <td><a class="fa fa-fw fa-times" href="javascript: void(0);" ng-click="context.actions.removeMapping(context.data.mapping, key)"> </a></td>
