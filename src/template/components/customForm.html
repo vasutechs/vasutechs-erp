@@ -7,17 +7,16 @@
             </div>
             <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="input" class="col-6">
-                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" />
+                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](map, map[field.id])" />
             </div>
             <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="select" class="col-6">
-                <select id="{{field.id}}" ng-model="context.data[field.id]" ng-required="{{field.required}}">
-                    <option value="">---Select---</option>
-                    <option ng-repeat="option in field.options" value="{{option.id}}" ng-selected="option.id==context.data[field.id]">{{option.name}}</option>
+                <select id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context.data, context.data[field.id], field)" ng-options="option.optionId as option.optionName for option in field.options">
+                    <option value="">--Select--</option>
                 </select>
             </div>
             <div class="col-2">
-                 <span style="color:red" ng-show="customForm[field.id].$invalid">*Required</span>
+                <span style="color:red" ng-show="customForm[field.id].$invalid">*Required</span>
             </div>
         </div>
         <div class="form-group row" ng-if="context.form.mapping">

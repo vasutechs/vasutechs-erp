@@ -5,11 +5,9 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', functi
             context.actions.makeOptionsFields(erpAppConfig.modules.marketing.customerMaster.services.list, $scope.context.form.fields['customerCode'].options, 'customerName');
             context.actions.makeOptionsFields(erpAppConfig.modules.marketing.partMaster.services.list, $scope.context.form.mapping.fields[1].options, 'partName');
         },
-        setAutoGenKey: function(context) {
-            var lastDataKey = context.lastData ? context.lastData[context.form.autoGenKey] : undefined,
-            year = new Date().getFullYear();
-            lastDataKey = lastDataKey ? parseInt(lastDataKey) + 1 : 1;
-            context.data[context.form.autoGenKey] = lastDataKey + '/' + year;
+        ownSetAutoGenKey: function(context) {
+            var year = new Date().getFullYear();
+            context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year;
             console.log(context);
         }
     });

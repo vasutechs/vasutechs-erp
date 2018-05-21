@@ -22,11 +22,11 @@
                 {
                     "partNo": "4” SWR",
                     "partName": "SWR Clamp",
-                    "rawMaterial": "1",
+                    "rawMaterial": 1,
                     "inputWeight": 0.1,
                     "finishedWeight": 0.1,
                     "hsnCode": "1",
-                    "uom": "1",
+                    "uom": 1,
                     "prodRateHr": 100,
                     "rate": 13,
                     "gst": 18,
@@ -37,11 +37,11 @@
                 {
                     "partNo": "TestPartNo",
                     "partName": "TestPartName",
-                    "rawMaterial": "1",
+                    "rawMaterial": 1,
                     "inputWeight": 1,
                     "finishedWeight": 1,
                     "hsnCode": "1",
-                    "uom": "1",
+                    "uom": 1,
                     "prodRateHr": 1,
                     "rate": 1,
                     "gst": 2,
@@ -71,10 +71,10 @@
             "data": [
                 {
                     "customerCode": 1,
-                    "customerName": "TestCustomer",
-                    "address": "sdasd",
+                    "customerName": "Guhan Electricals",
+                    "address": "Myl",
                     "contactNo": 123123,
-                    "gstin": 2,
+                    "gstin": 23123123,
                     "mapping": [
                         {
                             "id": 1,
@@ -108,18 +108,18 @@
                 {
                     "id": 1,
                     "employeeCode": 1,
-                    "employeeName": "TestEmp",
-                    "address": "sdasd",
+                    "employeeName": "Sugadevan",
+                    "address": "myl",
                     "contactNo": 121212,
                     "mailId": "test@test.com",
-                    "qualification": "sdfdsdf",
-                    "designation": "sdsd",
-                    "basicSalary": 1,
-                    "hra": 1,
-                    "ca": 1,
-                    "ot": 1,
+                    "qualification": "ME",
+                    "designation": "Manager",
+                    "basicSalary": 9000,
+                    "hra": 0,
+                    "ca": 0,
+                    "ot": 0,
                     "totalSalary": "",
-                    "total": 2
+                    "total": 9000
                 }
             ]
         },
@@ -133,7 +133,7 @@
             "data": [
                 {
                     "uomCode": "1",
-                    "uomName": "TestUOM",
+                    "uomName": "KG",
                     "id": 1
                 }
             ]
@@ -203,15 +203,15 @@
             "data": [
                 {
                     "rmCode": 1,
-                    "rmName": "TestRM",
-                    "grade": "test",
-                    "type": "1",
+                    "rmName": "2 x 16 MS – HR Coil",
+                    "grade": "MS",
+                    "type": "HR Coil",
                     "hsnCode": "1",
-                    "uom": "1",
+                    "uom": 1,
                     "rate": 1,
-                    "gst": 1,
-                    "sgst": 1,
-                    "cgst": 1,
+                    "gst": 18,
+                    "sgst": 9,
+                    "cgst": 9,
                     "id": 1
                 }
             ]
@@ -226,7 +226,9 @@
                 "gstin": "",
                 "mapping": [
                     {
+                        "id": "",
                         "rmCode": "",
+                        "rmName": "",
                         "rate": "",
                         "gst": ""
                     }
@@ -235,16 +237,17 @@
             "data": [
                 {
                     "supplierCode": 1,
-                    "supplierName": "TestSupplier",
-                    "address": "Test",
+                    "supplierName": "Kamal Steel Corportaion",
+                    "address": "Chennai",
                     "contactNo": 213123,
-                    "gstin": 1,
+                    "gstin": 13123123,
                     "mapping": [
                         {
                             "id": 1,
-                            "rmCode": "1",
-                            "rate": "1",
-                            "gst": "1"
+                            "rmCode": 1,
+                            "rmName": "2 x 16 MS – HR Coil",
+                            "rate": 10,
+                            "gst": 18
                         }
                     ],
                     "id": 1
@@ -275,23 +278,23 @@
             "data": [
                 {
                     "poNo": 1,
-                    "date": "2018-05-06T04:00:00.000Z",
-                    "supplierCode": "1",
+                    "date": "2018-05-11T04:00:00.000Z",
+                    "supplierCode": 1,
                     "mapping": [
                         {
                             "id": 1,
-                            "rmName": "Test",
-                            "qty": "1",
-                            "uom": "1",
-                            "rate": "1",
-                            "gst": "1",
-                            "cgst": "1",
-                            "sgst": "1",
-                            "total": ""
+                            "rmName": "2 x 16 MS – HR Coil",
+                            "qty": "5",
+                            "uom": 1,
+                            "rate": 10,
+                            "gst": 18,
+                            "cgst": 9,
+                            "sgst": 9,
+                            "total": "68.00"
                         }
                     ],
                     "id": 1,
-                    "partyGstin": 1
+                    "gstin": 13123123
                 }
             ]
         },
@@ -318,8 +321,8 @@
                     "subContractorCode": 1,
                     "subContractorName": "Test Sub Contractor",
                     "address": "szdasd",
-                    "contactNo": "asdasd",
-                    "gstin": "sadasd",
+                    "contactNo": 21312,
+                    "gstin": 324234,
                     "mapping": [
                         {
                             "id": 1,
@@ -359,20 +362,20 @@
                 {
                     "poNo": 1,
                     "date": "2018-05-06T04:00:00.000Z",
-                    "subContractorCode": "1",
-                    "partyGstin": 1,
+                    "subContractorCode": 1,
+                    "gstin": 324234,
                     "mapping": [
                         {
-                            "id": "",
-                            "partName": "",
+                            "id": 1,
+                            "partName": "SWR Clamp",
                             "oppCode": "",
-                            "qty": "",
-                            "uom": "",
-                            "rate": "",
-                            "gst": "",
-                            "cgst": "",
-                            "sgst": "",
-                            "total": ""
+                            "qty": "1",
+                            "uom": "1",
+                            "rate": 13,
+                            "gst": 18,
+                            "cgst": 9,
+                            "sgst": 9,
+                            "total": "17.68"
                         }
                     ],
                     "supplierCode": "1",
@@ -512,6 +515,179 @@
                 ]
             },
             "data": []
+        },
+        "operationMaster": {
+            "name": "operationMaster",
+            "fields": {
+                "opNo": "",
+                "opName": "",
+                "source": ""
+            },
+            "data": [
+                {
+                    "opNo": "10",
+                    "opName": "Raw Material",
+                    "source": "Supplier",
+                    "id": 1
+                }
+            ]
+        },
+        "bom": {
+            "name": "bom",
+            "fields": {
+                "partNo": "",
+                "rmCode": "",
+                "partNorms": ""
+            },
+            "data": [
+                {
+                    "partNo": "4” SWR",
+                    "rmCode": 1,
+                    "partNorms": "0.1",
+                    "id": 1
+                }
+            ]
+        },
+        "machineMaster": {
+            "name": "machineMaster",
+            "fields": {
+                "machineNo": "",
+                "machineName": "",
+                "make": "",
+                "model": "",
+                "capacity": "",
+                "yoe": "",
+                "value": ""
+            },
+            "data": [
+                {
+                    "machineNo": 1,
+                    "machineName": "Hydro pneumatic Press",
+                    "make": "Britt",
+                    "model": "xxxx",
+                    "capacity": "15 Ton",
+                    "yoe": "2017",
+                    "value": "131000",
+                    "id": 1
+                }
+            ]
+        },
+        "flowMaster": {
+            "name": "flowMaster",
+            "fields": {
+                "partNo": "",
+                "partName": "",
+                "mapping": [
+                    {
+                        "id": "",
+                        "opName": "",
+                        "source": ""
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "partNo": "4” SWR",
+                    "mapping": [
+                        {
+                            "id": 1,
+                            "opName": "Raw Material",
+                            "source": "Supplier"
+                        }
+                    ],
+                    "id": 1
+                }
+            ]
+        },
+        "toolMaster": {
+            "name": "toolMaster",
+            "fields": {
+                "toolNo": "",
+                "partName": "",
+                "make": "",
+                "type": "",
+                "toolLife": "",
+                "yoe": "",
+                "value": ""
+            },
+            "data": [
+                {
+                    "toolNo": 1,
+                    "partName": "Cropping Tool",
+                    "make": "Crescent",
+                    "type": "Pillar set",
+                    "toolLife": "100000",
+                    "yoe": "2005",
+                    "value": "15000",
+                    "id": 1,
+                    "yop": "2015"
+                }
+            ]
+        },
+        "materialIssueNote": {
+            "name": "materialIssueNote",
+            "fields": {
+                "jobCardNo": "",
+                "date": "",
+                "rmCode": "",
+                "partNo": "",
+                "norms": "",
+                "issueQty": "",
+                "qtyCanMake": "",
+                "issueStage": ""
+            },
+            "data": [
+                {
+                    "jobCardNo": 1,
+                    "date": "2018-05-21T01:22:16.640Z",
+                    "rmCode": 1,
+                    "partNo": 1,
+                    "norms": "1",
+                    "issueQty": "1",
+                    "qtyCanMake": "1",
+                    "issueStage": "1",
+                    "id": 1
+                }
+            ]
+        },
+        "productionEntry": {
+            "name": "productionEntry",
+            "fields": {
+                "date": "",
+                "mcNo": "",
+                "jobCardNo": "",
+                "partNo": "",
+                "operationFrom": "",
+                "operationTo": "",
+                "toolNo": "",
+                "operator": "",
+                "startTime": "",
+                "endTime": "",
+                "planQty": "",
+                "acceptedQty": "",
+                "rejectionQty": "",
+                "rmQty": ""
+            },
+            "data": [
+                {
+                    "date": "2018-05-21T02:47:36.837Z",
+                    "mcNo": 1,
+                    "jobCardNo": 1,
+                    "partNo": 1,
+                    "operationFrom": 1,
+                    "operationTo": 1,
+                    "toolNo": 1,
+                    "operator": null,
+                    "startTime": "2018-05-20T04:00:00.000Z",
+                    "endTime": "2018-05-27T04:00:00.000Z",
+                    "planQty": "1",
+                    "acceptedQty": "1",
+                    "rejectionQty": "0",
+                    "rmQty": "0",
+                    "Operator": 1,
+                    "id": 1
+                }
+            ]
         }
     }
 }

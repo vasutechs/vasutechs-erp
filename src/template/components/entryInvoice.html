@@ -45,7 +45,7 @@
                         <tr ng-repeat="(key, mapping) in context.data.mapping">
                             <td ng-switch="field.type" ng-repeat="field in context.form.mapping.fields">
                                 <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="mapping[field.id]"></span>
-                                <select ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="context.actions.changeMapping(mapping, mapping[field.id], field.options)" ng-model="mapping[field.id]">
+                                <select ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="context.actions.changeMapping(context, mapping, mapping[field.id], field.options)" ng-model="mapping[field.id]">
                                     <option value="">---Select---</option>
                                     <option ng-repeat="option in field.options" value="{{option.id}}" ng-selected="option.id==mapping[field.id]">{{option.name}}</option>
                                 </select>

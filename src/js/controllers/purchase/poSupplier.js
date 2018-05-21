@@ -4,6 +4,13 @@ erpApp.controller('poSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', fun
             //Get Part master data
             context.actions.makeOptionsFields(erpAppConfig.modules.purchase.supplierMaster.services.list, $scope.context.form.fields[2].options, 'supplierName');
             context.actions.makeOptionsFields(erpAppConfig.modules.purchase.rmMaster.services.list, $scope.context.form.mapping.fields[0].options, 'rmName');
+        },
+        updateRmTotal: function(data, updateValue) {
+            var total = 0,
+                totalBeforTax = 0;
+            totalBeforTax = updateValue * data.rate;
+            total = totalBeforTax + (totalBeforTax * (data.gst / 100)) + (totalBeforTax * (data.cgst / 100)) + (totalBeforTax * (data.sgst / 100))
+            data.total = parseFloat(total).toFixed(2);
         }
     });
 
