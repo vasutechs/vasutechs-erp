@@ -2,64 +2,7 @@ erpApp.constant('erpAppConfig', {
     appName: 'Vasutechs-ERP',
     appBaseUrl: '/dashboard',
     dataDownloadUrl: '/api/download',
-    appNavMenus: [{},
-        {
-
-        },
-        {
-            description: {
-                name: 'Store',
-                title: 'Store',
-                url: 'collapseStore',
-                icon: 'suitcase',
-                order: 3,
-                child: 'yes'
-            },
-            childs: [{
-                    description: {
-                        name: 'Opening Raw material Stock',
-                        url: 'master/partMaster/list',
-                        order: 0
-                    }
-                },
-                {
-                    description: {
-                        name: 'Opening Part Stock',
-                        url: 'master/empMaster/list',
-                        order: 1
-                    }
-                },
-                {
-                    description: {
-                        name: 'Sub Contractor Opening Stock',
-                        url: 'master/customerMaster/list',
-                        order: 2
-                    }
-                },
-                {
-                    description: {
-                        name: 'Sub Contractor Opening Stock',
-                        url: 'master/uomMaster/list',
-                        order: 3
-                    }
-                },
-                {
-                    description: {
-                        name: 'Delivery Challan',
-                        url: 'master/invoice/list',
-                        order: 4
-                    }
-                },
-                {
-                    description: {
-                        name: 'Goods Receipt Note- Supplier',
-                        url: 'master/invoice/list',
-                        order: 5
-                    }
-                }
-            ]
-        },
-        {
+    appNavMenus: [{
             description: {
                 name: 'Production',
                 title: 'Production',
@@ -308,7 +251,7 @@ erpApp.constant('erpAppConfig', {
                     contactNo: '',
                     gstin: '',
                     mapping: [{
-                        id: '',
+                        id: null,
                         partName: '',
                         rate: '',
                         gst: ''
@@ -353,7 +296,8 @@ erpApp.constant('erpAppConfig', {
                                 name: 'Part No',
                                 id: 'id',
                                 type: 'select',
-                                options: {}
+                                options: {},
+                                action: 'changeMapping'
                             },
                             {
                                 name: 'Part Name',
@@ -683,7 +627,8 @@ erpApp.constant('erpAppConfig', {
                                 name: 'Part No',
                                 id: 'id',
                                 type: 'select',
-                                options: {}
+                                options: {},
+                                action: 'changeMapping'
                             },
                             {
                                 name: 'Part Name',
@@ -859,6 +804,7 @@ erpApp.constant('erpAppConfig', {
                     mapping: [{
                         id: '',
                         rmCode: '',
+                        rmName: '',
                         rate: '',
                         gst: ''
                     }]
@@ -903,7 +849,13 @@ erpApp.constant('erpAppConfig', {
                                 name: 'RM Code',
                                 id: 'id',
                                 type: 'select',
-                                options: {}
+                                options: {},
+                                action: 'changeMapping'
+                            },
+                            {
+                                name: 'Rm Name',
+                                id: 'rmName',
+                                type: 'span'
                             },
                             {
                                 name: 'Rate',
@@ -954,9 +906,9 @@ erpApp.constant('erpAppConfig', {
                     poNo: '',
                     date: '',
                     supplierCode: '',
-                    partyGstin: '',
+                    gstin: '',
                     mapping: [{
-                        id: '',
+                        id: null,
                         rmName: '',
                         qty: '',
                         uom: '',
@@ -986,13 +938,12 @@ erpApp.constant('erpAppConfig', {
                         name: 'Supplier Code',
                         id: 'supplierCode',
                         type: 'select',
-                        options: {}
+                        options: {},
+                        action: 'changeMapping'
                     }, {
                         name: 'Party Gstin',
-                        id: 'partyGstin',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
+                        id: 'gstin',
+                        type: 'span'
                     }],
                     mapping: {
                         name: 'RM Mapping',
@@ -1000,7 +951,8 @@ erpApp.constant('erpAppConfig', {
                                 name: 'RM Code',
                                 id: 'id',
                                 type: 'select',
-                                options: {}
+                                options: {},
+                                action: 'changeMapping'
                             },
                             {
                                 name: 'RM Name',
@@ -1012,6 +964,7 @@ erpApp.constant('erpAppConfig', {
                                 id: 'qty',
                                 type: 'input',
                                 inputType: 'text',
+                                action: 'updateRmTotal',
                                 required: true
                             },
                             {
@@ -1054,7 +1007,8 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         title: 'Supplier Code',
-                        value: 'supplierCode'
+                        value: 'supplierCode',
+                        valuePrefix: 'VT-SP-'
                     },
                     {
                         action: true
@@ -1082,7 +1036,7 @@ erpApp.constant('erpAppConfig', {
                     contactNo: '',
                     gstin: '',
                     mapping: [{
-                        id: '',
+                        id: null,
                         partName: '',
                         oppCode: '',
                         rate: '',
@@ -1129,7 +1083,8 @@ erpApp.constant('erpAppConfig', {
                                 name: 'Part No',
                                 id: 'id',
                                 type: 'select',
-                                options: {}
+                                options: {},
+                                action: 'changeMapping'
                             },
                             {
                                 name: 'Part Name',
@@ -1186,9 +1141,9 @@ erpApp.constant('erpAppConfig', {
                     poNo: '',
                     date: '',
                     subContractorCode: '',
-                    partyGstin: '',
+                    gstin: '',
                     mapping: [{
-                        id: '',
+                        id: null,
                         partName: '',
                         oppCode: '',
                         qty: '',
@@ -1219,13 +1174,12 @@ erpApp.constant('erpAppConfig', {
                         name: 'Sub Contractor Code',
                         id: 'subContractorCode',
                         type: 'select',
-                        options: {}
+                        options: {},
+                        action: 'changeMapping'
                     }, {
                         name: 'Party Gstin',
-                        id: 'partyGstin',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
+                        id: 'gstin',
+                        type: 'span'
                     }],
                     mapping: {
                         name: 'Part Mapping',
@@ -1233,7 +1187,8 @@ erpApp.constant('erpAppConfig', {
                                 name: 'Part No',
                                 id: 'id',
                                 type: 'select',
-                                options: {}
+                                options: {},
+                                action: 'changeMapping'
                             },
                             {
                                 name: 'Part Name',
@@ -1250,6 +1205,7 @@ erpApp.constant('erpAppConfig', {
                                 id: 'qty',
                                 type: 'input',
                                 inputType: 'text',
+                                action: 'updateRmTotal',
                                 required: true
                             },
                             {
@@ -1292,7 +1248,8 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         title: 'SubContractor Code',
-                        value: 'subContractorCode'
+                        value: 'subContractorCode',
+                        valuePrefix: 'VT-SC-'
                     },
                     {
                         action: true
@@ -1323,7 +1280,7 @@ erpApp.constant('erpAppConfig', {
                     date: '',
                     supplierCode: '',
                     mapping: [{
-                        id: '',
+                        id: null,
                         rmCode: '',
                         rmName: '',
                         poQty: '',
@@ -1356,7 +1313,8 @@ erpApp.constant('erpAppConfig', {
                                 name: 'PO No',
                                 id: 'id',
                                 type: 'select',
-                                options: {}
+                                options: {},
+                                action: 'changeMapping'
                             },
                             {
                                 name: 'RM Code',
@@ -1415,7 +1373,7 @@ erpApp.constant('erpAppConfig', {
                     supplierDCNo: '',
                     supplierDCDate: '',
                     mapping: [{
-                        id: '',
+                        id: null,
                         rmCode: '',
                         rmName: '',
                         poQty: '',
@@ -1466,7 +1424,8 @@ erpApp.constant('erpAppConfig', {
                                 name: 'PO No',
                                 id: 'id',
                                 type: 'select',
-                                options: {}
+                                options: {},
+                                action: 'changeMapping'
                             },
                             {
                                 name: 'RM Code',
@@ -1553,7 +1512,7 @@ erpApp.constant('erpAppConfig', {
                     date: '',
                     subContractorCode: '',
                     mapping: [{
-                        id: '',
+                        id: null,
                         partNo: '',
                         partFrom: '',
                         forPurpose: '',
@@ -1588,7 +1547,8 @@ erpApp.constant('erpAppConfig', {
                                 name: 'PO No',
                                 id: 'id',
                                 type: 'select',
-                                options: {}
+                                options: {},
+                                action: 'changeMapping'
                             },
                             {
                                 name: 'Part No',
@@ -1657,7 +1617,7 @@ erpApp.constant('erpAppConfig', {
                     subContractorDCNo: '',
                     subContractorDCDate: '',
                     mapping: [{
-                        id: '',
+                        id: null,
                         partNo: '',
                         partName: '',
                         partFrom: '',
@@ -1710,7 +1670,8 @@ erpApp.constant('erpAppConfig', {
                                 name: 'PO No',
                                 id: 'id',
                                 type: 'select',
-                                options: {}
+                                options: {},
+                                action: 'changeMapping'
                             },
                             {
                                 name: 'Part No',
@@ -1796,6 +1757,578 @@ erpApp.constant('erpAppConfig', {
                 services: {
                     list: {
                         url: 'api/grnSubContractor/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            openingRMStock: {
+                title: 'Opening Raw material Stock'
+            },
+            openingPartStock: {
+                title: 'Opening Part Stock'
+            }
+        },
+        production: {
+            name: 'Production',
+            title: 'Production',
+            icon: 'cogs',
+            operationMaster: {
+                title: 'Operation Master',
+                data: {
+                    opNo: '',
+                    opName: '',
+                    source: ''
+                },
+                form: {
+                    name: 'operationMaster',
+                    id: 'operationMaster',
+                    fields: [{
+                        name: 'Operation',
+                        id: 'opNo',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Operation Name',
+                        id: 'opName',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Source',
+                        id: 'source',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }]
+                },
+                listView: [{
+                        title: 'Operation',
+                        value: 'opNo'
+                    },
+                    {
+                        title: 'Operation Name',
+                        value: 'opName'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'production/operationMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'operationMasterCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/operationMaster/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            bom: {
+                title: 'BOM',
+                data: {
+                    partNo: '',
+                    rmCode: '',
+                    partNorms: ''
+                },
+                form: {
+                    name: 'bom',
+                    id: 'bom',
+                    fields: [{
+                        name: 'Part No',
+                        id: 'partNo',
+                        type: 'select',
+                        options: {}
+                    }, {
+                        name: 'RM Code',
+                        id: 'rmCode',
+                        type: 'select',
+                        options: {}
+                    }, {
+                        name: 'Part Norms',
+                        id: 'partNorms',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }]
+                },
+                listView: [{
+                        title: 'Part No',
+                        value: 'partNo'
+                    },
+                    {
+                        title: 'RM Code',
+                        value: 'rmCode',
+                        valuePrefix: 'RM-'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'production/bom/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'bomCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/bom/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            machineMaster: {
+                title: 'Machine Master',
+                data: {
+                    machineNo: '',
+                    machineName: '',
+                    make: '',
+                    model: '',
+                    capacity: '',
+                    yoe: '',
+                    value: ''
+                },
+                form: {
+                    name: 'machineMaster',
+                    id: 'machineMaster',
+                    autoGenKey: 'machineNo',
+                    fields: [{
+                        name: 'Machine No',
+                        id: 'machineNo',
+                        type: 'span',
+                        valuePrefix: 'VT-HPP-'
+                    }, {
+                        name: 'Machine Name',
+                        id: 'machineName',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Make',
+                        id: 'make',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Model',
+                        id: 'model',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Capacity',
+                        id: 'capacity',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Year of experience',
+                        id: 'yoe',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Value',
+                        id: 'value',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }]
+                },
+                listView: [{
+                        title: 'Machine No',
+                        value: 'machineNo',
+                        valuePrefix: 'VT-HPP-'
+                    },
+                    {
+                        title: 'Machine Name',
+                        value: 'machineName'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'production/machineMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'machineMasterCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/machineMaster/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            flowMaster: {
+                title: 'Flow Master',
+                data: {
+                    partNo: '',
+                    mapping: [{
+                        id: null,
+                        opName: '',
+                        source: ''
+                    }]
+                },
+                form: {
+                    name: 'flowMaster',
+                    id: 'flowMaster',
+                    fields: [{
+                        name: 'Part No',
+                        id: 'partNo',
+                        type: 'select',
+                        options: {},
+                        required: true
+                    }],
+                    mapping: {
+                        name: 'OP Mapping',
+                        fields: [{
+                                name: 'Part Opp cpde',
+                                id: 'id',
+                                type: 'select',
+                                options: {},
+                                action: 'changeMapping'
+                            },
+                            {
+                                name: 'Opp Name',
+                                id: 'opName',
+                                type: 'span'
+                            },
+                            {
+                                name: 'Source',
+                                id: 'source',
+                                type: 'span'
+                            }
+                        ]
+                    }
+                },
+                listView: [{
+                        title: 'Part NO',
+                        value: 'partNo'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'store/flowMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'flowMasterCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/flowMaster/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            toolMaster: {
+                title: 'Tool Master',
+                data: {
+                    toolNo: '',
+                    partName: '',
+                    make: '',
+                    type: '',
+                    toolLife: '',
+                    yop: '',
+                    value: ''
+                },
+                form: {
+                    name: 'toolMaster',
+                    id: 'toolMaster',
+                    autoGenKey: 'toolNo',
+                    fields: [{
+                        name: 'Tool No',
+                        id: 'toolNo',
+                        type: 'span',
+                        valuePrefix: 'VT-T'
+                    }, {
+                        name: 'Part Name',
+                        id: 'partName',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Make',
+                        id: 'make',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Type',
+                        id: 'type',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Tool Life',
+                        id: 'toolLife',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Year of Purchase',
+                        id: 'yop',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Value',
+                        id: 'value',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }]
+                },
+                listView: [{
+                        title: 'Tool No',
+                        value: 'toolNo',
+                        valuePrefix: 'VT-T'
+                    },
+                    {
+                        title: 'Part Name',
+                        value: 'partName'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'production/toolMaster/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'toolMasterCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/toolMaster/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            materialIssueNote: {
+                title: 'Material Issue Note',
+                data: {
+                    jobCardNo: '',
+                    date: '',
+                    rmCode: '',
+                    partNo: '',
+                    norms: '',
+                    issueQty: '',
+                    qtyCanMake: '',
+                    issueStage: ''
+                },
+                form: {
+                    name: 'materialIssueNote',
+                    id: 'materialIssueNote',
+                    autoGenKey: 'jobCardNo',
+                    fields: [{
+                        name: 'Job Card No',
+                        id: 'jobCardNo',
+                        type: 'span'
+                    }, {
+                        name: 'Job Card Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date',
+                        required: true
+                    }, {
+                        name: 'RM Code',
+                        id: 'rmCode',
+                        type: 'select',
+                        options: {}
+                    }, {
+                        name: 'Part No',
+                        id: 'partNo',
+                        type: 'select',
+                        options: {}
+                    }, {
+                        name: 'Norms',
+                        id: 'norms',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Issue Qty',
+                        id: 'issueQty',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Qty Can Make',
+                        id: 'qtyCanMake',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Issue Stage',
+                        id: 'issueStage',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }]
+                },
+                listView: [{
+                        title: 'Job Card No',
+                        value: 'jobCardNo'
+                    },
+                    {
+                        title: 'Job Card Date',
+                        value: 'date'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'production/materialIssueNote/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'materialIssueNoteCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/materialIssueNote/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            productionEntry: {
+                title: 'Production Entry',
+                data: {
+                    date: '',
+                    mcNo: '',
+                    jobCardNo: '',
+                    partNo: '',
+                    operationFrom: '',
+                    operationTo: '',
+                    toolNo: '',
+                    operator: '',
+                    startTime: '',
+                    endTime: '',
+                    planQty: '',
+                    acceptedQty: '',
+                    rejectionQty: '',
+                    rmQty: ''
+                },
+                form: {
+                    name: 'productionEntry',
+                    id: 'productionEntry',
+                    fields: [{
+                        name: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date',
+                        required: true
+                    }, {
+                        name: 'M/C No',
+                        id: 'mcNo',
+                        type: 'select',
+                        options: {},
+                        required: true
+                    }, {
+                        name: 'Job Card No',
+                        id: 'jobCardNo',
+                        type: 'select',
+                        options: {},
+                        required: true,
+                        action: 'changeMapping',
+                        updateData: ['partNo']
+                    }, {
+                        name: 'Part No',
+                        id: 'partNo',
+                        type: 'select',
+                        options: {},
+                        required: true
+                    }, {
+                        name: 'Operation From',
+                        id: 'operationFrom',
+                        type: 'select',
+                        options: {},
+                        required: true
+                    }, {
+                        name: 'Operation To',
+                        id: 'operationTo',
+                        type: 'select',
+                        options: {},
+                        required: true
+                    }, {
+                        name: 'Tool No',
+                        id: 'toolNo',
+                        type: 'select',
+                        options: {},
+                        required: true
+                    }, {
+                        name: 'Operator',
+                        id: 'Operator',
+                        type: 'select',
+                        options: {},
+                        required: true
+                    },{
+                        name: 'Start Time',
+                        id: 'startTime',
+                        type: 'input',
+                        inputType: 'date',
+                        required: true
+                    },{
+                        name: 'End Time',
+                        id: 'endTime',
+                        type: 'input',
+                        inputType: 'date',
+                        required: true
+                    }, {
+                        name: 'Plan Qty',
+                        id: 'planQty',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Accepted Qty',
+                        id: 'acceptedQty',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'Rejection Qty',
+                        id: 'rejectionQty',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }, {
+                        name: 'RM Qty',
+                        id: 'rmQty',
+                        type: 'input',
+                        inputType: 'text',
+                        required: true
+                    }]
+                },
+                listView: [{
+                        title: 'Date',
+                        value: 'date'
+                    },
+                    {
+                        title: 'M/C No',
+                        value: 'mcNo'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'production/productionEntry/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'productionEntryCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/productionEntry/data',
                         method: 'GET'
                     }
                 }
