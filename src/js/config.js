@@ -264,7 +264,8 @@ erpApp.constant('erpAppConfig', {
                     fields: [{
                         name: 'Customer Code',
                         id: 'customerCode',
-                        type: 'span'
+                        type: 'span',
+                        valuePrefix: 'VT-'
                     }, {
                         name: 'Customer Name',
                         id: 'customerName',
@@ -319,7 +320,8 @@ erpApp.constant('erpAppConfig', {
                 },
                 listView: [{
                         title: 'Customer Code',
-                        value: 'customerCode'
+                        value: 'customerCode',
+                        valuePrefix: 'VT-'
                     },
                     {
                         title: 'Customer Name',
@@ -470,12 +472,12 @@ erpApp.constant('erpAppConfig', {
                 form: {
                     name: 'uomMaster',
                     id: 'uomMaster',
+                    autoGenKey: 'uomCode',
                     fields: [{
                         name: 'UOM Code',
                         id: 'uomCode',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
+                        type: 'span',
+                        valuePrefix: 'VT-'
                     }, {
                         name: 'UOM Name',
                         id: 'uomName',
@@ -486,7 +488,8 @@ erpApp.constant('erpAppConfig', {
                 },
                 listView: [{
                         title: 'UOM Code',
-                        value: 'uomCode'
+                        value: 'uomCode',
+                        valuePrefix: 'VT-'
                     },
                     {
                         title: 'UOM Name',
@@ -802,9 +805,8 @@ erpApp.constant('erpAppConfig', {
                     contactNo: '',
                     gstin: '',
                     mapping: [{
-                        id: '',
+                        id: null,
                         rmCode: '',
-                        rmName: '',
                         rate: '',
                         gst: ''
                     }]
@@ -846,16 +848,11 @@ erpApp.constant('erpAppConfig', {
                     mapping: {
                         name: 'RM Mapping',
                         fields: [{
-                                name: 'RM Code',
+                                name: 'RM Name',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping'
-                            },
-                            {
-                                name: 'Rm Name',
-                                id: 'rmName',
-                                type: 'span'
                             },
                             {
                                 name: 'Rate',
@@ -909,7 +906,6 @@ erpApp.constant('erpAppConfig', {
                     gstin: '',
                     mapping: [{
                         id: null,
-                        rmName: '',
                         qty: '',
                         uom: '',
                         rate: '',
@@ -939,7 +935,9 @@ erpApp.constant('erpAppConfig', {
                         id: 'supplierCode',
                         type: 'select',
                         options: {},
-                        action: 'changeMapping'
+                        action: 'changeMapping',
+                        updateMapping: true,
+                        updateData: ['gstin', 'mapping']
                     }, {
                         name: 'Party Gstin',
                         id: 'gstin',
@@ -948,16 +946,11 @@ erpApp.constant('erpAppConfig', {
                     mapping: {
                         name: 'RM Mapping',
                         fields: [{
-                                name: 'RM Code',
+                                name: 'RM Name',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping'
-                            },
-                            {
-                                name: 'RM Name',
-                                id: 'rmName',
-                                type: 'span'
                             },
                             {
                                 name: 'Qty',
@@ -1011,7 +1004,9 @@ erpApp.constant('erpAppConfig', {
                         valuePrefix: 'VT-SP-'
                     },
                     {
-                        action: true
+                        action: true,
+                        printView: true,
+                        edit: false
                     }
                 ],
                 page: {
@@ -1370,13 +1365,12 @@ erpApp.constant('erpAppConfig', {
                     grnNo: '',
                     date: '',
                     supplierCode: '',
-                    supplierDCNo: '',
+                    poNo: '',
+                    supplierDCCode: '',
                     supplierDCDate: '',
                     mapping: [{
                         id: null,
-                        rmCode: '',
-                        rmName: '',
-                        poQty: '',
+                        qty: '',
                         uom: '',
                         receivedQty: '',
                         acceptedQty: '',
@@ -1391,55 +1385,58 @@ erpApp.constant('erpAppConfig', {
                     id: 'grnSupplier',
                     autoGenKey: 'grnNo',
                     fields: [{
-                        name: 'GRN No',
-                        id: 'grnNo',
-                        type: 'span'
-                    }, {
-                        name: 'Date',
-                        id: 'date',
-                        type: 'input',
-                        inputType: 'date',
-                        required: true
-                    }, {
-                        name: 'Supplier Code',
-                        id: 'supplierCode',
-                        type: 'select',
-                        options: {}
-                    }, {
-                        name: 'Supplier DC Code',
-                        id: 'supplierDCCode',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Supplier DC Date',
-                        id: 'supplierDCDate',
-                        type: 'input',
-                        inputType: 'date',
-                        required: true
-                    }],
+                            name: 'GRN No',
+                            id: 'grnNo',
+                            type: 'span',
+                            valuePrefix: 'VT-GRN-'
+                        }, {
+                            name: 'Date',
+                            id: 'date',
+                            type: 'input',
+                            inputType: 'date',
+                            required: true
+                        }, {
+                            name: 'Supplier Code',
+                            id: 'supplierCode',
+                            type: 'select',
+                            options: {},
+                            action: 'getPOSupplier'
+                        },
+                        {
+                            name: 'PO No',
+                            id: 'poNo',
+                            type: 'select',
+                            options: {},
+                            action: 'changeMapping',
+                            updateMapping: true,
+                            updateData: ['mapping']
+                        },
+                        {
+                            name: 'Supplier DC Code',
+                            id: 'supplierDCCode',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        }, {
+                            name: 'Supplier DC Date',
+                            id: 'supplierDCDate',
+                            type: 'input',
+                            inputType: 'date',
+                            required: true
+                        }
+                    ],
                     mapping: {
                         name: 'Detail Mapping',
                         fields: [{
-                                name: 'PO No',
+                                name: 'RM Name',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping'
                             },
                             {
-                                name: 'RM Code',
-                                id: 'rmCode',
-                                type: 'span'
-                            },
-                            {
-                                name: 'RM Name',
-                                id: 'rmName',
-                                type: 'span'
-                            },
-                            {
                                 name: 'PO Qty',
-                                id: 'poQty',
+                                id: 'qty',
                                 type: 'span'
                             },
                             {
@@ -1450,12 +1447,16 @@ erpApp.constant('erpAppConfig', {
                             {
                                 name: 'Received Qty',
                                 id: 'receivedQty',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                required: true
                             },
                             {
                                 name: 'Accepted Qty',
                                 id: 'acceptedQty',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                required: true
                             },
                             {
                                 name: 'Rate',
@@ -1468,11 +1469,6 @@ erpApp.constant('erpAppConfig', {
                                 type: 'span'
                             },
                             {
-                                name: 'Cost',
-                                id: 'cost',
-                                type: 'span'
-                            },
-                            {
                                 name: 'total',
                                 id: 'total',
                                 type: 'span'
@@ -1482,14 +1478,17 @@ erpApp.constant('erpAppConfig', {
                 },
                 listView: [{
                         title: 'GRN NO',
-                        value: 'grnNo'
+                        value: 'grnNo',
+                        valuePrefix: 'VT-GRN-'
                     },
                     {
                         title: 'Supplier DC Code',
                         value: 'supplierDCCode'
                     },
                     {
-                        action: true
+                        action: true,
+                        printView: true,
+                        edit: false
                     }
                 ],
                 page: {
@@ -2270,13 +2269,13 @@ erpApp.constant('erpAppConfig', {
                         type: 'select',
                         options: {},
                         required: true
-                    },{
+                    }, {
                         name: 'Start Time',
                         id: 'startTime',
                         type: 'input',
                         inputType: 'date',
                         required: true
-                    },{
+                    }, {
                         name: 'End Time',
                         id: 'endTime',
                         type: 'input',
@@ -2329,6 +2328,44 @@ erpApp.constant('erpAppConfig', {
                 services: {
                     list: {
                         url: 'api/productionEntry/data',
+                        method: 'GET'
+                    }
+                }
+            }
+        },
+        report: {
+            name: 'Report',
+            title: 'Report',
+            icon: 'cogs',
+            rmStock: {
+                title: 'Raw Material Stock',
+                data: {
+                    opNo: '',
+                    opName: '',
+                    source: ''
+                },
+                form: {},
+                listView: [{
+                        title: 'Raw Material Name',
+                        value: 'id'
+                    },
+                    {
+                        title: 'Rm Stock Qty',
+                        value: 'rmStockQty'
+                    },
+                    {
+                        action: false
+                    }
+                ],
+                page: {
+                    link: 'report/rmStock/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultController.html',
+                    controller: 'rmStockCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/rmStock/data',
                         method: 'GET'
                     }
                 }

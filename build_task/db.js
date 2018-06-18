@@ -18,19 +18,22 @@ module.exports = function(gulp, config, task) {
         inputData = JSON.parse(inputData);
         if (!inputData.id && !inputData.delete) {
             lastData = db.getData('/tables' + dataPath);
-            lastData = lastData && lastData[lastData.length - 1];
+            lastData = lastData && lastData[Object.keys(lastData)[Object.keys(lastData).length-1]];
             newId = lastData && lastData.id && parseInt(lastData.id) + 1 || 1;
             inputData['id'] = newId;
-            dataPath = dataPath + '[]';
+            inputData['added'] = new Date();
+            dataPath = dataPath + '/'+ newId;
         }
         try {
             if (inputData.delete) {
-                db.delete('/tables' + dataPath + '[' + inputData.key + ']');
+                db.delete('/tables' + dataPath + '/' + inputData.key);
                 data = {
                     status: 'success',
                     data: 'Success'
                 };
             } else {
+                inputData['updated'] = new Date();
+                console.log('/tables' + dataPath);
                 db.push('/tables' + dataPath, inputData, true);
                 data = db.getData('/tables' + dataPath);
             }

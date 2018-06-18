@@ -8,6 +8,23 @@
     </ol>
     <!-- Example DataTables Card-->
     <div class="mb-3">
-        My Dashboard
+        <h3>{{context.title}}</h3>
+        <ul class="navbar-nav">
+            <li ng-repeat="(key, module) in modules">
+                <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
+                    <i class="fa fa-fw fa-{{module.icon}}"></i>
+                    <span class="nav-link-text">{{module.title}}</span>
+                  </a>
+                <a ng-if="!module.page" class="nav-link">
+                    <i class="fa fa-fw fa-{{module.icon}}"></i>
+                    <span class="nav-link-text">{{module.title}}</span>
+                  </a>
+                <ul ng-if="showSubModule(module)">
+                    <li ng-repeat="subModule in subModules">
+                        <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
 </div>

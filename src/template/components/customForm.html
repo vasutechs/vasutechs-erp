@@ -1,6 +1,6 @@
 <div>
     <form id="{{context.form.id}}" name="customForm" novalidate>
-        <div class="form-group row" ng-switch="field.type" ng-repeat="field in context.form.fields">
+        <div class="form-group row" ng-switch="field.type" ng-repeat="field in context.form.fields" ng-if="!context.page.printView">
             <label ng-switch-when="span" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="span" class="col-10">
                 <span id="{{field.id}}">{{field.valuePrefix}}{{context.data[field.id]}}</span>
@@ -11,7 +11,7 @@
             </div>
             <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="select" class="col-6">
-                <select id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context.data, context.data[field.id], field)" ng-options="option.optionId as option.optionName for option in field.options">
+                <select id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, context.data, context.data[field.id], field)" ng-options="option.optionId as option.optionName for option in field.options">
                     <option value="">--Select--</option>
                 </select>
             </div>
@@ -19,12 +19,18 @@
                 <span style="color:red" ng-show="customForm[field.id].$invalid">*Required</span>
             </div>
         </div>
+        <div class="form-group row" ng-repeat="field in context.form.fields" ng-if="context.page.printView">
+            <label for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
+            <div class="col-10">
+                <span id="{{field.id}}">{{field.valuePrefix}}{{context.data[field.id]}}</span>
+            </div>
+        </div>
         <div class="form-group row" ng-if="context.form.mapping">
             <div class="col-12">
                 <mapping-form></mapping-form>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" ng-if="!context.page.printView">
             <div class="col-2">
             </div>
             <div class="col-10">
