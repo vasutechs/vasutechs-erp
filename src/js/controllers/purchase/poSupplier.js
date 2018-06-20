@@ -2,8 +2,8 @@ erpApp.controller('poSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 'se
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         updateOptionFields: function(context, erpAppConfig) {
             //Get Part master data
-            context.actions.makeOptionsFields(erpAppConfig.modules.purchase.supplierMaster.services.list, $scope.context.form.fields[2].options, 'supplierName');
-            context.actions.makeOptionsFields(erpAppConfig.modules.purchase.rmMaster.services.list, $scope.context.form.mapping.fields[0].options, 'rmName');
+            context.actions.makeOptionsFields(context.form.fields[2]);
+            context.actions.makeOptionsFields(context.form.mapping.fields[0]);
         },
         updateRmTotal: function(data, updateValue) {
             var total = 0,

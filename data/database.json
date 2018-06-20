@@ -455,7 +455,26 @@
                     }
                 ]
             },
-            "data": {}
+            "data": {
+                "1": {
+                    "subContractorCode": 1,
+                    "subContractorName": "Shree Sakthi Plating",
+                    "address": "sdasd",
+                    "contactNo": 13132213,
+                    "gstin": 23123,
+                    "mapping": [
+                        {
+                            "id": 1,
+                            "opCode": 1,
+                            "rate": 13,
+                            "gst": 18
+                        }
+                    ],
+                    "id": 1,
+                    "added": "2018-06-18T13:39:07.704Z",
+                    "updated": "2018-06-18T13:39:07.704Z"
+                }
+            }
         },
         "poSubContractor": {
             "name": "poSubContractor",
@@ -479,7 +498,31 @@
                     }
                 ]
             },
-            "data": {}
+            "data": {
+                "1": {
+                    "poNo": 1,
+                    "date": "2018-06-18T04:00:00.000Z",
+                    "subContractorCode": 1,
+                    "gstin": 23123,
+                    "mapping": [
+                        {
+                            "id": 1,
+                            "oppCode": null,
+                            "qty": "10",
+                            "uom": 1,
+                            "rate": 13,
+                            "gst": 18,
+                            "cgst": 9,
+                            "sgst": 9,
+                            "total": "176.80",
+                            "opCode": 1
+                        }
+                    ],
+                    "id": 1,
+                    "added": "2018-06-18T13:40:04.430Z",
+                    "updated": "2018-06-18T13:40:04.430Z"
+                }
+            }
         },
         "grnSupplier": {
             "name": "grnSupplier",
@@ -659,11 +702,68 @@
         "operationMaster": {
             "name": "operationMaster",
             "fields": {
-                "opNo": "",
+                "opCode": "",
                 "opName": "",
                 "source": ""
             },
-            "data": {}
+            "data": {
+                "1": {
+                    "opCode": "10",
+                    "opName": "Raw Material",
+                    "source": "Supplier",
+                    "id": 1,
+                    "added": "2018-06-18T12:58:57.031Z",
+                    "updated": "2018-06-18T12:58:57.031Z"
+                },
+                "2": {
+                    "opCode": "20",
+                    "opName": "Cropping",
+                    "source": "In-house",
+                    "id": 2,
+                    "added": "2018-06-19T13:07:34.994Z",
+                    "updated": "2018-06-19T13:07:34.994Z"
+                },
+                "3": {
+                    "opCode": "30",
+                    "opName": "W Forming",
+                    "source": "In-house",
+                    "id": 3,
+                    "added": "2018-06-19T13:08:50.347Z",
+                    "updated": "2018-06-19T13:08:50.347Z"
+                },
+                "4": {
+                    "opCode": "40",
+                    "opName": "V Bending",
+                    "source": "In-house",
+                    "id": 4,
+                    "added": "2018-06-19T13:09:13.684Z",
+                    "updated": "2018-06-19T13:09:13.684Z"
+                },
+                "5": {
+                    "opCode": "50",
+                    "opName": "O forming",
+                    "source": "In-house",
+                    "id": 5,
+                    "added": "2018-06-19T13:09:33.733Z",
+                    "updated": "2018-06-19T13:09:33.733Z"
+                },
+                "6": {
+                    "opCode": "60",
+                    "opName": "Plating",
+                    "source": "Sub-Contractor",
+                    "id": 6,
+                    "added": "2018-06-19T13:10:03.541Z",
+                    "updated": "2018-06-19T13:10:03.541Z"
+                },
+                "7": {
+                    "opCode": "70",
+                    "opName": "Packing",
+                    "source": "In-house",
+                    "id": 7,
+                    "added": "2018-06-19T13:10:17.370Z",
+                    "updated": "2018-06-19T13:10:17.370Z"
+                }
+            }
         },
         "bom": {
             "name": "bom",
@@ -672,7 +772,16 @@
                 "rmCode": "",
                 "partNorms": ""
             },
-            "data": {}
+            "data": {
+                "1": {
+                    "partNo": 1,
+                    "rmCode": 1,
+                    "partNorms": "0.100",
+                    "id": 1,
+                    "added": "2018-06-19T13:11:09.849Z",
+                    "updated": "2018-06-19T13:50:47.635Z"
+                }
+            }
         },
         "machineMaster": {
             "name": "machineMaster",
@@ -713,15 +822,46 @@
             },
             "data": {
                 "1": {
-                    "partNo": "4” SWR",
+                    "partNo": 1,
                     "mapping": [
                         {
                             "id": 1,
                             "opName": "Raw Material",
                             "source": "Supplier"
+                        },
+                        {
+                            "id": 2,
+                            "opName": "Cropping",
+                            "source": "In-house"
+                        },
+                        {
+                            "id": 3,
+                            "opName": "W Forming",
+                            "source": "In-house"
+                        },
+                        {
+                            "id": 4,
+                            "opName": "V Bending",
+                            "source": "In-house"
+                        },
+                        {
+                            "id": 5,
+                            "opName": "O forming",
+                            "source": "In-house"
+                        },
+                        {
+                            "id": 6,
+                            "opName": "Plating",
+                            "source": "Sub-Contractor"
+                        },
+                        {
+                            "id": 7,
+                            "opName": "Packing",
+                            "source": "In-house"
                         }
                     ],
-                    "id": 1
+                    "id": 1,
+                    "updated": "2018-06-19T13:25:40.528Z"
                 }
             }
         },
@@ -747,6 +887,42 @@
                     "value": "15000",
                     "id": 1,
                     "yop": "2015"
+                },
+                "2": {
+                    "toolNo": 2,
+                    "partName": "4”SWR W forming",
+                    "make": "Crescent",
+                    "type": "Pillar set",
+                    "toolLife": "100000",
+                    "yop": "2015",
+                    "value": "5000",
+                    "id": 2,
+                    "added": "2018-06-19T13:42:01.589Z",
+                    "updated": "2018-06-19T13:42:01.589Z"
+                },
+                "3": {
+                    "toolNo": 3,
+                    "partName": "V Bending Tool",
+                    "make": "Renganathan",
+                    "type": "open",
+                    "toolLife": "100000",
+                    "yop": "2018",
+                    "value": "6000",
+                    "id": 3,
+                    "added": "2018-06-19T13:42:53.641Z",
+                    "updated": "2018-06-19T13:42:53.641Z"
+                },
+                "4": {
+                    "toolNo": 4,
+                    "partName": "4”SWR O forming",
+                    "make": "Crescent",
+                    "type": "Pillar set",
+                    "toolLife": "100000",
+                    "yop": "2015",
+                    "value": "15000",
+                    "id": 4,
+                    "added": "2018-06-19T13:43:34.641Z",
+                    "updated": "2018-06-19T13:43:34.641Z"
                 }
             }
         },

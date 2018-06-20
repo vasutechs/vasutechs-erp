@@ -3,6 +3,6 @@ erpApp.controller('dcSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact'
 
     $scope.context = erpAppConfig.modules.store.dcSubContractor;
     $scope.context.actions = actions;
-    //$scope.context.actions.makeOptionsFields(erpAppConfig.modules.marketing.partMaster.services.list, $scope.context.form.mapping.fields[0].options, 'partName');
+    $scope.context.actions.makeOptionsFields($scope.context.form.mapping.fields[0]);
     $scope.context.actions.list($scope.context);
 }]);

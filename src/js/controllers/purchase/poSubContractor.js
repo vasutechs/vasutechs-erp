@@ -1,16 +1,40 @@
-erpApp.controller('poSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact', function(erpAppConfig, $scope, commonFact) {
+erpApp.controller('poSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         updateOptionFields: function(context, erpAppConfig) {
             //Get Part master data
-            context.actions.makeOptionsFields(erpAppConfig.modules.purchase.subContractorMaster.services.list, $scope.context.form.fields[2].options, 'subContractorName');
-            $scope.context.actions.makeOptionsFields(erpAppConfig.modules.marketing.partMaster.services.list, $scope.context.form.mapping.fields[0].options, 'partName');
+            context.actions.makeOptionsFields(context.form.fields[2]);
+            context.actions.makeOptionsFields(context.form.mapping.fields[0]);
+            context.actions.makeOptionsFields(context.form.mapping.fields[1]);
         },
-        updateRmTotal: function(data, updateValue) {
+        updatePartTotal: function(data, updateValue) {
             var total = 0,
                 totalBeforTax = 0;
             totalBeforTax = updateValue * data.rate;
             total = totalBeforTax + (totalBeforTax * (data.gst / 100)) + (totalBeforTax * (data.cgst / 100)) + (totalBeforTax * (data.sgst / 100))
             data.total = parseFloat(total).toFixed(2);
+        },
+        updatePartDetails: function(mapping) {
+            var serviceconf = {
+                url: erpAppConfig.modules.marketing.partMaster.services.list.url + "/" + mapping.id,
+                method: 'GET'
+            };
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                var partData = res.data;
+                for (var mapKey in partData) {
+                    if (mapping[mapKey] === null || mapping[mapKey] === '') {
+                        mapping[mapKey] = partData[mapKey];
+                    }
+                }
+            });
+        },
+        callBackChangeMapping: function(data, key, field) {
+            for (var key in data.mapping) {
+                this.updatePartDetails(data.mapping[key]);
+            }
+        },
+        callBackEdit: function(context, key){
+            context.actions.displayViewDataVal(erpAppConfig.modules.purchase.subContractorMaster.services.list, context.data, 'subContractorCode', 'subContractorName');
+            context.actions.displayViewDataVal(erpAppConfig.modules.purchase.partMaster.services.list, context.data.mapping, 'id', 'partName', true);
         }
     });
 

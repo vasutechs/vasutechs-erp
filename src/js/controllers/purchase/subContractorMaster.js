@@ -2,7 +2,8 @@ erpApp.controller('subContractorMasterCtrl', ['erpAppConfig', '$scope', 'commonF
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         updateOptionFields: function(context, erpAppConfig) {
             //Get Part master data
-            $scope.context.actions.makeOptionsFields(erpAppConfig.modules.marketing.partMaster.services.list, $scope.context.form.mapping.fields[0].options, 'partName');
+            context.actions.makeOptionsFields(context.form.mapping.fields[0]);
+            context.actions.makeOptionsFields(context.form.mapping.fields[1]);
         }
     });
 

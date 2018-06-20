@@ -1,8 +1,13 @@
 erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         getPOSupplier: function(context, data, key, field) {
-        	context.form.fields[3].options = {};
-            context.actions.makeOptionsFields(erpAppConfig.modules.purchase.poSupplier.services.list, context.form.fields[3].options, 'poNo', null, { supplierCode: key });
+            context.form.fields[3] = angular.extend(context.form.fields[3], {
+                options: {},
+                dataFrom: 'purchase.poSupplier',
+                optionFieldName: 'poNo',
+                filter: { supplierCode: key }
+            });
+            context.actions.makeOptionsFields(context.form.fields[3]);
         },
         callBackEdit: function(context, key) {
             context.data['supplierDCDate'] = context.actions.dateFormatChange(context.data['supplierDCDate']);
@@ -38,7 +43,7 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
     });
     $scope.context = erpAppConfig.modules.store.grnSupplier;
     $scope.context.actions = actions;
-    $scope.context.actions.makeOptionsFields(erpAppConfig.modules.purchase.supplierMaster.services.list, $scope.context.form.fields[2].options, 'supplierName');
-    $scope.context.actions.makeOptionsFields(erpAppConfig.modules.purchase.rmMaster.services.list, $scope.context.form.mapping.fields[0].options, 'rmName');
+    $scope.context.actions.makeOptionsFields($scope.context.form.fields[2]);
+    $scope.context.actions.makeOptionsFields($scope.context.form.mapping.fields[0]);
     $scope.context.actions.list($scope.context);
 }]);

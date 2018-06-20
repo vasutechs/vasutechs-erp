@@ -2,8 +2,8 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         updateOptionFields: function(context, erpAppConfig) {
             //Get Part master data
-            $scope.context.actions.makeOptionsFields(erpAppConfig.modules.marketing.partMaster.services.list, context.form.fields[3].options, 'partName');
-            $scope.context.actions.makeOptionsFields(erpAppConfig.modules.purchase.rmMaster.services.list, context.form.fields[2].options, 'rmName');
+            $scope.context.actions.makeOptionsFields(context.form.fields[3]);
+            $scope.context.actions.makeOptionsFields(context.form.fields[2]);
         }
     });
     $scope.context = erpAppConfig.modules.production.materialIssueNote;

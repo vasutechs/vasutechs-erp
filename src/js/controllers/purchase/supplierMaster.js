@@ -3,6 +3,6 @@ erpApp.controller('supplierMasterCtrl', ['erpAppConfig', '$scope', 'commonFact',
 
     $scope.context = erpAppConfig.modules.purchase.supplierMaster;
     $scope.context.actions = actions;
-    $scope.context.actions.makeOptionsFields(erpAppConfig.modules.purchase.rmMaster.services.list, $scope.context.form.mapping.fields[0].options, 'rmName');
+    $scope.context.actions.makeOptionsFields($scope.context.form.mapping.fields[0]);
     $scope.context.actions.list($scope.context);
 }]);

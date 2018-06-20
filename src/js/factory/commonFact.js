@@ -1,16 +1,8 @@
-erpApp.factory('commonFact', ['serviceApi', '$location', function(serviceApi, $location) {
+erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', function(erpAppConfig, serviceApi, $location) {
     var defaultActions = {
         add: function(context) {
             context.page.name = 'add';
-            for (var key in context.data) {
-                if (context.data[key] !== null && typeof(context.data[key]) === 'object') {
-
-                } else if (key === 'date') {
-                    context.data[key] = new Date();
-                } else {
-                    context.data[key] = null;
-                }
-            }
+            context.data = angular.copy(context.masterData);
             if (context.form.autoGenKey) {
                 context.actions.setAutoGenKey(context);
             }
@@ -66,12 +58,12 @@ erpApp.factory('commonFact', ['serviceApi', '$location', function(serviceApi, $l
         cancel: function(context) {
             context.page.name = 'list';
         },
-        displayViewDataVal: function(serviceConf, data, dataKey, replaceDataKey, isMapping) {
+        displayViewDataVal: function(serviceConf, data, dataKey, replaceDataKey, isList) {
             var list;
             //Get Part master data
             serviceApi.callServiceApi(serviceConf).then(function(res) {
                 list = res.data;
-                if (isMapping) {
+                if (isList) {
                     for (var i in data) {
                         data[i][dataKey] = list[data[i][dataKey]][replaceDataKey];
                     }
@@ -80,19 +72,22 @@ erpApp.factory('commonFact', ['serviceApi', '$location', function(serviceApi, $l
                 }
             });
         },
-        makeOptionsFields: function(serviceConf, options, optionName, optionId, filter) {
-            var list;
+        makeOptionsFields: function(field) {
+            var list,
+            serviceConf = eval('erpAppConfig.modules.' + field.dataFrom + '.services.list');
             //Get Part master data
             serviceApi.callServiceApi(serviceConf).then(function(res) {
                 list = res.data;
                 for (var i in list) {
-                    if (filter === undefined || filter[Object.keys(filter)[0]] === list[i][Object.keys(filter)[0]]) {
-                        options[list[i].id] = list[i];
-                        options[list[i].id]['optionName'] = list[i][optionName];
-                        options[list[i].id]['optionId'] = optionId && list[i][optionId] || list[i]['id'];
+                    if (field.filter === undefined || field.filter[Object.keys(field.filter)[0]] === list[i][Object.keys(field.filter)[0]]) {
+                        field.options[list[i].id] = list[i];
+                        field.options[list[i].id]['optionName'] = field.optionFieldNamePrefix && field.optionFieldNamePrefix || '';
+                        field.options[list[i].id]['optionName'] += list[i][field.optionFieldName];
+                        field.options[list[i].id]['optionId'] = field.optionId && list[i][field.optionFieldId] || list[i]['id'];
                     }
                 }
             });
+            return true;
         },
         addMapping: function(mapping) {
             var newMapping = angular.extend({}, mapping[0]);
@@ -108,7 +103,7 @@ erpApp.factory('commonFact', ['serviceApi', '$location', function(serviceApi, $l
             for (var mapKey in data) {
                 if ( (field.updateData && field.updateData.indexOf(mapKey) >= 0) || field.updateData === undefined) {
                     if (key === null) {
-                        data[mapKey] = null;
+                        data[mapKey] = context.masterData[mapKey];
                     } else if(field.options[key][mapKey]){
                         if (typeof(field.options[key][mapKey]) !== 'object') {
                             data[mapKey] = field.options[key][mapKey];

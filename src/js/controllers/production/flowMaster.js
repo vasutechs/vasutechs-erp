@@ -2,8 +2,11 @@ erpApp.controller('flowMasterCtrl', ['erpAppConfig', '$scope', 'commonFact', fun
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         updateOptionFields: function(context, erpAppConfig) {
             //Get Part master data
-            $scope.context.actions.makeOptionsFields(erpAppConfig.modules.marketing.partMaster.services.list, context.form.fields[0].options, 'partName', 'partNo');
-            $scope.context.actions.makeOptionsFields(erpAppConfig.modules.production.operationMaster.services.list, context.form.mapping.fields[0].options, 'opName');
+            context.actions.makeOptionsFields(context.form.fields[0]);
+            context.actions.makeOptionsFields(context.form.mapping.fields[0]);
+        },
+        callBackList: function(context){
+            context.actions.displayViewDataVal(erpAppConfig.modules.marketing.partMaster.services.list, context.listViewData, 'partNo', 'partName', true);
         }
     });
     $scope.context = erpAppConfig.modules.production.flowMaster;

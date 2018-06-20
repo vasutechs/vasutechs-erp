@@ -33,7 +33,6 @@ module.exports = function(gulp, config, task) {
                 };
             } else {
                 inputData['updated'] = new Date();
-                console.log('/tables' + dataPath);
                 db.push('/tables' + dataPath, inputData, true);
                 data = db.getData('/tables' + dataPath);
             }
