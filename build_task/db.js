@@ -14,30 +14,26 @@ module.exports = function(gulp, config, task) {
 
     var setTableData = function(dataPath, inputData) {
         var lastData,
-            dataKeys,
-            newId,
-            dataObject = {};
+            newId;
         inputData = JSON.parse(inputData);
-        if (!inputData.id) {
-            dataKeys = Object.keys(db.getData('/tables' + dataPath));
-            lastData = dataKeys[dataKeys.length - 1];
-            newId = lastData > 0 && parseInt(lastData) + 1 || 1;
+        if (!inputData.id && !inputData.delete) {
+            lastData = db.getData('/tables' + dataPath);
+            lastData = lastData && lastData[Object.keys(lastData)[Object.keys(lastData).length-1]];
+            newId = lastData && lastData.id && parseInt(lastData.id) + 1 || 1;
             inputData['id'] = newId;
-            dataObject[newId] = inputData;
-        } else {
-            dataObject = inputData;
-            dataPath = dataPath + '/' + inputData.id;
-            db.delete('/tables' + dataPath);
+            inputData['added'] = new Date();
+            dataPath = dataPath + '/'+ newId;
         }
         try {
             if (inputData.delete) {
-                db.delete('/tables' + dataPath);
+                db.delete('/tables' + dataPath + '/' + inputData.key);
                 data = {
                     status: 'success',
                     data: 'Success'
                 };
             } else {
-                db.push('/tables' + dataPath, dataObject, false);
+                inputData['updated'] = new Date();
+                db.push('/tables' + dataPath, inputData, true);
                 data = db.getData('/tables' + dataPath);
             }
 
@@ -63,7 +59,7 @@ module.exports = function(gulp, config, task) {
                 });
 
                 req.on('end', function(data) {
-                    data = req.method === 'GET' ? getTableData(apiPath[1]) : setTableData(apiPath[1], inputData);
+                    data = apiPath[1] === '/download' ? db.getData('/') : req.method === 'POST' ? setTableData(apiPath[1], inputData) : getTableData(apiPath[1]);
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify(data));
                 });
