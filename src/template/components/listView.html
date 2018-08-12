@@ -15,11 +15,11 @@
                     <div ng-if="list.action" class="row">
                         <div class="col" ng-if="list.printView"><a href="javascript: void(0);" ng-click="context.actions.edit(context, dataKey, true)" class="fa fa-fw fa-print
 ">PrintView</a></div>
-                        <div class="col" ng-if="list.printView"> | </div>
+                        <div class="col-2" ng-if="list.printView"> | </div>
 
                         <div class="col" ng-if="list.edit===undefined || list.edit!=false"><a href="javascript: void(0);" ng-click="context.actions.edit(context, dataKey)" class="fa fa-fw fa-edit
 ">Edit</a></div>
-                        <div class="col" ng-if="list.edit===undefined || list.edit!=false"> | </div>
+                        <div class="col-2" ng-if="list.edit===undefined || list.edit!=false"> | </div>
                         <div class="col"><a href="javascript: void(0);" ng-click="context.actions.delete(context, dataKey)" class="fa fa-fw fa-times
 ">Delete</a></div>
                     </div>

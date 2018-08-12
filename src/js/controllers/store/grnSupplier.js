@@ -2,17 +2,24 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         getPOSupplier: function(context, data, key, field) {
             context.form.fields[3] = angular.extend(context.form.fields[3], {
-                options: {},
                 dataFrom: 'purchase.poSupplier',
                 optionFieldName: 'poNo',
-                filter: { supplierCode: key }
+                filter: { 
+                    supplierCode: key,
+                    status: 0 
+                }
             });
             context.actions.makeOptionsFields(context.form.fields[3]);
         },
+        updateRmTotal: function(data, updateValue) {
+            var total = 0,
+                totalBeforTax = 0;
+            totalBeforTax = updateValue * data.rate;
+            total = totalBeforTax + (totalBeforTax * (data.gst / 100)) + (totalBeforTax * (data.cgst / 100)) + (totalBeforTax * (data.sgst / 100))
+            data.total = parseFloat(total).toFixed(2);
+        },
         callBackEdit: function(context, key) {
             context.data['supplierDCDate'] = context.actions.dateFormatChange(context.data['supplierDCDate']);
-            context.actions.displayViewDataVal(erpAppConfig.modules.purchase.supplierMaster.services.list, context.data, 'supplierCode', 'supplierName');
-            context.actions.displayViewDataVal(erpAppConfig.modules.purchase.rmMaster.services.list, context.data.mapping, 'id', 'rmName', true);
         },
         updateRMStockQty: function(context) {
             var serviceconf = {
@@ -20,30 +27,42 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
                 method: 'GET'
             };
             serviceApi.callServiceApi(serviceconf).then(function(res) {
-                var rmStockData = res.data;
+                var rmStockData = res.data,
+                    rmStock = {};
+                for (var i in rmStockData) {
+                    rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
+                }
 
                 for (var i in context.data.mapping) {
-                    var rmStockQty = rmStockData[context.data.mapping[i].id] && parseInt(rmStockData[context.data.mapping[i].id].rmStockQty) + parseInt(context.data.mapping[i].qty) || parseInt(context.data.mapping[i].qty);
+                    var existingStock = rmStock[context.data.mapping[i].id];
+                    var rmStockQty = existingStock && parseInt(existingStock.rmStockQty) + parseInt(context.data.mapping[i].qty) || parseInt(context.data.mapping[i].qty);
                     var data = {
-                        id: context.data.mapping[i].id,
-                        rmStockQty: rmStockQty
+                        id: existingStock && existingStock.id || undefined,
+                        rmCode: context.data.mapping[i].id,
+                        rmStockQty: rmStockQty,
+                        uomCode: context.data.mapping[i].uomCode
                     }
                     serviceconf = {
-                        url: 'api/rmStock/data/' + context.data.mapping[i].id,
+                        url: existingStock ? 'api/rmStock/data/' + existingStock.id : 'api/rmStock/data',
                         method: 'POST'
                     }
-                    console.log(data);
                     serviceApi.callServiceApi(serviceconf, data);
                 }
             });
         },
+        updatePoSupplier: function(context) {
+            context.actions.getData('purchase.poSupplier', context.data.poNo).then(function(res) {
+                var poSupplierData = res.data;
+                poSupplierData.status = 1;
+                context.actions.updateData('purchase.poSupplier', poSupplierData, context.data.poNo);
+            });
+        },
         callBackSubmit: function(context) {
             context.actions.updateRMStockQty(context);
+            context.actions.updatePoSupplier(context);
         }
     });
     $scope.context = erpAppConfig.modules.store.grnSupplier;
     $scope.context.actions = actions;
-    $scope.context.actions.makeOptionsFields($scope.context.form.fields[2]);
-    $scope.context.actions.makeOptionsFields($scope.context.form.mapping.fields[0]);
     $scope.context.actions.list($scope.context);
 }]);
