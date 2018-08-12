@@ -1,11 +1,5 @@
 erpApp.controller('poSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
-        updateOptionFields: function(context, erpAppConfig) {
-            //Get Part master data
-            context.actions.makeOptionsFields(context.form.fields[2]);
-            context.actions.makeOptionsFields(context.form.mapping.fields[0]);
-            context.actions.makeOptionsFields(context.form.mapping.fields[1]);
-        },
         updatePartTotal: function(data, updateValue) {
             var total = 0,
                 totalBeforTax = 0;
@@ -31,16 +25,11 @@ erpApp.controller('poSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact'
             for (var key in data.mapping) {
                 this.updatePartDetails(data.mapping[key]);
             }
-        },
-        callBackEdit: function(context, key){
-            context.actions.displayViewDataVal(erpAppConfig.modules.purchase.subContractorMaster.services.list, context.data, 'subContractorCode', 'subContractorName');
-            context.actions.displayViewDataVal(erpAppConfig.modules.purchase.partMaster.services.list, context.data.mapping, 'id', 'partName', true);
         }
     });
 
     $scope.context = erpAppConfig.modules.purchase.poSubContractor;
     $scope.context.actions = actions;
-    $scope.context.actions.updateOptionFields($scope.context, erpAppConfig);
     $scope.context.actions.list($scope.context);
 
 }]);

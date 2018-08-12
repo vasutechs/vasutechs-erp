@@ -3,21 +3,21 @@
         <div class="form-group row" ng-switch="field.type" ng-repeat="field in context.form.fields" ng-if="!context.page.printView">
             <label ng-switch-when="span" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="span" class="col-10">
-                <span id="{{field.id}}">{{field.valuePrefix}}{{context.data[field.id]}}</span>
+                <span id="{{field.id}}">{{field.valuePrefix}}{{field.replaceHtmlValue ? field.replaceHtmlValue : context.data[field.id]}}</span>
             </div>
             <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="input" class="col-6">
-                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](map, map[field.id])" />
+                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context)" max="{{field.max}}" />
             </div>
             <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="select" class="col-6">
                 
-                <select id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, context.data, context.data[field.id], field)" ng-options="option.optionId as option.optionName for option in field.options">
+                <select id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, context.data, context.data[field.id], field)" ng-options="option.optionId as option.optionName for option in field.options" ng-disabled="field.isDisable">
                     <option value="">--Select--</option>
                 </select>
             </div>
             <div class="col-2">
-                <span style="color:red" ng-show="customForm[field.id].$invalid">*Required</span>
+                <span style="color:red" ng-show="customForm[field.id].$invalid">*Invalid input!</span>
             </div>
         </div>
         <div class="form-group row" ng-repeat="field in context.form.fields" ng-if="context.page.printView">

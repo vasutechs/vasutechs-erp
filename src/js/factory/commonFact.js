@@ -22,7 +22,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             serviceApi.callServiceApi(serviceconf).then(function(res) {
                 context.data = res.data;
                 if (context.data['date']) {
-                    context.data['date'] = context.actions.dateFormatChange(context.data['date']);
+                    context.data['date'] = context.page.printView ? context.actions.dateFormatChange(context.data['date']) : new Date(context.data['date']);
                 }
                 context.actions.callBackEdit && context.actions.callBackEdit(context, key);
             });
@@ -42,6 +42,11 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             serviceApi.callServiceApi(context.services.list).then(function(res) {
                 context.listViewData = res.data;
                 context.lastData = context.listViewData[Object.keys(context.listViewData)[Object.keys(context.listViewData).length - 1]];
+                for (var i in context.listView) {
+                    if (context.listView[i].dataFrom) {
+                        context.actions.replaceViewDataVal(context.listViewData, context.listView[i]);
+                    }
+                }
                 context.actions.callBackList && context.actions.callBackList(context);
             });
         },
@@ -58,30 +63,63 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
         cancel: function(context) {
             context.page.name = 'list';
         },
-        displayViewDataVal: function(serviceConf, data, dataKey, replaceDataKey, isList) {
-            var list;
+        getData: function(module, id) {
+            var list,
+                serviceConf = angular.copy(eval('erpAppConfig.modules.' + module + '.services.list'));
+            serviceConf.url = id ? serviceConf.url + '/' + id : serviceConf.url
+            //Get Part master data
+            return serviceApi.callServiceApi(serviceConf);
+        },
+        updateData: function(module, data, id) {
+            var list,
+                serviceConf = angular.copy(eval('erpAppConfig.modules.' + module + '.services.list'));
+            if (id != undefined) {
+                serviceConf.url = serviceConf.url + '/' + id;
+            }
+            serviceConf.method = 'POST';
+            //Get Part master data
+            return serviceApi.callServiceApi(serviceConf, data);
+        },
+        replaceViewDataVal: function(viewData, field) {
+            var list,
+                serviceConf = angular.copy(eval('erpAppConfig.modules.' + field.dataFrom + '.services.list'));
             //Get Part master data
             serviceApi.callServiceApi(serviceConf).then(function(res) {
                 list = res.data;
-                if (isList) {
-                    for (var i in data) {
-                        data[i][dataKey] = list[data[i][dataKey]][replaceDataKey];
-                    }
+                if (field.isSingle) {
+                    viewData[field.value] = viewData[field.value] ? list[viewData[field.value]][field.replaceValue] : '';
                 } else {
-                    data[dataKey] = list[data[dataKey]][replaceDataKey];
+                    for (var i in viewData) {
+                        viewData[i][field.value] = viewData[i][field.value] ? list[viewData[i][field.value]][field.replaceValue] : '';
+                    }
                 }
+
             });
         },
         makeOptionsFields: function(field) {
             var list,
-            serviceConf = eval('erpAppConfig.modules.' + field.dataFrom + '.services.list');
-            //Get Part master data
+                serviceConf = eval('erpAppConfig.modules.' + field.dataFrom + '.services.list');
+            var matchFilter = function(field, list) {
+                var returnFlag = false;
+                for (var i in field.filter) {
+                    if (field.filter[i] != list[i]) {
+                        return false;
+                    } else {
+                        returnFlag = true;
+                    }
+                }
+                return returnFlag;
+            };
+            if (field.filter) {
+                field.options = {};
+            }
             serviceApi.callServiceApi(serviceConf).then(function(res) {
                 list = res.data;
                 for (var i in list) {
-                    if (field.filter === undefined || field.filter[Object.keys(field.filter)[0]] === list[i][Object.keys(field.filter)[0]]) {
+                    if (field.filter === undefined || matchFilter(field, list[i]) === true) {
                         field.options[list[i].id] = list[i];
                         field.options[list[i].id]['optionName'] = field.optionFieldNamePrefix && field.optionFieldNamePrefix || '';
+                        field.options[list[i].id]['optionName'] += field.optionFieldNamePrefixData && list[i][field.optionFieldNamePrefixData] + '-' || '';
                         field.options[list[i].id]['optionName'] += list[i][field.optionFieldName];
                         field.options[list[i].id]['optionId'] = field.optionId && list[i][field.optionFieldId] || list[i]['id'];
                     }
@@ -101,10 +139,10 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
         },
         changeMapping: function(context, data, key, field) {
             for (var mapKey in data) {
-                if ( (field.updateData && field.updateData.indexOf(mapKey) >= 0) || field.updateData === undefined) {
+                if ((field.updateData && field.updateData.indexOf(mapKey) >= 0) || field.updateData === undefined) {
                     if (key === null) {
                         data[mapKey] = context.masterData[mapKey];
-                    } else if(field.options[key][mapKey]){
+                    } else if (field.options[key][mapKey]) {
                         if (typeof(field.options[key][mapKey]) !== 'object') {
                             data[mapKey] = field.options[key][mapKey];
                         } else if (field.updateMapping) {
@@ -129,6 +167,84 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
         dateFormatChange: function(dateValue) {
             dateValue = new Date(dateValue);
             return dateValue.getDate() + '-' + (dateValue.getMonth() + 1) + '-' + dateValue.getFullYear();
+        },
+        timeFormatChange: function(value) {
+            value = new Date(value);
+            return value.getHours() + ':' + value.getMinutes() + ':' + value.getSeconds();
+        },
+        getOperationFromFlow: function(context, field) {
+            if (context.data.partNo) {
+                context.actions.makeOptionsFields(field);
+                var localOptions = field.options;
+                serviceApi.callServiceApi({
+                    url: 'api/flowMaster/data',
+                    method: 'GET'
+                }).then(function(res) {
+                    var flowMasterData = res.data;
+                    field.options = {};
+                    for (var i in flowMasterData) {
+                        if (flowMasterData[i].partNo === context.data.partNo) {
+                            for (var j in flowMasterData[i].mapping) {
+                                if(! field.startWith || field.startWith < flowMasterData[i].mapping[j].id){
+                                    field.options[flowMasterData[i].mapping[j].id] = localOptions[flowMasterData[i].mapping[j].id];
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        },
+        updatePartStock: function(context) {
+            var serviceconf = {
+                url: 'api/partStock/data',
+                method: 'GET'
+            };
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                var partStockData = res.data,
+                    partStock = {};
+                for (var i in partStockData) {
+                    partStock[partStockData[i].partNo + '-' + partStockData[i].operationFrom + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
+                    partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
+                }
+                var existingStock = partStock[context.data.partNo + '-' + context.data.operationFrom + '-' + context.data.operationTo];
+                var partStockQty = existingStock && parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) || parseInt(context.data.acceptedQty);
+                var data = {
+                    id: existingStock && existingStock.id || undefined,
+                    partNo: context.data.partNo,
+                    partStockQty: partStockQty,
+                    operationFrom: context.data.operationFrom,
+                    operationTo: context.data.operationTo
+                }
+                serviceconf = {
+                    url: existingStock ? 'api/partStock/data/' + existingStock.id : 'api/partStock/data',
+                    method: 'POST'
+                }
+                serviceApi.callServiceApi(serviceconf, data);
+
+                var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
+                if (existingPrevStock) {
+                    partStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(context.data.acceptedQty);
+                    data = {
+                        id: existingPrevStock.id,
+                        partNo: context.data.partNo,
+                        partStockQty: partStockQty,
+                        operationFrom: existingPrevStock.operationFrom,
+                        operationTo: existingPrevStock.operationTo
+                    }
+                    serviceconf = {
+                        url: 'api/partStock/data/' + existingPrevStock.id,
+                        method: 'POST'
+                    }
+                    serviceApi.callServiceApi(serviceconf, data);
+                }
+            });
+        },
+        updateMaterialIssue: function(context, replaceData, key) {
+            context.actions.getData('production.materialIssueNote', key).then(function(res) {
+                var updateData = res.data;
+                updateData = angular.extend(updateData, replaceData);
+                context.actions.updateData('production.materialIssueNote', updateData, key);
+            });
         }
     };
     return {
