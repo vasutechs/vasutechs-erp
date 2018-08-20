@@ -1,89 +1,92 @@
 <div>
-    <div class="card">
-        <div class="card-header">
-            <center><b>{{context.form.name}}</b></center>
+    <form id="{{context.form.id}}" name="entryInvoice">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><b>{{context.form.fields.invoiceNo.name}}</b></td>
+                    <td colspan="2">
+                        <input ng-if="!context.page.printView" type="text" id="{{context.form.fields.invoiceNo.id}}" class="form-control" ng-model="context.data[context.form.fields.invoiceNo.id]" ng-required="{{context.form.fields.invoiceNo.required}}" />
+                        <span ng-if="context.page.printView" id="{{context.form.fields.invoiceNo.id}}">{{context.form.fields.invoiceNo.valuePrefix}}{{context.data[context.form.fields.invoiceNo.id]}}</span>
+                    </td>
+                    <td align="right"><b>{{context.form.fields.date.name}}</b></td>
+                    <td>
+                        <input ng-if="!context.page.printView" type="date" id="{{context.form.fields.date.id}}" class="form-control" ng-model="context.data[context.form.fields.date.id]" ng-required="{{context.form.fields.date.required}}" />
+                        <span ng-if="context.page.printView" id="{{context.form.fields.date.id}}">{{context.form.fields.date.valuePrefix}}{{context.data[context.form.fields.date.id]}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>{{context.form.fields.customerCode.name}}</b></td>
+                    <td colspan="4">
+                        <select ng-if="!context.page.printView" id="{{context.form.fields.customerCode.id}}" class="form-control" ng-model="context.data[context.form.fields.customerCode.id]" ng-required="{{context.form.fields.customerCode.required}}" ng-change="context.form.fields.customerCode.action && context.actions[context.form.fields.customerCode.action] && context.actions[context.form.fields.customerCode.action](context, context.data, context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)" ng-options="option.optionId as option.optionName for option in context.form.fields.customerCode.options" ng-disabled="context.form.fields.customerCode.isDisable" ng-required="{{context.form.fields.customerCode.required}}">
+                            <option value="">--Select--</option>
+                        </select>
+                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}">{{context.form.fields.customerCode.valuePrefix}}{{context.data[context.form.fields.customerCode.id]}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>{{context.form.fields.partyGstin.name}}</b></td>
+                    <td colspan="2">
+                        <input ng-if="!context.page.printView" type="text" id="{{context.form.fields.partyGstin.id}}" class="form-control" ng-model="context.data[context.form.fields.partyGstin.id]" ng-required="{{context.form.fields.required}}" />
+                        <span ng-if="context.page.printView" id="{{context.form.fields.partyGstin.id}}">{{context.form.fields.partyGstin.valuePrefix}}{{context.data[context.form.fields.partyGstin.id]}}</span>
+                    </td>
+                    <td><b>{{context.form.fields.partyArnno.name}}</b></td>
+                    <td>
+                        <input ng-if="!context.page.printView" type="text" id="{{context.form.fields.partyArnno.id}}" class="form-control" ng-model="context.data[context.form.fields.partyArnNo.id]" ng-required="{{context.form.fields.partyArnNo.required}}" />
+                        <span ng-if="context.page.printView" id="{{context.form.fields.partyArnNo.id}}">{{context.form.fields.partyArnNo.valuePrefix}}{{context.data[context.form.fields.partyArnNo.id]}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td ng-repeat="mappingFieldKey in context.form.mapping.fields"><b>{{mappingFieldKey.name}}</b></td>
+                </tr>
+                <tr ng-repeat="(key, map) in context.data.mapping" ng-if="!context.page.printView">
+                    <td ng-switch="field.type" ng-repeat="field in context.form.mapping.fields">
+                        <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>
+                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id])" ng-required="{{field.required}}" />
+                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field)" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}">
+                            <option value="">--Select--</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr ng-repeat="(key, map) in context.data.mapping" ng-if="context.page.printView">
+                    <td ng-repeat="field in context.form.mapping.fields">
+                        <span id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" ng-if="!context.page.printView">
+                        <a class="fa fa-fw fa-plus-square-o" href="javascript: void(0);" ng-click="context.actions.addMapping(context.data.mapping)"> </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="right"><b>Sub Total:</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td rowspan="2" align="right"><b>{{context.form.fields.taxRate.name}}</b></td>
+                    <td rowspan="2"><span id="{{context.form.fields.taxRate.id}}" ng-bind="context.data[context.form.fields.taxRate.id]"></span>%</td>
+                    <td align="right"><b>{{context.form.fields.cgst.name}}</b></td>
+                    <td><span id="{{context.form.fields.cgst.id}}" ng-bind="context.data[context.form.fields.cgst.id]"></span>%</td>
+                    <td><span id="{{context.form.fields.cgstTotal.id}}" ng-bind="context.data[context.form.fields.cgstTotal.id]"></span>%</td>
+                </tr>
+                <tr>
+                    <td align="right"><b>{{context.form.fields.sgst.name}}</b></td>
+                    <td><span id="{{context.form.fields.sgst.id}}" ng-bind="context.data[context.form.fields.sgst.id]"></span>%</td>
+                    <td><span id="{{context.form.fields.sgstTotal.id}}" ng-bind="context.data[context.form.fields.sgstTotal.id]"></span>%</td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td align="right"><b>{{context.form.fields.total.name}}:</b></td>
+                    <td><span id="{{context.form.fields.total.id}}" ng-bind="context.data[context.form.fields.total.id]"></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group row" ng-if="!context.page.printView">
+            <div class="col-2">
+            </div>
+            <div class="col-10">
+                <button type="button" class="btn btn-primary" id="submit" ng-click="context.actions.submit(context)" ng-disabled="entryInvoice.$invalid">Submit</button>
+                <button type="button" class="btn btn-primary" id="cancel" ng-click="context.actions.cancel(context)">Cancel</button>
+            </div>
         </div>
-        <div class="card-body">
-            <form id="{{context.form.id}}">
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr>
-                            <td colspan="2"><b>{{context.form.fields.invoiceNo.name}}</b></td>
-                            <td colspan="2">
-                                <input type="text" id="{{context.form.fields.invoiceNo.id}}" class="form-control" ng-model="context.data[context.form.fields.invoiceNo.id]" />
-                            </td>
-                            <td colspan="2"></td>
-                            <td><b>{{context.form.fields.date.name}}</b></td>
-                            <td>
-                                <input type="text" id="{{context.form.fields.date.id}}" class="form-control" ng-model="context.data[context.form.fields.date.id]" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><b>{{context.form.fields.customerCode.name}}</b></td>
-                            <td colspan="6">
-                                <select id="{{context.form.fields.customerCode.id}}" ng-model="context.data[context.form.fields.customerCode.id]">
-                                    <option value="">---Select---</option>
-                                    <option ng-repeat="option in context.form.fields.customerCode.options" value="{{option.id}}" ng-selected="option.id==context.data[context.form.fields.customerCode.id]">{{option.name}}</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><b>{{context.form.fields.partyGstin.name}}</b></td>
-                            <td>
-                                <input type="text" id="{{context.form.fields.partyGstin.id}}" class="form-control" ng-model="context.data[context.form.fields.partyGstin.id]" />
-                            </td>
-                            <td colspan="2"><b>{{context.form.fields.partyArnNo.name}}</b></td>
-                            <td>
-                                <input type="text" id="{{context.form.fields.partyArnNo.id}}" class="form-control" ng-model="context.data[context.form.fields.partyArnNo.id]" />
-                            </td>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr>
-                            <td><a class="fa fa-fw fa-plus-square-o" href="javascript: void(0);" ng-click="context.actions.addMapping(context.data.mapping)"> </a></td>
-                            <td ng-repeat="mappingFieldKey in context.form.mapping.fields"><b>{{mappingFieldKey.name}}</b></td>
-                        </tr>
-                        <tr ng-repeat="(key, mapping) in context.data.mapping">
-                            <td ng-switch="field.type" ng-repeat="field in context.form.mapping.fields">
-                                <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="mapping[field.id]"></span>
-                                <select ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="context.actions.changeMapping(context, mapping, mapping[field.id], field.options)" ng-model="mapping[field.id]">
-                                    <option value="">---Select---</option>
-                                    <option ng-repeat="option in field.options" value="{{option.id}}" ng-selected="option.id==mapping[field.id]">{{option.name}}</option>
-                                </select>
-                            </td>
-                            <td><a class="fa fa-fw fa-times" href="javascript: void(0);" ng-click="context.actions.removeMapping(context.data.mapping, key)"> </a></td>
-                        </tr>
-                        <tr>
-                            <td colspan="5"></td>
-                            <td colspan="2">Sub Total:</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" rowspan="2"></td>
-                            <td rowspan="2"><b>{{context.form.fields.taxRate.name}}</b></td>
-                            <td rowspan="2"><span id="{{context.form.fields.taxRate.id}}" ng-bind="context.data[context.form.fields.taxRate.id]"></span></td>
-                            <td><b>{{context.form.fields.cgst.name}}</b></td>
-                            <td><span id="{{context.form.fields.cgst.id}}" ng-bind="context.data[context.form.fields.cgst.id]"></span></td>
-                            <td><span id="{{context.form.fields.cgstTotal.id}}" ng-bind="context.data[context.form.fields.cgstTotal.id]"></span></td>
-                        </tr>
-                        <tr>
-                            <td><b>{{context.form.fields.sgst.name}}</b></td>
-                            <td><span id="{{context.form.fields.sgst.id}}" ng-bind="context.data[context.form.fields.sgst.id]"></span></td>
-                            <td><span id="{{context.form.fields.sgstTotal.id}}" ng-bind="context.data[context.form.fields.sgstTotal.id]"></span></td>
-                        </tr>
-                        <tr>
-                            <td colspan="5"></td>
-                            <td colspan="2" align="right">{{context.form.fields.total.name}}:</td>
-                            <td><span id="{{context.form.fields.sgstTotal.id}}" ng-bind="context.data[context.form.fields.sgstTotal.id]"></span></td>
-                        </tr>
-                        <tr>
-                            <td colspan="4"></td>
-                            <td colspan="2" align="right"><button type="button" class="btn btn-primary" id="submit" ng-click="context.actions.submit(context)">Submit</button>
-                        </td>
-                            <td colspan="2"><button type="button" class="btn btn-primary" id="cancel" ng-click="context.actions.cancel(context)">Cancel</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
-        </div>
-    </div>
+    </form>
 </div>

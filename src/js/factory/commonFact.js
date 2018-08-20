@@ -11,10 +11,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             context.actions.callBackAdd && context.actions.callBackAdd(context);
         },
         edit: function(context, key, printView) {
-            var serviceconf = {
-                url: context.services.list.url + "/" + key,
-                method: 'GET'
-            };
+            var serviceconf = this.getServiceConfig(context.services.list, 'GET', key);
             context.page.name = 'edit';
             context.page.printView = printView;
             context.page.editKey = key;
@@ -29,17 +26,15 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
 
         },
         delete: function(context, key) {
-            var serviceconf = {
-                url: context.services.list.url,
-                method: 'POST'
-            };
+            var serviceconf = this.getServiceConfig(context.services.list, 'POST');
             serviceApi.callServiceApi(serviceconf, { key: key, delete: 'yes' });
             context.actions.list(context);
             context.actions.callBackDelete && context.actions.callBackDelete(context, key);
         },
         list: function(context) {
+            var serviceconf = this.getServiceConfig(context.services.list);
             context.page.name = 'list';
-            serviceApi.callServiceApi(context.services.list).then(function(res) {
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
                 context.listViewData = res.data;
                 context.lastData = context.listViewData[Object.keys(context.listViewData)[Object.keys(context.listViewData).length - 1]];
                 for (var i in context.listView) {
@@ -51,10 +46,8 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             });
         },
         submit: function(context) {
-            var serviceconf = {
-                url: context.page.editKey >= 0 ? context.services.list.url + '/' + context.page.editKey : context.services.list.url,
-                method: 'POST'
-            };
+            var serviceconf = this.getServiceConfig(context.services.list, 'POST', context.page.editKey);
+
             serviceApi.callServiceApi(serviceconf, context.data);
             context.page.name = 'list';
             context.actions.list(context);
@@ -65,32 +58,29 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
         },
         getData: function(module, id) {
             var list,
-                serviceConf = angular.copy(eval('erpAppConfig.modules.' + module + '.services.list'));
-            serviceConf.url = id ? serviceConf.url + '/' + id : serviceConf.url
+                serviceConf = this.getServiceConfig(module, 'GET', id);
             //Get Part master data
             return serviceApi.callServiceApi(serviceConf);
         },
         updateData: function(module, data, id) {
             var list,
-                serviceConf = angular.copy(eval('erpAppConfig.modules.' + module + '.services.list'));
-            if (id != undefined) {
-                serviceConf.url = serviceConf.url + '/' + id;
-            }
-            serviceConf.method = 'POST';
+                serviceConf = this.getServiceConfig(module, 'POST', id);
             //Get Part master data
             return serviceApi.callServiceApi(serviceConf, data);
         },
         replaceViewDataVal: function(viewData, field) {
             var list,
-                serviceConf = angular.copy(eval('erpAppConfig.modules.' + field.dataFrom + '.services.list'));
+                serviceConf = this.getServiceConfig(field.dataFrom);
             //Get Part master data
             serviceApi.callServiceApi(serviceConf).then(function(res) {
                 list = res.data;
                 if (field.isSingle) {
                     viewData[field.value] = viewData[field.value] ? list[viewData[field.value]][field.replaceValue] : '';
+                    viewData[field.value] = field.optionFieldNamePrefix ? field.optionFieldNamePrefix + viewData[field.value] : viewData[field.value];
                 } else {
                     for (var i in viewData) {
                         viewData[i][field.value] = viewData[i][field.value] ? list[viewData[i][field.value]][field.replaceValue] : '';
+                        viewData[i][field.value] = field.optionFieldNamePrefix ? field.optionFieldNamePrefix + viewData[i][field.value] : viewData[i][field.value];
                     }
                 }
 
@@ -98,11 +88,13 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
         },
         makeOptionsFields: function(field) {
             var list,
-                serviceConf = eval('erpAppConfig.modules.' + field.dataFrom + '.services.list');
+                serviceConf = this.getServiceConfig(field.dataFrom);
             var matchFilter = function(field, list) {
                 var returnFlag = false;
                 for (var i in field.filter) {
                     if (field.filter[i] != list[i]) {
+                        return false;
+                    } else if (typeof(field.filter[i]) === 'object' && field.filter[i].indexOf(list[i]) < 0) {
                         return false;
                     } else {
                         returnFlag = true;
@@ -176,16 +168,14 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             if (context.data.partNo) {
                 context.actions.makeOptionsFields(field);
                 var localOptions = field.options;
-                serviceApi.callServiceApi({
-                    url: 'api/flowMaster/data',
-                    method: 'GET'
-                }).then(function(res) {
+                var serviceconf = this.getServiceConfig('production.flowMaster');
+                serviceApi.callServiceApi(serviceconf).then(function(res) {
                     var flowMasterData = res.data;
                     field.options = {};
                     for (var i in flowMasterData) {
                         if (flowMasterData[i].partNo === context.data.partNo) {
                             for (var j in flowMasterData[i].mapping) {
-                                if(! field.startWith || field.startWith < flowMasterData[i].mapping[j].id){
+                                if (!field.startWith || field.startWith < flowMasterData[i].mapping[j].id) {
                                     field.options[flowMasterData[i].mapping[j].id] = localOptions[flowMasterData[i].mapping[j].id];
                                 }
                             }
@@ -195,10 +185,8 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             }
         },
         updatePartStock: function(context) {
-            var serviceconf = {
-                url: 'api/partStock/data',
-                method: 'GET'
-            };
+            var self = this;
+            var serviceconf = self.getServiceConfig('report.partStock');
             serviceApi.callServiceApi(serviceconf).then(function(res) {
                 var partStockData = res.data,
                     partStock = {};
@@ -215,10 +203,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                     operationFrom: context.data.operationFrom,
                     operationTo: context.data.operationTo
                 }
-                serviceconf = {
-                    url: existingStock ? 'api/partStock/data/' + existingStock.id : 'api/partStock/data',
-                    method: 'POST'
-                }
+                serviceconf = serviceconf = existingStock && self.getServiceConfig('report.partStock', 'POST', existingStock.id) || self.getServiceConfig('report.partStock', 'POST');
                 serviceApi.callServiceApi(serviceconf, data);
 
                 var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
@@ -231,10 +216,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                         operationFrom: existingPrevStock.operationFrom,
                         operationTo: existingPrevStock.operationTo
                     }
-                    serviceconf = {
-                        url: 'api/partStock/data/' + existingPrevStock.id,
-                        method: 'POST'
-                    }
+                    serviceconf = self.getServiceConfig('report.partStock', 'POST', existingPrevStock.id);
                     serviceApi.callServiceApi(serviceconf, data);
                 }
             });
@@ -245,6 +227,13 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                 updateData = angular.extend(updateData, replaceData);
                 context.actions.updateData('production.materialIssueNote', updateData, key);
             });
+        },
+        getServiceConfig: function(module, replaceMethod, appendValue) {
+            var serviceConfig = angular.copy(typeof(module) !== 'object' ? eval('erpAppConfig.modules.' + module + '.services.list') : module);
+            serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', new Date().getFullYear());
+            serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
+            serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
+            return serviceConfig;
         }
     };
     return {
