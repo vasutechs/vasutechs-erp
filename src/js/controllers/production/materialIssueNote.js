@@ -10,10 +10,7 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
         },
         getNorms: function(context) {
             if (context.data.rmCode && context.data.partNo) {
-                var serviceconf = {
-                    url: 'api/bom/data',
-                    method: 'GET'
-                };
+                var serviceconf = context.actions.getServiceConfig('production.bom');
                 serviceApi.callServiceApi(serviceconf).then(function(res) {
                     var bomData = res.data;
                     for (var i in bomData) {

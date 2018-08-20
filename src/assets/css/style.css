@@ -488,11 +488,12 @@ footer.sticky-footer {
 }
 
 
-/*.logo{
-  background-image: url("../img/logo.png");
-  background-repeat: no-repeat;
+.logo {
+    background-image: url("../img/logo.png");
+    background-repeat: no-repeat;
     background-size: 200px 100px;
-}*/
+    height: 100px;
+}
 
 .navbar-sidenav {
     overflow: auto;
@@ -500,4 +501,25 @@ footer.sticky-footer {
 
 .container-fluid {
     margin-left: 5px !important;
+}
+
+.align-center {
+    text-align: center;
+    ;
+}
+
+.show-print {
+    display: none;
+}
+
+@media print {
+    .hide-print {
+        display: none;
+    }
+    .show-print {
+        display: block;
+    },
+    .logo-title{
+        color: red;
+    }
 }

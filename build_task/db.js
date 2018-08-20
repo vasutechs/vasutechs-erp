@@ -18,11 +18,11 @@ module.exports = function(gulp, config, task) {
         inputData = JSON.parse(inputData);
         if (!inputData.id && !inputData.delete) {
             lastData = db.getData('/tables' + dataPath);
-            lastData = lastData && lastData[Object.keys(lastData)[Object.keys(lastData).length-1]];
+            lastData = lastData && lastData[Object.keys(lastData)[Object.keys(lastData).length - 1]];
             newId = lastData && lastData.id && parseInt(lastData.id) + 1 || 1;
             inputData['id'] = newId;
             inputData['added'] = new Date();
-            dataPath = dataPath + '/'+ newId;
+            dataPath = dataPath + '/' + newId;
         }
         try {
             if (inputData.delete) {
@@ -38,7 +38,10 @@ module.exports = function(gulp, config, task) {
             }
 
         } catch (error) {
-            data = error;
+            data = {
+                status: 0,
+                data: {}
+            };
         };
         return data;
     }

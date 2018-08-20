@@ -1,5 +1,5 @@
 erpApp.constant('erpAppConfig', {
-    appName: 'Vasutechs-ERP',
+    appName: 'VASUTECHS',
     appBaseUrl: '/dashboard',
     dataDownloadUrl: '/api/download',
     appNavMenus: [{
@@ -257,6 +257,7 @@ erpApp.constant('erpAppConfig', {
                     mapping: [{
                         id: null,
                         partName: null,
+                        hsnCode: null,
                         rate: null,
                         gst: null
                     }]
@@ -524,17 +525,18 @@ erpApp.constant('erpAppConfig', {
                     invoiceNo: null,
                     date: null,
                     customerCode: null,
-                    partyGstin: null,
-                    partyArnNo: null,
+                    gstin: null,
+                    arnNo: null,
+                    subTotal: null,
                     taxRate: null,
                     cgst: null,
                     sgst: null,
+                    cgstTotal: null,
+                    sgstTotal: null,
                     total: null,
                     mapping: [{
                         id: null,
-                        sNo: null,
-                        partNo: null,
-                        partName: null,
+                        hsnCode: null,
                         unit: null,
                         rate: null,
                         amount: null
@@ -549,7 +551,6 @@ erpApp.constant('erpAppConfig', {
                             name: 'Invoice No',
                             id: 'invoiceNo',
                             type: 'input',
-                            inputtype: 'input',
                             inputType: 'text',
                             required: true,
                             valuePrefix: 'H-'
@@ -566,21 +567,24 @@ erpApp.constant('erpAppConfig', {
                             id: 'customerCode',
                             type: 'select',
                             options: {},
+                            action: 'getPartStockDetail',
+                            updateMapping: true,
+                            updateData: ['gstin', 'mapping'],
                             dataFrom: 'marketing.customerMaster',
                             optionFieldName: 'customerName'
                         },
                         'partyGstin': {
                             name: 'Party GSTIN',
-                            id: 'partyGstin',
+                            id: 'gstin',
                             type: 'input',
-                            inputType: 'number',
+                            inputType: 'text',
                             required: true
                         },
-                        'partyArnNo': {
+                        'partyArnno': {
                             name: 'Party ARN No',
-                            id: 'partyArnNo',
+                            id: 'partyArnno',
                             type: 'input',
-                            inputType: 'number',
+                            inputType: 'text',
                             required: true
                         },
                         'taxRate': {
@@ -620,21 +624,11 @@ erpApp.constant('erpAppConfig', {
                             type: 'input',
                             inputType: 'number',
                             required: true
-                        },
-                        'submit': {
-                            name: 'Submit',
-                            id: 'submit',
-                            type: 'submit',
-                            action: 'submit'
                         }
                     },
                     mapping: {
                         name: 'Part Mapping',
                         fields: [{
-                                name: 'SNo',
-                                id: 'sNo',
-                                type: 'span'
-                            }, {
                                 name: 'Part No',
                                 id: 'id',
                                 type: 'select',
@@ -644,11 +638,6 @@ erpApp.constant('erpAppConfig', {
                                 optionFieldName: 'partName'
                             },
                             {
-                                name: 'Part Name',
-                                id: 'partName',
-                                type: 'span'
-                            },
-                            {
                                 name: 'HSN Code',
                                 id: 'hsnCode',
                                 type: 'span'
@@ -656,7 +645,10 @@ erpApp.constant('erpAppConfig', {
                             {
                                 name: 'Unit',
                                 id: 'unit',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                action: 'updateTotal',
+                                required: true
                             },
                             {
                                 name: 'Rate',
@@ -678,10 +670,14 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         title: 'Customer',
-                        value: 'customerCode'
+                        value: 'customerCode',
+                        dataFrom: 'marketing.customerMaster',
+                        replaceValue: 'customerName'
                     },
                     {
-                        action: true
+                        action: true,
+                        printView: true,
+                        edit: false
                     }
                 ],
                 page: {
@@ -692,7 +688,7 @@ erpApp.constant('erpAppConfig', {
                 },
                 services: {
                     list: {
-                        url: 'api/invoice/data',
+                        url: 'api/invoice/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -982,7 +978,10 @@ erpApp.constant('erpAppConfig', {
                             {
                                 name: 'UOM',
                                 id: 'uomCode',
-                                type: 'span'
+                                type: 'select',
+                                options: {},
+                                dataFrom: 'marketing.uomMaster',
+                                optionFieldName: 'uomName'
                             },
                             {
                                 name: 'Rate',
@@ -1037,7 +1036,7 @@ erpApp.constant('erpAppConfig', {
                 },
                 services: {
                     list: {
-                        url: 'api/poSupplier/data',
+                        url: 'api/poSupplier/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -1227,7 +1226,10 @@ erpApp.constant('erpAppConfig', {
                             {
                                 name: 'UOM',
                                 id: 'uomCode',
-                                type: 'span'
+                                type: 'select',
+                                options: {},
+                                dataFrom: 'marketing.uomMaster',
+                                optionFieldName: 'uomName'
                             },
                             {
                                 name: 'Rate',
@@ -1282,7 +1284,7 @@ erpApp.constant('erpAppConfig', {
                 },
                 services: {
                     list: {
-                        url: 'api/poSubContractor/data',
+                        url: 'api/poSubContractor/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -1348,7 +1350,7 @@ erpApp.constant('erpAppConfig', {
                             updateData: ['mapping'],
                             dataFrom: 'purchase.poSupplier',
                             optionFieldName: 'poNo',
-                            optionFieldNamePrefix:'VT-SP-PO-'
+                            optionFieldNamePrefix: 'VT-SP-PO-'
                         },
                         {
                             name: 'Supplier Invoice No',
@@ -1383,7 +1385,10 @@ erpApp.constant('erpAppConfig', {
                             {
                                 name: 'UOM',
                                 id: 'uomCode',
-                                type: 'span'
+                                type: 'select',
+                                options: {},
+                                dataFrom: 'marketing.uomMaster',
+                                optionFieldName: 'uomName'
                             },
                             {
                                 name: 'Received Qty',
@@ -1444,7 +1449,7 @@ erpApp.constant('erpAppConfig', {
                 },
                 services: {
                     list: {
-                        url: 'api/grnSupplier/data',
+                        url: 'api/grnSupplier/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -1539,7 +1544,10 @@ erpApp.constant('erpAppConfig', {
                             {
                                 name: 'UOM',
                                 id: 'uomCode',
-                                type: 'span'
+                                type: 'select',
+                                options: {},
+                                dataFrom: 'marketing.uomMaster',
+                                optionFieldName: 'uomName'
                             },
                             {
                                 name: 'App Cost',
@@ -1574,7 +1582,7 @@ erpApp.constant('erpAppConfig', {
                 },
                 services: {
                     list: {
-                        url: 'api/dcSubContractor/data',
+                        url: 'api/dcSubContractor/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -1707,7 +1715,10 @@ erpApp.constant('erpAppConfig', {
                             {
                                 name: 'UOM',
                                 id: 'uomCode',
-                                type: 'span'
+                                type: 'select',
+                                options: {},
+                                dataFrom: 'marketing.uomMaster',
+                                optionFieldName: 'uomName'
                             },
                             {
                                 name: 'Rate',
@@ -1762,7 +1773,7 @@ erpApp.constant('erpAppConfig', {
                 },
                 services: {
                     list: {
-                        url: 'api/grnSubContractor/data',
+                        url: 'api/grnSubContractor/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -2237,7 +2248,7 @@ erpApp.constant('erpAppConfig', {
                 },
                 services: {
                     list: {
-                        url: 'api/materialIssueNote/data',
+                        url: 'api/materialIssueNote/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -2416,7 +2427,7 @@ erpApp.constant('erpAppConfig', {
                 },
                 services: {
                     list: {
-                        url: 'api/productionEntry/data',
+                        url: 'api/productionEntry/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -2461,7 +2472,7 @@ erpApp.constant('erpAppConfig', {
                 },
                 services: {
                     list: {
-                        url: 'api/rmStock/data',
+                        url: 'api/rmStock/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -2507,7 +2518,7 @@ erpApp.constant('erpAppConfig', {
                 },
                 services: {
                     list: {
-                        url: 'api/partStock/data',
+                        url: 'api/partStock/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }

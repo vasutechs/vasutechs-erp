@@ -24,10 +24,7 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
             context.data.planQty = timeDiff * context.form.fields[3].options[context.data.partNo].prodRateHr;
         },
         removeRMStockQty: function(context) {
-            var serviceconf = {
-                url: 'api/rmStock/data',
-                method: 'GET'
-            };
+            var serviceconf = context.actions.getServiceConfig('report.rmStock');
             serviceApi.callServiceApi(serviceconf).then(function(res) {
                 var rmStockData = res.data,
                     rmStock = {};
@@ -46,10 +43,7 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                             rmStockQty: rmStockQty,
                             uomCode: existingStock.uomCode
                         },
-                        serviceconf = {
-                            url: 'api/rmStock/data/' + existingStock.id,
-                            method: 'POST'
-                        };
+                        serviceconf = context.actions.getServiceConfig('report.rmStock', 'POST', existingStock.id);
                     serviceApi.callServiceApi(serviceconf, data);
                 }
 

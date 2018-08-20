@@ -22,10 +22,7 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
             context.data['supplierDCDate'] = context.actions.dateFormatChange(context.data['supplierDCDate']);
         },
         updateRMStockQty: function(context) {
-            var serviceconf = {
-                url: 'api/rmStock/data',
-                method: 'GET'
-            };
+            var serviceconf = context.actions.getServiceConfig('report.rmStock');
             serviceApi.callServiceApi(serviceconf).then(function(res) {
                 var rmStockData = res.data,
                     rmStock = {};
@@ -42,10 +39,7 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
                         rmStockQty: rmStockQty,
                         uomCode: context.data.mapping[i].uomCode
                     }
-                    serviceconf = {
-                        url: existingStock ? 'api/rmStock/data/' + existingStock.id : 'api/rmStock/data',
-                        method: 'POST'
-                    }
+                    serviceconf = existingStock && context.actions.getServiceConfig('report.rmStock', 'POST', existingStock.id) || context.actions.getServiceConfig('report.rmStock', 'POST');
                     serviceApi.callServiceApi(serviceconf, data);
                 }
             });

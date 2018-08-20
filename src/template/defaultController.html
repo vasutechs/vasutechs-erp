@@ -1,6 +1,7 @@
 <div class="container-fluid">
+    <h1 class="align-center show-print logo-title">{{appName}}</h1>
     <!-- Breadcrumbs-->
-    <ol class="breadcrumb">
+    <ol class="breadcrumb hide-print">
         <li class="breadcrumb-item">
             <a href="#/">Dashboard</a>
         </li>
@@ -11,7 +12,7 @@
         <h3>{{context.title}}</h3>
         <div ng-if="context.page.name=='add' || context.page.name=='edit'">
             <div class="card">
-                <div class="card-header"><b ng-if="!context.page.printView">Add/Edit</b><b ng-if="context.page.printView">Print View</b>
+                <div class="card-header hide-print"><b ng-if="!context.page.printView">Add/Edit</b><b ng-if="context.page.printView">Print View</b>
                     <button type="button" class="close float-right" aria-label="Close" ng-click="context.actions.cancel(context)">
                         <span aria-hidden="true">&times;</span>
                     </button>
