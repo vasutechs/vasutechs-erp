@@ -6,12 +6,12 @@
                     <td><b>{{context.form.fields.invoiceNo.name}}</b></td>
                     <td colspan="2">
                         <input ng-if="!context.page.printView" type="text" id="{{context.form.fields.invoiceNo.id}}" class="form-control" ng-model="context.data[context.form.fields.invoiceNo.id]" ng-required="{{context.form.fields.invoiceNo.required}}" />
-                        <span ng-if="context.page.printView" id="{{context.form.fields.invoiceNo.id}}">{{context.form.fields.invoiceNo.valuePrefix}}{{context.data[context.form.fields.invoiceNo.id]}}</span>
+                        <span ng-if="context.page.printView" id="{{context.form.fields.invoiceNo.id}}">{{context.form.fields.invoiceNo.idPrefix}}{{context.data[context.form.fields.invoiceNo.id]}}</span>
                     </td>
                     <td align="right"><b>{{context.form.fields.date.name}}</b></td>
                     <td>
                         <input ng-if="!context.page.printView" type="date" id="{{context.form.fields.date.id}}" class="form-control" ng-model="context.data[context.form.fields.date.id]" ng-required="{{context.form.fields.date.required}}" />
-                        <span ng-if="context.page.printView" id="{{context.form.fields.date.id}}">{{context.form.fields.date.valuePrefix}}{{context.data[context.form.fields.date.id]}}</span>
+                        <span ng-if="context.page.printView" id="{{context.form.fields.date.id}}">{{context.form.fields.date.idPrefix}}{{context.data[context.form.fields.date.id]}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -20,19 +20,19 @@
                         <select ng-if="!context.page.printView" id="{{context.form.fields.customerCode.id}}" class="form-control" ng-model="context.data[context.form.fields.customerCode.id]" ng-required="{{context.form.fields.customerCode.required}}" ng-change="context.form.fields.customerCode.action && context.actions[context.form.fields.customerCode.action] && context.actions[context.form.fields.customerCode.action](context, context.data, context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)" ng-options="option.optionId as option.optionName for option in context.form.fields.customerCode.options" ng-disabled="context.form.fields.customerCode.isDisable" ng-required="{{context.form.fields.customerCode.required}}">
                             <option value="">--Select--</option>
                         </select>
-                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}">{{context.form.fields.customerCode.valuePrefix}}{{context.data[context.form.fields.customerCode.id]}}</span>
+                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}">{{context.form.fields.customerCode.idPrefix}}{{context.data[context.form.fields.customerCode.id]}}</span>
                     </td>
                 </tr>
                 <tr>
                     <td><b>{{context.form.fields.partyGstin.name}}</b></td>
                     <td colspan="2">
                         <input ng-if="!context.page.printView" type="text" id="{{context.form.fields.partyGstin.id}}" class="form-control" ng-model="context.data[context.form.fields.partyGstin.id]" ng-required="{{context.form.fields.required}}" />
-                        <span ng-if="context.page.printView" id="{{context.form.fields.partyGstin.id}}">{{context.form.fields.partyGstin.valuePrefix}}{{context.data[context.form.fields.partyGstin.id]}}</span>
+                        <span ng-if="context.page.printView" id="{{context.form.fields.partyGstin.id}}">{{context.form.fields.partyGstin.idPrefix}}{{context.data[context.form.fields.partyGstin.id]}}</span>
                     </td>
                     <td><b>{{context.form.fields.partyArnno.name}}</b></td>
                     <td>
                         <input ng-if="!context.page.printView" type="text" id="{{context.form.fields.partyArnno.id}}" class="form-control" ng-model="context.data[context.form.fields.partyArnNo.id]" ng-required="{{context.form.fields.partyArnNo.required}}" />
-                        <span ng-if="context.page.printView" id="{{context.form.fields.partyArnNo.id}}">{{context.form.fields.partyArnNo.valuePrefix}}{{context.data[context.form.fields.partyArnNo.id]}}</span>
+                        <span ng-if="context.page.printView" id="{{context.form.fields.partyArnNo.id}}">{{context.form.fields.partyArnNo.idPrefix}}{{context.data[context.form.fields.partyArnNo.id]}}</span>
                     </td>
                 </tr>
                 <tr>

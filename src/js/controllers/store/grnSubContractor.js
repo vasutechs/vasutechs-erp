@@ -1,21 +1,21 @@
 erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact', function(erpAppConfig, $scope, commonFact) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         getDCSubContractor: function(context, data, key, field) {
-            context.form.fields[4] = angular.extend(context.form.fields[4], {
-                filter: { 
-                	poNo: key,
+            context.form.fields['dcNo'] = angular.extend(context.form.fields['dcNo'], {
+                filter: {
+                    poNo: key,
                     status: 0
                 }
             });
-            context.actions.makeOptionsFields(context.form.fields[4]);
+            context.actions.makeOptionsFields(context.form.fields['dcNo']);
         },
         getPOSubContractor: function(context, data, key, field) {
-            context.form.fields[3] = angular.extend(context.form.fields[3], {
+            context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
                 filter: {
                     subContractorCode: key
                 }
             });
-            context.actions.makeOptionsFields(context.form.fields[3]);
+            context.actions.makeOptionsFields(context.form.fields['poNo']);
         },
         updateDCSubContractor: function(context) {
             context.actions.getData('store.dcSubContractor', context.data.dcNo).then(function(res) {
@@ -25,13 +25,15 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
             });
         },
         callBackSubmit: function(context) {
-            context.data.mapping[0].partNo = context.data.mapping[0].id;
-            context.actions.updatePartStock({
-                data: context.data.mapping[0]
-            });
-            context.actions.updateDCSubContractor(context);
+            for (var i in context.data.mapping) {
+                context.data.mapping[i].partNo = context.data.mapping[i].id;
+                context.actions.updatePartStock({
+                    data: context.data.mapping[i]
+                });
+                context.actions.updateDCSubContractor(context);
+            }
         },
-        updatePartTotal: function(data, updateValue) {
+        updatePartTotal: function(context, data, updateValue) {
             var total = 0,
                 totalBeforTax = 0;
             totalBeforTax = updateValue * data.rate;

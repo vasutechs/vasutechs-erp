@@ -4,26 +4,29 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', functi
             var year = new Date().getFullYear();
             context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year;
         },
-        getPartStockDetail: function(context, data, key, field) {
+        callBackChangeMapping: function(context, data, key, field){
+            context.actions.getPartStockDetail(context);
+        },
+        getPartStockDetail: function(context) {
+            var data = angular.copy(context.data);
             context.actions.getData('report.partStock', context.data.poNo).then(function(res) {
                 var partStockData = res.data;
                 var partNos = [];
                 for (var i in partStockData) {
-                    if(partStockData[i].operationTo===7 && partStockData[i].partStockQty > 0){
+                    if (partStockData[i].operationTo === 7 && partStockData[i].partStockQty > 0) {
                         partNos.push(partStockData[i].partNo);
                     }
                 }
-                for (var j in context.form.mapping) {
-                    context.form.mapping.fields[0].filter = {
-                        id: partNos || null
-                    };
-                    context.actions.makeOptionsFields(context.form.mapping.fields[0]);
-                }
-                context.actions.changeMapping(context, data, key, field);
+
+                context.form.mapping.fields['id'].filter = {
+                    id: partNos || null
+                };
+                context.actions.makeOptionsFields(context.form.mapping.fields['id']);
+                context.data = data;
             });
         },
         updateTotal: function(context, data, updateValue) {
-            var partDetail = context.form.mapping.fields[0].options[data.id],
+            var partDetail = context.form.mapping.fields['id'].options[data.id],
                 total = 0,
                 totalBeforTax = 0,
                 taxRate = 0,
@@ -60,7 +63,7 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', functi
                         partStock[partStockData[j].partNo + '-' + partStockData[j].operationFrom + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
                         partStock[partStockData[j].partNo + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
                     }
-                    var existingStock = partStock[context.data.mapping[i].id + '-6-7'];
+                    var existingStock = partStock[context.data.mapping[i].id + '-7'];
 
                     var partStockQty = parseInt(existingStock.partStockQty) - parseInt(context.data.mapping[i].unit);
                     var data = {
@@ -90,13 +93,8 @@ directive('entryInvoice', function() {
     var entryInvoice = function($scope, element, attrs) {
         element.ready(function() {
             for (var i in $scope.context.form.fields) {
-                if ($scope.context.form.fields[i].type === 'select' && $scope.context.form.fields[i].dataFrom !== undefined && $scope.context.form.fields[i].optionFieldName !== undefined) {
+                if ($scope.context.form.fields[i].type === 'select') {
                     if ($scope.context.page.printView) {
-                        $scope.context.form.fields[i] = angular.extend($scope.context.form.fields[i], {
-                            'isSingle': true,
-                            'value': $scope.context.form.fields[i].id,
-                            'replaceValue': $scope.context.form.fields[i].optionFieldName
-                        });
                         $scope.context.actions.replaceViewDataVal($scope.context.data, $scope.context.form.fields[i]);
                     } else {
                         $scope.context.actions.makeOptionsFields($scope.context.form.fields[i]);
@@ -106,12 +104,8 @@ directive('entryInvoice', function() {
 
             for (var i in $scope.context.form.mapping.fields) {
 
-                if ($scope.context.form.mapping.fields[i].type === 'select' && $scope.context.form.mapping.fields[i].dataFrom !== undefined && $scope.context.form.mapping.fields[i].optionFieldName !== undefined) {
+                if ($scope.context.form.mapping.fields[i].type === 'select') {
                     if ($scope.context.page.printView) {
-                        $scope.context.form.mapping.fields[i] = angular.extend($scope.context.form.mapping.fields[i], {
-                            'value': $scope.context.form.mapping.fields[i].id,
-                            'replaceValue': $scope.context.form.mapping.fields[i].optionFieldName
-                        });
                         $scope.context.actions.replaceViewDataVal($scope.context.data.mapping, $scope.context.form.mapping.fields[i]);
                     } else {
                         $scope.context.actions.makeOptionsFields($scope.context.form.mapping.fields[i]);

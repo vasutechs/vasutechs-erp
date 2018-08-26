@@ -145,89 +145,102 @@ erpApp.constant('erpAppConfig', {
                 form: {
                     name: 'partMaster',
                     id: 'partMaster',
-                    fields: [{
-                        name: 'Part No',
-                        id: 'partNo',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Part Name',
-                        id: 'partName',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Raw material',
-                        id: 'rmCode',
-                        type: 'select',
-                        options: {},
-                        dataFrom: 'purchase.rmMaster',
-                        optionFieldName: 'rmName'
-                    }, {
-                        name: 'Input weight',
-                        id: 'inputWeight',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'Finished weight',
-                        id: 'finishedWeight',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'HSN Code',
-                        id: 'hsnCode',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'UOM',
-                        id: 'uomCode',
-                        type: 'select',
-                        options: {},
-                        dataFrom: 'marketing.uomMaster',
-                        optionFieldName: 'uomName'
-                    }, {
-                        name: 'Prod Rate/ hr',
-                        id: 'prodRateHr',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'Rate',
-                        id: 'rate',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'GST',
-                        id: 'gst',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'SGST',
-                        id: 'sgst',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'CGST',
-                        id: 'cgst',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }]
+                    fields: {
+                        'partNo': {
+                            name: 'Part No',
+                            id: 'partNo',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'partName': {
+                            name: 'Part Name',
+                            id: 'partName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'rmCode': {
+                            name: 'Raw material',
+                            id: 'rmCode',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'purchase.rmMaster',
+                            replaceName: 'rmName'
+                        },
+                        'inputWeight': {
+                            name: 'Input weight',
+                            id: 'inputWeight',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'finishedWeight': {
+                            name: 'Finished weight',
+                            id: 'finishedWeight',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'hsnCode': {
+                            name: 'HSN Code',
+                            id: 'hsnCode',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'uomCode': {
+                            name: 'UOM',
+                            id: 'uomCode',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'marketing.uomMaster',
+                            replaceName: 'uomName'
+                        },
+                        'prodRateHr': {
+                            name: 'Prod Rate/ hr',
+                            id: 'prodRateHr',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'rate': {
+                            name: 'Rate',
+                            id: 'rate',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'gst': {
+                            name: 'GST',
+                            id: 'gst',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'sgst': {
+                            name: 'SGST',
+                            id: 'sgst',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'cgst': {
+                            name: 'CGST',
+                            id: 'cgst',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        }
+                    }
                 },
                 listView: [{
                         title: 'Part No',
-                        value: 'partNo'
+                        id: 'partNo'
                     },
                     {
                         title: 'Part Name',
-                        value: 'partName'
+                        id: 'partName'
                     },
                     {
                         action: true
@@ -266,73 +279,81 @@ erpApp.constant('erpAppConfig', {
                     name: 'customerMaster',
                     id: 'customerMaster',
                     autoGenKey: 'customerCode',
-                    fields: [{
-                        name: 'Customer Code',
-                        id: 'customerCode',
-                        type: 'span',
-                        valuePrefix: 'VT-'
-                    }, {
-                        name: 'Customer Name',
-                        id: 'customerName',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Address',
-                        id: 'address',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Contact No',
-                        id: 'contactNo',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'GSTIN',
-                        id: 'gstin',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }],
+                    fields: {
+                        'customerCode': {
+                            name: 'Customer Code',
+                            id: 'customerCode',
+                            type: 'span',
+                            idPrefix: 'VT-'
+                        },
+                        'customerName': {
+                            name: 'Customer Name',
+                            id: 'customerName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'address': {
+                            name: 'Address',
+                            id: 'address',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'contactNo': {
+                            name: 'Contact No',
+                            id: 'contactNo',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'gstin': {
+                            name: 'GSTIN',
+                            id: 'gstin',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        }
+                    },
                     mapping: {
                         name: 'Part Mapping',
-                        fields: [{
+                        fields: {
+                            'id': {
                                 name: 'Part No',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                optionFieldName: 'partName'
+                                replaceName: 'partName',
+                                isList: true
                             },
-                            {
+                            'partName': {
                                 name: 'Part Name',
                                 id: 'partName',
                                 type: 'span'
                             },
-                            {
+                            'rate': {
                                 name: 'Rate',
                                 id: 'rate',
                                 type: 'span'
                             },
-                            {
+                            'gst': {
                                 name: 'GST %',
                                 id: 'gst',
                                 type: 'span'
                             }
-                        ]
+                        }
                     }
                 },
                 listView: [{
                         title: 'Customer Code',
-                        value: 'customerCode',
-                        valuePrefix: 'VT-'
+                        id: 'customerCode',
+                        idPrefix: 'VT-'
                     },
                     {
                         title: 'Customer Name',
-                        value: 'customerName'
+                        id: 'customerName'
                     },
                     {
                         action: true
@@ -372,86 +393,99 @@ erpApp.constant('erpAppConfig', {
                     name: 'empMaster',
                     id: 'empMaster',
                     autoGenKey: 'employeeCode',
-                    fields: [{
-                        name: 'Employee Code',
-                        id: 'employeeCode',
-                        valuePrefix: 'VT-EMP-',
-                        type: 'span'
-                    }, {
-                        name: 'Employee Name',
-                        id: 'employeeName',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Address',
-                        id: 'address',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Contact No',
-                        id: 'contactNo',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'Mail Id',
-                        id: 'mailId',
-                        type: 'input',
-                        inputType: 'email',
-                        required: true
-                    }, {
-                        name: 'Qualification',
-                        id: 'qualification',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Designation',
-                        id: 'designation',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'BasicSalary',
-                        id: 'basicSalary',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'HRA',
-                        id: 'hra',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'CA',
-                        id: 'ca',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'OT',
-                        id: 'ot',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'Total',
-                        id: 'total',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }]
+                    fields: {
+                        'employeeCode': {
+                            name: 'Employee Code',
+                            id: 'employeeCode',
+                            idPrefix: 'VT-EMP-',
+                            type: 'span'
+                        },
+                        'employeeName': {
+                            name: 'Employee Name',
+                            id: 'employeeName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'address': {
+                            name: 'Address',
+                            id: 'address',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'contactNo': {
+                            name: 'Contact No',
+                            id: 'contactNo',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'mailId': {
+                            name: 'Mail Id',
+                            id: 'mailId',
+                            type: 'input',
+                            inputType: 'email',
+                            required: true
+                        },
+                        'qualification': {
+                            name: 'Qualification',
+                            id: 'qualification',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'designation': {
+                            name: 'Designation',
+                            id: 'designation',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'basicSalary': {
+                            name: 'BasicSalary',
+                            id: 'basicSalary',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'hra': {
+                            name: 'HRA',
+                            id: 'hra',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'ca': {
+                            name: 'CA',
+                            id: 'ca',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'ot': {
+                            name: 'OT',
+                            id: 'ot',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'total': {
+                            name: 'Total',
+                            id: 'total',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        }
+                    }
                 },
                 listView: [{
                         title: 'Employee Name',
-                        value: 'employeeName'
+                        id: 'employeeName'
                     },
                     {
                         title: 'Mail Id',
-                        value: 'mailId'
+                        id: 'mailId'
                     },
                     {
                         action: true
@@ -480,27 +514,30 @@ erpApp.constant('erpAppConfig', {
                     name: 'uomMaster',
                     id: 'uomMaster',
                     autoGenKey: 'uomCode',
-                    fields: [{
-                        name: 'UOM Code',
-                        id: 'uomCode',
-                        type: 'span',
-                        valuePrefix: 'VT-'
-                    }, {
-                        name: 'UOM Name',
-                        id: 'uomName',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }]
+                    fields: {
+                        'uomCode': {
+                            name: 'UOM Code',
+                            id: 'uomCode',
+                            type: 'span',
+                            idPrefix: 'VT-'
+                        },
+                        'uomName': {
+                            name: 'UOM Name',
+                            id: 'uomName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        }
+                    }
                 },
                 listView: [{
                         title: 'UOM Code',
-                        value: 'uomCode',
-                        valuePrefix: 'VT-'
+                        id: 'uomCode',
+                        idPrefix: 'VT-'
                     },
                     {
                         title: 'UOM Name',
-                        value: 'uomName'
+                        id: 'uomName'
                     },
                     {
                         action: true
@@ -553,7 +590,7 @@ erpApp.constant('erpAppConfig', {
                             type: 'input',
                             inputType: 'text',
                             required: true,
-                            valuePrefix: 'H-'
+                            idPrefix: 'H-'
                         },
                         'date': {
                             name: 'Date',
@@ -567,11 +604,11 @@ erpApp.constant('erpAppConfig', {
                             id: 'customerCode',
                             type: 'select',
                             options: {},
-                            action: 'getPartStockDetail',
+                            action: 'changeMapping',
                             updateMapping: true,
                             updateData: ['gstin', 'mapping'],
                             dataFrom: 'marketing.customerMaster',
-                            optionFieldName: 'customerName'
+                            replaceName: 'customerName'
                         },
                         'partyGstin': {
                             name: 'Party GSTIN',
@@ -628,21 +665,24 @@ erpApp.constant('erpAppConfig', {
                     },
                     mapping: {
                         name: 'Part Mapping',
-                        fields: [{
+                        fields: {
+                            'id': {
                                 name: 'Part No',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                optionFieldName: 'partName'
+                                replaceName: 'partName',
+                                isList: true,
+                                callBack: false
                             },
-                            {
+                            'hsnCode': {
                                 name: 'HSN Code',
                                 id: 'hsnCode',
                                 type: 'span'
                             },
-                            {
+                            'unit': {
                                 name: 'Unit',
                                 id: 'unit',
                                 type: 'input',
@@ -650,29 +690,30 @@ erpApp.constant('erpAppConfig', {
                                 action: 'updateTotal',
                                 required: true
                             },
-                            {
+                            'rate': {
                                 name: 'Rate',
                                 id: 'rate',
                                 type: 'span'
                             },
-                            {
+                            'amount': {
                                 name: 'Amount',
                                 id: 'amount',
                                 type: 'span'
                             }
-                        ]
+                        }
                     }
                 },
                 listView: [{
                         title: 'Invoice No',
-                        value: 'invoiceNo',
-                        valuePrefix: 'H-'
+                        id: 'invoiceNo',
+                        idPrefix: 'H-'
                     },
                     {
                         title: 'Customer',
-                        value: 'customerCode',
+                        id: 'customerCode',
                         dataFrom: 'marketing.customerMaster',
-                        replaceValue: 'customerName'
+                        replaceName: 'customerName',
+                        isList: true
                     },
                     {
                         action: true,
@@ -716,76 +757,87 @@ erpApp.constant('erpAppConfig', {
                     name: 'rmMaster',
                     id: 'rmMaster',
                     autoGenKey: 'rmCode',
-                    fields: [{
-                        name: 'RM Code',
-                        id: 'rmCode',
-                        valuePrefix: 'RM-',
-                        type: 'span'
-                    }, {
-                        name: 'RM Name',
-                        id: 'rmName',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Grade',
-                        id: 'grade',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Type',
-                        id: 'type',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'HSN Code',
-                        id: 'hsnCode',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'UOM',
-                        id: 'uomCode',
-                        type: 'select',
-                        options: {},
-                        dataFrom: 'marketing.uomMaster',
-                        optionFieldName: 'uomName'
-                    }, {
-                        name: 'Rate',
-                        id: 'rate',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'GST',
-                        id: 'gst',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'SGST',
-                        id: 'sgst',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'CGST',
-                        id: 'cgst',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }]
+                    fields: {
+                        'rmCode': {
+                            name: 'RM Code',
+                            id: 'rmCode',
+                            idPrefix: 'RM-',
+                            type: 'span'
+                        },
+                        'rmName': {
+                            name: 'RM Name',
+                            id: 'rmName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'grade': {
+                            name: 'Grade',
+                            id: 'grade',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'type': {
+                            name: 'Type',
+                            id: 'type',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'hsnCode': {
+                            name: 'HSN Code',
+                            id: 'hsnCode',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'uomCode': {
+                            name: 'UOM',
+                            id: 'uomCode',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'marketing.uomMaster',
+                            replaceName: 'uomName'
+                        },
+                        'rate': {
+                            name: 'Rate',
+                            id: 'rate',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'gst': {
+                            name: 'GST',
+                            id: 'gst',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'sgst': {
+                            name: 'SGST',
+                            id: 'sgst',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'cgst': {
+                            name: 'CGST',
+                            id: 'cgst',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        }
+                    }
                 },
                 listView: [{
                         title: 'RM Code',
-                        value: 'rmCode',
-                        valuePrefix: 'RM-'
+                        id: 'rmCode',
+                        idPrefix: 'RM-'
                     },
                     {
                         title: 'RM Name',
-                        value: 'rmName'
+                        id: 'rmName'
                     },
                     {
                         action: true
@@ -823,72 +875,80 @@ erpApp.constant('erpAppConfig', {
                     name: 'supplierMaster',
                     id: 'supplierMaster',
                     autoGenKey: 'supplierCode',
-                    fields: [{
-                        name: 'Supplier Code',
-                        id: 'supplierCode',
-                        type: 'span',
-                        valuePrefix: 'VT-SP-'
-                    }, {
-                        name: 'Supplier Name',
-                        id: 'supplierName',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Address',
-                        id: 'address',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Contact No',
-                        id: 'contactNo',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'GSTIN',
-                        id: 'gstin',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }],
+                    fields: {
+                        'supplierCode': {
+                            name: 'Supplier Code',
+                            id: 'supplierCode',
+                            type: 'span',
+                            idPrefix: 'VT-SP-'
+                        },
+                        'supplierName': {
+                            name: 'Supplier Name',
+                            id: 'supplierName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'address': {
+                            name: 'Address',
+                            id: 'address',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'contactNo': {
+                            name: 'Contact No',
+                            id: 'contactNo',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'gstin': {
+                            name: 'GSTIN',
+                            id: 'gstin',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        }
+                    },
                     mapping: {
                         name: 'RM Mapping',
-                        fields: [{
+                        fields: {
+                            'id': {
                                 name: 'RM Name',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
-                                optionFieldName: 'rmName'
+                                replaceName: 'rmName',
+                                isList: true
                             },
-                            {
+                            'rate': {
                                 name: 'Rate',
                                 id: 'rate',
                                 type: 'input',
                                 inputType: 'text',
                                 required: true
                             },
-                            {
+                            'gst': {
                                 name: 'GST %',
                                 id: 'gst',
                                 type: 'input',
                                 inputType: 'text',
                                 required: true
                             }
-                        ]
+                        }
                     }
                 },
                 listView: [{
                         title: 'Supplier Code',
-                        value: 'supplierCode',
-                        valuePrefix: 'VT-SP-'
+                        id: 'supplierCode',
+                        idPrefix: 'VT-SP-'
                     },
                     {
                         title: 'Supplier Name',
-                        value: 'supplierName'
+                        id: 'supplierName'
                     },
                     {
                         action: true
@@ -930,44 +990,51 @@ erpApp.constant('erpAppConfig', {
                     name: 'poSupplier',
                     id: 'poSupplier',
                     autoGenKey: 'poNo',
-                    fields: [{
-                        name: 'PO Code',
-                        id: 'poNo',
-                        type: 'span',
-                        valuePrefix: 'VT-SP-PO-'
-                    }, {
-                        name: 'Date',
-                        id: 'date',
-                        type: 'input',
-                        inputType: 'date',
-                        required: true
-                    }, {
-                        name: 'Supplier Code',
-                        id: 'supplierCode',
-                        type: 'select',
-                        options: {},
-                        action: 'changeMapping',
-                        updateMapping: true,
-                        updateData: ['gstin', 'mapping'],
-                        dataFrom: 'purchase.supplierMaster',
-                        optionFieldName: 'supplierName'
-                    }, {
-                        name: 'Party Gstin',
-                        id: 'gstin',
-                        type: 'span'
-                    }],
+                    fields: {
+                        'poNo': {
+                            name: 'PO Code',
+                            id: 'poNo',
+                            type: 'span',
+                            idPrefix: 'VT-SP-PO-'
+                        },
+                        'date': {
+                            name: 'Date',
+                            id: 'date',
+                            type: 'input',
+                            inputType: 'date',
+                            required: true
+                        },
+                        'supplierCode': {
+                            name: 'Supplier Code',
+                            id: 'supplierCode',
+                            type: 'select',
+                            options: {},
+                            action: 'changeMapping',
+                            updateMapping: true,
+                            updateData: ['gstin', 'mapping'],
+                            dataFrom: 'purchase.supplierMaster',
+                            replaceName: 'supplierName'
+                        },
+                        'gstin': {
+                            name: 'Party Gstin',
+                            id: 'gstin',
+                            type: 'span'
+                        }
+                    },
                     mapping: {
                         name: 'RM Mapping',
-                        fields: [{
+                        fields: {
+                            'id': {
                                 name: 'RM Name',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
-                                optionFieldName: 'rmName'
+                                replaceName: 'rmName',
+                                isList: true
                             },
-                            {
+                            'qty': {
                                 name: 'Qty',
                                 id: 'qty',
                                 type: 'input',
@@ -975,52 +1042,58 @@ erpApp.constant('erpAppConfig', {
                                 action: 'updateRmTotal',
                                 required: true
                             },
-                            {
+                            'uomCode': {
                                 name: 'UOM',
                                 id: 'uomCode',
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'marketing.uomMaster',
-                                optionFieldName: 'uomName'
+                                replaceName: 'uomName',
+                                isList: true
                             },
-                            {
+                            'rate': {
                                 name: 'Rate',
                                 id: 'rate',
                                 type: 'span'
                             },
-                            {
+                            'gst': {
                                 name: 'GST%',
                                 id: 'gst',
                                 type: 'span'
                             },
-                            {
+                            'cgst': {
                                 name: 'CGST%',
                                 id: 'cgst',
                                 type: 'span'
                             },
-                            {
+                            'sgst': {
                                 name: 'SGST%',
                                 id: 'sgst',
                                 type: 'span'
                             },
-                            {
+                            'total': {
                                 name: 'total',
                                 id: 'total',
                                 type: 'span'
                             }
-                        ]
+                        }
                     }
                 },
                 listView: [{
                         title: 'PO NO',
-                        value: 'poNo',
-                        valuePrefix: 'VT-SP-PO-'
+                        id: 'poNo',
+                        idPrefix: 'VT-SP-PO-'
                     },
                     {
                         title: 'Supplier Code',
-                        value: 'supplierCode',
+                        id: 'supplierCode',
                         dataFrom: 'purchase.supplierMaster',
-                        replaceValue: 'supplierName'
+                        replaceName: 'supplierName',
+                        isList: true
+                    },
+                    {
+                        title: 'Stutus',
+                        id: 'status'
                     },
                     {
                         action: true,
@@ -1060,75 +1133,85 @@ erpApp.constant('erpAppConfig', {
                     name: 'subContractorMaster',
                     id: 'subContractorMaster',
                     autoGenKey: 'subContractorCode',
-                    fields: [{
-                        name: 'Sub Contractor Code',
-                        id: 'subContractorCode',
-                        type: 'span',
-                        valuePrefix: 'VT-SC-'
-                    }, {
-                        name: 'Sub Contractor Name',
-                        id: 'subContractorName',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Address',
-                        id: 'address',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Contact No',
-                        id: 'contactNo',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }, {
-                        name: 'GSTIN',
-                        id: 'gstin',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true
-                    }],
+                    fields: {
+                        'subContractorCode': {
+                            name: 'Sub Contractor Code',
+                            id: 'subContractorCode',
+                            type: 'span',
+                            idPrefix: 'VT-SC-'
+                        },
+                        'subContractorName': {
+                            name: 'Sub Contractor Name',
+                            id: 'subContractorName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'address': {
+                            name: 'Address',
+                            id: 'address',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'contactNo': {
+                            name: 'Contact No',
+                            id: 'contactNo',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'gstin': {
+                            name: 'GSTIN',
+                            id: 'gstin',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        }
+                    },
                     mapping: {
                         name: 'Part Mapping',
-                        fields: [{
+                        fields: {
+                            'id': {
                                 name: 'Part Name',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                optionFieldName: 'partName'
-                            }, {
+                                replaceName: 'partName',
+                                isList: true
+                            },
+                            'operationTo': {
                                 name: 'Op Name',
                                 id: 'operationTo',
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'production.operationMaster',
-                                optionFieldName: 'opName'
+                                replaceName: 'opName',
+                                isList: true
                             },
-                            {
+                            'rate': {
                                 name: 'Rate',
                                 id: 'rate',
                                 type: 'span'
                             },
-                            {
+                            'gst': {
                                 name: 'GST %',
                                 id: 'gst',
                                 type: 'span'
                             }
-                        ]
+                        }
                     }
                 },
                 listView: [{
                         title: 'Sub Contractor Code',
-                        value: 'subContractorCode',
-                        valuePrefix: 'VT-SC-'
+                        id: 'subContractorCode',
+                        idPrefix: 'VT-SC-'
                     },
                     {
                         title: 'Sub Contractor Name',
-                        value: 'subContractorName'
+                        id: 'subContractorName'
                     },
                     {
                         action: true
@@ -1171,51 +1254,60 @@ erpApp.constant('erpAppConfig', {
                     name: 'poSubContractor',
                     id: 'poSubContractor',
                     autoGenKey: 'poNo',
-                    fields: [{
-                        name: 'PO Code',
-                        id: 'poNo',
-                        type: 'span',
-                        valuePrefix: 'VT-SC-PO-'
-                    }, {
-                        name: 'Date',
-                        id: 'date',
-                        type: 'input',
-                        inputType: 'date',
-                        required: true
-                    }, {
-                        name: 'Sub Contractor Code',
-                        id: 'subContractorCode',
-                        type: 'select',
-                        options: {},
-                        action: 'changeMapping',
-                        updateMapping: true,
-                        updateData: ['gstin', 'mapping'],
-                        dataFrom: 'purchase.subContractorMaster',
-                        optionFieldName: 'subContractorName'
-                    }, {
-                        name: 'Party Gstin',
-                        id: 'gstin',
-                        type: 'span'
-                    }],
+                    fields: {
+                        'poNo': {
+                            name: 'PO Code',
+                            id: 'poNo',
+                            type: 'span',
+                            idPrefix: 'VT-SC-PO-'
+                        },
+                        'date': {
+                            name: 'Date',
+                            id: 'date',
+                            type: 'input',
+                            inputType: 'date',
+                            required: true
+                        },
+                        'subContractorCode': {
+                            name: 'Sub Contractor Code',
+                            id: 'subContractorCode',
+                            type: 'select',
+                            options: {},
+                            action: 'changeMapping',
+                            updateMapping: true,
+                            updateData: ['gstin', 'mapping'],
+                            dataFrom: 'purchase.subContractorMaster',
+                            replaceName: 'subContractorName'
+                        },
+                        'gstin': {
+                            name: 'Party Gstin',
+                            id: 'gstin',
+                            type: 'span'
+                        }
+                    },
                     mapping: {
                         name: 'Part Mapping',
-                        fields: [{
+                        fields: {
+                            'id': {
                                 name: 'Part No',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                optionFieldName: 'partName'
-                            }, {
+                                replaceName: 'partName',
+                                isList: true
+                            },
+                            'operationTo': {
                                 name: 'Op Name',
                                 id: 'operationTo',
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'production.operationMaster',
-                                optionFieldName: 'opName'
+                                replaceName: 'opName',
+                                isList: true
                             },
-                            {
+                            'acceptedQty': {
                                 name: 'Qty',
                                 id: 'acceptedQty',
                                 type: 'input',
@@ -1223,52 +1315,58 @@ erpApp.constant('erpAppConfig', {
                                 action: 'updatePartTotal',
                                 required: true
                             },
-                            {
+                            'uomCode': {
                                 name: 'UOM',
                                 id: 'uomCode',
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'marketing.uomMaster',
-                                optionFieldName: 'uomName'
+                                replaceName: 'uomName',
+                                isList: true
                             },
-                            {
+                            'rate': {
                                 name: 'Rate',
                                 id: 'rate',
                                 type: 'span'
                             },
-                            {
+                            'gst': {
                                 name: 'GST%',
                                 id: 'gst',
                                 type: 'span'
                             },
-                            {
+                            'cgst': {
                                 name: 'CGST%',
                                 id: 'cgst',
                                 type: 'span'
                             },
-                            {
+                            'sgst': {
                                 name: 'SGST%',
                                 id: 'sgst',
                                 type: 'span'
                             },
-                            {
+                            'total': {
                                 name: 'total',
                                 id: 'total',
                                 type: 'span'
                             }
-                        ]
+                        }
                     }
                 },
                 listView: [{
                         title: 'PO NO',
-                        value: 'poNo',
-                        valuePrefix: 'VT-SC-PO-'
+                        id: 'poNo',
+                        idPrefix: 'VT-SC-PO-'
                     },
                     {
                         title: 'SubContractor Code',
-                        value: 'subContractorCode',
+                        id: 'subContractorCode',
                         dataFrom: 'purchase.subContractorMaster',
-                        replaceValue: 'subContractorName'
+                        replaceName: 'subContractorName',
+                        isList: true
+                    },
+                    {
+                        title: 'Stutus',
+                        id: 'status'
                     },
                     {
                         action: true,
@@ -1320,27 +1418,30 @@ erpApp.constant('erpAppConfig', {
                     name: 'grnSupplier',
                     id: 'grnSupplier',
                     autoGenKey: 'grnNo',
-                    fields: [{
+                    fields: {
+                        'grnNo': {
                             name: 'GRN No',
                             id: 'grnNo',
                             type: 'span',
-                            valuePrefix: 'VT-GRN-'
-                        }, {
+                            idPrefix: 'VT-GRN-'
+                        },
+                        'date': {
                             name: 'Date',
                             id: 'date',
                             type: 'input',
                             inputType: 'date',
                             required: true
-                        }, {
+                        },
+                        'supplierCode': {
                             name: 'Supplier Code',
                             id: 'supplierCode',
                             type: 'select',
                             options: {},
                             action: 'getPOSupplier',
                             dataFrom: 'purchase.supplierMaster',
-                            optionFieldName: 'supplierName'
+                            replaceName: 'supplierName'
                         },
-                        {
+                        'poNo': {
                             name: 'PO No',
                             id: 'poNo',
                             type: 'select',
@@ -1349,48 +1450,52 @@ erpApp.constant('erpAppConfig', {
                             updateMapping: true,
                             updateData: ['mapping'],
                             dataFrom: 'purchase.poSupplier',
-                            optionFieldName: 'poNo',
-                            optionFieldNamePrefix: 'VT-SP-PO-'
+                            replaceName: 'poNo',
+                            replaceNamePrefix: 'VT-SP-PO-'
                         },
-                        {
+                        'supplierInvoiceNo': {
                             name: 'Supplier Invoice No',
                             id: 'supplierInvoiceNo',
                             type: 'input',
                             inputType: 'text',
                             required: true
-                        }, {
+                        },
+                        'supplierInvoiceDate': {
                             name: 'Supplier Invoce Date',
                             id: 'supplierInvoiceDate',
                             type: 'input',
                             inputType: 'date',
                             required: true
                         }
-                    ],
+                    },
                     mapping: {
                         name: 'Detail Mapping',
-                        fields: [{
+                        fields: {
+                            'id': {
                                 name: 'RM Name',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
-                                optionFieldName: 'rmName'
+                                replaceName: 'rmName',
+                                isList: true
                             },
-                            {
+                            'qty': {
                                 name: 'PO Qty',
                                 id: 'qty',
                                 type: 'span'
                             },
-                            {
+                            'uomCode': {
                                 name: 'UOM',
                                 id: 'uomCode',
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'marketing.uomMaster',
-                                optionFieldName: 'uomName'
+                                replaceName: 'uomName',
+                                isList: true
                             },
-                            {
+                            'receivedQty': {
                                 name: 'Received Qty',
                                 id: 'receivedQty',
                                 type: 'input',
@@ -1398,7 +1503,7 @@ erpApp.constant('erpAppConfig', {
                                 action: 'updateRmTotal',
                                 required: true
                             },
-                            {
+                            'acceptedQty': {
                                 name: 'Accepted Qty',
                                 id: 'acceptedQty',
                                 type: 'input',
@@ -1406,34 +1511,35 @@ erpApp.constant('erpAppConfig', {
                                 action: 'updateRmTotal',
                                 required: true
                             },
-                            {
+                            'rate': {
                                 name: 'Rate',
                                 id: 'rate',
                                 type: 'span'
                             },
-                            {
+                            'gst': {
                                 name: 'GST%',
                                 id: 'gst',
                                 type: 'span'
                             },
-                            {
+                            'total': {
                                 name: 'total',
                                 id: 'total',
                                 type: 'span'
                             }
-                        ]
+                        }
                     }
                 },
                 listView: [{
                         title: 'GRN NO',
-                        value: 'grnNo',
-                        valuePrefix: 'VT-GRN-'
+                        id: 'grnNo',
+                        idPrefix: 'VT-GRN-'
                     },
                     {
                         title: 'Supplier',
-                        value: 'supplierCode',
+                        id: 'supplierCode',
                         dataFrom: 'purchase.supplierMaster',
-                        replaceValue: 'supplierName'
+                        replaceName: 'supplierName',
+                        isList: true
                     },
                     {
                         action: true,
@@ -1475,98 +1581,113 @@ erpApp.constant('erpAppConfig', {
                     name: 'dcSubContractor',
                     id: 'dcSubContractor',
                     autoGenKey: 'dcNo',
-                    fields: [{
-                        name: 'DC No',
-                        id: 'dcNo',
-                        type: 'span',
-                        valuePrefix: 'VT-DC-'
-                    }, {
-                        name: 'Date',
-                        id: 'date',
-                        type: 'input',
-                        inputType: 'date',
-                        required: true
-                    }, {
-                        name: 'Sub Contractor Code',
-                        id: 'subContractorCode',
-                        type: 'select',
-                        options: {},
-                        action: 'getPOSubContractor',
-                        dataFrom: 'purchase.subContractorMaster',
-                        optionFieldName: 'subContractorName'
-                    }, {
-                        name: 'PO No',
-                        id: 'poNo',
-                        type: 'select',
-                        options: {},
-                        action: 'changeMapping',
-                        dataFrom: 'purchase.poSubContractor',
-                        optionFieldName: 'poNo',
-                        optionFieldNamePrefix: 'VT-SC-PO-',
-                        updateMapping: true,
-                        updateData: ['mapping']
-                    }],
+                    fields: {
+                        'dcNo': {
+                            name: 'DC No',
+                            id: 'dcNo',
+                            type: 'span',
+                            idPrefix: 'VT-DC-'
+                        },
+                        'date': {
+                            name: 'Date',
+                            id: 'date',
+                            type: 'input',
+                            inputType: 'date',
+                            required: true
+                        },
+                        'subContractorCode': {
+                            name: 'Sub Contractor Code',
+                            id: 'subContractorCode',
+                            type: 'select',
+                            options: {},
+                            action: 'getPOSubContractor',
+                            dataFrom: 'purchase.subContractorMaster',
+                            replaceName: 'subContractorName'
+                        },
+                        'poNo': {
+                            name: 'PO No',
+                            id: 'poNo',
+                            type: 'select',
+                            options: {},
+                            action: 'changeMapping',
+                            dataFrom: 'purchase.poSubContractor',
+                            replaceName: 'poNo',
+                            replaceNamePrefix: 'VT-SC-PO-',
+                            updateMapping: true,
+                            updateData: ['mapping']
+                        }
+                    },
                     mapping: {
                         name: 'Detail Mapping',
-                        fields: [{
+                        fields: {
+                            'id': {
                                 name: 'Part No',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'marketing.partMaster',
-                                optionFieldName: 'partName'
+                                replaceName: 'partName',
+                                isList: true
                             },
-                            {
+                            'operationFrom': {
                                 name: 'Part From',
                                 id: 'operationFrom',
                                 type: 'select',
                                 options: {},
                                 required: true,
                                 dataFrom: 'production.operationMaster',
-                                optionFieldName: 'opName',
-                                optionFieldNamePrefixData: 'opCode'
+                                replaceName: 'opName',
+                                replaceNamePrefixData: 'opCode',
+                                isList: true
                             },
-                            {
+                            'operationTo': {
                                 name: 'For the purpose',
                                 id: 'operationTo',
                                 type: 'select',
                                 options: {},
                                 required: true,
                                 dataFrom: 'production.operationMaster',
-                                optionFieldName: 'opName',
-                                optionFieldNamePrefixData: 'opCode'
+                                replaceName: 'opName',
+                                replaceNamePrefixData: 'opCode',
+                                isList: true
                             },
-                            {
+                            'acceptedQty': {
                                 name: 'Qty',
                                 id: 'acceptedQty',
                                 type: 'span'
                             },
-                            {
+                            'uomCode': {
                                 name: 'UOM',
                                 id: 'uomCode',
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'marketing.uomMaster',
-                                optionFieldName: 'uomName'
+                                replaceName: 'uomName',
+                                isList: true
                             },
-                            {
+                            'total': {
                                 name: 'App Cost',
                                 id: 'total',
                                 type: 'span'
                             }
-                        ]
+                        }
                     }
                 },
                 listView: [{
                         title: 'DC NO',
-                        value: 'dcNo',
-                        valuePrefix: 'VT-DC-'
+                        id: 'dcNo',
+                        idPrefix: 'VT-DC-'
                     },
                     {
                         title: 'Sub Contractor Code',
-                        value: 'subContractorCode',
+                        id: 'subContractorCode',
                         dataFrom: 'purchase.subContractorMaster',
-                        replaceValue: 'subContractorName'
+                        replaceName: 'subContractorName',
+                        isList: true
+                    },
+                    {
+                        title: 'Stutus',
+                        id: 'status'
                     },
                     {
                         action: true,
@@ -1615,88 +1736,101 @@ erpApp.constant('erpAppConfig', {
                     name: 'grnSubContractor',
                     id: 'grnSubContractor',
                     autoGenKey: 'grnNo',
-                    fields: [{
-                        name: 'GRN No',
-                        id: 'grnNo',
-                        type: 'span',
-                        valuePrefix: 'VT-SC-GRN-'
-                    }, {
-                        name: 'Date',
-                        id: 'date',
-                        type: 'input',
-                        inputType: 'date',
-                        required: true
-                    }, {
-                        name: 'Sub Contractor Code',
-                        id: 'subContractorCode',
-                        type: 'select',
-                        options: {},
-                        action: 'getPOSubContractor',
-                        dataFrom: 'purchase.subContractorMaster',
-                        optionFieldName: 'subContractorName'
-                    }, {
-                        name: 'PO No',
-                        id: 'poNo',
-                        type: 'select',
-                        options: {},
-                        action: 'getDCSubContractor',
-                        dataFrom: 'purchase.poSubContractor',
-                        optionFieldName: 'poNo',
-                        optionFieldNamePrefix: 'VT-SC-PO-'
-                    }, {
-                        name: 'Our DC No',
-                        id: 'dcNo',
-                        type: 'select',
-                        options: {},
-                        dataFrom: 'store.dcSubContractor',
-                        action: 'changeMapping',
-                        optionFieldName: 'dcNo',
-                        optionFieldNamePrefix: 'VT-DC-',
-                        updateMapping: true,
-                        updateData: ['mapping']
-                    }, {
-                        name: 'Sub Contractor DC Code',
-                        id: 'subContractorDCCode',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Sub Contractor DC Date',
-                        id: 'subContractorDCDate',
-                        type: 'input',
-                        inputType: 'date',
-                        required: true
-                    }],
+                    fields: {
+                        'grnNo': {
+                            name: 'GRN No',
+                            id: 'grnNo',
+                            type: 'span',
+                            idPrefix: 'VT-SC-GRN-'
+                        },
+                        'date': {
+                            name: 'Date',
+                            id: 'date',
+                            type: 'input',
+                            inputType: 'date',
+                            required: true
+                        },
+                        'subContractorCode': {
+                            name: 'Sub Contractor Code',
+                            id: 'subContractorCode',
+                            type: 'select',
+                            options: {},
+                            action: 'getPOSubContractor',
+                            dataFrom: 'purchase.subContractorMaster',
+                            replaceName: 'subContractorName'
+                        },
+                        'poNo': {
+                            name: 'PO No',
+                            id: 'poNo',
+                            type: 'select',
+                            options: {},
+                            action: 'getDCSubContractor',
+                            dataFrom: 'purchase.poSubContractor',
+                            replaceName: 'poNo',
+                            replaceNamePrefix: 'VT-SC-PO-'
+                        },
+                        'dcNo': {
+                            name: 'Our DC No',
+                            id: 'dcNo',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'store.dcSubContractor',
+                            action: 'changeMapping',
+                            replaceName: 'dcNo',
+                            replaceNamePrefix: 'VT-DC-',
+                            updateMapping: true,
+                            updateData: ['mapping']
+                        },
+                        'subContractorDCCode': {
+                            name: 'Sub Contractor DC Code',
+                            id: 'subContractorDCCode',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'subContractorDCDate': {
+                            name: 'Sub Contractor DC Date',
+                            id: 'subContractorDCDate',
+                            type: 'input',
+                            inputType: 'date',
+                            required: true
+                        }
+                    },
                     mapping: {
                         name: 'Detail Mapping',
-                        fields: [{
+                        fields: {
+                            'id': {
                                 name: 'Part No',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                optionFieldName: 'partName'
+                                replaceName: 'partName',
+                                isList: true
                             },
-                            {
+                            'operationFrom': {
                                 name: 'Part From',
                                 id: 'operationFrom',
                                 type: 'select',
                                 options: {},
                                 required: true,
                                 dataFrom: 'production.operationMaster',
-                                optionFieldName: 'opName',
-                                optionFieldNamePrefixData: 'opCode'
-                            }, {
+                                replaceName: 'opName',
+                                replaceNamePrefixData: 'opCode',
+                                isList: true
+                            },
+                            'operationTo': {
                                 name: 'Op Name',
                                 id: 'operationTo',
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'production.operationMaster',
-                                optionFieldName: 'opName',
-                                optionFieldNamePrefixData: 'opCode'
+                                replaceName: 'opName',
+                                replaceNamePrefixData: 'opCode',
+                                isList: true
                             },
-                            {
+                            'receivedQty': {
                                 name: 'Received Qty',
                                 id: 'receivedQty',
                                 type: 'input',
@@ -1704,7 +1838,7 @@ erpApp.constant('erpAppConfig', {
                                 action: 'updatePartTotal',
                                 required: true
                             },
-                            {
+                            'acceptedQty': {
                                 name: 'Accepted Qty',
                                 id: 'acceptedQty',
                                 type: 'input',
@@ -1712,52 +1846,54 @@ erpApp.constant('erpAppConfig', {
                                 action: 'updatePartTotal',
                                 required: true
                             },
-                            {
+                            'uomCode': {
                                 name: 'UOM',
                                 id: 'uomCode',
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'marketing.uomMaster',
-                                optionFieldName: 'uomName'
+                                replaceName: 'uomName',
+                                isList: true
                             },
-                            {
+                            'rate': {
                                 name: 'Rate',
                                 id: 'rate',
                                 type: 'span'
                             },
-                            {
+                            'gst': {
                                 name: 'GST%',
                                 id: 'gst',
                                 type: 'span'
                             },
-                            {
+                            'cgst': {
                                 name: 'CGST%',
                                 id: 'cgst',
                                 type: 'span'
                             },
-                            {
+                            'sgst': {
                                 name: 'SGST%',
                                 id: 'sgst',
                                 type: 'span'
                             },
-                            {
+                            'total': {
                                 name: 'total',
                                 id: 'total',
                                 type: 'span'
                             }
-                        ]
+                        }
                     }
                 },
                 listView: [{
                         title: 'GRN NO',
-                        value: 'grnNo',
-                        valuePrefix: 'VT-SC-GRN-'
+                        id: 'grnNo',
+                        idPrefix: 'VT-SC-GRN-'
                     },
                     {
                         title: 'Sub Contractor Code',
-                        value: 'subContractorCode',
+                        id: 'subContractorCode',
                         dataFrom: 'purchase.subContractorMaster',
-                        replaceValue: 'subContractorName'
+                        replaceName: 'subContractorName',
+                        isList: true
                     },
                     {
                         action: true,
@@ -1799,33 +1935,37 @@ erpApp.constant('erpAppConfig', {
                 form: {
                     name: 'operationMaster',
                     id: 'operationMaster',
-                    fields: [{
-                        name: 'Operation',
-                        id: 'opCode',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Operation Name',
-                        id: 'opName',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Source',
-                        id: 'source',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }]
+                    fields: {
+                        'opCode': {
+                            name: 'Operation',
+                            id: 'opCode',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'opName': {
+                            name: 'Operation Name',
+                            id: 'opName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'source': {
+                            name: 'Source',
+                            id: 'source',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        }
+                    }
                 },
                 listView: [{
                         title: 'Operation',
-                        value: 'opCode'
+                        id: 'opCode'
                     },
                     {
                         title: 'Operation Name',
-                        value: 'opName'
+                        id: 'opName'
                     },
                     {
                         action: true
@@ -1854,38 +1994,43 @@ erpApp.constant('erpAppConfig', {
                 form: {
                     name: 'bom',
                     id: 'bom',
-                    fields: [{
-                        name: 'Part No',
-                        id: 'partNo',
-                        type: 'select',
-                        options: {},
-                        dataFrom: 'marketing.partMaster',
-                        optionFieldName: 'partName'
-                    }, {
-                        name: 'RM Code',
-                        id: 'rmCode',
-                        type: 'select',
-                        options: {},
-                        dataFrom: 'purchase.rmMaster',
-                        optionFieldName: 'rmName'
-                    }, {
-                        name: 'Part Norms',
-                        id: 'partNorms',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }]
+                    fields: {
+                        'partNo': {
+                            name: 'Part No',
+                            id: 'partNo',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'marketing.partMaster',
+                            replaceName: 'partName'
+                        },
+                        'rmCode': {
+                            name: 'RM Code',
+                            id: 'rmCode',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'purchase.rmMaster',
+                            replaceName: 'rmName'
+                        },
+                        'partNorms': {
+                            name: 'Part Norms',
+                            id: 'partNorms',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        }
+                    }
                 },
                 listView: [{
                         title: 'Part No',
-                        value: 'partNo',
+                        id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceValue: 'partName'
+                        replaceName: 'partName',
+                        isList: true
                     },
                     {
                         title: 'RM Code',
-                        value: 'rmCode',
-                        valuePrefix: 'RM-'
+                        id: 'rmCode',
+                        idPrefix: 'RM-'
                     },
                     {
                         action: true
@@ -1913,63 +2058,71 @@ erpApp.constant('erpAppConfig', {
                     model: null,
                     capacity: null,
                     yoe: null,
-                    value: null
+                    id: null
                 },
                 form: {
                     name: 'machineMaster',
                     id: 'machineMaster',
                     autoGenKey: 'machineNo',
-                    fields: [{
-                        name: 'Machine No',
-                        id: 'machineNo',
-                        type: 'span',
-                        valuePrefix: 'VT-HPP-'
-                    }, {
-                        name: 'Machine Name',
-                        id: 'machineName',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Make',
-                        id: 'make',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Model',
-                        id: 'model',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Capacity',
-                        id: 'capacity',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Year of experience',
-                        id: 'yoe',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Value',
-                        id: 'value',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }]
+                    fields: {
+                        'machineNo': {
+                            name: 'Machine No',
+                            id: 'machineNo',
+                            type: 'span',
+                            idPrefix: 'VT-HPP-'
+                        },
+                        'machineName': {
+                            name: 'Machine Name',
+                            id: 'machineName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'make': {
+                            name: 'Make',
+                            id: 'make',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'model': {
+                            name: 'Model',
+                            id: 'model',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'capacity': {
+                            name: 'Capacity',
+                            id: 'capacity',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'yoe': {
+                            name: 'Year of experience',
+                            id: 'yoe',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'value': {
+                            name: 'Value',
+                            id: 'value',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        }
+                    }
                 },
                 listView: [{
                         title: 'Machine No',
-                        value: 'machineNo',
-                        valuePrefix: 'VT-HPP-'
+                        id: 'machineNo',
+                        idPrefix: 'VT-HPP-'
                     },
                     {
                         title: 'Machine Name',
-                        value: 'machineName'
+                        id: 'machineName'
                     },
                     {
                         action: true
@@ -2001,44 +2154,50 @@ erpApp.constant('erpAppConfig', {
                 form: {
                     name: 'flowMaster',
                     id: 'flowMaster',
-                    fields: [{
-                        name: 'Part No',
-                        id: 'partNo',
-                        type: 'select',
-                        options: {},
-                        required: true,
-                        dataFrom: 'marketing.partMaster',
-                        optionFieldName: 'partName'
-                    }],
+                    fields: {
+                        'partNo': {
+                            name: 'Part No',
+                            id: 'partNo',
+                            type: 'select',
+                            options: {},
+                            required: true,
+                            dataFrom: 'marketing.partMaster',
+                            replaceName: 'partName'
+                        }
+                    },
                     mapping: {
                         name: 'OP Mapping',
-                        fields: [{
+                        fields: {
+                            'id': {
                                 name: 'Part op code',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'production.operationMaster',
-                                optionFieldName: 'opCode'
+                                replaceName: 'opName',
+                                replaceNamePrefixData: 'opCode',
+                                isList: true
                             },
-                            {
+                            'opName': {
                                 name: 'op Name',
                                 id: 'opName',
                                 type: 'span'
                             },
-                            {
+                            'source': {
                                 name: 'Source',
                                 id: 'source',
                                 type: 'span'
                             }
-                        ]
+                        }
                     }
                 },
                 listView: [{
                         title: 'Part NO',
-                        value: 'partNo',
+                        id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceValue: 'partName'
+                        replaceName: 'partName',
+                        isList: true
                     },
                     {
                         action: true
@@ -2066,67 +2225,76 @@ erpApp.constant('erpAppConfig', {
                     type: null,
                     toolLife: null,
                     yop: null,
-                    value: null
+                    id: null
                 },
                 form: {
                     name: 'toolMaster',
                     id: 'toolMaster',
                     autoGenKey: 'toolNo',
-                    fields: [{
-                        name: 'Tool No',
-                        id: 'toolNo',
-                        type: 'span',
-                        valuePrefix: 'VT-T'
-                    }, {
-                        name: 'Part No',
-                        id: 'partNo',
-                        type: 'select',
-                        options: {},
-                        dataFrom: 'marketing.partMaster',
-                        optionFieldName: 'partName',
-                        required: true
-                    }, {
-                        name: 'Make',
-                        id: 'make',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Type',
-                        id: 'type',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Tool Life',
-                        id: 'toolLife',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Year of Purchase',
-                        id: 'yop',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Value',
-                        id: 'value',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }]
+                    fields: {
+                        'toolNo': {
+                            name: 'Tool No',
+                            id: 'toolNo',
+                            type: 'span',
+                            idPrefix: 'VT-T'
+                        },
+                        'partNo': {
+                            name: 'Part No',
+                            id: 'partNo',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'marketing.partMaster',
+                            replaceName: 'partName',
+                            required: true
+                        },
+                        'make': {
+                            name: 'Make',
+                            id: 'make',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'type': {
+                            name: 'Type',
+                            id: 'type',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'toolLife': {
+                            name: 'Tool Life',
+                            id: 'toolLife',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'yop': {
+                            name: 'Year of Purchase',
+                            id: 'yop',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'value': {
+                            name: 'Value',
+                            id: 'value',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        }
+                    }
                 },
                 listView: [{
                         title: 'Tool No',
-                        value: 'toolNo',
-                        valuePrefix: 'VT-T'
+                        id: 'toolNo',
+                        idPrefix: 'VT-T'
                     },
                     {
                         title: 'PartName',
-                        value: 'partNo',
+                        id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceValue: 'partName'
+                        replaceName: 'partName',
+                        isList: true
                     },
                     {
                         action: true
@@ -2162,77 +2330,91 @@ erpApp.constant('erpAppConfig', {
                     name: 'materialIssueNote',
                     id: 'materialIssueNote',
                     autoGenKey: 'jobCardNo',
-                    fields: [{
-                        name: 'Job Card No',
-                        id: 'jobCardNo',
-                        type: 'span',
-                        valuePrefix: 'VT-'
-                    }, {
-                        name: 'Job Card Date',
-                        id: 'date',
-                        type: 'input',
-                        inputType: 'date',
-                        required: true
-                    }, {
-                        name: 'RM Code',
-                        id: 'rmCode',
-                        type: 'select',
-                        options: {},
-                        dataFrom: 'purchase.rmMaster',
-                        optionFieldName: 'rmName',
-                        action: 'getPartNo'
-                    }, {
-                        name: 'Part No',
-                        id: 'partNo',
-                        type: 'select',
-                        options: {},
-                        dataFrom: 'marketing.partMaster',
-                        optionFieldName: 'partName',
-                        action: 'getNorms'
-                    }, {
-                        name: 'Part Norms',
-                        id: 'partNorms',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Issue Qty',
-                        id: 'issueQty',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true,
-                        action: 'updateQtyMake'
-                    }, {
-                        name: 'Qty Can Make',
-                        id: 'qtyCanMake',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Issue Stage',
-                        id: 'operationFrom',
-                        type: 'select',
-                        options: {},
-                        required: true,
-                        dataFrom: 'production.operationMaster',
-                        optionFieldName: 'opName',
-                        optionFieldNamePrefixData: 'opCode'
-                    }]
+                    fields: {
+                        'jobCardNo': {
+                            name: 'Job Card No',
+                            id: 'jobCardNo',
+                            type: 'span',
+                            idPrefix: 'VT-'
+                        },
+                        'date': {
+                            name: 'Job Card Date',
+                            id: 'date',
+                            type: 'input',
+                            inputType: 'date',
+                            required: true
+                        },
+                        'rmCode': {
+                            name: 'RM Code',
+                            id: 'rmCode',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'purchase.rmMaster',
+                            replaceName: 'rmName',
+                            action: 'getPartNo'
+                        },
+                        'partNo': {
+                            name: 'Part No',
+                            id: 'partNo',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'marketing.partMaster',
+                            replaceName: 'partName',
+                            action: 'getNorms'
+                        },
+                        'partNorms': {
+                            name: 'Part Norms',
+                            id: 'partNorms',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'issueQty': {
+                            name: 'Issue Qty',
+                            id: 'issueQty',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true,
+                            action: 'updateQtyMake'
+                        },
+                        'qtyCanMake': {
+                            name: 'Qty Can Make',
+                            id: 'qtyCanMake',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'operationFrom': {
+                            name: 'Issue Stage',
+                            id: 'operationFrom',
+                            type: 'select',
+                            options: {},
+                            required: true,
+                            dataFrom: 'production.operationMaster',
+                            replaceName: 'opName',
+                            replaceNamePrefixData: 'opCode'
+                        }
+                    }
                 },
                 listView: [{
                         title: 'Job Card No',
-                        value: 'jobCardNo',
-                        valuePrefix: 'VT-'
+                        id: 'jobCardNo',
+                        idPrefix: 'VT-'
                     },
                     {
                         title: 'PartName',
-                        value: 'partNo',
+                        id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceValue: 'partName'
+                        replaceName: 'partName',
+                        isList: true
                     },
                     {
                         title: 'Qty Can Make',
-                        value: 'qtyCanMake'
+                        id: 'qtyCanMake'
+                    },
+                    {
+                        title: 'Status',
+                        id: 'status'
                     },
                     {
                         action: true,
@@ -2274,144 +2456,162 @@ erpApp.constant('erpAppConfig', {
                 form: {
                     name: 'productionEntry',
                     id: 'productionEntry',
-                    fields: [{
-                        name: 'Date',
-                        id: 'date',
-                        type: 'input',
-                        inputType: 'date',
-                        required: true
-                    }, {
-                        name: 'M/C No',
-                        id: 'mcNo',
-                        type: 'select',
-                        options: {},
-                        dataFrom: 'production.machineMaster',
-                        optionFieldName: 'machineNo',
-                        optionFieldNamePrefix: 'VT-HPP-',
-                        required: true
-                    }, {
-                        name: 'Job Card No',
-                        id: 'jobCardNo',
-                        type: 'select',
-                        options: {},
-                        required: true,
-                        dataFrom: 'production.materialIssueNote',
-                        optionFieldName: 'jobCardNo',
-                        optionFieldNamePrefix: 'VT-',
-                        action: 'updatePartDetails',
-                        updateData: ['partNo', 'operationFrom'],
-                        filter: {
-                            status: 0
+                    fields: {
+                        'date': {
+                            name: 'Date',
+                            id: 'date',
+                            type: 'input',
+                            inputType: 'date',
+                            required: true
+                        },
+                        'mcNo': {
+                            name: 'M/C No',
+                            id: 'mcNo',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'production.machineMaster',
+                            replaceName: 'machineNo',
+                            replaceNamePrefix: 'VT-HPP-',
+                            required: true
+                        },
+                        'jobCardNo': {
+                            name: 'Job Card No',
+                            id: 'jobCardNo',
+                            type: 'select',
+                            options: {},
+                            required: true,
+                            dataFrom: 'production.materialIssueNote',
+                            replaceName: 'jobCardNo',
+                            replaceNamePrefix: 'VT-',
+                            action: 'updatePartDetails',
+                            updateData: ['partNo', 'operationFrom'],
+                            filter: {
+                                status: 0
+                            }
+                        },
+                        'partNo': {
+                            name: 'Part No',
+                            id: 'partNo',
+                            type: 'select',
+                            options: {},
+                            required: true,
+                            dataFrom: 'marketing.partMaster',
+                            replaceName: 'partName',
+                            isDisable: true
+                        },
+                        'operationFrom': {
+                            name: 'Operation From',
+                            id: 'operationFrom',
+                            type: 'select',
+                            options: {},
+                            required: true,
+                            dataFrom: 'production.operationMaster',
+                            replaceName: 'opName',
+                            replaceNamePrefixData: 'opCode'
+                        },
+                        'operationTo': {
+                            name: 'Operation To',
+                            id: 'operationTo',
+                            type: 'select',
+                            options: {},
+                            required: true,
+                            dataFrom: 'production.operationMaster',
+                            replaceName: 'opName',
+                            replaceNamePrefixData: 'opCode'
+                        },
+                        'toolNo': {
+                            name: 'Tool No',
+                            id: 'toolNo',
+                            type: 'select',
+                            options: {},
+                            required: true,
+                            dataFrom: 'production.toolMaster',
+                            replaceName: 'toolNo',
+                            replaceNamePrefix: 'VT-T-'
+                        },
+                        'Operator': {
+                            name: 'Operator',
+                            id: 'Operator',
+                            type: 'select',
+                            options: {},
+                            required: true,
+                            dataFrom: 'marketing.empMaster',
+                            replaceName: 'employeeName'
+                        },
+                        'startTime': {
+                            name: 'Start Time',
+                            id: 'startTime',
+                            type: 'input',
+                            inputType: 'time',
+                            required: true
+                        },
+                        'endTime': {
+                            name: 'End Time',
+                            id: 'endTime',
+                            type: 'input',
+                            inputType: 'time',
+                            required: true,
+                            action: 'calculatePlanQty'
+                        },
+                        'planQty': {
+                            name: 'Plan Qty',
+                            id: 'planQty',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'acceptedQty': {
+                            name: 'Accepted Qty',
+                            id: 'acceptedQty',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true,
+                            action: 'checkAcceptedQty'
+                        },
+                        'rejectionQty': {
+                            name: 'Rejection Qty',
+                            id: 'rejectionQty',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'rwQty': {
+                            name: 'R/w Qty',
+                            id: 'rwQty',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
                         }
-                    }, {
-                        name: 'Part No',
-                        id: 'partNo',
-                        type: 'select',
-                        options: {},
-                        required: true,
-                        dataFrom: 'marketing.partMaster',
-                        optionFieldName: 'partName',
-                        isDisable: true
-                    }, {
-                        name: 'Operation From',
-                        id: 'operationFrom',
-                        type: 'select',
-                        options: {},
-                        required: true,
-                        dataFrom: 'production.operationMaster',
-                        optionFieldName: 'opName',
-                        optionFieldNamePrefixData: 'opCode'
-                    }, {
-                        name: 'Operation To',
-                        id: 'operationTo',
-                        type: 'select',
-                        options: {},
-                        required: true,
-                        dataFrom: 'production.operationMaster',
-                        optionFieldName: 'opName',
-                        optionFieldNamePrefixData: 'opCode'
-                    }, {
-                        name: 'Tool No',
-                        id: 'toolNo',
-                        type: 'select',
-                        options: {},
-                        required: true,
-                        dataFrom: 'production.toolMaster',
-                        optionFieldName: 'toolNo',
-                        optionFieldNamePrefix: 'VT-T-'
-                    }, {
-                        name: 'Operator',
-                        id: 'Operator',
-                        type: 'select',
-                        options: {},
-                        required: true,
-                        dataFrom: 'marketing.empMaster',
-                        optionFieldName: 'employeeName'
-                    }, {
-                        name: 'Start Time',
-                        id: 'startTime',
-                        type: 'input',
-                        inputType: 'time',
-                        required: true
-                    }, {
-                        name: 'End Time',
-                        id: 'endTime',
-                        type: 'input',
-                        inputType: 'time',
-                        required: true,
-                        action: 'calculatePlanQty'
-                    }, {
-                        name: 'Plan Qty',
-                        id: 'planQty',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'Accepted Qty',
-                        id: 'acceptedQty',
-                        type: 'input',
-                        inputType: 'number',
-                        required: true,
-                        action: 'checkAcceptedQty'
-                    }, {
-                        name: 'Rejection Qty',
-                        id: 'rejectionQty',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }, {
-                        name: 'R/w Qty',
-                        id: 'rwQty',
-                        type: 'input',
-                        inputType: 'text',
-                        required: true
-                    }]
+                    }
                 },
                 listView: [{
                         title: 'Job Card No',
-                        value: 'jobCardNo',
-                        valuePrefix: 'VT-'
+                        id: 'jobCardNo',
+                        idPrefix: 'VT-'
                     }, {
                         title: 'Part No',
-                        value: 'partNo',
+                        id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceValue: 'partName'
+                        replaceName: 'partName',
+                        isList: true
                     },
                     {
                         title: 'Operation From',
-                        value: 'operationFrom',
+                        id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
-                        replaceValue: 'opName'
+                        replaceName: 'opName',
+                        isList: true
                     },
                     {
                         title: 'Operation To',
-                        value: 'operationTo',
+                        id: 'operationTo',
                         dataFrom: 'production.operationMaster',
-                        replaceValue: 'opName'
+                        replaceName: 'opName',
+                        isList: true
                     },
                     {
                         title: 'Accepted Qty',
-                        value: 'acceptedQty'
+                        id: 'acceptedQty'
                     },
                     {
                         action: true,
@@ -2447,18 +2647,20 @@ erpApp.constant('erpAppConfig', {
                 form: {},
                 listView: [{
                         title: 'Raw Material Name',
-                        value: 'rmCode',
+                        id: 'rmCode',
                         dataFrom: 'purchase.rmMaster',
-                        replaceValue: 'rmName'
+                        replaceName: 'rmName',
+                        isList: true
                     },
                     {
                         title: 'Rm Stock Qty',
-                        value: 'rmStockQty'
+                        id: 'rmStockQty'
                     }, {
                         title: 'UOM',
-                        value: 'uomCode',
+                        id: 'uomCode',
                         dataFrom: 'marketing.uomMaster',
-                        replaceValue: 'uomName'
+                        replaceName: 'uomName',
+                        isList: true
                     },
                     {
                         action: false
@@ -2488,23 +2690,26 @@ erpApp.constant('erpAppConfig', {
                 form: {},
                 listView: [{
                         title: 'Part Name',
-                        value: 'partNo',
+                        id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceValue: 'partName'
+                        replaceName: 'partName',
+                        isList: true
                     },
                     {
                         title: 'Part Stock Qty',
-                        value: 'partStockQty'
+                        id: 'partStockQty'
                     }, {
                         title: 'Operation From',
-                        value: 'operationFrom',
+                        id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
-                        replaceValue: 'opName'
+                        replaceName: 'opName',
+                        isList: true
                     }, {
                         title: 'Operation To',
-                        value: 'operationTo',
+                        id: 'operationTo',
                         dataFrom: 'production.operationMaster',
-                        replaceValue: 'opName'
+                        replaceName: 'opName',
+                        isList: true
                     },
                     {
                         action: false

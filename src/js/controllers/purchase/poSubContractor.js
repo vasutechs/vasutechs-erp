@@ -1,6 +1,6 @@
 erpApp.controller('poSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
-        updatePartTotal: function(data, updateValue) {
+        updatePartTotal: function(context, data, updateValue) {
             var total = 0,
                 totalBeforTax = 0;
             totalBeforTax = updateValue * data.rate;

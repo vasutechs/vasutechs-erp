@@ -2,10 +2,10 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         getPartNo: function(context) {
             if (context.data.rmCode) {
-                context.form.fields[3].filter = {
+                context.form.fields['partNo'].filter = {
                     rmCode: context.data.rmCode
                 };
-                context.actions.makeOptionsFields(context.form.fields[3]);
+                context.actions.makeOptionsFields(context.form.fields['partNo']);
             }
         },
         getNorms: function(context) {
@@ -23,7 +23,7 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
             }
         },
         getOperations: function(context) {
-            context.actions.getOperationFromFlow(context, context.form.fields[7]);
+            context.actions.getOperationFromFlow(context, context.form.fields['operationFrom']);
         },
         updateQtyMake: function(context) {
             if (context.data.partNorms && context.data.issueQty) {
