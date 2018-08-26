@@ -6,6 +6,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             if (context.form.autoGenKey) {
                 context.actions.setAutoGenKey(context);
             }
+            if(context.data.date === null){
+                context.data.date = new Date();
+            }
             context.page.editKey = undefined;
             context.page.printView = undefined;
             context.actions.callBackAdd && context.actions.callBackAdd(context);
@@ -74,13 +77,13 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             //Get Part master data
             serviceApi.callServiceApi(serviceConf).then(function(res) {
                 list = res.data;
-                if (field.isSingle) {
-                    viewData[field.value] = viewData[field.value] ? list[viewData[field.value]][field.replaceValue] : '';
-                    viewData[field.value] = field.optionFieldNamePrefix ? field.optionFieldNamePrefix + viewData[field.value] : viewData[field.value];
+                if (!field.isList) {
+                    viewData[field.id] = viewData[field.id] ? list[viewData[field.id]][field.replaceName] : '';
+                    viewData[field.id] = field.replaceNamePrefix ? field.replaceNamePrefix + viewData[field.id] : viewData[field.id];
                 } else {
                     for (var i in viewData) {
-                        viewData[i][field.value] = viewData[i][field.value] ? list[viewData[i][field.value]][field.replaceValue] : '';
-                        viewData[i][field.value] = field.optionFieldNamePrefix ? field.optionFieldNamePrefix + viewData[i][field.value] : viewData[i][field.value];
+                        viewData[i][field.id] = viewData[i][field.id] ? list[viewData[i][field.id]][field.replaceName] : '';
+                        viewData[i][field.id] = field.replaceNamePrefix ? field.replaceNamePrefix + viewData[i][field.id] : viewData[i][field.id];
                     }
                 }
 
@@ -88,8 +91,8 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
         },
         makeOptionsFields: function(field) {
             var list,
-                serviceConf = this.getServiceConfig(field.dataFrom);
-            var matchFilter = function(field, list) {
+                serviceConf = this.getServiceConfig(field.dataFrom),
+                matchFilter = function(field, list) {
                 var returnFlag = false;
                 for (var i in field.filter) {
                     if (field.filter[i] != list[i]) {
@@ -101,7 +104,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                     }
                 }
                 return returnFlag;
-            };
+            }, optionsPromiseResolve, optionsPromise = new Promise(function(resolve, reject) {
+                optionsPromiseResolve = resolve;
+            });
             if (field.filter) {
                 field.options = {};
             }
@@ -110,14 +115,15 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                 for (var i in list) {
                     if (field.filter === undefined || matchFilter(field, list[i]) === true) {
                         field.options[list[i].id] = list[i];
-                        field.options[list[i].id]['optionName'] = field.optionFieldNamePrefix && field.optionFieldNamePrefix || '';
-                        field.options[list[i].id]['optionName'] += field.optionFieldNamePrefixData && list[i][field.optionFieldNamePrefixData] + '-' || '';
-                        field.options[list[i].id]['optionName'] += list[i][field.optionFieldName];
+                        field.options[list[i].id]['optionName'] = field.replaceNamePrefix && field.replaceNamePrefix || '';
+                        field.options[list[i].id]['optionName'] += field.replaceNamePrefixData && list[i][field.replaceNamePrefixData] + '-' || '';
+                        field.options[list[i].id]['optionName'] += list[i][field.replaceName];
                         field.options[list[i].id]['optionId'] = field.optionId && list[i][field.optionFieldId] || list[i]['id'];
                     }
                 }
+                optionsPromiseResolve();
             });
-            return true;
+            return optionsPromise;
         },
         addMapping: function(mapping) {
             var newMapping = angular.extend({}, mapping[0]);
@@ -130,25 +136,33 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             delete mapping.splice(key, 1);
         },
         changeMapping: function(context, data, key, field) {
-            for (var mapKey in data) {
-                if ((field.updateData && field.updateData.indexOf(mapKey) >= 0) || field.updateData === undefined) {
+            for (var dataKey in data) {
+                if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
                     if (key === null) {
-                        data[mapKey] = context.masterData[mapKey];
-                    } else if (field.options[key][mapKey]) {
-                        if (typeof(field.options[key][mapKey]) !== 'object') {
-                            data[mapKey] = field.options[key][mapKey];
+                        data[dataKey] = context.masterData[dataKey];
+                    } else if (field.options[key][dataKey]) {
+                        if (typeof(field.options[key][dataKey]) !== 'object') {
+                            data[dataKey] = field.options[key][dataKey];
                         } else if (field.updateMapping) {
-                            for (var mapKey1 in field.options[key][mapKey]) {
-                                var copyDataMapKey = angular.copy(data[mapKey][0]);
-                                if (field.options[key][mapKey][mapKey1] !== null || field.options[key][mapKey][mapKey1] !== '') {
-                                    data[mapKey][mapKey1] = angular.extend(copyDataMapKey, field.options[key][mapKey][mapKey1]);
+                            for (var mapKey in field.options[key][dataKey]) {
+                                var copyDataMapKey = angular.copy(context.masterData[dataKey][0]);
+                                if (field.options[key][dataKey][mapKey] !== null || field.options[key][dataKey][mapKey] !== '') {
+                                    data[dataKey][mapKey] = angular.extend(copyDataMapKey, field.options[key][dataKey][mapKey]);
+                                    for (var mapFieldKey in context.form.mapping.fields) {
+                                        var mapfield = context.form.mapping.fields[mapFieldKey];
+                                        if(mapfield.action && context.actions[mapfield.action]){
+                                            if(mapfield.type === 'select'){
+                                                context.actions[mapfield.action](context, data[dataKey][mapKey], data[dataKey][mapKey][mapfield.id], mapfield);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-            context.actions.callBackChangeMapping && context.actions.callBackChangeMapping(data, key, field);
+            field.callBack!==false && context.actions.callBackChangeMapping && context.actions.callBackChangeMapping(context, data, key, field);
         },
         setAutoGenKey: function(context) {
             var lastDataKey = context.lastData ? context.lastData[context.form.autoGenKey] : undefined;
@@ -164,8 +178,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             value = new Date(value);
             return value.getHours() + ':' + value.getMinutes() + ':' + value.getSeconds();
         },
-        getOperationFromFlow: function(context, field) {
-            if (context.data.partNo) {
+        getOperationFromFlow: function(context, field, partNo) {
+            partNo = partNo || context.data.partNo;
+            if (partNo) {
                 context.actions.makeOptionsFields(field);
                 var localOptions = field.options;
                 var serviceconf = this.getServiceConfig('production.flowMaster');
@@ -173,7 +188,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                     var flowMasterData = res.data;
                     field.options = {};
                     for (var i in flowMasterData) {
-                        if (flowMasterData[i].partNo === context.data.partNo) {
+                        if (flowMasterData[i].partNo === partNo) {
                             for (var j in flowMasterData[i].mapping) {
                                 if (!field.startWith || field.startWith < flowMasterData[i].mapping[j].id) {
                                     field.options[flowMasterData[i].mapping[j].id] = localOptions[flowMasterData[i].mapping[j].id];

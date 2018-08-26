@@ -3,7 +3,7 @@
         <div class="form-group row" ng-switch="field.type" ng-repeat="field in context.form.fields" ng-if="!context.page.printView">
             <label ng-switch-when="span" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="span" class="col-10">
-                <span id="{{field.id}}">{{field.valuePrefix}}{{field.replaceHtmlValue ? field.replaceHtmlValue : context.data[field.id]}}</span>
+                <span id="{{field.id}}">{{field.idPrefix}}{{field.replaceHtmlValue ? field.replaceHtmlValue : context.data[field.id]}}</span>
             </div>
             <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="input" class="col-6">
@@ -23,7 +23,7 @@
         <div class="form-group row" ng-repeat="field in context.form.fields" ng-if="context.page.printView">
             <label for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div class="col-10">
-                <span id="{{field.id}}">{{field.valuePrefix}}{{context.data[field.id]}}</span>
+                <span id="{{field.id}}">{{field.idPrefix}}{{context.data[field.id]}}</span>
             </div>
         </div>
         <div class="form-group row" ng-if="context.form.mapping">

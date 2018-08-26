@@ -1,17 +1,17 @@
 erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         getPOSupplier: function(context, data, key, field) {
-            context.form.fields[3] = angular.extend(context.form.fields[3], {
+            context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
                 dataFrom: 'purchase.poSupplier',
-                optionFieldName: 'poNo',
+                replaceName: 'poNo',
                 filter: { 
                     supplierCode: key,
                     status: 0 
                 }
             });
-            context.actions.makeOptionsFields(context.form.fields[3]);
+            context.actions.makeOptionsFields(context.form.fields['poNo']);
         },
-        updateRmTotal: function(data, updateValue) {
+        updateRmTotal: function(context, data, updateValue) {
             var total = 0,
                 totalBeforTax = 0;
             totalBeforTax = updateValue * data.rate;

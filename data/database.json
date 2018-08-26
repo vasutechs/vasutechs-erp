@@ -111,6 +111,25 @@
                     "id": 1,
                     "added": "2018-08-17T01:30:09.166Z",
                     "updated": "2018-08-20T02:27:47.047Z"
+                },
+                "2": {
+                    "customerCode": 2,
+                    "customerName": "Test123",
+                    "address": "erwerwer",
+                    "contactNo": 12341232,
+                    "gstin": 213123123,
+                    "mapping": [
+                        {
+                            "id": 3,
+                            "partName": "EHL Clamp",
+                            "hsnCode": "730070000",
+                            "rate": 0.45,
+                            "gst": 18
+                        }
+                    ],
+                    "id": 2,
+                    "added": "2018-08-24T01:20:51.943Z",
+                    "updated": "2018-08-26T00:56:19.965Z"
                 }
             }
         },
@@ -392,6 +411,54 @@
                         "id": 1,
                         "added": "2018-08-19T02:32:24.511Z",
                         "updated": "2018-08-19T02:33:10.052Z"
+                    },
+                    "2": {
+                        "poNo": 2,
+                        "date": "2018-08-25T04:00:00.000Z",
+                        "supplierCode": 1,
+                        "gstin": 13123123,
+                        "status": 1,
+                        "mapping": [
+                            {
+                                "id": 2,
+                                "qty": "10",
+                                "uomCode": 1,
+                                "rate": 73,
+                                "gst": 18,
+                                "cgst": 9.1,
+                                "sgst": 9.1,
+                                "total": "994.26",
+                                "rmCode": 2,
+                                "rmName": "0.4 x 10  GI Coil"
+                            }
+                        ],
+                        "id": 2,
+                        "added": "2018-08-26T00:35:41.560Z",
+                        "updated": "2018-08-26T00:43:13.860Z"
+                    },
+                    "3": {
+                        "poNo": 3,
+                        "date": "2018-08-26T02:39:39.913Z",
+                        "supplierCode": 1,
+                        "gstin": 13123123,
+                        "status": 0,
+                        "mapping": [
+                            {
+                                "id": 2,
+                                "qty": "10",
+                                "uomCode": 1,
+                                "rate": 73,
+                                "gst": 18,
+                                "cgst": 9.1,
+                                "sgst": 9.1,
+                                "total": "994.26",
+                                "rmCode": 2,
+                                "rmName": "0.4 x 10  GI Coil"
+                            }
+                        ],
+                        "id": 3,
+                        "added": "2018-08-26T02:39:56.730Z",
+                        "updated": "2018-08-26T02:39:56.730Z"
                     }
                 }
             }
@@ -567,6 +634,37 @@
                         "id": 1,
                         "added": "2018-08-19T02:33:06.878Z",
                         "updated": "2018-08-19T02:33:06.878Z"
+                    },
+                    "2": {
+                        "grnNo": 2,
+                        "date": "2018-08-25T04:00:00.000Z",
+                        "supplierCode": 1,
+                        "poNo": 2,
+                        "supplierDCCode": null,
+                        "supplierDCDate": null,
+                        "status": 0,
+                        "mapping": [
+                            {
+                                "id": 2,
+                                "qty": "10",
+                                "uomCode": 1,
+                                "receivedQty": "10",
+                                "acceptedQty": "10",
+                                "rate": 73,
+                                "gst": 18,
+                                "cost": null,
+                                "total": "994.26",
+                                "cgst": 9.1,
+                                "sgst": 9.1,
+                                "rmCode": 2,
+                                "rmName": "0.4 x 10  GI Coil"
+                            }
+                        ],
+                        "supplierInvoiceNo": "1",
+                        "supplierInvoiceDate": "2018-08-25T04:00:00.000Z",
+                        "id": 2,
+                        "added": "2018-08-26T00:43:13.753Z",
+                        "updated": "2018-08-26T00:43:13.753Z"
                     }
                 }
             }
@@ -1024,6 +1122,20 @@
                         "id": 1,
                         "added": "2018-08-20T00:19:55.669Z",
                         "updated": "2018-08-20T02:25:56.311Z"
+                    },
+                    "2": {
+                        "jobCardNo": 2,
+                        "date": "2018-08-25T04:00:00.000Z",
+                        "rmCode": 2,
+                        "partNo": 3,
+                        "partNorms": "0.100",
+                        "issueQty": "10",
+                        "qtyCanMake": 100,
+                        "operationFrom": 7,
+                        "status": 1,
+                        "id": 2,
+                        "added": "2018-08-26T00:45:17.506Z",
+                        "updated": "2018-08-26T00:48:47.602Z"
                     }
                 }
             }
@@ -1157,6 +1269,48 @@
                         "id": 5,
                         "added": "2018-08-20T02:25:56.221Z",
                         "updated": "2018-08-20T02:25:56.221Z"
+                    },
+                    "6": {
+                        "date": "2018-08-25T04:00:00.000Z",
+                        "mcNo": 1,
+                        "jobCardNo": 2,
+                        "partNo": 3,
+                        "operationFrom": 1,
+                        "operationTo": 2,
+                        "toolNo": 1,
+                        "operator": null,
+                        "startTime": "1970-01-01T18:00:00.000Z",
+                        "endTime": "1970-01-01T19:00:00.000Z",
+                        "planQty": 100,
+                        "acceptedQty": 100,
+                        "rejectionQty": "0",
+                        "rmQty": null,
+                        "Operator": 1,
+                        "rwQty": "0",
+                        "id": 6,
+                        "added": "2018-08-26T00:48:13.373Z",
+                        "updated": "2018-08-26T00:48:13.373Z"
+                    },
+                    "7": {
+                        "date": "2018-08-25T04:00:00.000Z",
+                        "mcNo": 1,
+                        "jobCardNo": 2,
+                        "partNo": 3,
+                        "operationFrom": 2,
+                        "operationTo": 7,
+                        "toolNo": 1,
+                        "operator": null,
+                        "startTime": "1970-01-01T18:00:00.000Z",
+                        "endTime": "1970-01-01T19:00:00.000Z",
+                        "planQty": 100,
+                        "acceptedQty": 100,
+                        "rejectionQty": "0",
+                        "rmQty": null,
+                        "Operator": 1,
+                        "rwQty": "0",
+                        "id": 7,
+                        "added": "2018-08-26T00:48:47.501Z",
+                        "updated": "2018-08-26T00:48:47.501Z"
                     }
                 }
             }
@@ -1180,12 +1334,11 @@
                         "updated": "2018-08-20T00:20:24.014Z"
                     },
                     "2": {
-                        "rmCode": 2,
-                        "rmStockQty": 100,
-                        "uomCode": 1,
                         "id": 2,
-                        "added": "2018-08-19T02:33:10.048Z",
-                        "updated": "2018-08-19T02:33:10.048Z"
+                        "rmCode": 2,
+                        "rmStockQty": 110,
+                        "uomCode": 1,
+                        "updated": "2018-08-26T00:48:13.479Z"
                     }
                 }
             }
@@ -1249,6 +1402,22 @@
                         "operationFrom": 6,
                         "operationTo": 7,
                         "updated": "2018-08-20T02:30:32.496Z"
+                    },
+                    "7": {
+                        "id": 7,
+                        "partNo": 3,
+                        "partStockQty": 0,
+                        "operationFrom": 1,
+                        "operationTo": 2,
+                        "updated": "2018-08-26T00:48:47.621Z"
+                    },
+                    "8": {
+                        "id": 8,
+                        "partNo": 3,
+                        "partStockQty": 50,
+                        "operationFrom": 2,
+                        "operationTo": 7,
+                        "updated": "2018-08-26T02:20:18.125Z"
                     }
                 }
             }
@@ -1303,6 +1472,62 @@
                         "id": 1,
                         "added": "2018-08-20T02:30:32.440Z",
                         "updated": "2018-08-20T02:30:32.440Z"
+                    },
+                    "2": {
+                        "invoiceNo": "2/2018",
+                        "date": "2018-08-25T04:00:00.000Z",
+                        "customerCode": 2,
+                        "gstin": 213123123,
+                        "arnNo": null,
+                        "subTotal": null,
+                        "taxRate": 18,
+                        "cgst": 9,
+                        "sgst": 9,
+                        "cgstTotal": "1.01",
+                        "sgstTotal": "1.01",
+                        "total": "13.27",
+                        "mapping": [
+                            {
+                                "id": 3,
+                                "hsnCode": "730070000",
+                                "unit": "25",
+                                "rate": 0.45,
+                                "amount": "11.25",
+                                "partName": "EHL Clamp",
+                                "gst": 18
+                            }
+                        ],
+                        "id": 2,
+                        "added": "2018-08-26T01:00:01.913Z",
+                        "updated": "2018-08-26T01:00:01.913Z"
+                    },
+                    "3": {
+                        "invoiceNo": "3/2018",
+                        "date": "2018-08-25T04:00:00.000Z",
+                        "customerCode": 2,
+                        "gstin": 213123123,
+                        "arnNo": null,
+                        "subTotal": null,
+                        "taxRate": 18,
+                        "cgst": 9,
+                        "sgst": 9,
+                        "cgstTotal": "1.01",
+                        "sgstTotal": "1.01",
+                        "total": "13.27",
+                        "mapping": [
+                            {
+                                "id": 3,
+                                "hsnCode": "730070000",
+                                "unit": "25",
+                                "rate": 0.45,
+                                "amount": "11.25",
+                                "partName": "EHL Clamp",
+                                "gst": 18
+                            }
+                        ],
+                        "id": 3,
+                        "added": "2018-08-26T02:20:15.780Z",
+                        "updated": "2018-08-26T02:20:15.780Z"
                     }
                 }
             }
