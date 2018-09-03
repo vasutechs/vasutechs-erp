@@ -166,7 +166,8 @@ erpApp.constant('erpAppConfig', {
                             type: 'select',
                             options: {},
                             dataFrom: 'purchase.rmMaster',
-                            replaceName: 'rmName'
+                            replaceName: 'rmName',
+                            isSingle: true
                         },
                         'inputWeight': {
                             name: 'Input weight',
@@ -195,7 +196,8 @@ erpApp.constant('erpAppConfig', {
                             type: 'select',
                             options: {},
                             dataFrom: 'marketing.uomMaster',
-                            replaceName: 'uomName'
+                            replaceName: 'uomName',
+                            isSingle: true
                         },
                         'prodRateHr': {
                             name: 'Prod Rate/ hr',
@@ -284,7 +286,7 @@ erpApp.constant('erpAppConfig', {
                             name: 'Customer Code',
                             id: 'customerCode',
                             type: 'span',
-                            idPrefix: 'VT-'
+                            idPrefix: 'VT-CUS-'
                         },
                         'customerName': {
                             name: 'Customer Name',
@@ -311,7 +313,7 @@ erpApp.constant('erpAppConfig', {
                             name: 'GSTIN',
                             id: 'gstin',
                             type: 'input',
-                            inputType: 'number',
+                            inputType: 'text',
                             required: true
                         }
                     },
@@ -325,8 +327,7 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                replaceName: 'partName',
-                                isList: true
+                                replaceName: 'partNo'
                             },
                             'partName': {
                                 name: 'Part Name',
@@ -349,7 +350,7 @@ erpApp.constant('erpAppConfig', {
                 listView: [{
                         title: 'Customer Code',
                         id: 'customerCode',
-                        idPrefix: 'VT-'
+                        idPrefix: 'VT-CUS-'
                     },
                     {
                         title: 'Customer Name',
@@ -519,7 +520,7 @@ erpApp.constant('erpAppConfig', {
                             name: 'UOM Code',
                             id: 'uomCode',
                             type: 'span',
-                            idPrefix: 'VT-'
+                            idPrefix: 'VT-UOM-'
                         },
                         'uomName': {
                             name: 'UOM Name',
@@ -533,7 +534,7 @@ erpApp.constant('erpAppConfig', {
                 listView: [{
                         title: 'UOM Code',
                         id: 'uomCode',
-                        idPrefix: 'VT-'
+                        idPrefix: 'VT-UOM-'
                     },
                     {
                         title: 'UOM Name',
@@ -608,7 +609,8 @@ erpApp.constant('erpAppConfig', {
                             updateMapping: true,
                             updateData: ['gstin', 'mapping'],
                             dataFrom: 'marketing.customerMaster',
-                            replaceName: 'customerName'
+                            replaceName: 'customerName',
+                            isSingle: true
                         },
                         'partyGstin': {
                             name: 'Party GSTIN',
@@ -674,7 +676,6 @@ erpApp.constant('erpAppConfig', {
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
                                 replaceName: 'partName',
-                                isList: true,
                                 callBack: false
                             },
                             'hsnCode': {
@@ -712,8 +713,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Customer',
                         id: 'customerCode',
                         dataFrom: 'marketing.customerMaster',
-                        replaceName: 'customerName',
-                        isList: true
+                        replaceName: 'customerName'
                     },
                     {
                         action: true,
@@ -798,7 +798,8 @@ erpApp.constant('erpAppConfig', {
                             type: 'select',
                             options: {},
                             dataFrom: 'marketing.uomMaster',
-                            replaceName: 'uomName'
+                            replaceName: 'uomName',
+                            isSingle: true
                         },
                         'rate': {
                             name: 'Rate',
@@ -900,7 +901,7 @@ erpApp.constant('erpAppConfig', {
                             name: 'Contact No',
                             id: 'contactNo',
                             type: 'input',
-                            inputType: 'number',
+                            inputType: 'text',
                             required: true
                         },
                         'gstin': {
@@ -921,8 +922,7 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
-                                replaceName: 'rmName',
-                                isList: true
+                                replaceName: 'rmName'
                             },
                             'rate': {
                                 name: 'Rate',
@@ -1013,7 +1013,8 @@ erpApp.constant('erpAppConfig', {
                             updateMapping: true,
                             updateData: ['gstin', 'mapping'],
                             dataFrom: 'purchase.supplierMaster',
-                            replaceName: 'supplierName'
+                            replaceName: 'supplierName',
+                            isSingle: true
                         },
                         'gstin': {
                             name: 'Party Gstin',
@@ -1032,7 +1033,7 @@ erpApp.constant('erpAppConfig', {
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
                                 replaceName: 'rmName',
-                                isList: true
+                                isDisable: true
                             },
                             'qty': {
                                 name: 'Qty',
@@ -1049,7 +1050,7 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 dataFrom: 'marketing.uomMaster',
                                 replaceName: 'uomName',
-                                isList: true
+                                isDisable: true
                             },
                             'rate': {
                                 name: 'Rate',
@@ -1076,6 +1077,10 @@ erpApp.constant('erpAppConfig', {
                                 id: 'total',
                                 type: 'span'
                             }
+                        },
+                        actions:{
+                            add: false,
+                            delete: false
                         }
                     }
                 },
@@ -1088,8 +1093,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Supplier Code',
                         id: 'supplierCode',
                         dataFrom: 'purchase.supplierMaster',
-                        replaceName: 'supplierName',
-                        isList: true
+                        replaceName: 'supplierName'
                     },
                     {
                         title: 'Stutus',
@@ -1179,8 +1183,7 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                replaceName: 'partName',
-                                isList: true
+                                replaceName: 'partName'
                             },
                             'operationTo': {
                                 name: 'Op Name',
@@ -1188,8 +1191,7 @@ erpApp.constant('erpAppConfig', {
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'production.operationMaster',
-                                replaceName: 'opName',
-                                isList: true
+                                replaceName: 'opName'
                             },
                             'rate': {
                                 name: 'Rate',
@@ -1277,7 +1279,8 @@ erpApp.constant('erpAppConfig', {
                             updateMapping: true,
                             updateData: ['gstin', 'mapping'],
                             dataFrom: 'purchase.subContractorMaster',
-                            replaceName: 'subContractorName'
+                            replaceName: 'subContractorName',
+                            isSingle: true
                         },
                         'gstin': {
                             name: 'Party Gstin',
@@ -1296,7 +1299,7 @@ erpApp.constant('erpAppConfig', {
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
                                 replaceName: 'partName',
-                                isList: true
+                                isDisable: true
                             },
                             'operationTo': {
                                 name: 'Op Name',
@@ -1305,7 +1308,7 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                isList: true
+                                isDisable: true
                             },
                             'acceptedQty': {
                                 name: 'Qty',
@@ -1322,7 +1325,7 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 dataFrom: 'marketing.uomMaster',
                                 replaceName: 'uomName',
-                                isList: true
+                                isDisable: true
                             },
                             'rate': {
                                 name: 'Rate',
@@ -1349,6 +1352,10 @@ erpApp.constant('erpAppConfig', {
                                 id: 'total',
                                 type: 'span'
                             }
+                        },
+                        actions:{
+                            add: false,
+                            delete: false
                         }
                     }
                 },
@@ -1361,8 +1368,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'SubContractor Code',
                         id: 'subContractorCode',
                         dataFrom: 'purchase.subContractorMaster',
-                        replaceName: 'subContractorName',
-                        isList: true
+                        replaceName: 'subContractorName'
                     },
                     {
                         title: 'Stutus',
@@ -1439,7 +1445,8 @@ erpApp.constant('erpAppConfig', {
                             options: {},
                             action: 'getPOSupplier',
                             dataFrom: 'purchase.supplierMaster',
-                            replaceName: 'supplierName'
+                            replaceName: 'supplierName',
+                            isSingle: true
                         },
                         'poNo': {
                             name: 'PO No',
@@ -1451,7 +1458,11 @@ erpApp.constant('erpAppConfig', {
                             updateData: ['mapping'],
                             dataFrom: 'purchase.poSupplier',
                             replaceName: 'poNo',
-                            replaceNamePrefix: 'VT-SP-PO-'
+                            replaceNamePrefix: 'VT-SP-PO-',
+                            filter: {
+                                status: 0
+                            },
+                            isSingle: true
                         },
                         'supplierInvoiceNo': {
                             name: 'Supplier Invoice No',
@@ -1479,7 +1490,7 @@ erpApp.constant('erpAppConfig', {
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
                                 replaceName: 'rmName',
-                                isList: true
+                                isDisable: true
                             },
                             'qty': {
                                 name: 'PO Qty',
@@ -1493,7 +1504,7 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 dataFrom: 'marketing.uomMaster',
                                 replaceName: 'uomName',
-                                isList: true
+                                isDisable: true
                             },
                             'receivedQty': {
                                 name: 'Received Qty',
@@ -1526,6 +1537,10 @@ erpApp.constant('erpAppConfig', {
                                 id: 'total',
                                 type: 'span'
                             }
+                        },
+                        actions:{
+                            add: false,
+                            delete: false
                         }
                     }
                 },
@@ -1538,8 +1553,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Supplier',
                         id: 'supplierCode',
                         dataFrom: 'purchase.supplierMaster',
-                        replaceName: 'supplierName',
-                        isList: true
+                        replaceName: 'supplierName'
                     },
                     {
                         action: true,
@@ -1602,7 +1616,8 @@ erpApp.constant('erpAppConfig', {
                             options: {},
                             action: 'getPOSubContractor',
                             dataFrom: 'purchase.subContractorMaster',
-                            replaceName: 'subContractorName'
+                            replaceName: 'subContractorName',
+                            isSingle: true
                         },
                         'poNo': {
                             name: 'PO No',
@@ -1614,7 +1629,11 @@ erpApp.constant('erpAppConfig', {
                             replaceName: 'poNo',
                             replaceNamePrefix: 'VT-SC-PO-',
                             updateMapping: true,
-                            updateData: ['mapping']
+                            updateData: ['mapping'],
+                            filter: {
+                                status: 0
+                            },
+                            isSingle: true
                         }
                     },
                     mapping: {
@@ -1627,7 +1646,7 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 dataFrom: 'marketing.partMaster',
                                 replaceName: 'partName',
-                                isList: true
+                                isDisable: true
                             },
                             'operationFrom': {
                                 name: 'Part From',
@@ -1637,19 +1656,17 @@ erpApp.constant('erpAppConfig', {
                                 required: true,
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode',
-                                isList: true
+                                replaceNamePrefixData: 'opCode'
                             },
                             'operationTo': {
                                 name: 'For the purpose',
                                 id: 'operationTo',
                                 type: 'select',
                                 options: {},
-                                required: true,
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
                                 replaceNamePrefixData: 'opCode',
-                                isList: true
+                                isDisable: true
                             },
                             'acceptedQty': {
                                 name: 'Qty',
@@ -1663,13 +1680,17 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 dataFrom: 'marketing.uomMaster',
                                 replaceName: 'uomName',
-                                isList: true
+                                isDisable: true
                             },
                             'total': {
                                 name: 'App Cost',
                                 id: 'total',
                                 type: 'span'
                             }
+                        },
+                        actions:{
+                            add: false,
+                            delete: false
                         }
                     }
                 },
@@ -1682,8 +1703,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Sub Contractor Code',
                         id: 'subContractorCode',
                         dataFrom: 'purchase.subContractorMaster',
-                        replaceName: 'subContractorName',
-                        isList: true
+                        replaceName: 'subContractorName'
                     },
                     {
                         title: 'Stutus',
@@ -1757,7 +1777,8 @@ erpApp.constant('erpAppConfig', {
                             options: {},
                             action: 'getPOSubContractor',
                             dataFrom: 'purchase.subContractorMaster',
-                            replaceName: 'subContractorName'
+                            replaceName: 'subContractorName',
+                            isSingle: true
                         },
                         'poNo': {
                             name: 'PO No',
@@ -1767,7 +1788,11 @@ erpApp.constant('erpAppConfig', {
                             action: 'getDCSubContractor',
                             dataFrom: 'purchase.poSubContractor',
                             replaceName: 'poNo',
-                            replaceNamePrefix: 'VT-SC-PO-'
+                            replaceNamePrefix: 'VT-SC-PO-',
+                            filter: {
+                                status: 0
+                            },
+                            isSingle: true
                         },
                         'dcNo': {
                             name: 'Our DC No',
@@ -1779,7 +1804,11 @@ erpApp.constant('erpAppConfig', {
                             replaceName: 'dcNo',
                             replaceNamePrefix: 'VT-DC-',
                             updateMapping: true,
-                            updateData: ['mapping']
+                            updateData: ['mapping'],
+                            filter: {
+                                status: 0
+                            },
+                            isSingle: true
                         },
                         'subContractorDCCode': {
                             name: 'Sub Contractor DC Code',
@@ -1807,18 +1836,17 @@ erpApp.constant('erpAppConfig', {
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
                                 replaceName: 'partName',
-                                isList: true
+                                isDisable: true
                             },
                             'operationFrom': {
                                 name: 'Part From',
                                 id: 'operationFrom',
                                 type: 'select',
                                 options: {},
-                                required: true,
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
                                 replaceNamePrefixData: 'opCode',
-                                isList: true
+                                isDisable: true
                             },
                             'operationTo': {
                                 name: 'Op Name',
@@ -1828,7 +1856,7 @@ erpApp.constant('erpAppConfig', {
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
                                 replaceNamePrefixData: 'opCode',
-                                isList: true
+                                isDisable: true
                             },
                             'receivedQty': {
                                 name: 'Received Qty',
@@ -1853,7 +1881,7 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 dataFrom: 'marketing.uomMaster',
                                 replaceName: 'uomName',
-                                isList: true
+                                isDisable: true
                             },
                             'rate': {
                                 name: 'Rate',
@@ -1880,6 +1908,10 @@ erpApp.constant('erpAppConfig', {
                                 id: 'total',
                                 type: 'span'
                             }
+                        },
+                        actions:{
+                            add: false,
+                            delete: false
                         }
                     }
                 },
@@ -1892,8 +1924,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Sub Contractor Code',
                         id: 'subContractorCode',
                         dataFrom: 'purchase.subContractorMaster',
-                        replaceName: 'subContractorName',
-                        isList: true
+                        replaceName: 'subContractorName'
                     },
                     {
                         action: true,
@@ -1988,6 +2019,7 @@ erpApp.constant('erpAppConfig', {
                 title: 'BOM',
                 masterData: {
                     partNo: null,
+                    partName: null,
                     rmCode: null,
                     partNorms: null
                 },
@@ -2001,7 +2033,15 @@ erpApp.constant('erpAppConfig', {
                             type: 'select',
                             options: {},
                             dataFrom: 'marketing.partMaster',
-                            replaceName: 'partName'
+                            replaceName: 'partNo',
+                            updateData: ['rmCode', 'partName'],
+                            action: 'changeMapping',
+                            isSingle: true
+                        },
+                        'partName': {
+                            name: 'Part Name',
+                            id: 'partName',
+                            type: 'span'
                         },
                         'rmCode': {
                             name: 'RM Code',
@@ -2009,7 +2049,9 @@ erpApp.constant('erpAppConfig', {
                             type: 'select',
                             options: {},
                             dataFrom: 'purchase.rmMaster',
-                            replaceName: 'rmName'
+                            replaceName: 'rmName',
+                            isDisable: true,
+                            isSingle: true
                         },
                         'partNorms': {
                             name: 'Part Norms',
@@ -2024,8 +2066,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Part No',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partName',
-                        isList: true
+                        replaceName: 'partNo'
                     },
                     {
                         title: 'RM Code',
@@ -2057,7 +2098,7 @@ erpApp.constant('erpAppConfig', {
                     make: null,
                     model: null,
                     capacity: null,
-                    yoe: null,
+                    yop: null,
                     id: null
                 },
                 form: {
@@ -2069,7 +2110,7 @@ erpApp.constant('erpAppConfig', {
                             name: 'Machine No',
                             id: 'machineNo',
                             type: 'span',
-                            idPrefix: 'VT-HPP-'
+                            idPrefix: 'VT-M/C-'
                         },
                         'machineName': {
                             name: 'Machine Name',
@@ -2099,9 +2140,9 @@ erpApp.constant('erpAppConfig', {
                             inputType: 'text',
                             required: true
                         },
-                        'yoe': {
-                            name: 'Year of experience',
-                            id: 'yoe',
+                        'yop': {
+                            name: 'Year of Purchase',
+                            id: 'yop',
                             type: 'input',
                             inputType: 'text',
                             required: true
@@ -2118,7 +2159,7 @@ erpApp.constant('erpAppConfig', {
                 listView: [{
                         title: 'Machine No',
                         id: 'machineNo',
-                        idPrefix: 'VT-HPP-'
+                        idPrefix: 'VT-M/C-'
                     },
                     {
                         title: 'Machine Name',
@@ -2145,6 +2186,7 @@ erpApp.constant('erpAppConfig', {
                 title: 'Flow Master',
                 masterData: {
                     partNo: null,
+                    partName: null,
                     mapping: [{
                         id: null,
                         opName: null,
@@ -2161,9 +2203,17 @@ erpApp.constant('erpAppConfig', {
                             type: 'select',
                             options: {},
                             required: true,
+                            action: 'changeMapping',
+                            updateData: ['partName'],
                             dataFrom: 'marketing.partMaster',
-                            replaceName: 'partName'
-                        }
+                            replaceName: 'partNo',
+                            isSingle: true
+                        },
+                        'partName': {
+                                name: 'Part Name',
+                                id: 'partName',
+                                type: 'span'
+                            }
                     },
                     mapping: {
                         name: 'OP Mapping',
@@ -2177,7 +2227,7 @@ erpApp.constant('erpAppConfig', {
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
                                 replaceNamePrefixData: 'opCode',
-                                isList: true
+                                required: true
                             },
                             'opName': {
                                 name: 'op Name',
@@ -2196,8 +2246,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Part NO',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partName',
-                        isList: true
+                        replaceName: 'partName'
                     },
                     {
                         action: true
@@ -2220,6 +2269,7 @@ erpApp.constant('erpAppConfig', {
                 title: 'Tool Master',
                 masterData: {
                     toolNo: null,
+                    toolName: null,
                     partNo: null,
                     make: null,
                     type: null,
@@ -2238,6 +2288,13 @@ erpApp.constant('erpAppConfig', {
                             type: 'span',
                             idPrefix: 'VT-T'
                         },
+                        'toolName': {
+                            name: 'Tool Name',
+                            id: 'toolName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
                         'partNo': {
                             name: 'Part No',
                             id: 'partNo',
@@ -2245,7 +2302,8 @@ erpApp.constant('erpAppConfig', {
                             options: {},
                             dataFrom: 'marketing.partMaster',
                             replaceName: 'partName',
-                            required: true
+                            required: true,
+                            isSingle: true
                         },
                         'make': {
                             name: 'Make',
@@ -2288,13 +2346,15 @@ erpApp.constant('erpAppConfig', {
                         title: 'Tool No',
                         id: 'toolNo',
                         idPrefix: 'VT-T'
+                    },{
+                        title: 'Tool Name',
+                        id: 'toolName'
                     },
                     {
                         title: 'PartName',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partName',
-                        isList: true
+                        replaceName: 'partName'
                     },
                     {
                         action: true
@@ -2351,7 +2411,8 @@ erpApp.constant('erpAppConfig', {
                             options: {},
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
-                            action: 'getPartNo'
+                            action: 'getPartNo',
+                            isSingle: true
                         },
                         'partNo': {
                             name: 'Part No',
@@ -2359,21 +2420,23 @@ erpApp.constant('erpAppConfig', {
                             type: 'select',
                             options: {},
                             dataFrom: 'marketing.partMaster',
-                            replaceName: 'partName',
-                            action: 'getNorms'
+                            replaceName: 'partNo',
+                            action: 'getNorms',
+                            isSingle: true
                         },
                         'partNorms': {
                             name: 'Part Norms',
                             id: 'partNorms',
                             type: 'input',
                             inputType: 'text',
-                            required: true
+                            required: true,
+                            action: 'updateQtyMake'
                         },
                         'issueQty': {
                             name: 'Issue Qty',
                             id: 'issueQty',
                             type: 'input',
-                            inputType: 'text',
+                            inputType: 'number',
                             required: true,
                             action: 'updateQtyMake'
                         },
@@ -2381,7 +2444,7 @@ erpApp.constant('erpAppConfig', {
                             name: 'Qty Can Make',
                             id: 'qtyCanMake',
                             type: 'input',
-                            inputType: 'text',
+                            inputType: 'number',
                             required: true
                         },
                         'operationFrom': {
@@ -2392,7 +2455,8 @@ erpApp.constant('erpAppConfig', {
                             required: true,
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',
-                            replaceNamePrefixData: 'opCode'
+                            replaceNamePrefixData: 'opCode',
+                            isSingle: true
                         }
                     }
                 },
@@ -2402,11 +2466,10 @@ erpApp.constant('erpAppConfig', {
                         idPrefix: 'VT-'
                     },
                     {
-                        title: 'PartName',
+                        title: 'PartNo',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partName',
-                        isList: true
+                        replaceName: 'partNo'
                     },
                     {
                         title: 'Qty Can Make',
@@ -2472,7 +2535,8 @@ erpApp.constant('erpAppConfig', {
                             dataFrom: 'production.machineMaster',
                             replaceName: 'machineNo',
                             replaceNamePrefix: 'VT-HPP-',
-                            required: true
+                            required: true,
+                            isSingle: true
                         },
                         'jobCardNo': {
                             name: 'Job Card No',
@@ -2487,7 +2551,8 @@ erpApp.constant('erpAppConfig', {
                             updateData: ['partNo', 'operationFrom'],
                             filter: {
                                 status: 0
-                            }
+                            },
+                            isSingle: true
                         },
                         'partNo': {
                             name: 'Part No',
@@ -2497,7 +2562,8 @@ erpApp.constant('erpAppConfig', {
                             required: true,
                             dataFrom: 'marketing.partMaster',
                             replaceName: 'partName',
-                            isDisable: true
+                            isDisable: true,
+                            isSingle: true
                         },
                         'operationFrom': {
                             name: 'Operation From',
@@ -2507,7 +2573,8 @@ erpApp.constant('erpAppConfig', {
                             required: true,
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',
-                            replaceNamePrefixData: 'opCode'
+                            replaceNamePrefixData: 'opCode',
+                            isSingle: true
                         },
                         'operationTo': {
                             name: 'Operation To',
@@ -2517,17 +2584,18 @@ erpApp.constant('erpAppConfig', {
                             required: true,
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',
-                            replaceNamePrefixData: 'opCode'
+                            replaceNamePrefixData: 'opCode',
+                            isSingle: true
                         },
-                        'toolNo': {
-                            name: 'Tool No',
-                            id: 'toolNo',
+                        'toolName': {
+                            name: 'Tool Name',
+                            id: 'toolName',
                             type: 'select',
                             options: {},
                             required: true,
                             dataFrom: 'production.toolMaster',
-                            replaceName: 'toolNo',
-                            replaceNamePrefix: 'VT-T-'
+                            replaceName: 'toolName',
+                            isSingle: true
                         },
                         'Operator': {
                             name: 'Operator',
@@ -2536,7 +2604,8 @@ erpApp.constant('erpAppConfig', {
                             options: {},
                             required: true,
                             dataFrom: 'marketing.empMaster',
-                            replaceName: 'employeeName'
+                            replaceName: 'employeeName',
+                            isSingle: true
                         },
                         'startTime': {
                             name: 'Start Time',
@@ -2572,15 +2641,17 @@ erpApp.constant('erpAppConfig', {
                             name: 'Rejection Qty',
                             id: 'rejectionQty',
                             type: 'input',
-                            inputType: 'text',
-                            required: true
+                            inputType: 'number',
+                            required: true,
+                            action: 'checkAcceptedQty'
                         },
                         'rwQty': {
                             name: 'R/w Qty',
                             id: 'rwQty',
                             type: 'input',
-                            inputType: 'text',
-                            required: true
+                            inputType: 'number',
+                            required: true,
+                            action: 'checkAcceptedQty'
                         }
                     }
                 },
@@ -2592,26 +2663,28 @@ erpApp.constant('erpAppConfig', {
                         title: 'Part No',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partName',
-                        isList: true
+                        replaceName: 'partName'
                     },
                     {
                         title: 'Operation From',
                         id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
-                        replaceName: 'opName',
-                        isList: true
+                        replaceName: 'opName'
                     },
                     {
                         title: 'Operation To',
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
-                        replaceName: 'opName',
-                        isList: true
+                        replaceName: 'opName'
                     },
                     {
                         title: 'Accepted Qty',
                         id: 'acceptedQty'
+                    },
+                    {
+                        title: 'Date',
+                        id: 'date',
+                        type: 'date'
                     },
                     {
                         action: true,
@@ -2649,8 +2722,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Raw Material Name',
                         id: 'rmCode',
                         dataFrom: 'purchase.rmMaster',
-                        replaceName: 'rmName',
-                        isList: true
+                        replaceName: 'rmName'
                     },
                     {
                         title: 'Rm Stock Qty',
@@ -2659,8 +2731,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'UOM',
                         id: 'uomCode',
                         dataFrom: 'marketing.uomMaster',
-                        replaceName: 'uomName',
-                        isList: true
+                        replaceName: 'uomName'
                     },
                     {
                         action: false
@@ -2692,8 +2763,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Part Name',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partName',
-                        isList: true
+                        replaceName: 'partName'
                     },
                     {
                         title: 'Part Stock Qty',
@@ -2702,14 +2772,12 @@ erpApp.constant('erpAppConfig', {
                         title: 'Operation From',
                         id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
-                        replaceName: 'opName',
-                        isList: true
+                        replaceName: 'opName'
                     }, {
                         title: 'Operation To',
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
-                        replaceName: 'opName',
-                        isList: true
+                        replaceName: 'opName'
                     },
                     {
                         action: false
