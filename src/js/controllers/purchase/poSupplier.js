@@ -4,15 +4,11 @@ erpApp.controller('poSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 'se
             var total = 0,
                 totalBeforTax = 0;
             totalBeforTax = updateValue * data.rate;
-            total = totalBeforTax + (totalBeforTax * (data.gst / 100)) + (totalBeforTax * (data.cgst / 100)) + (totalBeforTax * (data.sgst / 100))
+            total = totalBeforTax + (totalBeforTax * (data.gst / 100));
             data.total = parseFloat(total).toFixed(2);
         },
         updateRMDetails: function(mapping) {
-            var serviceconf = {
-                url: erpAppConfig.modules.purchase.rmMaster.services.list.url + "/" + mapping.id,
-                method: 'GET'
-            };
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
+            context.actions.getData('purchase.rmMaster', mapping.id).then(function(res) {
                 var rmData = res.data;
                 for (var mapKey in rmData) {
                     if (mapping[mapKey] === null || mapping[mapKey] === '') {

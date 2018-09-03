@@ -9,19 +9,19 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="(dataKey, dataList) in context.listViewData">
+            <tr ng-repeat="dataList in context.listViewData | orderBy:context.orderByProperty: true">
                 <td ng-repeat="(key, list) in context.listView">
                     <div ng-if="!list.action">{{list.idPrefix}}{{dataList[list.id]}}</div>
                     <div ng-if="list.action" class="row">
-                        <div class="col" ng-if="list.printView"><a href="javascript: void(0);" ng-click="context.actions.edit(context, dataKey, true)" class="fa fa-fw fa-print
-">PrintView</a></div>
+                        <div class="col" ng-if="list.printView"><a href="javascript: void(0);" ng-click="context.actions.edit(context, dataList.id, true)" title="Print View" class="fa fa-fw fa-print
+"> </a></div>
                         <div class="col-2" ng-if="list.printView"> | </div>
 
-                        <div class="col" ng-if="list.edit===undefined || list.edit!=false"><a href="javascript: void(0);" ng-click="context.actions.edit(context, dataKey)" class="fa fa-fw fa-edit
-">Edit</a></div>
+                        <div class="col" ng-if="list.edit===undefined || list.edit!=false"><a href="javascript: void(0);" ng-click="context.actions.edit(context, dataList.id)" title="Edit" class="fa fa-fw fa-edit
+"> </a></div>
                         <div class="col-2" ng-if="list.edit===undefined || list.edit!=false"> | </div>
-                        <div class="col"><a href="javascript: void(0);" ng-click="context.actions.delete(context, dataKey)" class="fa fa-fw fa-times
-">Delete</a></div>
+                        <div class="col"><a href="javascript: void(0);" title="Delete" ng-click="context.actions.delete(context, dataList.id)" class="fa fa-fw fa-times
+"> </a></div>
                     </div>
                 </td>
             </tr>

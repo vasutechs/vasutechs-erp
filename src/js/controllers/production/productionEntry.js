@@ -1,8 +1,14 @@
 erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         checkAcceptedQty: function(context) {
-            var qtyCanMake = context.form.fields['jobCardNo'].options[context.data.jobCardNo].qtyCanMake;
+            var qtyCanMake = context.form.fields['jobCardNo'].options[context.data.jobCardNo].qtyCanMake,
+            rejectionQtyMax = 0,
+            rwQtyMax = 0;
             context.form.fields['acceptedQty'].max = qtyCanMake;
+            rejectionQtyMax = qtyCanMake - context.data.acceptedQty;
+            rwQtyMax = context.data.rejectionQty ? qtyCanMake - context.data.acceptedQty - context.data.rejectionQty : rwQtyMax;
+            context.form.fields['rejectionQty'].max = rejectionQtyMax;
+            context.form.fields['rwQty'].max = rwQtyMax;
         },
         callBackEdit: function(context, key) {
             context.data['startTime'] = context.actions.timeFormatChange(context.data['startTime']);
@@ -24,8 +30,7 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
             context.data.planQty = timeDiff * context.form.fields['partNo'].options[context.data.partNo].prodRateHr;
         },
         removeRMStockQty: function(context) {
-            var serviceconf = context.actions.getServiceConfig('report.rmStock');
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
+            context.actions.getData('report.rmStock').then(function(res) {
                 var rmStockData = res.data,
                     rmStock = {};
                 for (var i in rmStockData) {

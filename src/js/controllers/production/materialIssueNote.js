@@ -10,6 +10,7 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
         },
         getNorms: function(context) {
             if (context.data.rmCode && context.data.partNo) {
+                context.data.partNorms = null;
                 var serviceconf = context.actions.getServiceConfig('production.bom');
                 serviceApi.callServiceApi(serviceconf).then(function(res) {
                     var bomData = res.data;
@@ -19,15 +20,25 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
                         }
                     }
                 });
-                context.actions.getOperations(context);
+                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom']);
             }
         },
-        getOperations: function(context) {
-            context.actions.getOperationFromFlow(context, context.form.fields['operationFrom']);
-        },
         updateQtyMake: function(context) {
-            if (context.data.partNorms && context.data.issueQty) {
-                context.data.qtyCanMake = context.data.issueQty * (context.data.partNorms * 100);
+            if (context.data.rmCode) {
+                context.actions.getData('report.rmStock').then(function(res) {
+                    var rmStockData = res.data,
+                        rmStock = {};
+                    for (var i in rmStockData) {
+                        rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
+                    }
+                    context.form.fields['issueQty'].max = rmStock[context.data.rmCode].rmStockQty;
+                    if (context.data.partNorms && context.data.issueQty && context.form.fields['issueQty'].max >= context.data.issueQty) {
+                        context.data.qtyCanMake = context.data.issueQty / context.data.partNorms;
+                    }
+                    else{
+                        context.data.qtyCanMake = null;
+                    }
+                });
             }
         }
     });
