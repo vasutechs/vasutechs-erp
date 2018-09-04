@@ -201,7 +201,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             value = new Date(value);
             return value.getHours() + ':' + value.getMinutes() + ':' + value.getSeconds();
         },
-        getOperationFromFlow: function(context, field, partNo) {
+        getOperationFromFlow: function(context, field, partNo, source) {
             partNo = partNo || context.data.partNo;
             if (partNo) {
                 context.actions.makeOptionsFields(field);
@@ -213,7 +213,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                     for (var i in flowMasterData) {
                         if (flowMasterData[i].partNo === partNo) {
                             for (var j in flowMasterData[i].mapping) {
-                                if ((!field.startWith || field.startWith < flowMasterData[i].mapping[j].id) && flowMasterData[i].mapping[j].source === 'In-house') {
+                                if ((!field.startWith || (field.startWith < flowMasterData[i].mapping[j].id)) && (!field.endWith || (field.endWith > flowMasterData[i].mapping[j].id)) && flowMasterData[i].mapping[j].source === source) {
                                     field.options[flowMasterData[i].mapping[j].id] = localOptions[flowMasterData[i].mapping[j].id];
                                 }
                             }
@@ -265,6 +265,16 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                 updateData = angular.extend(updateData, replaceData);
                 context.actions.updateData('production.materialIssueNote', updateData, key);
             });
+        },
+        updatePartTotal: function(context, data, newValue, mapKey) {
+            var total = 0,
+                totalBeforTax = 0,
+                qty = data.receivedQty || data.acceptedQty;
+            totalBeforTax = qty * data.rate;
+            total = totalBeforTax + (totalBeforTax * (data.gst / 100));
+            data.total = parseFloat(total).toFixed(2);
+            context.actions.callBackUpdatePartTotal && context.actions.callBackUpdatePartTotal(context, data, newValue, mapKey);
+
         },
         getServiceConfig: function(module, replaceMethod, appendValue) {
             var serviceConfig = angular.copy(typeof(module) !== 'object' ? eval('erpAppConfig.modules.' + module + '.services.list') : module);

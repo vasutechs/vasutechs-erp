@@ -18,6 +18,10 @@ erpApp.controller('dcSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact'
         },
         callBackSubmit: function(context) {
             context.actions.updatePoSubContractor(context);
+        },
+        callBackChangeMapping: function(context, data, key){
+            context.form.mapping.fields['operationFrom'].endWith = context.data.mapping[0].operationTo;
+            context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationFrom'], key, 'In-house');
         }
     });
 

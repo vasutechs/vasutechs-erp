@@ -564,7 +564,6 @@ erpApp.constant('erpAppConfig', {
                     date: null,
                     customerCode: null,
                     gstin: null,
-                    arnNo: null,
                     subTotal: null,
                     taxRate: null,
                     cgst: null,
@@ -619,13 +618,6 @@ erpApp.constant('erpAppConfig', {
                             inputType: 'text',
                             required: true
                         },
-                        'partyArnno': {
-                            name: 'Party ARN No',
-                            id: 'partyArnno',
-                            type: 'input',
-                            inputType: 'text',
-                            required: true
-                        },
                         'taxRate': {
                             name: 'Tax Rate',
                             id: 'taxRate',
@@ -675,7 +667,8 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                replaceName: 'partName',
+                                replaceName: 'partNo',
+                                isDisable: true,
                                 callBack: false
                             },
                             'hsnCode': {
@@ -1078,7 +1071,7 @@ erpApp.constant('erpAppConfig', {
                                 type: 'span'
                             }
                         },
-                        actions:{
+                        actions: {
                             add: false,
                             delete: false
                         }
@@ -1169,7 +1162,7 @@ erpApp.constant('erpAppConfig', {
                             name: 'GSTIN',
                             id: 'gstin',
                             type: 'input',
-                            inputType: 'number',
+                            inputType: 'text',
                             required: true
                         }
                     },
@@ -1177,13 +1170,13 @@ erpApp.constant('erpAppConfig', {
                         name: 'Part Mapping',
                         fields: {
                             'id': {
-                                name: 'Part Name',
+                                name: 'Part No',
                                 id: 'id',
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                replaceName: 'partName'
+                                replaceName: 'partNo'
                             },
                             'operationTo': {
                                 name: 'Op Name',
@@ -1196,7 +1189,9 @@ erpApp.constant('erpAppConfig', {
                             'rate': {
                                 name: 'Rate',
                                 id: 'rate',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                required: true
                             },
                             'gst': {
                                 name: 'GST %',
@@ -1297,8 +1292,9 @@ erpApp.constant('erpAppConfig', {
                                 type: 'select',
                                 options: {},
                                 action: 'changeMapping',
+                                updateData: ['uomCode', 'cgst', 'sgst'],
                                 dataFrom: 'marketing.partMaster',
-                                replaceName: 'partName',
+                                replaceName: 'partNo',
                                 isDisable: true
                             },
                             'operationTo': {
@@ -1330,7 +1326,10 @@ erpApp.constant('erpAppConfig', {
                             'rate': {
                                 name: 'Rate',
                                 id: 'rate',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                action: 'updatePartTotal',
+                                required: true
                             },
                             'gst': {
                                 name: 'GST%',
@@ -1353,7 +1352,7 @@ erpApp.constant('erpAppConfig', {
                                 type: 'span'
                             }
                         },
-                        actions:{
+                        actions: {
                             add: false,
                             delete: false
                         }
@@ -1538,7 +1537,7 @@ erpApp.constant('erpAppConfig', {
                                 type: 'span'
                             }
                         },
-                        actions:{
+                        actions: {
                             add: false,
                             delete: false
                         }
@@ -1588,6 +1587,8 @@ erpApp.constant('erpAppConfig', {
                         operationTo: null,
                         acceptedQty: null,
                         uomCode: null,
+                        rate: null,
+                        gst: null,
                         total: null
                     }]
                 },
@@ -1645,7 +1646,7 @@ erpApp.constant('erpAppConfig', {
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'marketing.partMaster',
-                                replaceName: 'partName',
+                                replaceName: 'partNo',
                                 isDisable: true
                             },
                             'operationFrom': {
@@ -1671,7 +1672,10 @@ erpApp.constant('erpAppConfig', {
                             'acceptedQty': {
                                 name: 'Qty',
                                 id: 'acceptedQty',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                action: 'updatePartTotal',
+                                required: true
                             },
                             'uomCode': {
                                 name: 'UOM',
@@ -1688,7 +1692,7 @@ erpApp.constant('erpAppConfig', {
                                 type: 'span'
                             }
                         },
-                        actions:{
+                        actions: {
                             add: false,
                             delete: false
                         }
@@ -1814,7 +1818,7 @@ erpApp.constant('erpAppConfig', {
                             name: 'Sub Contractor DC Code',
                             id: 'subContractorDCCode',
                             type: 'input',
-                            inputType: 'text',
+                            inputType: 'number',
                             required: true
                         },
                         'subContractorDCDate': {
@@ -1833,9 +1837,8 @@ erpApp.constant('erpAppConfig', {
                                 id: 'id',
                                 type: 'select',
                                 options: {},
-                                action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                replaceName: 'partName',
+                                replaceName: 'partNo',
                                 isDisable: true
                             },
                             'operationFrom': {
@@ -1862,17 +1865,14 @@ erpApp.constant('erpAppConfig', {
                                 name: 'Received Qty',
                                 id: 'receivedQty',
                                 type: 'input',
-                                inputType: 'text',
+                                inputType: 'number',
                                 action: 'updatePartTotal',
                                 required: true
                             },
                             'acceptedQty': {
                                 name: 'Accepted Qty',
                                 id: 'acceptedQty',
-                                type: 'input',
-                                inputType: 'text',
-                                action: 'updatePartTotal',
-                                required: true
+                                type: 'span'
                             },
                             'uomCode': {
                                 name: 'UOM',
@@ -1909,7 +1909,7 @@ erpApp.constant('erpAppConfig', {
                                 type: 'span'
                             }
                         },
-                        actions:{
+                        actions: {
                             add: false,
                             delete: false
                         }
@@ -2210,10 +2210,10 @@ erpApp.constant('erpAppConfig', {
                             isSingle: true
                         },
                         'partName': {
-                                name: 'Part Name',
-                                id: 'partName',
-                                type: 'span'
-                            }
+                            name: 'Part Name',
+                            id: 'partName',
+                            type: 'span'
+                        }
                     },
                     mapping: {
                         name: 'OP Mapping',
@@ -2246,7 +2246,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Part NO',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partName'
+                        replaceName: 'partNo'
                     },
                     {
                         action: true
@@ -2301,7 +2301,7 @@ erpApp.constant('erpAppConfig', {
                             type: 'select',
                             options: {},
                             dataFrom: 'marketing.partMaster',
-                            replaceName: 'partName',
+                            replaceName: 'partNo',
                             required: true,
                             isSingle: true
                         },
@@ -2346,7 +2346,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Tool No',
                         id: 'toolNo',
                         idPrefix: 'VT-T'
-                    },{
+                    }, {
                         title: 'Tool Name',
                         id: 'toolName'
                     },
@@ -2561,7 +2561,7 @@ erpApp.constant('erpAppConfig', {
                             options: {},
                             required: true,
                             dataFrom: 'marketing.partMaster',
-                            replaceName: 'partName',
+                            replaceName: 'partNo',
                             isDisable: true,
                             isSingle: true
                         },
@@ -2663,7 +2663,7 @@ erpApp.constant('erpAppConfig', {
                         title: 'Part No',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partName'
+                        replaceName: 'partNo'
                     },
                     {
                         title: 'Operation From',
