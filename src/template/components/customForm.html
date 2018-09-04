@@ -1,5 +1,5 @@
 <div>
-    <form id="{{context.form.id}}" name="customForm" novalidate>
+    <form id="{{context.form.id}}" name="customForm">
         <div class="form-group row" ng-switch="field.type" ng-repeat="field in context.form.fields" ng-if="!context.page.printView">
             <label ng-switch-when="span" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="span" class="col-10">

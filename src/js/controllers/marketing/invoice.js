@@ -9,12 +9,14 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', functi
         },
         getPartStockDetail: function(context) {
             var data = angular.copy(context.data);
+            context.partStockDetail = [];
             context.actions.getData('report.partStock', context.data.poNo).then(function(res) {
                 var partStockData = res.data;
                 var partNos = [];
                 for (var i in partStockData) {
                     if (partStockData[i].operationTo === 7 && partStockData[i].partStockQty > 0) {
                         partNos.push(partStockData[i].partNo);
+                        context.partStockDetail[partStockData[i].partNo] = partStockData[i]; 
                     }
                 }
 
@@ -36,8 +38,10 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', functi
                 cgstTotal = 0,
                 sgstTotal = 0,
                 total = 0;
-
-            totalBeforTax = updateValue * data.rate;
+            if(context.partStockDetail[data.id]){
+                data.unit = context.partStockDetail[data.id].partStockQty < data.unit ? null : data.unit;
+            }
+            totalBeforTax = data.unit * data.rate;
             cgst = context.data.mapping.length > 0 ? partDetail.cgst : (context.data.cgst + partDetail.cgst) / context.data.mapping.length;
             sgst = context.data.mapping.length > 0 ? partDetail.sgst : (context.data.sgst + partDetail.sgst) / context.data.mapping.length;
             taxRate = context.data.mapping.length > 0 ? partDetail.gst : (context.data.taxRate + partDetail.gst) / context.data.mapping.length;

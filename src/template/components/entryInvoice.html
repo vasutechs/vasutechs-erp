@@ -29,10 +29,8 @@
                         <input ng-if="!context.page.printView" type="text" id="{{context.form.fields.partyGstin.id}}" class="form-control" ng-model="context.data[context.form.fields.partyGstin.id]" ng-required="{{context.form.fields.required}}" />
                         <span ng-if="context.page.printView" id="{{context.form.fields.partyGstin.id}}">{{context.form.fields.partyGstin.idPrefix}}{{context.data[context.form.fields.partyGstin.id]}}</span>
                     </td>
-                    <td><b>{{context.form.fields.partyArnno.name}}</b></td>
+                    <td></td>
                     <td>
-                        <input ng-if="!context.page.printView" type="text" id="{{context.form.fields.partyArnno.id}}" class="form-control" ng-model="context.data[context.form.fields.partyArnNo.id]" ng-required="{{context.form.fields.partyArnNo.required}}" />
-                        <span ng-if="context.page.printView" id="{{context.form.fields.partyArnNo.id}}">{{context.form.fields.partyArnNo.idPrefix}}{{context.data[context.form.fields.partyArnNo.id]}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -42,7 +40,7 @@
                     <td ng-switch="field.type" ng-repeat="field in context.form.mapping.fields">
                         <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>
                         <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id])" ng-required="{{field.required}}" />
-                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field)" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}">
+                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field)" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}"  ng-disabled="field.isDisable">
                             <option value="">--Select--</option>
                         </select>
                     </td>
@@ -52,11 +50,7 @@
                         <span id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="5" ng-if="!context.page.printView">
-                        <a class="fa fa-fw fa-plus-square-o" href="javascript: void(0);" ng-click="context.actions.addMapping(context.data.mapping)"> </a>
-                    </td>
-                </tr>
+                
                 <tr>
                     <td colspan="4" align="right"><b>Sub Total:</b></td>
                     <td></td>
@@ -66,12 +60,12 @@
                     <td rowspan="2"><span id="{{context.form.fields.taxRate.id}}" ng-bind="context.data[context.form.fields.taxRate.id]"></span>%</td>
                     <td align="right"><b>{{context.form.fields.cgst.name}}</b></td>
                     <td><span id="{{context.form.fields.cgst.id}}" ng-bind="context.data[context.form.fields.cgst.id]"></span>%</td>
-                    <td><span id="{{context.form.fields.cgstTotal.id}}" ng-bind="context.data[context.form.fields.cgstTotal.id]"></span>%</td>
+                    <td><span id="{{context.form.fields.cgstTotal.id}}" ng-bind="context.data[context.form.fields.cgstTotal.id]"></span></td>
                 </tr>
                 <tr>
                     <td align="right"><b>{{context.form.fields.sgst.name}}</b></td>
                     <td><span id="{{context.form.fields.sgst.id}}" ng-bind="context.data[context.form.fields.sgst.id]"></span>%</td>
-                    <td><span id="{{context.form.fields.sgstTotal.id}}" ng-bind="context.data[context.form.fields.sgstTotal.id]"></span>%</td>
+                    <td><span id="{{context.form.fields.sgstTotal.id}}" ng-bind="context.data[context.form.fields.sgstTotal.id]"></span></td>
                 </tr>
                 <tr>
                     <td colspan="3"></td>

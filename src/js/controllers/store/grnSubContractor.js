@@ -33,12 +33,10 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
                 context.actions.updateDCSubContractor(context);
             }
         },
-        updatePartTotal: function(context, data, updateValue) {
-            var total = 0,
-                totalBeforTax = 0;
-            totalBeforTax = updateValue * data.rate;
-            total = totalBeforTax + (totalBeforTax * (data.gst / 100)) + (totalBeforTax * (data.cgst / 100)) + (totalBeforTax * (data.sgst / 100))
-            data.total = parseFloat(total).toFixed(2);
+        callBackUpdatePartTotal: function(context, data, newValue, mapKey){
+            if(data.acceptedQty){
+                data.receivedQty = data.acceptedQty < data.receivedQty ? null : data.receivedQty;
+            }
         }
     });;
 

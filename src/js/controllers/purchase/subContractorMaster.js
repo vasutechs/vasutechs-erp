@@ -1,7 +1,7 @@
 erpApp.controller('subContractorMasterCtrl', ['erpAppConfig', '$scope', 'commonFact', function(erpAppConfig, $scope, commonFact) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
     	callBackChangeMapping: function(context, data, key){
-    		context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], key);
+    		context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], key, 'Sub-Contractor');
     	}
     });
 

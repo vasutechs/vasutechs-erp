@@ -20,7 +20,7 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
                         }
                     }
                 });
-                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom']);
+                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], context.data.partNo, 'Supplier');
             }
         },
         updateQtyMake: function(context) {
