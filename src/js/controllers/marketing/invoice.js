@@ -49,7 +49,7 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
             sgstTotal = (totalBeforTax * (sgst / 100));
             taxRateTotal = (totalBeforTax * (taxRate / 100));
             data.amount = parseFloat(totalBeforTax).toFixed(2);
-            if (context.cashReceipt === false) {
+            if (context.cashBill === false) {
                 total = totalBeforTax + cgstTotal + sgstTotal;
                 context.data.taxRate = parseInt(taxRate);
                 context.data.cgst = parseInt(cgst);
@@ -93,12 +93,12 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
             context.actions.updateInvocePartStock(context);
         }
     });
-    if ($location.search() && $location.search()['type'] === 'cashReceipt') {
-        $scope.context = angular.merge({}, angular.copy(erpAppConfig.modules.marketing.invoice), erpAppConfig.modules.marketing.cashReceipt);
-        $scope.context.cashReceipt = true;
+    if ($location.search() && $location.search()['type'] === 'cashBill') {
+        $scope.context = angular.merge({}, angular.copy(erpAppConfig.modules.marketing.invoice), erpAppConfig.modules.marketing.cashBill);
+        $scope.context.cashBill = true;
     } else {
         $scope.context = erpAppConfig.modules.marketing.invoice;
-        $scope.context.cashReceipt = false;
+        $scope.context.cashBill = false;
     }
 
     $scope.context.actions = actions;

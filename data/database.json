@@ -1020,10 +1020,10 @@
                     "6": {
                         "id": 6,
                         "partNo": 1,
-                        "partStockQty": 25,
+                        "partStockQty": 0,
                         "operationFrom": 6,
                         "operationTo": 7,
-                        "updated": "2018-09-05T01:52:44.023Z"
+                        "updated": "2018-09-05T02:09:51.780Z"
                     },
                     "7": {
                         "id": 7,
@@ -1069,8 +1069,8 @@
                 "2018": {}
             }
         },
-        "cashReceipt": {
-            "name": "cashReceipt",
+        "cashBill": {
+            "name": "cashBill",
             "fields": {
                 "id": "",
                 "cashReceiptNo": "",
