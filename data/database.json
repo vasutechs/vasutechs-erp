@@ -1020,10 +1020,10 @@
                     "6": {
                         "id": 6,
                         "partNo": 1,
-                        "partStockQty": 100,
+                        "partStockQty": 25,
                         "operationFrom": 6,
                         "operationTo": 7,
-                        "updated": "2018-08-31T02:06:27.133Z"
+                        "updated": "2018-09-05T01:52:44.023Z"
                     },
                     "7": {
                         "id": 7,
@@ -1045,10 +1045,35 @@
             }
         },
         "invoice": {
-            "name": "uomMaster",
+            "name": "invoice",
             "fields": {
                 "id": "",
                 "invoiceNo": "",
+                "date": "",
+                "customerCode": "",
+                "partyGstin": "",
+                "partyArnNo": "",
+                "taxRate": "",
+                "cgst": "",
+                "sgst": "",
+                "total": "",
+                "details": {
+                    "sNo": "",
+                    "partNo": "",
+                    "unit": "",
+                    "rate": "",
+                    "amount": ""
+                }
+            },
+            "data": {
+                "2018": {}
+            }
+        },
+        "cashReceipt": {
+            "name": "cashReceipt",
+            "fields": {
+                "id": "",
+                "cashReceiptNo": "",
                 "date": "",
                 "customerCode": "",
                 "partyGstin": "",

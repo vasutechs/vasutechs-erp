@@ -5,8 +5,7 @@
                 <tr>
                     <td><b>{{context.form.fields.invoiceNo.name}}</b></td>
                     <td colspan="2">
-                        <input ng-if="!context.page.printView" type="text" id="{{context.form.fields.invoiceNo.id}}" class="form-control" ng-model="context.data[context.form.fields.invoiceNo.id]" ng-required="{{context.form.fields.invoiceNo.required}}" />
-                        <span ng-if="context.page.printView" id="{{context.form.fields.invoiceNo.id}}">{{context.form.fields.invoiceNo.idPrefix}}{{context.data[context.form.fields.invoiceNo.id]}}</span>
+                        <span id="{{context.form.fields.invoiceNo.id}}">{{context.form.fields.invoiceNo.idPrefix}}{{context.data[context.form.fields.invoiceNo.id]}}</span>
                     </td>
                     <td align="right"><b>{{context.form.fields.date.name}}</b></td>
                     <td>
@@ -55,14 +54,14 @@
                     <td colspan="4" align="right"><b>Sub Total:</b></td>
                     <td></td>
                 </tr>
-                <tr>
+                <tr ng-if="!context.cashReceipt">
                     <td rowspan="2" align="right"><b>{{context.form.fields.taxRate.name}}</b></td>
                     <td rowspan="2"><span id="{{context.form.fields.taxRate.id}}" ng-bind="context.data[context.form.fields.taxRate.id]"></span>%</td>
                     <td align="right"><b>{{context.form.fields.cgst.name}}</b></td>
                     <td><span id="{{context.form.fields.cgst.id}}" ng-bind="context.data[context.form.fields.cgst.id]"></span>%</td>
                     <td><span id="{{context.form.fields.cgstTotal.id}}" ng-bind="context.data[context.form.fields.cgstTotal.id]"></span></td>
                 </tr>
-                <tr>
+                <tr ng-if="!context.cashReceipt">
                     <td align="right"><b>{{context.form.fields.sgst.name}}</b></td>
                     <td><span id="{{context.form.fields.sgst.id}}" ng-bind="context.data[context.form.fields.sgst.id]"></span>%</td>
                     <td><span id="{{context.form.fields.sgstTotal.id}}" ng-bind="context.data[context.form.fields.sgstTotal.id]"></span></td>

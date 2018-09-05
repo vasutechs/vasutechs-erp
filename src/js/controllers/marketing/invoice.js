@@ -1,10 +1,10 @@
-erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', function(erpAppConfig, $scope, commonFact) {
+erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$location', function(erpAppConfig, $scope, commonFact, $location) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         callBackSetAutoGenKey: function(context) {
             var year = new Date().getFullYear();
             context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year;
         },
-        callBackChangeMapping: function(context, data, key, field){
+        callBackChangeMapping: function(context, data, key, field) {
             context.actions.getPartStockDetail(context);
         },
         getPartStockDetail: function(context) {
@@ -16,7 +16,7 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', functi
                 for (var i in partStockData) {
                     if (partStockData[i].operationTo === 7 && partStockData[i].partStockQty > 0) {
                         partNos.push(partStockData[i].partNo);
-                        context.partStockDetail[partStockData[i].partNo] = partStockData[i]; 
+                        context.partStockDetail[partStockData[i].partNo] = partStockData[i];
                     }
                 }
 
@@ -38,7 +38,7 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', functi
                 cgstTotal = 0,
                 sgstTotal = 0,
                 total = 0;
-            if(context.partStockDetail[data.id]){
+            if (context.partStockDetail[data.id]) {
                 data.unit = context.partStockDetail[data.id].partStockQty < data.unit ? null : data.unit;
             }
             totalBeforTax = data.unit * data.rate;
@@ -48,13 +48,19 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', functi
             cgstTotal = (totalBeforTax * (cgst / 100));
             sgstTotal = (totalBeforTax * (sgst / 100));
             taxRateTotal = (totalBeforTax * (taxRate / 100));
-            total = totalBeforTax + cgstTotal + sgstTotal;
             data.amount = parseFloat(totalBeforTax).toFixed(2);
-            context.data.taxRate = parseInt(taxRate);
-            context.data.cgst = parseInt(cgst);
-            context.data.sgst = parseInt(sgst);
-            context.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
-            context.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
+            if (context.cashReceipt === false) {
+                total = totalBeforTax + cgstTotal + sgstTotal;
+                context.data.taxRate = parseInt(taxRate);
+                context.data.cgst = parseInt(cgst);
+                context.data.sgst = parseInt(sgst);
+                context.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
+                context.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
+            } else {
+                total = totalBeforTax;
+            }
+
+            context.data.totalBeforTax = parseFloat(totalBeforTax).toFixed(2);
             context.data.total = parseFloat(total).toFixed(2);
 
         },
@@ -87,8 +93,14 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', functi
             context.actions.updateInvocePartStock(context);
         }
     });
+    if ($location.search() && $location.search()['type'] === 'cashReceipt') {
+        $scope.context = angular.merge({}, angular.copy(erpAppConfig.modules.marketing.invoice), erpAppConfig.modules.marketing.cashReceipt);
+        $scope.context.cashReceipt = true;
+    } else {
+        $scope.context = erpAppConfig.modules.marketing.invoice;
+        $scope.context.cashReceipt = false;
+    }
 
-    $scope.context = erpAppConfig.modules.marketing.invoice;
     $scope.context.actions = actions;
     $scope.context.actions.list($scope.context);
 
