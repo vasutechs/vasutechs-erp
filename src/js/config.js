@@ -622,31 +622,31 @@ erpApp.constant('erpAppConfig', {
                     }
                 }
             },
-            cashReceipt: {
-                name: 'cashReceipt',
-                title: 'Cash Receipt',
+            cashBill: {
+                name: 'cashBill',
+                title: 'Cash Bill',
                 form: {
                     fields: {
                         'invoiceNo': {
-                            name: 'CashReceipt No'
+                            name: 'CashBill No'
                         }
                     }
                 },
                 listView: [{
-                        title: 'Cash Receipt No',
+                        title: 'Cash Bill No',
                         id: 'invoiceNo',
                         idPrefix: 'H-'
                     }
                 ],
                 page: {
-                    link: 'marketing/invoice/list?type=cashReceipt',
+                    link: 'marketing/invoice/list?type=cashBill',
                     name: 'list',
                     templateUrl: 'template/marketing/invoice.html',
                     controller: 'invoiceCtrl'
                 },
                 services: {
                     list: {
-                        url: 'api/cashReceipt/data/{{YEAR}}',
+                        url: 'api/cashBill/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -825,7 +825,7 @@ erpApp.constant('erpAppConfig', {
                             name: 'GSTIN',
                             id: 'gstin',
                             type: 'input',
-                            inputType: 'number',
+                            inputType: 'text',
                             required: true
                         }
                     },
