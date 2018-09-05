@@ -2,113 +2,7 @@ erpApp.constant('erpAppConfig', {
     appName: 'VASUTECHS',
     appBaseUrl: '/dashboard',
     dataDownloadUrl: '/api/download',
-    appNavMenus: [{
-            description: {
-                name: 'Production',
-                title: 'Production',
-                url: 'collapseProduction',
-                icon: 'cogs',
-                order: 4,
-                child: 'yes'
-            },
-            childs: [{
-                    description: {
-                        name: 'Operation Master',
-                        url: 'master/partMaster/list',
-                        order: 0
-                    }
-                },
-                {
-                    description: {
-                        name: 'Machine Master',
-                        url: 'master/empMaster/list',
-                        order: 1
-                    }
-                },
-                {
-                    description: {
-                        name: 'BOM',
-                        url: 'master/customerMaster/list',
-                        order: 2
-                    }
-                },
-                {
-                    description: {
-                        name: 'Tool Master',
-                        url: 'master/uomMaster/list',
-                        order: 3
-                    }
-                },
-                {
-                    description: {
-                        name: 'Flow Process',
-                        url: 'master/invoice/list',
-                        order: 4
-                    }
-                },
-                {
-                    description: {
-                        name: 'Material issue note',
-                        url: 'master/invoice/list',
-                        order: 5
-                    }
-                },
-                {
-                    description: {
-                        name: 'PRODUCTION Entry',
-                        url: 'master/invoice/list',
-                        order: 6
-                    }
-                },
-                {
-                    description: {
-                        name: 'PRODUCTION Entry for packing',
-                        url: 'master/invoice/list',
-                        order: 7
-                    }
-                }
-            ]
-        },
-        {
-            description: {
-                name: 'Quality',
-                title: 'Quality',
-                url: 'collapseQuality',
-                icon: 'check-square',
-                order: 5,
-                child: 'yes'
-            },
-            childs: [{
-                    description: {
-                        name: 'Raw material Specification',
-                        url: 'master/partMaster/list',
-                        order: 0
-                    }
-                },
-                {
-                    description: {
-                        name: 'Part Specification',
-                        url: 'master/empMaster/list',
-                        order: 1
-                    }
-                },
-                {
-                    description: {
-                        name: 'Receiving Inspection- Supplier',
-                        url: 'master/customerMaster/list',
-                        order: 2
-                    }
-                },
-                {
-                    description: {
-                        name: 'Receiving Inspection- Subcontractor',
-                        url: 'master/uomMaster/list',
-                        order: 3
-                    }
-                }
-            ]
-        }
-    ],
+    appNavMenus: [],
     modules: {
         dashboard: {
             name: 'Dashboard',
@@ -565,11 +459,13 @@ erpApp.constant('erpAppConfig', {
                     customerCode: null,
                     gstin: null,
                     subTotal: null,
+                    includeTax: null,
                     taxRate: null,
                     cgst: null,
                     sgst: null,
                     cgstTotal: null,
                     sgstTotal: null,
+                    totalBeforTax: null,
                     total: null,
                     mapping: [{
                         id: null,
@@ -587,8 +483,7 @@ erpApp.constant('erpAppConfig', {
                         'invoiceNo': {
                             name: 'Invoice No',
                             id: 'invoiceNo',
-                            type: 'input',
-                            inputType: 'text',
+                            type: 'span',
                             required: true,
                             idPrefix: 'H-'
                         },
@@ -723,6 +618,35 @@ erpApp.constant('erpAppConfig', {
                 services: {
                     list: {
                         url: 'api/invoice/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
+            },
+            cashReceipt: {
+                name: 'cashReceipt',
+                title: 'Cash Receipt',
+                form: {
+                    fields: {
+                        'invoiceNo': {
+                            name: 'CashReceipt No'
+                        }
+                    }
+                },
+                listView: [{
+                        title: 'Cash Receipt No',
+                        id: 'invoiceNo',
+                        idPrefix: 'H-'
+                    }
+                ],
+                page: {
+                    link: 'marketing/invoice/list?type=cashReceipt',
+                    name: 'list',
+                    templateUrl: 'template/marketing/invoice.html',
+                    controller: 'invoiceCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/cashReceipt/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
