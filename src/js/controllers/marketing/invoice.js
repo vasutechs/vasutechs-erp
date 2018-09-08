@@ -5,26 +5,22 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
             context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year;
         },
         callBackChangeMapping: function(context, data, key, field) {
-            context.actions.getPartStockDetail(context);
+            context.actions.getPartStockDetail(context, data, key, field);
         },
-        getPartStockDetail: function(context) {
-            var data = angular.copy(context.data);
+        getPartStockDetail: function(context, data, key, field) {
             context.partStockDetail = [];
-            context.actions.getData('report.partStock', context.data.poNo).then(function(res) {
+            context.actions.getData('report.partStock').then(function(res) {
                 var partStockData = res.data;
                 var partNos = [];
                 for (var i in partStockData) {
-                    if (partStockData[i].operationTo === 7 && partStockData[i].partStockQty > 0) {
+                    if (partStockData[i].operationTo === 7 && partStockData[i].partStockQty > 0 && partStockData[i].partNo === data.id) {
                         partNos.push(partStockData[i].partNo);
                         context.partStockDetail[partStockData[i].partNo] = partStockData[i];
                     }
                 }
-
-                context.form.mapping.fields['id'].filter = {
-                    id: partNos || null
-                };
-                context.actions.makeOptionsFields(context.form.mapping.fields['id']);
-                context.data = data;
+                if (partNos.length === 0 || partNos.indexOf(data.id) < 0) {
+                    angular.extend(data, angular.copy(context.masterData.mapping[0]));
+                }
             });
         },
         updateTotal: function(context, data, updateValue) {

@@ -3,6 +3,7 @@ erpApp.constant('erpAppConfig', {
     appBaseUrl: '/dashboard',
     dataDownloadUrl: '/api/download',
     appNavMenus: [],
+    calendarYear: new Date().getFullYear(),
     modules: {
         dashboard: {
             name: 'Dashboard',
@@ -504,7 +505,8 @@ erpApp.constant('erpAppConfig', {
                             updateData: ['gstin', 'mapping'],
                             dataFrom: 'marketing.customerMaster',
                             replaceName: 'customerName',
-                            isSingle: true
+                            isSingle: true,
+                            callBack: false
                         },
                         'partyGstin': {
                             name: 'Party GSTIN',
@@ -563,8 +565,7 @@ erpApp.constant('erpAppConfig', {
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
                                 replaceName: 'partNo',
-                                isDisable: true,
-                                callBack: false
+                                isDisable: true
                             },
                             'hsnCode': {
                                 name: 'HSN Code',
@@ -868,7 +869,8 @@ erpApp.constant('erpAppConfig', {
                         id: 'supplierName'
                     },
                     {
-                        action: true
+                        action: true,
+                        delete: false
                     }
                 ],
                 page: {
@@ -1100,7 +1102,8 @@ erpApp.constant('erpAppConfig', {
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
-                                replaceName: 'partNo'
+                                replaceName: 'partNo',
+                                required: true
                             },
                             'operationTo': {
                                 name: 'Op Name',
@@ -1108,7 +1111,8 @@ erpApp.constant('erpAppConfig', {
                                 type: 'select',
                                 options: {},
                                 dataFrom: 'production.operationMaster',
-                                replaceName: 'opName'
+                                replaceName: 'opName',
+                                required: true
                             },
                             'rate': {
                                 name: 'Rate',
@@ -2684,10 +2688,10 @@ erpApp.constant('erpAppConfig', {
                 },
                 form: {},
                 listView: [{
-                        title: 'Part Name',
+                        title: 'Part No',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partName'
+                        replaceName: 'partNo'
                     },
                     {
                         title: 'Part Stock Qty',

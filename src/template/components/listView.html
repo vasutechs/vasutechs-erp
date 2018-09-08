@@ -19,8 +19,8 @@
 
                         <div class="col" ng-if="list.edit===undefined || list.edit!=false"><a href="javascript: void(0);" ng-click="context.actions.edit(context, dataList.id)" title="Edit" class="fa fa-fw fa-edit
 "> </a></div>
-                        <div class="col-2" ng-if="list.edit===undefined || list.edit!=false"> | </div>
-                        <div class="col"><a href="javascript: void(0);" title="Delete" ng-click="context.actions.delete(context, dataList.id)" class="fa fa-fw fa-times
+                        <div class="col-2" ng-if="(list.edit===undefined || list.edit!=false) && (list.delete===undefined || list.delete!=false)"> | </div>
+                        <div class="col" ng-if="list.delete===undefined || list.delete!=false"><a href="javascript: void(0);" title="Delete" ng-click="context.actions.delete(context, dataList.id)" class="fa fa-fw fa-times
 "> </a></div>
                     </div>
                 </td>

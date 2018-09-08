@@ -1,9 +1,17 @@
-erpApp.directive('header', ['erpAppConfig', function(erpAppConfig) {
+erpApp.directive('header', ['erpAppConfig', '$location', function(erpAppConfig, $location) {
     var headerComp = function($scope, element, attrs) {
         $scope.appName = erpAppConfig.appName;
         $scope.appNavMenus = erpAppConfig.appNavMenus;
         $scope.modules = erpAppConfig.modules;
         $scope.dataDownloadUrl = erpAppConfig.dataDownloadUrl;
+        $scope.calendarYear = erpAppConfig.calendarYear;
+        $scope.calendarYearList = [];
+        for (var i = 10; i >= 0; i--) {
+            $scope.calendarYearList.push({
+                optionId: $scope.calendarYear - i,
+                optionName: $scope.calendarYear - i
+            });
+        }
         $scope.showSubModule = function(module) {
             var isSubModule = false;
             $scope.subModules = {};
@@ -15,6 +23,10 @@ erpApp.directive('header', ['erpAppConfig', function(erpAppConfig) {
                 }
             }
             return isSubModule;
+        }
+        $scope.changeCalendarYear = function() {
+            erpAppConfig.calendarYear = $scope.calendarYear;
+            $location.path(erpAppConfig.modules.dashboard.page.link);
         }
         // Force the toggled class to be removed when a collapsible nav link is clicked
         element.ready(function() {

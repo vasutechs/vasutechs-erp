@@ -278,7 +278,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
         },
         getServiceConfig: function(module, replaceMethod, appendValue) {
             var serviceConfig = angular.copy(typeof(module) !== 'object' ? eval('erpAppConfig.modules.' + module + '.services.list') : module);
-            serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', new Date().getFullYear());
+            serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', erpAppConfig.calendarYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
             return serviceConfig;

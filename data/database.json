@@ -106,11 +106,18 @@
                             "hsnCode": "1",
                             "rate": 13,
                             "gst": 18
+                        },
+                        {
+                            "id": 3,
+                            "partName": "EHL Clamp",
+                            "hsnCode": "730070000",
+                            "rate": 0.45,
+                            "gst": 18
                         }
                     ],
                     "id": 1,
                     "added": "2018-08-17T01:30:09.166Z",
-                    "updated": "2018-08-31T02:05:49.018Z"
+                    "updated": "2018-09-08T01:29:35.085Z"
                 },
                 "2": {
                     "customerCode": 2,
@@ -377,6 +384,7 @@
                 "updated": ""
             },
             "data": {
+                "2016": {},
                 "2018": {}
             }
         },
@@ -456,10 +464,10 @@
                 "2018": {
                     "1": {
                         "poNo": 1,
-                        "date": "2018-09-03T15:20:35.512Z",
+                        "date": "2018-09-08T00:20:56.438Z",
                         "subContractorCode": 1,
                         "gstin": 23123,
-                        "status": 1,
+                        "status": 0,
                         "mapping": [
                             {
                                 "id": 1,
@@ -476,8 +484,8 @@
                             }
                         ],
                         "id": 1,
-                        "added": "2018-09-03T15:21:24.673Z",
-                        "updated": "2018-09-03T15:30:48.468Z"
+                        "added": "2018-09-08T00:21:04.755Z",
+                        "updated": "2018-09-08T00:21:04.755Z"
                     }
                 }
             }
@@ -579,34 +587,7 @@
                 "updated": ""
             },
             "data": {
-                "2018": {
-                    "1": {
-                        "dcNo": 1,
-                        "date": "2018-09-03T15:30:28.921Z",
-                        "subContractorCode": 1,
-                        "poNo": 1,
-                        "status": 0,
-                        "mapping": [
-                            {
-                                "id": 1,
-                                "operationFrom": 5,
-                                "operationTo": 6,
-                                "acceptedQty": "10",
-                                "uomCode": 2,
-                                "rate": "14",
-                                "gst": 18,
-                                "total": "165.20",
-                                "cgst": 9,
-                                "sgst": 9,
-                                "opCode": 6,
-                                "partNo": "4” SWR"
-                            }
-                        ],
-                        "id": 1,
-                        "added": "2018-09-03T15:30:48.397Z",
-                        "updated": "2018-09-03T15:30:48.397Z"
-                    }
-                }
+                "2018": {}
             }
         },
         "operationMaster": {
@@ -907,7 +888,22 @@
                 "updated": ""
             },
             "data": {
-                "2018": {}
+                "2018": {
+                    "1": {
+                        "jobCardNo": 1,
+                        "date": "2018-09-07T23:51:11.646Z",
+                        "rmCode": 1,
+                        "partNo": 1,
+                        "partNorms": "0.100",
+                        "issueQty": 10,
+                        "qtyCanMake": 100,
+                        "operationFrom": 1,
+                        "status": 0,
+                        "id": 1,
+                        "added": "2018-09-07T23:51:21.888Z",
+                        "updated": "2018-09-07T23:51:21.888Z"
+                    }
+                }
             }
         },
         "productionEntry": {
