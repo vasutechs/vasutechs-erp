@@ -7,7 +7,7 @@ module.exports = function(gulp, config, task) {
         try {
             data = db.getData('/tables' + dataPath);
         } catch (error) {
-            data = error;
+            data = {};
         };
         return data;
     };
@@ -17,7 +17,12 @@ module.exports = function(gulp, config, task) {
             newId;
         inputData = JSON.parse(inputData);
         if (!inputData.id && !inputData.delete) {
-            lastData = db.getData('/tables' + dataPath);
+            try {
+                lastData = db.getData('/tables' + dataPath);
+            } catch (error) {
+                db.push('/tables' + dataPath, {}, true);
+                lastData = db.getData('/tables' + dataPath);
+            };
             lastData = lastData && lastData[Object.keys(lastData)[Object.keys(lastData).length - 1]];
             newId = lastData && lastData.id && parseInt(lastData.id) + 1 || 1;
             inputData['id'] = newId;
@@ -28,8 +33,7 @@ module.exports = function(gulp, config, task) {
             if (inputData.delete) {
                 db.delete('/tables' + dataPath + '/' + inputData.key);
                 data = {
-                    status: 'success',
-                    data: 'Success'
+                    success: 'success'
                 };
             } else {
                 inputData['updated'] = new Date();
@@ -38,10 +42,7 @@ module.exports = function(gulp, config, task) {
             }
 
         } catch (error) {
-            data = {
-                status: 0,
-                data: {}
-            };
+            data = {};
         };
         return data;
     }

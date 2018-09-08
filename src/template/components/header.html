@@ -43,6 +43,11 @@
                 <li class="nav-item dropdown">
                 </li>
                 <li class="nav-item">
+                    <select class="form-control" id="calendarYear" ng-change="changeCalendarYear()" ng-model="calendarYear" ng-options="option.optionId as option.optionName for option in calendarYearList">
+                            <option value="">--Select--</option>
+                        </select>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" title="Import data">
                         <i class="fa fa-fw fa-upload"></i> 
                     </a>
