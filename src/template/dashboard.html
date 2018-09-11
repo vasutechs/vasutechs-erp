@@ -10,7 +10,7 @@
     <div class="mb-3">
         <h3>{{context.title}}</h3>
         <ul class="navbar-nav">
-            <li ng-repeat="(key, module) in modules">
+            <li ng-if="!module.disableMenu" ng-repeat="(key, module) in modules">
                 <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
                     <i class="fa fa-fw fa-{{module.icon}}"></i>
                     <span class="nav-link-text">{{module.title}}</span>

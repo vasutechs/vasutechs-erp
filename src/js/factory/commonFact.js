@@ -1,4 +1,4 @@
-erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', function(erpAppConfig, serviceApi, $location) {
+erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(erpAppConfig, serviceApi, $filter) {
     var defaultActions = {
         add: function(context) {
             context.page.name = 'add';
@@ -28,6 +28,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
             });
 
         },
+        printView: function(context, key, printView) {
+            this.edit(context, key, printView);
+        },
         delete: function(context, key) {
             var serviceconf = this.getServiceConfig(context.services.list, 'POST');
             serviceApi.callServiceApi(serviceconf, { key: key, delete: 'yes' });
@@ -37,6 +40,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
         list: function(context) {
             var serviceconf = this.getServiceConfig(context.services.list);
             context.page.name = 'list';
+            context.currentPage = 0;
+            context.pageSize = 10;
+            context.q = '';
             context.listViewData = [];
             context.orderByProperty = 'updated';
             serviceApi.callServiceApi(serviceconf).then(function(res) {
@@ -55,8 +61,14 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                 context.actions.callBackList && context.actions.callBackList(context);
             });
         },
+        getPageData: function(context) {
+            return $filter('filter')(context.listViewData, context.q) || [];
+        },
+        numberOfPages: function(context) {
+            return Math.ceil(context.actions.getPageData(context).length / context.pageSize);
+        },
         submit: function(context) {
-            var serviceconf = this.getServiceConfig(context.services.list, 'POST', context.page.editKey);
+            var serviceconf = this.getServiceConfig(context.services.list, 'POST');
 
             serviceApi.callServiceApi(serviceconf, context.data);
             context.page.name = 'list';
@@ -241,7 +253,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                     operationFrom: context.data.operationFrom,
                     operationTo: context.data.operationTo
                 }
-                serviceconf = serviceconf = existingStock && self.getServiceConfig('report.partStock', 'POST', existingStock.id) || self.getServiceConfig('report.partStock', 'POST');
+                serviceconf = serviceconf = existingStock && self.getServiceConfig('report.partStock', 'POST') || self.getServiceConfig('report.partStock', 'POST');
                 serviceApi.callServiceApi(serviceconf, data);
 
                 var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
@@ -254,7 +266,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$location', functio
                         operationFrom: existingPrevStock.operationFrom,
                         operationTo: existingPrevStock.operationTo
                     }
-                    serviceconf = self.getServiceConfig('report.partStock', 'POST', existingPrevStock.id);
+                    serviceconf = self.getServiceConfig('report.partStock', 'POST');
                     serviceApi.callServiceApi(serviceconf, data);
                 }
             });

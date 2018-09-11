@@ -1,5 +1,13 @@
-erpApp.service('serviceApi', function($http) {
+erpApp.service('serviceApi', ['$http', '$cacheFactory', function($http, $cacheFactory) {
+    this.cacheData = [];
+
     this.callServiceApi = function(serviceConf, inputData) {
-        return serviceConf.method === 'GET' ? $http.get(serviceConf.url) : $http.post(serviceConf.url, inputData);
-    }
-});
+        var servicePromise;
+        if(inputData){
+        	serviceConf['data'] = inputData;
+        }
+        //serviceConf['cache'] = true;
+        servicePromise = $http(serviceConf);
+        return servicePromise;
+    };
+}]);

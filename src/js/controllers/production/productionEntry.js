@@ -6,7 +6,7 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
             rwQtyMax = 0;
             context.form.fields['acceptedQty'].max = qtyCanMake;
             rejectionQtyMax = qtyCanMake - context.data.acceptedQty;
-            rwQtyMax = context.data.rejectionQty ? qtyCanMake - context.data.acceptedQty - context.data.rejectionQty : rwQtyMax;
+            rwQtyMax = context.data.rejectionQty ? qtyCanMake - context.data.acceptedQty - context.data.rejectionQty : qtyCanMake - context.data.acceptedQty;
             context.form.fields['rejectionQty'].max = rejectionQtyMax;
             context.form.fields['rwQty'].max = rwQtyMax;
         },
@@ -48,7 +48,7 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                             rmStockQty: rmStockQty,
                             uomCode: existingStock.uomCode
                         },
-                        serviceconf = context.actions.getServiceConfig('report.rmStock', 'POST', existingStock.id);
+                        serviceconf = context.actions.getServiceConfig('report.rmStock', 'POST');
                     serviceApi.callServiceApi(serviceconf, data);
                 }
 
