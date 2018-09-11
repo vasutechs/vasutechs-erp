@@ -9,14 +9,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="dataList in context.listViewData | orderBy:context.orderByProperty: true">
+            <tr ng-repeat="dataList in context.listViewData | orderBy:context.orderByProperty: true  | filter:context.q | startFrom:context.currentPage*context.pageSize | limitTo:context.pageSize">
                 <td ng-repeat="(key, list) in context.listView">
                     <div ng-if="!list.action">{{list.idPrefix}}{{dataList[list.id]}}</div>
                     <div ng-if="list.action" class="row">
-                        <div class="col" ng-if="list.printView"><a href="javascript: void(0);" ng-click="context.actions.edit(context, dataList.id, true)" title="Print View" class="fa fa-fw fa-print
+                        <div class="col"><a href="javascript: void(0);" ng-click="context.actions.printView(context, dataList.id, true)" title="Print View" class="fa fa-fw fa-print
+    }
 "> </a></div>
-                        <div class="col-2" ng-if="list.printView"> | </div>
-
+                        <div class="col-2"> | </div>
                         <div class="col" ng-if="list.edit===undefined || list.edit!=false"><a href="javascript: void(0);" ng-click="context.actions.edit(context, dataList.id)" title="Edit" class="fa fa-fw fa-edit
 "> </a></div>
                         <div class="col-2" ng-if="(list.edit===undefined || list.edit!=false) && (list.delete===undefined || list.delete!=false)"> | </div>
@@ -25,7 +25,20 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-show="!context.listViewData[0]"><td colspan="{{context.listView.length}}">No recodes...</td></tr>
+            <tr ng-if="context.listViewData.length > 0 && context.listViewData.length >= context.pageSize">
+                <td colspan="{{context.listView.length}}" align="center">
+                    <button ng-disabled="context.currentPage == 0" class="btn btn-primary" ng-click="context.currentPage=context.currentPage-1">
+                        Previous
+                    </button>
+                    {{context.currentPage+1}}/{{context.actions.numberOfPages(context)}}
+                    <button ng-disabled="context.currentPage >= context.actions.getPageData(context).length/context.pageSize - 1" ng-click="context.currentPage=context.currentPage+1" class="btn btn-primary">
+                        Next
+                    </button>
+                </td>
+            </tr>
+            <tr ng-show="!context.listViewData[0]">
+                <td colspan="{{context.listView.length}}">No recodes...</td>
+            </tr>
         </tbody>
     </table>
 </div>

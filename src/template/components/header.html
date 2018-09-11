@@ -7,15 +7,15 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" ng-repeat="(key, module) in modules">
+                <li ng-if="!module.disableMenu" class="nav-item" data-toggle="tooltip" data-placement="right" ng-repeat="(key, module) in modules">
                     <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
-                    <i class="fa fa-fw fa-{{module.icon}}"></i>
-                    <span class="nav-link-text">{{module.title}}</span>
-                  </a>
+                        <i class="fa fa-fw fa-{{module.icon}}"></i>
+                        <span class="nav-link-text">{{module.title}}</span>
+                    </a>
                     <a ng-if="!module.page" class="nav-link  nav-link-collapse collapsed" href="#collapse{{module.title}}" data-toggle="collapse" data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-{{module.icon}}"></i>
-                    <span class="nav-link-text">{{module.title}}</span>
-                  </a>
+                        <i class="fa fa-fw fa-{{module.icon}}"></i>
+                        <span class="nav-link-text">{{module.title}}</span>
+                    </a>
                     <ul ng-if="showSubModule(module)" class="sidenav-second-level collapse" id="collapse{{module.title}}">
                         <li ng-repeat="subModule in subModules">
                             <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>
@@ -44,11 +44,11 @@
                 </li>
                 <li class="nav-item">
                     <select class="form-control" id="calendarYear" ng-change="changeCalendarYear()" ng-model="calendarYear" ng-options="option.optionId as option.optionName for option in calendarYearList">
-                            <option value="">--Select--</option>
-                        </select>
+                        <option value="">--Select--</option>
+                    </select>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" title="Import data">
+                    <a class="nav-link" title="Import data" href="#!/databaseUpload">
                         <i class="fa fa-fw fa-upload"></i> 
                     </a>
                 </li>

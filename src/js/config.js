@@ -5,6 +5,26 @@ erpApp.constant('erpAppConfig', {
     appNavMenus: [],
     calendarYear: new Date().getFullYear(),
     modules: {
+        databaseUpload: {
+            name: 'Database Upload',
+            title: 'Database Upload',
+            disableMenu: true,
+            masterData: {
+                databaseUpload: null
+            },
+            page: {
+                link: 'databaseUpload',
+                name: 'databaseUpload',
+                templateUrl: 'template/databaseUpload.html',
+                controller: 'databaseUploadCtrl'
+            },
+            services: {
+                list: {
+                    url: 'api/upload',
+                    method: 'POST'
+                }
+            }
+        },
         dashboard: {
             name: 'Dashboard',
             title: 'Dashboard',
@@ -146,7 +166,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'marketing/partMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'partMasterCtrl'
                 },
                 services: {
@@ -258,7 +278,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'marketing/customerMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'customerMasterCtrl'
                 },
                 services: {
@@ -390,7 +410,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'marketing/empMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'empMasterCtrl'
                 },
                 services: {
@@ -442,7 +462,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'marketing/uomMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'uomMasterCtrl'
                 },
                 services: {
@@ -606,7 +626,6 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         action: true,
-                        printView: true,
                         edit: false
                     }
                 ],
@@ -634,11 +653,10 @@ erpApp.constant('erpAppConfig', {
                     }
                 },
                 listView: [{
-                        title: 'Cash Bill No',
-                        id: 'invoiceNo',
-                        idPrefix: 'H-'
-                    }
-                ],
+                    title: 'Cash Bill No',
+                    id: 'invoiceNo',
+                    idPrefix: 'H-'
+                }],
                 page: {
                     link: 'marketing/invoice/list?type=cashBill',
                     name: 'list',
@@ -765,7 +783,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'purchase/rmMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'rmMasterCtrl'
                 },
                 services: {
@@ -876,7 +894,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'purchase/supplierMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'supplierMasterCtrl'
                 },
                 services: {
@@ -1020,14 +1038,13 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         action: true,
-                        printView: true,
                         edit: false
                     }
                 ],
                 page: {
                     link: 'purchase/poSupplier/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'poSupplierCtrl'
                 },
                 services: {
@@ -1145,7 +1162,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'purchase/subContractorMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'subContractorMasterCtrl'
                 },
                 services: {
@@ -1303,14 +1320,13 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         action: true,
-                        printView: true,
                         edit: false
                     }
                 ],
                 page: {
                     link: 'purchase/poSubContractor/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'poSubContractorCtrl'
                 },
                 services: {
@@ -1484,14 +1500,13 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         action: true,
-                        printView: true,
                         edit: false
                     }
                 ],
                 page: {
                     link: 'store/grnSupplier/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'grnSupplierCtrl'
                 },
                 services: {
@@ -1643,14 +1658,13 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         action: true,
-                        printView: true,
                         edit: false
                     }
                 ],
                 page: {
                     link: 'store/dcSubContractor/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'dcSubContractorCtrl'
                 },
                 services: {
@@ -1856,14 +1870,13 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         action: true,
-                        printView: true,
                         edit: false
                     }
                 ],
                 page: {
                     link: 'store/grnSubContractor/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'grnSubContractorCtrl'
                 },
                 services: {
@@ -1933,7 +1946,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'production/operationMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'operationMasterCtrl'
                 },
                 services: {
@@ -1997,9 +2010,10 @@ erpApp.constant('erpAppConfig', {
                         replaceName: 'partNo'
                     },
                     {
-                        title: 'RM Code',
+                        title: 'RM Name',
                         id: 'rmCode',
-                        idPrefix: 'RM-'
+                        dataFrom: 'purchase.rmMaster',
+                        replaceName: 'rmName'
                     },
                     {
                         action: true
@@ -2008,7 +2022,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'production/bom/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'bomCtrl'
                 },
                 services: {
@@ -2100,7 +2114,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'production/machineMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'machineMasterCtrl'
                 },
                 services: {
@@ -2183,7 +2197,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'store/flowMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'flowMasterCtrl'
                 },
                 services: {
@@ -2291,7 +2305,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'production/toolMaster/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'toolMasterCtrl'
                 },
                 services: {
@@ -2409,14 +2423,13 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         action: true,
-                        printView: true,
                         edit: false
                     }
                 ],
                 page: {
                     link: 'production/materialIssueNote/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'materialIssueNoteCtrl'
                 },
                 services: {
@@ -2616,14 +2629,13 @@ erpApp.constant('erpAppConfig', {
                     },
                     {
                         action: true,
-                        printView: true,
                         edit: false
                     }
                 ],
                 page: {
                     link: 'production/productionEntry/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'productionEntryCtrl'
                 },
                 services: {
@@ -2668,7 +2680,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'report/rmStock/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'rmStockCtrl'
                 },
                 services: {
@@ -2714,7 +2726,7 @@ erpApp.constant('erpAppConfig', {
                 page: {
                     link: 'report/partStock/list',
                     name: 'list',
-                    templateUrl: 'template/defaultController.html',
+                    templateUrl: 'template/defaultView.html',
                     controller: 'partStockCtrl'
                 },
                 services: {

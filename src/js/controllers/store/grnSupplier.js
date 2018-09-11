@@ -39,7 +39,7 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
                         rmStockQty: rmStockQty,
                         uomCode: context.data.mapping[i].uomCode
                     }
-                    serviceconf = existingStock && context.actions.getServiceConfig('report.rmStock', 'POST', existingStock.id) || context.actions.getServiceConfig('report.rmStock', 'POST');
+                    serviceconf = existingStock && context.actions.getServiceConfig('report.rmStock', 'POST') || context.actions.getServiceConfig('report.rmStock', 'POST');
                     serviceApi.callServiceApi(serviceconf, data);
                 }
             });
