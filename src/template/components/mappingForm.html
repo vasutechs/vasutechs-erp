@@ -20,7 +20,7 @@
                             <option value="">--Select--</option>
                         </select>
                     </td>
-                    <td><a ng-if="context.form.mapping.actions.delete || context.form.mapping.actions.delete===undefined" class="fa fa-fw fa-times" href="javascript: void(0);" ng-click="context.actions.removeMapping(context.data.mapping, key)"> </a></td>
+                    <td><a ng-if="context.form.mapping.actions.delete || context.form.mapping.actions.delete===undefined" class="fa fa-fw fa-times" href="javascript: void(0);" ng-click="context.actions.removeData(context.data.mapping, key)"> </a></td>
                 </tr>
                 <tr ng-repeat="(key, map) in context.data.mapping" ng-if="context.page.printView">
                     <td ng-repeat="field in context.form.mapping.fields">

@@ -12,7 +12,7 @@ erpApp.directive('fileModel', ['$parse', function($parse) {
                         try{
                            modelSetter(scope, JSON.parse(loadEvent.target.result));
                         }
-                        catch{
+                        catch(err){
                            modelSetter(scope, {});
                         }
                         
