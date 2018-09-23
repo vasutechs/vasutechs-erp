@@ -1,8 +1,9 @@
-erpApp.constant('erpAppConfig', {
+'use strict'
+
+var erpAppConfig = {
     appName: 'VASUTECHS',
     appBaseUrl: '/dashboard',
     dataDownloadUrl: '/api/download',
-    appNavMenus: [],
     calendarYear: new Date().getFullYear(),
     modules: {
         databaseUpload: {
@@ -47,7 +48,6 @@ erpApp.constant('erpAppConfig', {
                     partName: null,
                     rmCode: null,
                     inputWeight: null,
-                    finishedWeight: null,
                     finishedWeight: null,
                     hsnCode: null,
                     uomCode: null,
@@ -1885,12 +1885,6 @@ erpApp.constant('erpAppConfig', {
                         method: 'GET'
                     }
                 }
-            },
-            openingRMStock: {
-                title: 'Opening Raw material Stock'
-            },
-            openingPartStock: {
-                title: 'Opening Part Stock'
             }
         },
         production: {
@@ -2653,11 +2647,43 @@ erpApp.constant('erpAppConfig', {
             rmStock: {
                 title: 'Raw Material Stock',
                 masterData: {
-                    opCode: null,
-                    opName: null,
-                    source: null
+                    rmName: null,
+                    rmStockQty: null,
+                    uomCode: null
                 },
-                form: {},
+                form: {
+                    name: 'RMStock',
+                    id: 'RMStock',
+                    fields: {
+                        'rmName': {
+                            name: 'RM Name',
+                            id: 'rmCode',
+                            type: 'select',
+                            options: {} ,
+                            dataFrom: 'purchase.rmMaster',
+                            replaceName: 'rmName',
+                            isDisable: true,
+                            isSingle: true
+                        },
+                        'rmStockQty': {
+                            name: 'Stock Qty',
+                            id: 'rmStockQty',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'uomCode': {
+                            name: 'UOM',
+                            id: 'uomCode',
+                            type: 'select',
+                            options: {} ,
+                            dataFrom: 'marketing.uomMaster',
+                            replaceName: 'uomName',
+                            isDisable: true,
+                            isSingle: true
+                        }
+                    }
+                },
                 listView: [{
                         title: 'Raw Material Name',
                         id: 'rmCode',
@@ -2674,7 +2700,7 @@ erpApp.constant('erpAppConfig', {
                         replaceName: 'uomName'
                     },
                     {
-                        action: false
+                        action: true
                     }
                 ],
                 page: {
@@ -2693,12 +2719,52 @@ erpApp.constant('erpAppConfig', {
             partStock: {
                 title: 'Part Stock',
                 masterData: {
-                    partNo: '',
-                    operationFrom: '',
-                    operationTo: '',
-                    partStockQty: ''
+                    partNo: null,
+                    partStockQty: null,
+                    operationFrom: null,
+                    operationTo: null
                 },
-                form: {},
+                form: {
+                    name: 'PartStock',
+                    id: 'PartStock',
+                    fields: {
+                        'partNo': {
+                            name: 'Part No',
+                            id: 'partNo',
+                            type: 'select',
+                            options: {} ,
+                            dataFrom: 'marketing.partMaster',
+                            replaceName: 'partNo',
+                            action: 'updatePartDetails',
+                            isSingle: true
+                        },
+                        'partStockQty': {
+                            name: 'Part Qty',
+                            id: 'partStockQty',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'operationFrom': {
+                            name: 'Operation From',
+                            id: 'operationFrom',
+                            type: 'select',
+                            options: {} ,
+                            dataFrom: 'production.operationMaster',
+                            replaceName: 'opName',
+                            isSingle: true
+                        },
+                        'operationTo': {
+                            name: 'Operation To',
+                            id: 'operationTo',
+                            type: 'select',
+                            options: {} ,
+                            dataFrom: 'production.operationMaster',
+                            replaceName: 'opName',
+                            isSingle: true
+                        }
+                    }
+                },
                 listView: [{
                         title: 'Part No',
                         id: 'partNo',
@@ -2720,7 +2786,7 @@ erpApp.constant('erpAppConfig', {
                         replaceName: 'opName'
                     },
                     {
-                        action: false
+                        action: true
                     }
                 ],
                 page: {
@@ -2738,4 +2804,5 @@ erpApp.constant('erpAppConfig', {
             }
         }
     }
-});
+};
+erpApp.constant('erpAppConfig', erpAppConfig);

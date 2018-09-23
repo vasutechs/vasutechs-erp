@@ -4,7 +4,7 @@
             <tr>
                 <th ng-repeat="(key, list) in context.listView">
                     <div ng-if="!list.action">{{list.title}}</div>
-                    <div ng-if="list.action" class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.add(context)" class="fa fa-fw fa-plus-square-o">Add</a></div>
+                    <div ng-if="list.action && (list.add===undefined || list.add!=false)" class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.add(context)" class="fa fa-fw fa-plus-square-o">Add</a></div>
                 </th>
             </tr>
         </thead>

@@ -166,8 +166,8 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             }
             mapping.push(newMapping);
         },
-        removeMapping: function(mapping, key) {
-            delete mapping.splice(key, 1);
+        removeData: function(data, key) {
+            delete data.splice(key, 1);
         },
         changeMapping: function(context, data, key, field) {
             for (var dataKey in data) {
