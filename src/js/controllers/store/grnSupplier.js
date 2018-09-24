@@ -15,7 +15,7 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
             var total = 0,
                 totalBeforTax = 0;
             totalBeforTax = updateValue * data.rate;
-            total = totalBeforTax + (totalBeforTax * (data.gst / 100)) + (totalBeforTax * (data.cgst / 100)) + (totalBeforTax * (data.sgst / 100))
+            total = totalBeforTax + (totalBeforTax * (data.gst / 100))
             data.total = parseFloat(total).toFixed(2);
         },
         callBackEdit: function(context, key) {

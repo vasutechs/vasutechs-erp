@@ -887,8 +887,7 @@ var erpAppConfig = {
                         id: 'supplierName'
                     },
                     {
-                        action: true,
-                        delete: false
+                        action: true
                     }
                 ],
                 page: {
@@ -992,7 +991,10 @@ var erpAppConfig = {
                             'rate': {
                                 name: 'Rate',
                                 id: 'rate',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                action: 'updateRmTotal',
+                                required: true
                             },
                             'gst': {
                                 name: 'GST%',
@@ -1919,8 +1921,17 @@ var erpAppConfig = {
                         'source': {
                             name: 'Source',
                             id: 'source',
-                            type: 'input',
-                            inputType: 'text',
+                            type: 'select',
+                            options: [{
+                                optionId: 'Supplier',
+                                optionName: 'Supplier'
+                            },{
+                                optionId: 'In-House',
+                                optionName: 'IN House'
+                            },{
+                                optionId: 'Sub-Contractor',
+                                optionName: 'Sub Contractor'
+                            }],
                             required: true
                         }
                     }

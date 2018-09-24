@@ -225,7 +225,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                     for (var i in flowMasterData) {
                         if (flowMasterData[i].partNo === partNo) {
                             for (var j in flowMasterData[i].mapping) {
-                                if ((!field.startWith || (field.startWith < flowMasterData[i].mapping[j].id)) && (!field.endWith || (field.endWith > flowMasterData[i].mapping[j].id)) && flowMasterData[i].mapping[j].source === source) {
+                                if ((!field.startWith || (field.startWith < flowMasterData[i].mapping[j].id)) && (!field.endWith || (field.endWith > flowMasterData[i].mapping[j].id)) && (flowMasterData[i].mapping[j].source && source.indexOf(flowMasterData[i].mapping[j].source) >= 0)) {
                                     field.options[flowMasterData[i].mapping[j].id] = localOptions[flowMasterData[i].mapping[j].id];
                                 }
                             }

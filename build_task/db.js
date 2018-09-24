@@ -15,7 +15,7 @@ module.exports = function(gulp, config, task) {
     var setTableData = function(dataPath, inputData) {
         var lastData,
             newId,
-            id='';
+            id = '';
         inputData = JSON.parse(inputData);
         if (!inputData.id && !inputData.delete) {
             try {
@@ -44,8 +44,15 @@ module.exports = function(gulp, config, task) {
             data = {};
         };
         return data;
-    }
+    };
 
+    var uploadDb = function(inputData) {
+        db.delete('/tables');
+        db.push('/tables', JSON.parse(inputData), true);
+        db.push('/updated', new Date(), true);
+        data = db.getData('/tables');
+        return data;
+    };
 
     gulp.task('db-connect', task.dbConnect = function() {
 
@@ -62,18 +69,13 @@ module.exports = function(gulp, config, task) {
                 });
 
                 req.on('end', function(data) {
-                    if(apiPath[1] === '/download'){
+                    if (apiPath[1] === '/download') {
                         data = db.getData('/');
-                    }
-                    else if(apiPath[1] === '/upload'){
-                        db.delete('/tables');
-                        db.push('/tables', JSON.parse(inputData), true);
-                        data = db.getData('/tables');
-                    }
-                    else if(req.method === 'POST'){
+                    } else if (apiPath[1] === '/upload') {
+                        data = uploadDb(inputData);
+                    } else if (req.method === 'POST') {
                         data = setTableData(apiPath[1], inputData);
-                    }
-                    else{
+                    } else {
                         data = getTableData(apiPath[1])
                     }
                     res.writeHead(200, { 'Content-Type': 'application/json' });
