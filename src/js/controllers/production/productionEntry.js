@@ -17,9 +17,9 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
         updatePartDetails: function(context, data, key, field) {
             if (context.data.jobCardNo) {
                 context.actions.changeMapping(context, data, key, field);
-                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], context.data.partNo, 'In-house');
+                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], context.data.partNo, ['Supplier', 'In-House']);
                 context.form.fields['operationTo'].startWith = context.data.operationFrom;
-                context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], context.data.partNo, 'In-house');
+                context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], context.data.partNo, ['In-House']);
             }
         },
         calculatePlanQty: function(context) {

@@ -1,5 +1,6 @@
 {
     "dbName": "Vasutechs-ERP",
+    "updated": "2018-09-23T03:40:40.199Z",
     "tables": {
         "partMaster": {
             "name": "partMaster",
@@ -22,53 +23,38 @@
             },
             "data": {
                 "1": {
-                    "partNo": "4” SWR",
-                    "partName": "SWR Clamp",
+                    "partNo": "3/4 EHL",
+                    "partName": "EHL",
                     "rmCode": 1,
-                    "inputWeight": 0.1,
-                    "finishedWeight": 0.1,
-                    "hsnCode": "1",
+                    "inputWeight": 0.0026,
+                    "finishedWeight": 0.0026,
+                    "hsnCode": "73070000",
                     "uomCode": 2,
-                    "prodRateHr": 100,
-                    "rate": 13,
-                    "gst": 18,
+                    "prodRateHr": 500,
+                    "rate": 0.7,
+                    "gst": 9,
                     "sgst": 9,
-                    "cgst": 9,
+                    "cgst": 0,
                     "id": 1,
-                    "updated": "2018-08-09T00:40:14.419Z"
+                    "added": "2018-09-23T02:59:57.568Z",
+                    "updated": "2018-09-23T03:14:48.224Z"
                 },
                 "2": {
-                    "partNo": "TestPartNo",
-                    "partName": "TestPartName",
-                    "rmCode": 1,
-                    "inputWeight": 1,
-                    "finishedWeight": 1,
-                    "hsnCode": "1",
-                    "uomCode": 1,
-                    "prodRateHr": 1,
-                    "rate": 1,
-                    "gst": 2,
-                    "sgst": 1,
-                    "cgst": 1,
-                    "id": 2,
-                    "updated": "2018-06-13T14:41:43.673Z"
-                },
-                "3": {
-                    "partNo": "3/4\" EHL",
-                    "partName": "EHL Clamp",
+                    "partNo": "3/4 UC",
+                    "partName": "PVC GI Clamp",
                     "rmCode": 2,
-                    "inputWeight": 0.1,
-                    "finishedWeight": 0.023,
-                    "hsnCode": "730070000",
-                    "uomCode": 1,
-                    "prodRateHr": 100,
-                    "rate": 0.45,
-                    "gst": 18,
+                    "inputWeight": 0.024,
+                    "finishedWeight": 0.024,
+                    "hsnCode": "73070000",
+                    "uomCode": 2,
+                    "prodRateHr": 300,
+                    "rate": 1.75,
+                    "gst": 9,
                     "sgst": 9,
-                    "cgst": 9,
-                    "id": 3,
-                    "added": "2018-06-10T06:43:02.022Z",
-                    "updated": "2018-07-21T02:58:31.993Z"
+                    "cgst": 0,
+                    "id": 2,
+                    "added": "2018-09-23T03:13:40.758Z",
+                    "updated": "2018-09-23T03:14:43.015Z"
                 }
             }
         },
@@ -95,48 +81,29 @@
             "data": {
                 "1": {
                     "customerCode": 1,
-                    "customerName": "Test",
-                    "address": "szdzsfdf",
-                    "contactNo": 345345,
-                    "gstin": 435345,
+                    "customerName": "Sri Sai Electricals",
+                    "address": "MYL",
+                    "contactNo": 99999999,
+                    "gstin": "00sdkj2342",
                     "mapping": [
                         {
                             "id": 1,
-                            "partName": "SWR Clamp",
-                            "hsnCode": "1",
-                            "rate": 13,
-                            "gst": 18
+                            "partName": "EHL",
+                            "hsnCode": "73070000",
+                            "rate": 0.7,
+                            "gst": 9
                         },
                         {
-                            "id": 3,
-                            "partName": "EHL Clamp",
-                            "hsnCode": "730070000",
-                            "rate": 0.45,
-                            "gst": 18
+                            "id": 2,
+                            "partName": "PVC GI Clamp",
+                            "hsnCode": "73070000",
+                            "rate": 1.75,
+                            "gst": 9
                         }
                     ],
                     "id": 1,
-                    "added": "2018-08-17T01:30:09.166Z",
-                    "updated": "2018-09-08T01:29:35.085Z"
-                },
-                "2": {
-                    "customerCode": 2,
-                    "customerName": "Test123",
-                    "address": "erwerwer",
-                    "contactNo": 12341232,
-                    "gstin": 213123123,
-                    "mapping": [
-                        {
-                            "id": 3,
-                            "partName": "EHL Clamp",
-                            "hsnCode": "730070000",
-                            "rate": 0.45,
-                            "gst": 18
-                        }
-                    ],
-                    "id": 2,
-                    "added": "2018-08-24T01:20:51.943Z",
-                    "updated": "2018-08-26T00:56:19.965Z"
+                    "added": "2018-09-23T03:16:53.114Z",
+                    "updated": "2018-09-23T03:16:53.114Z"
                 }
             }
         },
@@ -165,36 +132,19 @@
                     "id": 1,
                     "employeeCode": 1,
                     "employeeName": "Sugadevan",
-                    "address": "myl",
-                    "contactNo": 121212,
-                    "mailId": "test@test.com",
-                    "qualification": "ME",
+                    "address": "MYL",
+                    "contactNo": 9003206361,
+                    "mailId": "vsdevan@gmail.com",
+                    "qualification": "M.E",
                     "designation": "Manager",
-                    "basicSalary": 9000,
-                    "hra": 0,
-                    "ca": 0,
+                    "basicSalary": 7000,
+                    "hra": 1000,
+                    "ca": 1000,
                     "ot": 0,
-                    "totalSalary": "",
-                    "total": 9000,
-                    "updated": "2018-05-31T02:05:01.263Z"
-                },
-                "2": {
-                    "id": 2,
-                    "employeeCode": 2,
-                    "employeeName": "ghfhgfh",
-                    "address": "jhgjhg",
-                    "contactNo": 1,
-                    "mailId": "ghhg@jkhkj.com",
-                    "qualification": "kjk",
-                    "designation": "jkljlk",
-                    "basicSalary": 1,
-                    "hra": 1,
-                    "ca": 2,
-                    "ot": 2,
                     "totalSalary": null,
-                    "total": 1,
-                    "added": "2018-05-31T02:04:54.791Z",
-                    "updated": "2018-05-31T02:04:54.791Z"
+                    "total": 9000,
+                    "added": "2018-09-23T03:17:43.817Z",
+                    "updated": "2018-09-23T03:17:43.817Z"
                 }
             }
         },
@@ -209,18 +159,18 @@
             },
             "data": {
                 "1": {
-                    "uomCode": "1",
+                    "uomCode": 1,
                     "uomName": "KG",
                     "id": 1,
-                    "added": "2018-06-10T06:38:53.257Z",
-                    "updated": "2018-06-10T06:38:53.257Z"
+                    "added": "2018-09-23T02:58:07.252Z",
+                    "updated": "2018-09-23T02:58:07.252Z"
                 },
                 "2": {
-                    "uomCode": "2",
+                    "uomCode": 2,
                     "uomName": "NOS",
                     "id": 2,
-                    "added": "2018-06-10T06:38:53.257Z",
-                    "updated": "2018-06-10T06:38:53.257Z"
+                    "added": "2018-09-23T02:58:17.624Z",
+                    "updated": "2018-09-23T02:58:17.624Z"
                 }
             }
         },
@@ -244,32 +194,33 @@
             "data": {
                 "1": {
                     "rmCode": 1,
-                    "rmName": "2 x 16 MS – HR Coil",
-                    "grade": "MS",
-                    "type": "HR Coil",
-                    "hsnCode": "1",
+                    "rmName": "0.4 *10",
+                    "grade": "GI",
+                    "type": "COIL",
+                    "hsnCode": "73070000",
                     "uomCode": 1,
-                    "rate": 10,
+                    "rate": 75,
                     "gst": 18,
                     "sgst": 9,
                     "cgst": 9,
                     "id": 1,
-                    "updated": "2018-06-11T07:41:45.400Z"
+                    "added": "2018-09-23T02:58:43.117Z",
+                    "updated": "2018-09-23T02:58:43.117Z"
                 },
                 "2": {
                     "rmCode": 2,
-                    "rmName": "0.4 x 10  GI Coil",
-                    "grade": "GI Coil",
-                    "type": "Coil",
-                    "hsnCode": "730070000",
+                    "rmName": "2 * 16",
+                    "grade": "MS",
+                    "type": "COIL",
+                    "hsnCode": "73070000",
                     "uomCode": 1,
-                    "rate": 73,
+                    "rate": 45,
                     "gst": 18,
-                    "sgst": 9.1,
-                    "cgst": 9.1,
+                    "sgst": 9,
+                    "cgst": 9,
                     "id": 2,
-                    "added": "2018-06-11T06:40:14.412Z",
-                    "updated": "2018-06-11T08:09:07.573Z"
+                    "added": "2018-09-23T02:59:10.849Z",
+                    "updated": "2018-09-23T02:59:10.849Z"
                 }
             }
         },
@@ -303,15 +254,22 @@
                     "gstin": 13123123,
                     "mapping": [
                         {
+                            "id": 1,
+                            "rmCode": 1,
+                            "rmName": "0.4 *10",
+                            "rate": 75,
+                            "gst": 18
+                        },
+                        {
                             "id": 2,
                             "rmCode": 2,
-                            "rmName": "0.4 x 10  GI Coil",
-                            "rate": "10",
+                            "rmName": "2 * 16",
+                            "rate": 45,
                             "gst": 18
                         }
                     ],
                     "id": 1,
-                    "updated": "2018-07-09T13:27:26.362Z"
+                    "updated": "2018-09-23T03:18:08.191Z"
                 },
                 "2": {
                     "supplierCode": 2,
@@ -387,38 +345,112 @@
                 "2016": {},
                 "2018": {
                     "1": {
+                        "1": {
+                            "1": {
+                                "poNo": 1,
+                                "date": "2018-09-23T03:26:15.017Z",
+                                "supplierCode": 1,
+                                "gstin": 13123123,
+                                "status": 1,
+                                "mapping": [
+                                    {
+                                        "id": 1,
+                                        "qty": "100",
+                                        "uomCode": 1,
+                                        "rate": 75,
+                                        "gst": 18,
+                                        "cgst": 9,
+                                        "sgst": 9,
+                                        "total": "8850.00",
+                                        "rmCode": 1,
+                                        "rmName": "0.4 *10"
+                                    },
+                                    {
+                                        "id": 2,
+                                        "qty": "100",
+                                        "uomCode": 1,
+                                        "rate": 45,
+                                        "gst": 18,
+                                        "cgst": 9,
+                                        "sgst": 9,
+                                        "total": "5310.00",
+                                        "rmCode": 2,
+                                        "rmName": "2 * 16"
+                                    }
+                                ],
+                                "id": 1,
+                                "added": "2018-09-23T03:26:53.654Z",
+                                "updated": "2018-09-23T03:30:25.012Z"
+                            },
+                            "poNo": 1,
+                            "date": "2018-09-23T03:26:15.017Z",
+                            "supplierCode": 1,
+                            "gstin": 13123123,
+                            "status": 1,
+                            "mapping": [
+                                {
+                                    "id": 1,
+                                    "qty": "100",
+                                    "uomCode": 1,
+                                    "rate": 75,
+                                    "gst": 18,
+                                    "cgst": 9,
+                                    "sgst": 9,
+                                    "total": "8850.00",
+                                    "rmCode": 1,
+                                    "rmName": "0.4 *10"
+                                },
+                                {
+                                    "id": 2,
+                                    "qty": "100",
+                                    "uomCode": 1,
+                                    "rate": 45,
+                                    "gst": 18,
+                                    "cgst": 9,
+                                    "sgst": 9,
+                                    "total": "5310.00",
+                                    "rmCode": 2,
+                                    "rmName": "2 * 16"
+                                }
+                            ],
+                            "id": 1,
+                            "added": "2018-09-23T03:26:53.654Z",
+                            "updated": "2018-09-23T03:53:40.048Z"
+                        },
                         "poNo": 1,
-                        "date": "2018-09-11T00:55:26.491Z",
-                        "supplierCode": 3,
-                        "gstin": 122,
-                        "status": 1,
+                        "date": "2018-09-23T03:26:15.017Z",
+                        "supplierCode": 1,
+                        "gstin": 13123123,
+                        "status": 0,
                         "mapping": [
                             {
                                 "id": 1,
-                                "qty": "10",
+                                "qty": "100",
                                 "uomCode": 1,
-                                "rate": 10,
+                                "rate": 75,
                                 "gst": 18,
                                 "cgst": 9,
                                 "sgst": 9,
-                                "total": "118.00",
-                                "rmCode": 1
+                                "total": "8850.00",
+                                "rmCode": 1,
+                                "rmName": "0.4 *10"
                             },
                             {
                                 "id": 2,
-                                "qty": "10",
+                                "qty": "100",
                                 "uomCode": 1,
-                                "rate": 73,
+                                "rate": 45,
                                 "gst": 18,
-                                "cgst": 9.1,
-                                "sgst": 9.1,
-                                "total": "861.40",
-                                "rmCode": 2
+                                "cgst": 9,
+                                "sgst": 9,
+                                "total": "5310.00",
+                                "rmCode": 2,
+                                "rmName": "2 * 16"
                             }
                         ],
                         "id": 1,
-                        "added": "2018-09-11T00:56:15.851Z",
-                        "updated": "2018-09-11T00:58:07.975Z"
+                        "added": "2018-09-23T03:26:53.654Z",
+                        "updated": "2018-09-23T03:26:53.654Z"
                     }
                 }
             }
@@ -445,28 +477,7 @@
                 "added": "",
                 "updated": ""
             },
-            "data": {
-                "1": {
-                    "subContractorCode": 1,
-                    "subContractorName": "Shree Sakthi Plating",
-                    "address": "sdasd",
-                    "contactNo": 13132213,
-                    "gstin": 23123,
-                    "mapping": [
-                        {
-                            "id": 1,
-                            "opCode": 6,
-                            "rate": "14",
-                            "gst": 18,
-                            "partNo": "4” SWR",
-                            "operationTo": 6
-                        }
-                    ],
-                    "id": 1,
-                    "added": "2018-06-18T13:39:07.704Z",
-                    "updated": "2018-09-03T02:48:00.378Z"
-                }
-            }
+            "data": {}
         },
         "poSubContractor": {
             "name": "poSubContractor",
@@ -524,52 +535,7 @@
                 ]
             },
             "data": {
-                "2018": {
-                    "1": {
-                        "grnNo": 1,
-                        "date": "2018-09-11T00:57:30.380Z",
-                        "supplierCode": 3,
-                        "poNo": 1,
-                        "supplierDCCode": null,
-                        "supplierDCDate": null,
-                        "status": 0,
-                        "mapping": [
-                            {
-                                "id": 1,
-                                "qty": "10",
-                                "uomCode": 1,
-                                "receivedQty": "10",
-                                "acceptedQty": "10",
-                                "rate": 10,
-                                "gst": 18,
-                                "cost": null,
-                                "total": "136.00",
-                                "cgst": 9,
-                                "sgst": 9,
-                                "rmCode": 1
-                            },
-                            {
-                                "id": 2,
-                                "qty": "10",
-                                "uomCode": 1,
-                                "receivedQty": "10",
-                                "acceptedQty": "10",
-                                "rate": 73,
-                                "gst": 18,
-                                "cost": null,
-                                "total": "994.26",
-                                "cgst": 9.1,
-                                "sgst": 9.1,
-                                "rmCode": 2
-                            }
-                        ],
-                        "supplierInvoiceNo": "1",
-                        "supplierInvoiceDate": "2018-09-10T04:00:00.000Z",
-                        "id": 1,
-                        "added": "2018-09-11T00:58:07.901Z",
-                        "updated": "2018-09-11T00:58:07.901Z"
-                    }
-                }
+                "2018": {}
             }
         },
         "grnSubContractor": {
@@ -660,56 +626,72 @@
                     "opName": "Raw Material",
                     "source": "Supplier",
                     "id": 1,
-                    "added": "2018-06-18T12:58:57.031Z",
-                    "updated": "2018-06-18T12:58:57.031Z"
+                    "added": "2018-09-23T03:19:17.115Z",
+                    "updated": "2018-09-24T00:12:24.584Z"
                 },
                 "2": {
                     "opCode": "20",
                     "opName": "Cropping",
-                    "source": "In-house",
+                    "source": "In-House",
                     "id": 2,
-                    "added": "2018-06-19T13:07:34.994Z",
-                    "updated": "2018-06-19T13:07:34.994Z"
+                    "added": "2018-09-23T03:19:28.943Z",
+                    "updated": "2018-09-24T00:11:03.456Z"
                 },
                 "3": {
                     "opCode": "30",
-                    "opName": "W Forming",
-                    "source": "In-house",
+                    "opName": "Blanking",
+                    "source": "In-House",
                     "id": 3,
-                    "added": "2018-06-19T13:08:50.347Z",
-                    "updated": "2018-06-19T13:08:50.347Z"
+                    "added": "2018-09-23T03:19:42.361Z",
+                    "updated": "2018-09-24T00:11:08.804Z"
                 },
                 "4": {
                     "opCode": "40",
-                    "opName": "V Bending",
-                    "source": "In-house",
+                    "opName": "U Forming",
+                    "source": "In-House",
                     "id": 4,
-                    "added": "2018-06-19T13:09:13.684Z",
-                    "updated": "2018-06-19T13:09:13.684Z"
+                    "added": "2018-09-23T03:20:08.102Z",
+                    "updated": "2018-09-24T00:11:22.231Z"
                 },
                 "5": {
                     "opCode": "50",
-                    "opName": "O forming",
-                    "source": "In-house",
+                    "opName": "V Bending",
+                    "source": "In-House",
                     "id": 5,
-                    "added": "2018-06-19T13:09:33.733Z",
-                    "updated": "2018-06-19T13:09:33.733Z"
+                    "added": "2018-09-23T03:20:16.302Z",
+                    "updated": "2018-09-24T00:11:28.407Z"
                 },
                 "6": {
                     "opCode": "60",
-                    "opName": "Plating",
-                    "source": "Sub-Contractor",
+                    "opName": "W Forming",
+                    "source": "In-House",
                     "id": 6,
-                    "added": "2018-06-19T13:10:03.541Z",
-                    "updated": "2018-06-19T13:10:03.541Z"
+                    "added": "2018-09-23T03:20:26.806Z",
+                    "updated": "2018-09-24T00:11:33.957Z"
                 },
                 "7": {
                     "opCode": "70",
-                    "opName": "Packing",
-                    "source": "In-house",
+                    "opName": "O Forming",
+                    "source": "In-House",
                     "id": 7,
-                    "added": "2018-06-19T13:10:17.370Z",
-                    "updated": "2018-06-19T13:10:17.370Z"
+                    "added": "2018-09-23T03:20:36.064Z",
+                    "updated": "2018-09-24T00:11:39.327Z"
+                },
+                "8": {
+                    "opCode": "80",
+                    "opName": "Plating",
+                    "source": "Sub-Contractor",
+                    "id": 8,
+                    "added": "2018-09-23T03:21:01.014Z",
+                    "updated": "2018-09-24T00:12:17.571Z"
+                },
+                "9": {
+                    "opCode": "90",
+                    "opName": "Packing",
+                    "source": "In-House",
+                    "id": 9,
+                    "added": "2018-09-23T03:21:12.590Z",
+                    "updated": "2018-09-24T00:11:45.389Z"
                 }
             }
         },
@@ -726,21 +708,21 @@
             "data": {
                 "1": {
                     "partNo": 1,
-                    "partName": "SWR Clamp",
+                    "partName": "EHL",
                     "rmCode": 1,
-                    "partNorms": "0.100",
+                    "partNorms": ".002",
                     "id": 1,
-                    "added": "2018-09-02T01:47:12.046Z",
-                    "updated": "2018-09-02T01:47:12.046Z"
+                    "added": "2018-09-23T03:24:58.204Z",
+                    "updated": "2018-09-23T03:24:58.204Z"
                 },
                 "2": {
-                    "partNo": 3,
-                    "partName": "EHL Clamp",
+                    "partNo": 2,
+                    "partName": "PVC GI Clamp",
                     "rmCode": 2,
-                    "partNorms": "0.100",
+                    "partNorms": "0.025",
                     "id": 2,
-                    "added": "2018-09-02T01:47:18.696Z",
-                    "updated": "2018-09-02T01:47:18.696Z"
+                    "added": "2018-09-23T03:25:49.296Z",
+                    "updated": "2018-09-23T03:25:49.296Z"
                 }
             }
         },
@@ -759,13 +741,27 @@
             "data": {
                 "1": {
                     "machineNo": 1,
-                    "machineName": "Hydro pneumatic Press",
+                    "machineName": "15T Hydro Pneumatice press",
                     "make": "Britt",
-                    "model": "xxxx",
+                    "model": "Britt",
                     "capacity": "15 Ton",
-                    "yoe": "2017",
-                    "value": "131000",
-                    "id": 1
+                    "yop": "2017",
+                    "id": 1,
+                    "value": "135000",
+                    "added": "2018-09-23T03:21:59.860Z",
+                    "updated": "2018-09-23T03:21:59.860Z"
+                },
+                "2": {
+                    "machineNo": 2,
+                    "machineName": "4T Hydro Pneumatic Press",
+                    "make": "Britt",
+                    "model": "Britt",
+                    "capacity": "4 Ton",
+                    "yop": "2017",
+                    "id": 2,
+                    "value": "65000",
+                    "added": "2018-09-23T03:22:22.551Z",
+                    "updated": "2018-09-23T03:22:22.551Z"
                 }
             }
         },
@@ -786,6 +782,7 @@
             "data": {
                 "1": {
                     "partNo": 1,
+                    "partName": "EHL",
                     "mapping": [
                         {
                             "id": 1,
@@ -795,59 +792,51 @@
                         {
                             "id": 2,
                             "opName": "Cropping",
-                            "source": "In-house"
+                            "source": "In-House"
                         },
                         {
-                            "id": 3,
-                            "opName": "W Forming",
-                            "source": "In-house"
+                            "id": 9,
+                            "opName": "Packing",
+                            "source": "In-House"
+                        }
+                    ],
+                    "id": 1,
+                    "added": "2018-09-23T03:22:44.383Z",
+                    "updated": "2018-09-24T00:13:00.761Z"
+                },
+                "2": {
+                    "partNo": 2,
+                    "partName": "PVC GI Clamp",
+                    "mapping": [
+                        {
+                            "id": 1,
+                            "opName": "Raw Material",
+                            "source": "Supplier"
+                        },
+                        {
+                            "id": 2,
+                            "opName": "Cropping",
+                            "source": "In-House"
                         },
                         {
                             "id": 4,
-                            "opName": "V Bending",
-                            "source": "In-house"
+                            "opName": "U Forming",
+                            "source": "In-House"
                         },
                         {
-                            "id": 5,
-                            "opName": "O forming",
-                            "source": "In-house"
-                        },
-                        {
-                            "id": 6,
+                            "id": 8,
                             "opName": "Plating",
                             "source": "Sub-Contractor"
                         },
                         {
-                            "id": 7,
+                            "id": 9,
                             "opName": "Packing",
-                            "source": "In-house"
-                        }
-                    ],
-                    "id": 1,
-                    "updated": "2018-06-19T13:25:40.528Z"
-                },
-                "2": {
-                    "partNo": 3,
-                    "mapping": [
-                        {
-                            "id": 1,
-                            "opName": "Raw Material",
-                            "source": "Supplier"
-                        },
-                        {
-                            "id": 2,
-                            "opName": "Cropping",
-                            "source": "In-house"
-                        },
-                        {
-                            "id": 7,
-                            "opName": "Packing",
-                            "source": "In-house"
+                            "source": "In-House"
                         }
                     ],
                     "id": 2,
-                    "added": "2018-07-09T13:35:33.864Z",
-                    "updated": "2018-07-09T13:35:33.864Z"
+                    "added": "2018-09-23T03:23:02.436Z",
+                    "updated": "2018-09-24T00:13:51.411Z"
                 }
             }
         },
@@ -869,59 +858,42 @@
             "data": {
                 "1": {
                     "toolNo": 1,
-                    "partName": "Cropping Tool",
-                    "make": "Crescent",
+                    "toolName": "EHL Blanking Tool",
+                    "partNo": 1,
+                    "make": "Unique",
                     "type": "Pillar set",
-                    "toolLife": "100000",
-                    "yoe": "2005",
-                    "value": "15000",
+                    "toolLife": "2000000",
+                    "yop": "2017",
                     "id": 1,
-                    "yop": "2015",
-                    "partNo": 3,
-                    "updated": "2018-09-02T00:52:08.784Z",
-                    "toolName": "Cropping Tool"
+                    "value": "20000",
+                    "added": "2018-09-23T03:23:45.556Z",
+                    "updated": "2018-09-23T03:23:45.556Z"
                 },
                 "2": {
                     "toolNo": 2,
-                    "partName": "4”SWR W forming",
-                    "make": "Crescent",
+                    "toolName": "Cropping Tool",
+                    "partNo": 2,
+                    "make": "Ellora",
                     "type": "Pillar set",
-                    "toolLife": "100000",
-                    "yop": "2015",
-                    "value": "5000",
+                    "toolLife": "2000000",
+                    "yop": "2017",
                     "id": 2,
-                    "added": "2018-06-19T13:42:01.589Z",
-                    "updated": "2018-09-02T00:52:26.369Z",
-                    "partNo": 1,
-                    "toolName": "4”SWR W forming"
+                    "value": "15000",
+                    "added": "2018-09-23T03:24:13.559Z",
+                    "updated": "2018-09-23T03:24:13.559Z"
                 },
                 "3": {
                     "toolNo": 3,
-                    "partName": "V Bending Tool",
-                    "make": "Renganathan",
-                    "type": "open",
-                    "toolLife": "100000",
-                    "yop": "2018",
-                    "value": "6000",
-                    "id": 3,
-                    "added": "2018-06-19T13:42:53.641Z",
-                    "updated": "2018-09-02T00:52:49.185Z",
+                    "toolName": "3/4 U forming",
                     "partNo": 2,
-                    "toolName": "V Bending Tool"
-                },
-                "4": {
-                    "toolNo": 4,
-                    "partName": "4”SWR O forming",
-                    "make": "Crescent",
-                    "type": "Pillar set",
-                    "toolLife": "100000",
-                    "yop": "2015",
-                    "value": "15000",
-                    "id": 4,
-                    "added": "2018-06-19T13:43:34.641Z",
-                    "updated": "2018-09-02T00:52:55.058Z",
-                    "partNo": 1,
-                    "toolName": "4”SWR O forming"
+                    "make": "Ellora",
+                    "type": "Open",
+                    "toolLife": "2000000",
+                    "yop": "2017",
+                    "id": 3,
+                    "value": "4000",
+                    "added": "2018-09-23T03:24:37.189Z",
+                    "updated": "2018-09-23T03:24:37.189Z"
                 }
             }
         },
@@ -944,18 +916,32 @@
             "data": {
                 "2018": {
                     "1": {
+                        "1": {
+                            "jobCardNo": 1,
+                            "date": "2018-09-24T00:13:57.002Z",
+                            "rmCode": 1,
+                            "partNo": 1,
+                            "partNorms": ".002",
+                            "issueQty": 10,
+                            "qtyCanMake": 5000,
+                            "operationFrom": 2,
+                            "status": 0,
+                            "id": 1,
+                            "added": "2018-09-24T00:14:10.262Z",
+                            "updated": "2018-09-24T00:33:08.641Z"
+                        },
                         "jobCardNo": 1,
-                        "date": "2018-09-11T01:01:49.555Z",
+                        "date": "2018-09-24T00:13:57.002Z",
                         "rmCode": 1,
                         "partNo": 1,
-                        "partNorms": "0.100",
+                        "partNorms": ".002",
                         "issueQty": 10,
-                        "qtyCanMake": 100,
+                        "qtyCanMake": 5000,
                         "operationFrom": 1,
                         "status": 0,
                         "id": 1,
-                        "added": "2018-09-11T01:02:01.959Z",
-                        "updated": "2018-09-11T01:02:01.959Z"
+                        "added": "2018-09-24T00:14:10.262Z",
+                        "updated": "2018-09-24T00:14:10.262Z"
                     }
                 }
             }
@@ -999,20 +985,18 @@
             "data": {
                 "2018": {
                     "1": {
-                        "rmCode": 1,
-                        "rmStockQty": 10,
-                        "uomCode": 1,
                         "id": 1,
-                        "added": "2018-09-11T00:58:07.960Z",
-                        "updated": "2018-09-11T00:58:07.960Z"
+                        "rmCode": 1,
+                        "rmStockQty": 190,
+                        "uomCode": 1,
+                        "updated": "2018-09-24T00:33:08.634Z"
                     },
                     "2": {
-                        "rmCode": 2,
-                        "rmStockQty": 20,
-                        "uomCode": 1,
                         "id": 2,
-                        "added": "2018-09-11T00:58:07.964Z",
-                        "updated": "2018-09-17T01:58:23.647Z"
+                        "rmCode": 2,
+                        "rmStockQty": 200,
+                        "uomCode": 1,
+                        "updated": "2018-09-23T03:53:40.045Z"
                     }
                 }
             }
@@ -1028,7 +1012,17 @@
                 "updated": ""
             },
             "data": {
-                "2018": {}
+                "2018": {
+                    "1": {
+                        "partNo": 1,
+                        "partStockQty": 500,
+                        "operationFrom": 1,
+                        "operationTo": 2,
+                        "id": 1,
+                        "added": "2018-09-24T00:33:08.647Z",
+                        "updated": "2018-09-24T00:33:08.647Z"
+                    }
+                }
             }
         },
         "invoice": {
