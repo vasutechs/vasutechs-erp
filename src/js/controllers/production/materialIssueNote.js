@@ -9,6 +9,10 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
             }
         },
         getNorms: function(context) {
+            var restriction = {
+                partNo: context.data.partNo,
+                source: ['Supplier']
+            };
             if (context.data.rmCode && context.data.partNo) {
                 context.data.partNorms = null;
                 var serviceconf = context.actions.getServiceConfig('production.bom');
@@ -20,7 +24,7 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
                         }
                     }
                 });
-                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], context.data.partNo, ['Supplier']);
+                context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
             }
         },
         updateQtyMake: function(context) {
@@ -34,12 +38,41 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
                     context.form.fields['issueQty'].max = rmStock[context.data.rmCode].rmStockQty;
                     if (context.data.partNorms && context.data.issueQty && context.form.fields['issueQty'].max >= context.data.issueQty) {
                         context.data.qtyCanMake = context.data.issueQty / context.data.partNorms;
-                    }
-                    else{
+                    } else {
                         context.data.qtyCanMake = null;
                     }
                 });
             }
+        },
+        removeRMStockQty: function(context) {
+            context.actions.getData('report.rmStock').then(function(res) {
+                var rmStockData = res.data,
+                    rmStock = {},
+                    rmCode = context.data.rmCode,
+                    existingStock = null,
+                    removeQty = context.data.issueQty;
+                for (var i in rmStockData) {
+                    rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
+                }
+                existingStock = rmStock[rmCode];
+                if (existingStock) {
+                    var rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
+                    var data = {
+                            id: existingStock.id,
+                            rmCode: rmCode,
+                            rmStockQty: rmStockQty,
+                            uomCode: existingStock.uomCode
+                        },
+                        serviceconf = context.actions.getServiceConfig('report.rmStock', 'POST');
+                    serviceApi.callServiceApi(serviceconf, data);
+                }
+
+            })
+        },
+        callBackSubmit: function(context) {
+            context.actions.removeRMStockQty(context);
+            context.data.acceptedQty = context.data.qtyCanMake;
+            context.actions.updatePartStock(context);
         }
     });
     $scope.context = erpAppConfig.modules.production.materialIssueNote;

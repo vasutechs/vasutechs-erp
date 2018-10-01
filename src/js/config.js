@@ -5,6 +5,7 @@ var erpAppConfig = {
     appBaseUrl: '/dashboard',
     dataDownloadUrl: '/api/download',
     calendarYear: new Date().getFullYear(),
+    finalStageOpp: 9,
     modules: {
         databaseUpload: {
             name: 'Database Upload',
@@ -252,7 +253,9 @@ var erpAppConfig = {
                             'rate': {
                                 name: 'Rate',
                                 id: 'rate',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                required: true
                             },
                             'gst': {
                                 name: 'GST %',
@@ -505,8 +508,8 @@ var erpAppConfig = {
                             name: 'Invoice No',
                             id: 'invoiceNo',
                             type: 'span',
-                            required: true,
-                            idPrefix: 'H-'
+                            idPrefix: 'H-',
+                            required: true
                         },
                         'date': {
                             name: 'Date',
@@ -525,8 +528,7 @@ var erpAppConfig = {
                             updateData: ['gstin', 'mapping'],
                             dataFrom: 'marketing.customerMaster',
                             replaceName: 'customerName',
-                            isSingle: true,
-                            callBack: false
+                            isSingle: true
                         },
                         'partyGstin': {
                             name: 'Party GSTIN',
@@ -582,7 +584,6 @@ var erpAppConfig = {
                                 id: 'id',
                                 type: 'select',
                                 options: {},
-                                action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
                                 replaceName: 'partNo',
                                 isDisable: true
@@ -1579,7 +1580,8 @@ var erpAppConfig = {
                             filter: {
                                 status: 0
                             },
-                            isSingle: true
+                            isSingle: true,
+                            callBack: false
                         }
                     },
                     mapping: {
@@ -1590,6 +1592,7 @@ var erpAppConfig = {
                                 id: 'id',
                                 type: 'select',
                                 options: {},
+                                action: 'changeMapping',
                                 dataFrom: 'marketing.partMaster',
                                 replaceName: 'partNo',
                                 isDisable: true
@@ -2330,7 +2333,7 @@ var erpAppConfig = {
                     partNorms: null,
                     issueQty: null,
                     qtyCanMake: null,
-                    operationFrom: null,
+                    operationTo: null,
                     status: 0
                 },
                 form: {
@@ -2394,9 +2397,9 @@ var erpAppConfig = {
                             inputType: 'number',
                             required: true
                         },
-                        'operationFrom': {
+                        'operationTo': {
                             name: 'Issue Stage',
-                            id: 'operationFrom',
+                            id: 'operationTo',
                             type: 'select',
                             options: {},
                             required: true,
@@ -2480,7 +2483,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'production.machineMaster',
                             replaceName: 'machineNo',
-                            replaceNamePrefix: 'VT-HPP-',
+                            replaceNamePrefix: 'VT-M/C-',
                             required: true,
                             isSingle: true
                         },
@@ -2493,8 +2496,8 @@ var erpAppConfig = {
                             dataFrom: 'production.materialIssueNote',
                             replaceName: 'jobCardNo',
                             replaceNamePrefix: 'VT-',
-                            action: 'updatePartDetails',
-                            updateData: ['partNo', 'operationFrom'],
+                            action: 'changeMapping',
+                            updateData: ['partNo'],
                             filter: {
                                 status: 0
                             },
@@ -2517,6 +2520,7 @@ var erpAppConfig = {
                             type: 'select',
                             options: {},
                             required: true,
+                            action: 'updateOperationTo',
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',
                             replaceNamePrefixData: 'opCode',

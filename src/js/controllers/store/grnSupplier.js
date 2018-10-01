@@ -48,7 +48,8 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
             context.actions.getData('purchase.poSupplier', context.data.poNo).then(function(res) {
                 var poSupplierData = res.data;
                 poSupplierData.status = 1;
-                context.actions.updateData('purchase.poSupplier', poSupplierData, context.data.poNo);
+                poSupplierData.id = context.data.poNo;
+                context.actions.updateData('purchase.poSupplier', poSupplierData);
             });
         },
         callBackSubmit: function(context) {

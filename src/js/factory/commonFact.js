@@ -169,7 +169,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         removeData: function(data, key) {
             delete data.splice(key, 1);
         },
-        changeMapping: function(context, data, key, field) {
+        changeMapping: function(context, data, key, field, mapKey) {
             for (var dataKey in data) {
                 if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
                     if (key === null) {
@@ -187,7 +187,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                                         var mapfield = context.form.mapping.fields[mapFieldKey];
                                         if (mapfield.action && context.actions[mapfield.action]) {
                                             if (mapfield.type === 'select') {
-                                                context.actions[mapfield.action](context, data[dataKey][mapKey], data[dataKey][mapKey][mapfield.id], mapfield);
+                                                context.actions[mapfield.action](context, data[dataKey][mapKey], data[dataKey][mapKey][mapfield.id], mapfield, mapKey);
                                             }
                                         }
                                     }
@@ -197,7 +197,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                     }
                 }
             }
-            field.callBack !== false && context.actions.callBackChangeMapping && context.actions.callBackChangeMapping(context, data, key, field);
+            field.callBack !== false && context.actions.callBackChangeMapping && context.actions.callBackChangeMapping(context, data, key, field, mapKey);
         },
         setAutoGenKey: function(context) {
             var lastDataKey = context.lastData ? context.lastData[context.form.autoGenKey] : undefined;
@@ -213,19 +213,23 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             value = new Date(value);
             return value.getHours() + ':' + value.getMinutes() + ':' + value.getSeconds();
         },
-        getOperationFromFlow: function(context, field, partNo, source) {
-            partNo = partNo || context.data.partNo;
+        getOperationFromFlow: function(context, field, restriction) {
+            var partNo = restriction.partNo || context.data.partNo,
+                limit = 0;
             if (partNo) {
                 context.actions.makeOptionsFields(field);
                 var localOptions = field.options;
                 var serviceconf = this.getServiceConfig('production.flowMaster');
                 serviceApi.callServiceApi(serviceconf).then(function(res) {
-                    var flowMasterData = res.data;
+                    var flowMasterData = res.data,
+                        currentPartStock;
                     field.options = {};
                     for (var i in flowMasterData) {
                         if (flowMasterData[i].partNo === partNo) {
                             for (var j in flowMasterData[i].mapping) {
-                                if ((!field.startWith || (field.startWith < flowMasterData[i].mapping[j].id)) && (!field.endWith || (field.endWith > flowMasterData[i].mapping[j].id)) && (flowMasterData[i].mapping[j].source && source.indexOf(flowMasterData[i].mapping[j].source) >= 0)) {
+                                currentPartStock = restriction.partStock && restriction.partStock[partNo + '-' + flowMasterData[i].mapping[j].id];
+                                if ((! restriction.partStock || (currentPartStock && currentPartStock.partStockQty > 0)) && (!restriction.limit || limit < restriction.limit) && (!restriction.startWith || (restriction.startWith < flowMasterData[i].mapping[j].id)) && (!restriction.endWith || (restriction.endWith > flowMasterData[i].mapping[j].id)) && (!restriction.source || restriction.source.indexOf(flowMasterData[i].mapping[j].source) >= 0)) {
+                                    limit++
                                     field.options[flowMasterData[i].mapping[j].id] = localOptions[flowMasterData[i].mapping[j].id];
                                 }
                             }
@@ -275,7 +279,8 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             context.actions.getData('production.materialIssueNote', key).then(function(res) {
                 var updateData = res.data;
                 updateData = angular.extend(updateData, replaceData);
-                context.actions.updateData('production.materialIssueNote', updateData, key);
+                updateData.id = key;
+                context.actions.updateData('production.materialIssueNote', updateData);
             });
         },
         updatePartTotal: function(context, data, newValue, mapKey) {
@@ -293,6 +298,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', erpAppConfig.calendarYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
+            serviceConfig.cache = true;
             return serviceConfig;
         }
     };
