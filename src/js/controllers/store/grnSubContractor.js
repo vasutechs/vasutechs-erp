@@ -21,7 +21,8 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
             context.actions.getData('store.dcSubContractor', context.data.dcNo).then(function(res) {
                 var dcSubContractor = res.data;
                 dcSubContractor.status = 1;
-                context.actions.updateData('store.dcSubContractor', dcSubContractor, context.data.dcNo);
+                dcSubContractor.id = context.data.dcNo;
+                context.actions.updateData('store.dcSubContractor', dcSubContractor);
             });
         },
         callBackSubmit: function(context) {

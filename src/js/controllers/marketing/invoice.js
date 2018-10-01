@@ -10,17 +10,19 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
         getPartStockDetail: function(context, data, key, field) {
             context.partStockDetail = [];
             context.actions.getData('report.partStock').then(function(res) {
-                var partStockData = res.data;
-                var partNos = [];
+                var partStockData = res.data,
+                partNos = [],
+                newMapData = [];
                 for (var i in partStockData) {
-                    if (partStockData[i].operationTo === 7 && partStockData[i].partStockQty > 0 && partStockData[i].partNo === data.id) {
+                    if (partStockData[i].operationTo === erpAppConfig.finalStageOpp && partStockData[i].partStockQty > 0) {
                         partNos.push(partStockData[i].partNo);
                         context.partStockDetail[partStockData[i].partNo] = partStockData[i];
                     }
                 }
-                if (partNos.length === 0 || partNos.indexOf(data.id) < 0) {
-                    angular.extend(data, angular.copy(context.masterData.mapping[0]));
-                }
+                newMapData = context.data.mapping.filter(function(data){
+                    return !(partNos.length === 0 || partNos.indexOf(data.id) < 0);
+                });
+                context.data.mapping = newMapData;
             });
         },
         updateTotal: function(context, data, updateValue) {
@@ -69,7 +71,7 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
                         partStock[partStockData[j].partNo + '-' + partStockData[j].operationFrom + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
                         partStock[partStockData[j].partNo + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
                     }
-                    var existingStock = partStock[context.data.mapping[i].id + '-7'];
+                    var existingStock = partStock[context.data.mapping[i].id + '-' + erpAppConfig.finalStageOpp];
 
                     var partStockQty = parseInt(existingStock.partStockQty) - parseInt(context.data.mapping[i].unit);
                     var data = {
@@ -80,7 +82,7 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
                         operationTo: existingStock.operationTo
                     }
 
-                    context.actions.updateData('report.partStock', data, existingStock.id);
+                    context.actions.updateData('report.partStock', data);
                 });
             }
 
