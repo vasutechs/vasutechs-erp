@@ -18,12 +18,20 @@ erpApp.controller('dcSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact'
             });
         },
         callBackSubmit: function(context) {
+            for (var i in context.data.mapping) {
+                context.data.mapping[i].partNo = context.data.mapping[i].id;
+                context.actions.updatePartStock({
+                    data: context.data.mapping[i]
+                });
+            }
             context.actions.updatePoSubContractor(context);
         },
-        callBackChangeMapping: function(context, data, key) {
+        updateOperationFrom: function(context, data, key) {
             var restriction = {
                     partNo: data.id,
-                    source: ['In-House']
+                    source: ['In-House'],
+                    previousFromSource: ['Sub-Contractor'],
+                    limit: 1
                 },
                 serviceconf = context.actions.getServiceConfig('report.partStock');
             serviceApi.callServiceApi(serviceconf).then(function(res) {
@@ -33,6 +41,7 @@ erpApp.controller('dcSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact'
                     partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                 }
                 restriction.partStock = partStock;
+                context.partStockDetail = partStock;
                 context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationFrom'], restriction);
 
             });

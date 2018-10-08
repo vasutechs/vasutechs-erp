@@ -1,9 +1,12 @@
 erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         checkAcceptedQty: function(context) {
-            var qtyCanMake = context.form.fields['jobCardNo'].options[context.data.jobCardNo].qtyCanMake,
+            var qtyCanMake=0,
                 rejectionQtyMax = 0,
                 rwQtyMax = 0;
+            if(context.data.partNo && context.data.operationFrom){
+                qtyCanMake = context.partStock[context.data.partNo + '-' + context.data.operationFrom] && context.partStock[context.data.partNo + '-' + context.data.operationFrom].partStockQty || 0;
+            }
             context.form.fields['acceptedQty'].max = qtyCanMake;
             rejectionQtyMax = qtyCanMake - context.data.acceptedQty;
             rwQtyMax = context.data.rejectionQty ? qtyCanMake - context.data.acceptedQty - context.data.rejectionQty : qtyCanMake - context.data.acceptedQty;
@@ -31,6 +34,7 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                         partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                     }
                     restriction.partStock = partStock;
+                    context.partStock = partStock;
                     context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
 
                 });
