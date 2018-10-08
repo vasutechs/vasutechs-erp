@@ -1,4 +1,4 @@
-erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact', function(erpAppConfig, $scope, commonFact) {
+erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         getDCSubContractor: function(context, data, key, field) {
             context.form.fields['dcNo'] = angular.extend(context.form.fields['dcNo'], {
@@ -25,6 +25,18 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
                 context.actions.updateData('store.dcSubContractor', dcSubContractor);
             });
         },
+        callBackChangeMapping: function(context){
+            var serviceconf = context.actions.getServiceConfig('report.partStock');
+            context.grnSC = true;
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                var partStockData = res.data,
+                partStock = {};
+                for (var i in partStockData) {
+                    partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
+                }
+                context.partStockDetail = partStock;
+            });
+        },
         callBackSubmit: function(context) {
             var newQty;
             for (var i in context.data.mapping) {
@@ -39,11 +51,6 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
                 }
             }
             context.actions.updateDCSubContractor(context);
-        },
-        callBackUpdatePartTotal: function(context, data, newValue, mapKey) {
-            if (data.acceptedQty) {
-                data.receivedQty = data.acceptedQty < data.receivedQty ? null : data.receivedQty;
-            }
         }
     });;
 

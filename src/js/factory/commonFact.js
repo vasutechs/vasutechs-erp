@@ -296,9 +296,18 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         updatePartTotal: function(context, data, newValue, mapKey) {
             var total = 0,
                 totalBeforTax = 0,
-                qty = data.receivedQty || data.acceptedQty;
-            if (context.partStockDetail[data.id + '-'+data.operationFrom]) {
-                data.acceptedQty = data.receivedQty = context.partStockDetail[data.id + '-'+data.operationFrom].partStockQty < qty ? null : qty;
+                qty = data.receivedQty || data.acceptedQty,
+                operation = (context.grnSC) ? data.operationTo : data.operationFrom;
+            if (data.id 
+                && operation 
+                && context.partStockDetail[data.id + '-' + operation] 
+                && context.partStockDetail[data.id + '-' + operation].partStockQty < qty) {
+                if(context.grnSC){
+                    data.receivedQty = qty = null;
+                }
+                else{
+                    data.acceptedQty = qty = null;
+                }
             }
             totalBeforTax = qty * data.rate;
             total = totalBeforTax + (totalBeforTax * (data.gst / 100));
