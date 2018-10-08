@@ -649,14 +649,18 @@ var erpAppConfig = {
                 form: {
                     fields: {
                         'invoiceNo': {
-                            name: 'CashBill No'
+                            name: 'CashBill No',
+                            id: 'invoiceNo',
+                            type: 'span',
+                            idPrefix: '',
+                            required: true
                         }
                     }
                 },
                 listView: [{
                     title: 'Cash Bill No',
                     id: 'invoiceNo',
-                    idPrefix: 'H-'
+                    idPrefix: ''
                 }],
                 page: {
                     link: 'marketing/invoice/list?type=cashBill',
@@ -1592,7 +1596,7 @@ var erpAppConfig = {
                                 id: 'id',
                                 type: 'select',
                                 options: {},
-                                action: 'changeMapping',
+                                action: 'updateOperationFrom',
                                 dataFrom: 'marketing.partMaster',
                                 replaceName: 'partNo',
                                 isDisable: true
@@ -1634,8 +1638,18 @@ var erpAppConfig = {
                                 replaceName: 'uomName',
                                 isDisable: true
                             },
+                            'rate': {
+                                name: 'Rate',
+                                id: 'rate',
+                                type: 'span'
+                            },
+                            'gst': {
+                                name: 'GST%',
+                                id: 'gst',
+                                type: 'span'
+                            },
                             'total': {
-                                name: 'App Cost',
+                                name: 'total',
                                 id: 'total',
                                 type: 'span'
                             }
@@ -1692,8 +1706,8 @@ var erpAppConfig = {
                     status: 0,
                     mapping: [{
                         id: null,
-                        partFrom: null,
-                        qty: null,
+                        operationFrom: null,
+                        operationTo: null,
                         uomCode: null,
                         receivedQty: null,
                         acceptedQty: null,
@@ -2519,7 +2533,6 @@ var erpAppConfig = {
                             id: 'operationFrom',
                             type: 'select',
                             options: {},
-                            required: true,
                             action: 'updateOperationTo',
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',

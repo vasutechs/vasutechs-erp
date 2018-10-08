@@ -1,5 +1,24 @@
 erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+        callBackEdit: function(context) {
+            context.actions.callBackAdd(context);
+        },
+        callBackAdd: function(context) {
+            context.actions.getData('report.rmStock').then(function(res) {
+                var rmStockData = res.data,
+                    rmStock = [];
+                for (var i in rmStockData) {
+                    rmStock.push(rmStockData[i] && rmStockData[i].rmCode || undefined);
+                }
+                context.form.fields['rmCode'] = angular.extend(context.form.fields['rmCode'], {
+                    filter: {
+                        id: rmStock
+                    }
+                });
+                context.actions.makeOptionsFields(context.form.fields['rmCode']);
+            });
+
+        },
         getPartNo: function(context) {
             if (context.data.rmCode) {
                 context.form.fields['partNo'].filter = {
