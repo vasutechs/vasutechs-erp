@@ -314,26 +314,49 @@
                 "2018": {
                     "1": {
                         "poNo": 1,
-                        "date": "2018-10-05T09:35:35.473Z",
+                        "date": "2018-10-09T00:09:57.381Z",
                         "supplierCode": 2,
                         "gstin": "fs44sds",
                         "status": 1,
                         "mapping": [
                             {
                                 "id": 2,
-                                "qty": "1520",
+                                "qty": "100",
                                 "uomCode": 1,
                                 "rate": 45.6,
                                 "gst": 18,
                                 "cgst": 9,
                                 "sgst": 9,
-                                "total": "81788.16",
+                                "total": "5380.80",
                                 "rmCode": 2
                             }
                         ],
                         "id": 1,
-                        "added": "2018-10-05T09:35:45.126Z",
-                        "updated": "2018-10-05T09:47:50.502Z"
+                        "added": "2018-10-09T00:10:12.586Z",
+                        "updated": "2018-10-09T00:12:18.467Z"
+                    },
+                    "2": {
+                        "poNo": 2,
+                        "date": "2018-10-15T03:26:54.022Z",
+                        "supplierCode": 3,
+                        "gstin": "18",
+                        "status": 1,
+                        "mapping": [
+                            {
+                                "id": 1,
+                                "qty": "10",
+                                "uomCode": 1,
+                                "rate": 75,
+                                "gst": 18,
+                                "cgst": 9,
+                                "sgst": 9,
+                                "total": "885.00",
+                                "rmCode": 1
+                            }
+                        ],
+                        "id": 2,
+                        "added": "2018-10-15T03:27:03.451Z",
+                        "updated": "2018-10-15T03:27:36.042Z"
                     }
                 }
             }
@@ -412,49 +435,27 @@
                 "2018": {
                     "1": {
                         "poNo": 1,
-                        "date": "2018-10-07T14:12:04.697Z",
+                        "date": "2018-10-15T01:56:30.512Z",
                         "subContractorCode": 1,
                         "gstin": "jkdasjk",
-                        "status": 1,
+                        "status": 0,
                         "mapping": [
                             {
                                 "id": 2,
                                 "operationTo": 8,
-                                "acceptedQty": "100",
+                                "acceptedQty": "20",
                                 "uomCode": 2,
                                 "rate": "0.5",
                                 "gst": 18,
                                 "cgst": 9,
                                 "sgst": 9,
-                                "total": "59.00"
+                                "total": "11.80",
+                                "operationFrom": 4
                             }
                         ],
                         "id": 1,
-                        "added": "2018-10-07T14:12:16.170Z",
-                        "updated": "2018-10-07T15:31:39.595Z"
-                    },
-                    "2": {
-                        "poNo": 2,
-                        "date": "2018-10-08T01:29:28.271Z",
-                        "subContractorCode": 1,
-                        "gstin": "jkdasjk",
-                        "status": 1,
-                        "mapping": [
-                            {
-                                "id": 2,
-                                "operationTo": 8,
-                                "acceptedQty": "300",
-                                "uomCode": 2,
-                                "rate": "0.5",
-                                "gst": 18,
-                                "cgst": 9,
-                                "sgst": 9,
-                                "total": "177.00"
-                            }
-                        ],
-                        "id": 2,
-                        "added": "2018-10-08T01:30:04.152Z",
-                        "updated": "2018-10-08T01:38:06.061Z"
+                        "added": "2018-10-15T01:56:43.692Z",
+                        "updated": "2018-10-15T01:56:43.692Z"
                     }
                 }
             }
@@ -487,33 +488,63 @@
                 "2018": {
                     "1": {
                         "grnNo": 1,
-                        "date": "2018-10-05T09:47:22.980Z",
+                        "date": "2018-10-09T00:11:32.658Z",
                         "supplierCode": 2,
                         "poNo": 1,
                         "supplierDCCode": null,
                         "supplierDCDate": null,
-                        "status": 1,
+                        "status": 0,
                         "mapping": [
                             {
                                 "id": 2,
-                                "qty": "1520",
+                                "qty": "100",
                                 "uomCode": 1,
-                                "receivedQty": "1520",
-                                "acceptedQty": "1520",
+                                "receivedQty": "100",
+                                "acceptedQty": "100",
                                 "rate": 45.6,
                                 "gst": 18,
                                 "cost": null,
-                                "total": "81788.16",
+                                "total": "5380.80",
                                 "cgst": 9,
                                 "sgst": 9,
                                 "rmCode": 2
                             }
                         ],
-                        "supplierInvoiceNo": "742",
-                        "supplierInvoiceDate": "2018-10-01T18:30:00.000Z",
+                        "supplierInvoiceNo": "1",
+                        "supplierInvoiceDate": "2018-10-08T04:00:00.000Z",
                         "id": 1,
-                        "added": "2018-10-05T09:47:50.486Z",
-                        "updated": "2018-10-05T09:47:50.486Z"
+                        "added": "2018-10-09T00:12:18.438Z",
+                        "updated": "2018-10-09T00:12:18.438Z"
+                    },
+                    "2": {
+                        "grnNo": 2,
+                        "date": "2018-10-15T03:27:09.928Z",
+                        "supplierCode": 3,
+                        "poNo": 2,
+                        "supplierDCCode": null,
+                        "supplierDCDate": null,
+                        "status": 0,
+                        "mapping": [
+                            {
+                                "id": 1,
+                                "qty": "10",
+                                "uomCode": 1,
+                                "receivedQty": "10",
+                                "acceptedQty": "10",
+                                "rate": 75,
+                                "gst": 18,
+                                "cost": null,
+                                "total": "885.00",
+                                "cgst": 9,
+                                "sgst": 9,
+                                "rmCode": 1
+                            }
+                        ],
+                        "supplierInvoiceNo": "1",
+                        "supplierInvoiceDate": "2018-10-14T04:00:00.000Z",
+                        "id": 2,
+                        "added": "2018-10-15T03:27:35.965Z",
+                        "updated": "2018-10-15T03:27:35.965Z"
                     }
                 }
             }
@@ -558,11 +589,11 @@
                 "2018": {
                     "1": {
                         "grnNo": 1,
-                        "date": "2018-10-07T23:47:29.737Z",
+                        "date": "2018-10-15T02:07:27.853Z",
                         "subContractorCode": 1,
                         "poNo": 1,
                         "subContractorDCNo": null,
-                        "subContractorDCDate": "2018-10-07T04:00:00.000Z",
+                        "subContractorDCDate": "2018-10-14T04:00:00.000Z",
                         "dcNo": 1,
                         "status": 0,
                         "mapping": [
@@ -571,30 +602,29 @@
                                 "operationFrom": 4,
                                 "operationTo": 8,
                                 "uomCode": 2,
-                                "receivedQty": 90,
-                                "acceptedQty": -10,
+                                "receivedQty": 2,
+                                "acceptedQty": "5",
                                 "rate": "0.5",
                                 "gst": 18,
                                 "cost": null,
-                                "total": "53.10",
+                                "total": "1.18",
                                 "cgst": 9,
-                                "sgst": 9,
-                                "partNo": 2
+                                "sgst": 9
                             }
                         ],
-                        "subContractorDCCode": 1,
+                        "subContractorDCCode": 11,
                         "id": 1,
-                        "added": "2018-10-07T23:48:06.227Z",
-                        "updated": "2018-10-07T23:48:06.227Z"
+                        "added": "2018-10-15T02:07:45.608Z",
+                        "updated": "2018-10-15T02:07:45.608Z"
                     },
                     "2": {
                         "grnNo": 2,
-                        "date": "2018-10-08T02:12:48.741Z",
+                        "date": "2018-10-15T02:08:13.568Z",
                         "subContractorCode": 1,
-                        "poNo": 2,
+                        "poNo": 1,
                         "subContractorDCNo": null,
-                        "subContractorDCDate": "2018-10-07T04:00:00.000Z",
-                        "dcNo": 2,
+                        "subContractorDCDate": "2018-10-14T04:00:00.000Z",
+                        "dcNo": 1,
                         "status": 0,
                         "mapping": [
                             {
@@ -602,21 +632,20 @@
                                 "operationFrom": 4,
                                 "operationTo": 8,
                                 "uomCode": 2,
-                                "receivedQty": 300,
-                                "acceptedQty": 0,
+                                "receivedQty": 3,
+                                "acceptedQty": "5",
                                 "rate": "0.5",
                                 "gst": 18,
                                 "cost": null,
-                                "total": "177.00",
+                                "total": "1.77",
                                 "cgst": 9,
-                                "sgst": 9,
-                                "partNo": 2
+                                "sgst": 9
                             }
                         ],
                         "subContractorDCCode": 1,
                         "id": 2,
-                        "added": "2018-10-08T02:13:11.625Z",
-                        "updated": "2018-10-08T02:13:11.625Z"
+                        "added": "2018-10-15T02:08:52.146Z",
+                        "updated": "2018-10-15T02:08:52.146Z"
                     }
                 }
             }
@@ -653,7 +682,7 @@
                 "2018": {
                     "1": {
                         "dcNo": 1,
-                        "date": "2018-10-07T15:30:54.424Z",
+                        "date": "2018-10-15T02:06:19.696Z",
                         "subContractorCode": 1,
                         "poNo": 1,
                         "status": 1,
@@ -662,45 +691,20 @@
                                 "id": 2,
                                 "operationFrom": 4,
                                 "operationTo": 8,
-                                "acceptedQty": "100",
+                                "acceptedQty": "5",
                                 "uomCode": 2,
                                 "rate": "0.5",
                                 "gst": 18,
-                                "total": "59.00",
+                                "total": "2.95",
                                 "cgst": 9,
-                                "sgst": 9,
-                                "partNo": 2
+                                "sgst": 9
                             }
                         ],
                         "id": 1,
-                        "added": "2018-10-07T15:31:39.565Z",
-                        "updated": "2018-10-07T23:48:06.294Z"
-                    },
-                    "2": {
-                        "dcNo": 2,
-                        "date": "2018-10-08T01:37:52.885Z",
-                        "subContractorCode": 1,
-                        "poNo": 2,
-                        "status": 1,
-                        "mapping": [
-                            {
-                                "id": 2,
-                                "operationFrom": 4,
-                                "operationTo": 8,
-                                "acceptedQty": "300",
-                                "uomCode": 2,
-                                "rate": "0.5",
-                                "gst": 18,
-                                "total": "177.00",
-                                "cgst": 9,
-                                "sgst": 9,
-                                "receivedQty": null,
-                                "partNo": 2
-                            }
-                        ],
-                        "id": 2,
-                        "added": "2018-10-08T01:38:05.978Z",
-                        "updated": "2018-10-08T02:13:11.691Z"
+                        "added": "2018-10-15T02:06:33.562Z",
+                        "updated": "2018-10-15T02:08:52.196Z",
+                        "optionName": "VT-DC-1",
+                        "optionId": 1
                     }
                 }
             }
@@ -1037,35 +1041,34 @@
                 "2018": {
                     "1": {
                         "jobCardNo": 1,
-                        "date": "2018-10-07T14:08:11.970Z",
+                        "date": "2018-10-11T01:01:25.110Z",
                         "rmCode": 2,
                         "partNo": 2,
                         "partNorms": "0.025",
-                        "issueQty": 100,
-                        "qtyCanMake": 4000,
+                        "issueQty": 5,
+                        "qtyCanMake": 200,
                         "operationTo": 1,
                         "status": 1,
-                        "acceptedQty": 4000,
                         "id": 1,
-                        "added": "2018-10-07T14:08:39.669Z",
-                        "updated": "2018-10-08T00:54:25.062Z",
+                        "added": "2018-10-11T01:01:43.949Z",
+                        "updated": "2018-10-15T02:12:52.138Z",
                         "operationFrom": 9
                     },
                     "2": {
                         "jobCardNo": 2,
-                        "date": "2018-10-08T01:11:17.659Z",
-                        "rmCode": 2,
-                        "partNo": 2,
-                        "partNorms": "0.025",
-                        "issueQty": 10,
-                        "qtyCanMake": 400,
+                        "date": "2018-10-15T03:27:56.672Z",
+                        "rmCode": 1,
+                        "partNo": 1,
+                        "partNorms": "0.0025",
+                        "issueQty": 1,
+                        "qtyCanMake": 100,
                         "operationTo": 1,
                         "status": 1,
-                        "acceptedQty": 400,
                         "id": 2,
-                        "added": "2018-10-08T01:11:40.403Z",
-                        "updated": "2018-10-08T02:13:46.120Z",
-                        "operationFrom": 9
+                        "added": "2018-10-15T03:28:34.394Z",
+                        "updated": "2018-10-15T03:34:34.654Z",
+                        "optionName": "VT-2",
+                        "optionId": 2
                     }
                 }
             }
@@ -1096,7 +1099,7 @@
             "data": {
                 "2018": {
                     "1": {
-                        "date": "2018-10-07T14:08:49.490Z",
+                        "date": "2018-10-14T00:01:48.155Z",
                         "mcNo": 1,
                         "jobCardNo": 1,
                         "partNo": 2,
@@ -1114,11 +1117,11 @@
                         "Operator": 1,
                         "rwQty": 0,
                         "id": 1,
-                        "added": "2018-10-07T14:10:25.655Z",
-                        "updated": "2018-10-07T14:10:25.655Z"
+                        "added": "2018-10-14T00:02:16.881Z",
+                        "updated": "2018-10-14T00:02:16.881Z"
                     },
                     "2": {
-                        "date": "2018-10-07T14:10:37.747Z",
+                        "date": "2018-10-14T00:11:13.243Z",
                         "mcNo": 1,
                         "jobCardNo": 1,
                         "partNo": 2,
@@ -1136,11 +1139,11 @@
                         "Operator": 1,
                         "rwQty": 0,
                         "id": 2,
-                        "added": "2018-10-07T14:11:04.411Z",
-                        "updated": "2018-10-07T14:11:04.411Z"
+                        "added": "2018-10-14T00:11:55.136Z",
+                        "updated": "2018-10-14T00:11:55.136Z"
                     },
                     "3": {
-                        "date": "2018-10-08T00:53:23.387Z",
+                        "date": "2018-10-15T02:12:04.744Z",
                         "mcNo": 1,
                         "jobCardNo": 1,
                         "partNo": 2,
@@ -1151,81 +1154,103 @@
                         "startTime": "1970-01-01T18:00:00.000Z",
                         "endTime": "1970-01-01T19:00:00.000Z",
                         "planQty": 300,
-                        "acceptedQty": 90,
+                        "acceptedQty": 30,
                         "rejectionQty": 0,
                         "rmQty": null,
                         "toolName": 1,
                         "Operator": 1,
                         "rwQty": 0,
                         "id": 3,
-                        "added": "2018-10-08T00:54:24.991Z",
-                        "updated": "2018-10-08T00:54:24.991Z"
+                        "added": "2018-10-15T02:12:52.041Z",
+                        "updated": "2018-10-15T02:12:52.041Z"
                     },
                     "4": {
-                        "date": "2018-10-08T01:12:04.247Z",
+                        "date": "2018-10-15T03:31:41.696Z",
                         "mcNo": 1,
                         "jobCardNo": 2,
-                        "partNo": 2,
+                        "partNo": 1,
                         "operationFrom": 1,
                         "operationTo": 2,
                         "toolNo": null,
                         "operator": null,
-                        "startTime": "1970-01-01T18:00:00.000Z",
-                        "endTime": "1970-01-01T19:00:00.000Z",
-                        "planQty": 300,
-                        "acceptedQty": 300,
+                        "startTime": 1,
+                        "endTime": 2,
+                        "planQty": 500,
+                        "acceptedQty": 10,
                         "rejectionQty": 0,
                         "rmQty": null,
                         "toolName": 1,
                         "Operator": 1,
                         "rwQty": 0,
                         "id": 4,
-                        "added": "2018-10-08T01:20:58.035Z",
-                        "updated": "2018-10-08T01:20:58.035Z"
+                        "added": "2018-10-15T03:32:04.349Z",
+                        "updated": "2018-10-15T03:32:04.349Z"
                     },
                     "5": {
-                        "date": "2018-10-08T01:21:23.704Z",
+                        "date": "2018-10-15T03:32:40.879Z",
                         "mcNo": 1,
                         "jobCardNo": 2,
-                        "partNo": 2,
+                        "partNo": 1,
                         "operationFrom": 2,
-                        "operationTo": 4,
+                        "operationTo": 9,
                         "toolNo": null,
                         "operator": null,
-                        "startTime": "1970-01-01T18:00:00.000Z",
-                        "endTime": "1970-01-01T19:00:00.000Z",
-                        "planQty": 300,
-                        "acceptedQty": 300,
+                        "startTime": 1,
+                        "endTime": 1,
+                        "planQty": 0,
+                        "acceptedQty": 10,
                         "rejectionQty": 0,
                         "rmQty": null,
                         "toolName": 1,
                         "Operator": 1,
                         "rwQty": 0,
                         "id": 5,
-                        "added": "2018-10-08T01:22:13.434Z",
-                        "updated": "2018-10-08T01:22:13.434Z"
+                        "added": "2018-10-15T03:33:02.468Z",
+                        "updated": "2018-10-15T03:33:02.468Z"
                     },
                     "6": {
-                        "date": "2018-10-08T02:13:23.829Z",
+                        "date": "2018-10-15T03:33:21.034Z",
                         "mcNo": 1,
                         "jobCardNo": 2,
-                        "partNo": 2,
-                        "operationFrom": 8,
-                        "operationTo": 9,
+                        "partNo": 1,
+                        "operationFrom": 1,
+                        "operationTo": 2,
                         "toolNo": null,
                         "operator": null,
-                        "startTime": "1970-01-01T18:00:00.000Z",
-                        "endTime": "1970-01-01T19:00:00.000Z",
-                        "planQty": 300,
-                        "acceptedQty": 300,
-                        "rejectionQty": 0,
+                        "startTime": 1,
+                        "endTime": 2,
+                        "planQty": 500,
+                        "acceptedQty": 80,
+                        "rejectionQty": 10,
                         "rmQty": null,
                         "toolName": 1,
                         "Operator": 1,
                         "rwQty": 0,
                         "id": 6,
-                        "added": "2018-10-08T02:13:46.039Z",
-                        "updated": "2018-10-08T02:13:46.039Z"
+                        "added": "2018-10-15T03:33:52.552Z",
+                        "updated": "2018-10-15T03:33:52.552Z"
+                    },
+                    "7": {
+                        "date": "2018-10-15T03:34:00.614Z",
+                        "mcNo": 1,
+                        "jobCardNo": 2,
+                        "partNo": 1,
+                        "operationFrom": 2,
+                        "operationTo": 9,
+                        "toolNo": null,
+                        "operator": null,
+                        "startTime": 1,
+                        "endTime": 2,
+                        "planQty": 500,
+                        "acceptedQty": 80,
+                        "rejectionQty": 0,
+                        "rmQty": null,
+                        "toolName": 1,
+                        "Operator": 1,
+                        "rwQty": 0,
+                        "id": 7,
+                        "added": "2018-10-15T03:34:32.734Z",
+                        "updated": "2018-10-15T03:34:32.734Z"
                     }
                 }
             }
@@ -1244,9 +1269,16 @@
                     "1": {
                         "id": 1,
                         "rmCode": 2,
-                        "rmStockQty": 1300,
+                        "rmStockQty": 85,
                         "uomCode": 1,
-                        "updated": "2018-10-08T01:11:40.414Z"
+                        "updated": "2018-10-15T03:09:36.224Z"
+                    },
+                    "2": {
+                        "id": 2,
+                        "rmCode": 1,
+                        "rmStockQty": 9,
+                        "uomCode": 1,
+                        "updated": "2018-10-15T03:28:34.420Z"
                     }
                 }
             }
@@ -1266,9 +1298,9 @@
                     "1": {
                         "id": 1,
                         "partNo": 1,
-                        "partStockQty": 0,
+                        "partStockQty": 10,
                         "operationTo": 1,
-                        "updated": "2018-10-01T00:00:53.009Z"
+                        "updated": "2018-10-15T03:33:54.474Z"
                     },
                     "3": {
                         "id": 3,
@@ -1276,15 +1308,7 @@
                         "partStockQty": 0,
                         "operationFrom": 1,
                         "operationTo": 2,
-                        "updated": "2018-10-08T01:22:13.470Z"
-                    },
-                    "6": {
-                        "id": 6,
-                        "partNo": 2,
-                        "partStockQty": 200,
-                        "operationFrom": 8,
-                        "operationTo": 9,
-                        "updated": "2018-10-08T02:26:32.319Z"
+                        "updated": "2018-10-14T00:11:55.163Z"
                     },
                     "7": {
                         "id": 7,
@@ -1292,22 +1316,7 @@
                         "partStockQty": 0,
                         "operationFrom": 1,
                         "operationTo": 2,
-                        "updated": "2018-10-01T00:01:21.830Z"
-                    },
-                    "8": {
-                        "id": 8,
-                        "partNo": 2,
-                        "partStockQty": 0,
-                        "operationFrom": 2,
-                        "operationTo": 4,
-                        "updated": "2018-10-08T01:38:06.006Z"
-                    },
-                    "9": {
-                        "id": 9,
-                        "partNo": 2,
-                        "partStockQty": 4000,
-                        "operationTo": 1,
-                        "updated": "2018-10-08T01:20:58.066Z"
+                        "updated": "2018-10-15T03:34:34.585Z"
                     },
                     "10": {
                         "id": 10,
@@ -1315,7 +1324,61 @@
                         "partStockQty": 0,
                         "operationFrom": 4,
                         "operationTo": 8,
-                        "updated": "2018-10-08T02:13:46.061Z"
+                        "updated": "2018-10-15T02:12:52.079Z"
+                    },
+                    "11": {
+                        "id": 11,
+                        "partNo": 2,
+                        "partStockQty": 300,
+                        "operationTo": 1,
+                        "updated": "2018-10-15T03:09:36.227Z"
+                    },
+                    "12": {
+                        "id": 12,
+                        "partNo": 2,
+                        "partStockQty": 20,
+                        "operationFrom": 2,
+                        "operationTo": 4,
+                        "updated": "2018-10-15T02:06:33.590Z"
+                    },
+                    "13": {
+                        "id": 13,
+                        "partNo": 2,
+                        "partStockQty": 0,
+                        "operationFrom": 8,
+                        "operationTo": 9,
+                        "updated": "2018-10-15T02:13:19.132Z"
+                    },
+                    "14": {
+                        "id": 14,
+                        "partNo": 1,
+                        "partStockQty": 90,
+                        "operationFrom": 2,
+                        "operationTo": 9,
+                        "updated": "2018-10-15T03:34:34.579Z"
+                    }
+                }
+            }
+        },
+        "subContractorStock": {
+            "name": "subContractorStock",
+            "fields": {
+                "id": "",
+                "subContractorCode": "",
+                "scStockQty": "",
+                "operationFrom": "",
+                "operationTo": "",
+                "updated": ""
+            },
+            "data": {
+                "2018": {
+                    "1": {
+                        "id": 1,
+                        "subContractorCode": 1,
+                        "scStockQty": -3,
+                        "operationFrom": 4,
+                        "operationTo": 8,
+                        "updated": "2018-10-15T02:08:52.168Z"
                     }
                 }
             }
@@ -1345,7 +1408,7 @@
                 "2018": {
                     "1": {
                         "invoiceNo": "1/2018",
-                        "date": "2018-10-05T10:04:55.312Z",
+                        "date": "2018-10-15T02:13:08.032Z",
                         "customerCode": 1,
                         "gstin": "18",
                         "subTotal": null,
@@ -1353,82 +1416,24 @@
                         "taxRate": 18,
                         "cgst": 9,
                         "sgst": 9,
-                        "cgstTotal": "15.75",
-                        "sgstTotal": "15.75",
-                        "totalBeforTax": "175.00",
-                        "total": "206.50",
+                        "cgstTotal": "4.72",
+                        "sgstTotal": "4.72",
+                        "totalBeforTax": "52.50",
+                        "total": "61.95",
                         "mapping": [
                             {
                                 "id": 2,
                                 "hsnCode": "73070000",
-                                "unit": "100",
+                                "unit": "30",
                                 "rate": 1.75,
-                                "amount": "175.00",
+                                "amount": "52.50",
                                 "partName": "PVC GI Clamp",
                                 "gst": 18
                             }
                         ],
                         "id": 1,
-                        "added": "2018-10-05T10:05:20.319Z",
-                        "updated": "2018-10-05T10:05:20.319Z"
-                    },
-                    "2": {
-                        "invoiceNo": "2/2018",
-                        "date": "2018-10-08T00:55:04.172Z",
-                        "customerCode": 1,
-                        "gstin": "18",
-                        "subTotal": null,
-                        "includeTax": null,
-                        "taxRate": 18,
-                        "cgst": 9,
-                        "sgst": 9,
-                        "cgstTotal": "14.17",
-                        "sgstTotal": "14.17",
-                        "totalBeforTax": "157.50",
-                        "total": "185.85",
-                        "mapping": [
-                            {
-                                "id": 2,
-                                "hsnCode": "73070000",
-                                "unit": "90",
-                                "rate": 1.75,
-                                "amount": "157.50",
-                                "partName": "PVC GI Clamp",
-                                "gst": 18
-                            }
-                        ],
-                        "id": 2,
-                        "added": "2018-10-08T00:55:20.745Z",
-                        "updated": "2018-10-08T00:55:20.745Z"
-                    },
-                    "3": {
-                        "invoiceNo": "3/2018",
-                        "date": "2018-10-08T02:26:10.081Z",
-                        "customerCode": 1,
-                        "gstin": "18",
-                        "subTotal": null,
-                        "includeTax": null,
-                        "taxRate": 18,
-                        "cgst": 9,
-                        "sgst": 9,
-                        "cgstTotal": "15.75",
-                        "sgstTotal": "15.75",
-                        "totalBeforTax": "175.00",
-                        "total": "206.50",
-                        "mapping": [
-                            {
-                                "id": 2,
-                                "hsnCode": "73070000",
-                                "unit": "100",
-                                "rate": 1.75,
-                                "amount": "175.00",
-                                "partName": "PVC GI Clamp",
-                                "gst": 18
-                            }
-                        ],
-                        "id": 3,
-                        "added": "2018-10-08T02:26:32.304Z",
-                        "updated": "2018-10-08T02:26:32.304Z"
+                        "added": "2018-10-15T02:13:19.112Z",
+                        "updated": "2018-10-15T02:13:19.112Z"
                     }
                 }
             }
@@ -1455,37 +1460,7 @@
                 }
             },
             "data": {
-                "2018": {
-                    "1": {
-                        "invoiceNo": "1/2018",
-                        "date": "2018-10-05T10:05:32.057Z",
-                        "customerCode": 1,
-                        "gstin": "18",
-                        "subTotal": null,
-                        "includeTax": null,
-                        "taxRate": null,
-                        "cgst": null,
-                        "sgst": null,
-                        "cgstTotal": null,
-                        "sgstTotal": null,
-                        "totalBeforTax": "175.00",
-                        "total": "175.00",
-                        "mapping": [
-                            {
-                                "id": 2,
-                                "hsnCode": "73070000",
-                                "unit": "100",
-                                "rate": 1.75,
-                                "amount": "175.00",
-                                "partName": "PVC GI Clamp",
-                                "gst": 18
-                            }
-                        ],
-                        "id": 1,
-                        "added": "2018-10-05T10:05:39.042Z",
-                        "updated": "2018-10-05T10:05:39.042Z"
-                    }
-                }
+                "2018": {}
             }
         }
     }

@@ -18,37 +18,81 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
             context.actions.makeOptionsFields(context.form.fields['poNo']);
         },
         updateDCSubContractor: function(context) {
-            context.actions.getData('store.dcSubContractor', context.data.dcNo).then(function(res) {
-                var dcSubContractor = res.data;
-                dcSubContractor.status = 1;
-                dcSubContractor.id = context.data.dcNo;
-                context.actions.updateData('store.dcSubContractor', dcSubContractor);
+
+            var dcSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
+            var poQty = context.actions.getDCQty(context);
+            dcSubContractor.status = 1;
+            context.actions.getGRNQty(context).then(function(GRNStock) {
+                if (parseInt(poQty) <= parseInt(GRNStock)) {
+                    context.actions.updateData('store.dcSubContractor', dcSubContractor);
+                }
             });
         },
-        callBackChangeMapping: function(context){
+        callBackChangeMapping: function(context) {
             var serviceconf = context.actions.getServiceConfig('report.partStock');
             context.grnSC = true;
             serviceApi.callServiceApi(serviceconf).then(function(res) {
                 var partStockData = res.data,
-                partStock = {};
+                    partStock = {};
                 for (var i in partStockData) {
                     partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                 }
-                context.partStockDetail = partStock;
+                context.partStock = partStock;
+            });
+        },
+        callBackUpdatePartTotal: function(context) {
+            var qty = 0,
+                DCQty = parseInt(context.actions.getDCQty(context));
+            for (var i in context.data.mapping) {
+                qty += parseInt(context.data.mapping[i].receivedQty);
+            }
+            context.actions.getGRNQty(context).then(function(GRNStock) {
+                qty += parseInt(GRNStock);
+                if (DCQty < qty) {
+                    context.data.mapping[i].receivedQty = qty = null;
+                }
+            });
+        },
+        getDCQty: function(context) {
+            var DCSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
+            var DCQty = 0;
+            var poNo = context.data.poNo;
+
+            for (var i in DCSubContractor.mapping) {
+                DCQty += DCSubContractor.mapping[i].acceptedQty;
+            }
+            return DCQty;
+        },
+        getGRNQty: function(context) {
+            var GRNQty = 0;
+            return context.actions.getData('store.grnSubContractor').then(function(res) {
+                var listViewData = res.data;
+                for (var i in listViewData) {
+                    if (context.data.poNo === listViewData[i].poNo) {
+                        for (var j in listViewData[i].mapping) {
+                            GRNQty += parseInt(listViewData[i].mapping[j].receivedQty);
+                        }
+                    }
+                }
+                return GRNQty;
             });
         },
         callBackSubmit: function(context) {
             var newQty;
             for (var i in context.data.mapping) {
-                context.data.mapping[i].partNo = context.data.mapping[i].id;
-                newQty = context.data.mapping[i].receivedQty - context.data.mapping[i].acceptedQty;
-                if (newQty !== undefined) {
-                    context.data.mapping[i].acceptedQty = newQty;
-                    context.actions.updatePartStock({
-                        updatePrevStock: false,
-                        data: context.data.mapping[i]
-                    });
-                }
+                var data = angular.copy(context.data.mapping[i]);
+                data.partNo = data.id;
+                data.acceptedQty = context.data.mapping[i].receivedQty;
+                context.actions.updatePartStock({
+                    updatePrevStock: false,
+                    data: data
+                });
+                var scData = angular.copy(data);
+                scData.subContractorCode = context.data.subContractorCode;
+                scData.acceptedQty = 0 - scData.receivedQty;
+                context.actions.updateSCStock({
+                    data: scData
+                });
             }
             context.actions.updateDCSubContractor(context);
         }

@@ -1,23 +1,31 @@
 erpApp.controller('poSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
-        updatePartDetails: function(mapping) {
-            var serviceconf = {
-                url: erpAppConfig.modules.marketing.partMaster.services.list.url + "/" + mapping.id,
-                method: 'GET'
-            };
+        callBackList: function(context) {
+            context.actions.getPartStock(context);
+        },
+        checkAcceptedQty: function(context, data, key, field) {
+            var partNo = data.id,
+                serviceconf = this.getServiceConfig('production.flowMaster'),
+                operationFrom,
+                qtyCanMake;
             serviceApi.callServiceApi(serviceconf).then(function(res) {
-                var partData = res.data;
-                for (var mapKey in partData) {
-                    if (mapping[mapKey] === null || mapping[mapKey] === '') {
-                        mapping[mapKey] = partData[mapKey];
+                var flowMasterData = res.data,
+                    prevOpp;
+                for (var i in flowMasterData) {
+                    if (flowMasterData[i].partNo === partNo) {
+                        for (var j in flowMasterData[i].mapping) {
+                            prevOpp = flowMasterData[i].mapping[j - 1];
+                            if (prevOpp && context.partStock[partNo + '-' + prevOpp.id] && context.partStock[partNo + '-' + prevOpp.id].partStockQty > 0 && flowMasterData[i].mapping[j].source === 'Sub-Contractor') {
+                                operationFrom = prevOpp.id;
+                            }
+                        }
                     }
                 }
+                data.operationFrom = operationFrom;
             });
         },
-        callBackChangeMapping: function(data, key, field) {
-            for (var key in data.mapping) {
-                this.updatePartDetails(data.mapping[key]);
-            }
+        callBackChangeMapping: function(context, data, key, field) {
+            context.actions.checkAcceptedQty(context, data, key, field);
         }
     });
 

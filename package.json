@@ -21,6 +21,7 @@
     "del": "3.0.0",
     "font-awesome": "4.7.0",
     "glob": "7.1.2",
+    "googleapis": "^27.0.0",
     "gulp": "3.9.1",
     "gulp-concat": "2.6.1",
     "gulp-uglify": "3.0.0",
