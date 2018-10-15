@@ -8,7 +8,7 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
             context.actions.getPartStockDetail(context, data, key, field);
         },
         getPartStockDetail: function(context, data, key, field) {
-            context.partStockDetail = [];
+            context.partStock = [];
             context.actions.getData('report.partStock').then(function(res) {
                 var partStockData = res.data,
                 partNos = [],
@@ -16,7 +16,7 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
                 for (var i in partStockData) {
                     if (partStockData[i].operationTo === erpAppConfig.finalStageOpp && partStockData[i].partStockQty > 0) {
                         partNos.push(partStockData[i].partNo);
-                        context.partStockDetail[partStockData[i].partNo] = partStockData[i];
+                        context.partStock[partStockData[i].partNo] = partStockData[i];
                     }
                 }
                 newMapData = context.data.mapping.filter(function(data){
@@ -36,8 +36,8 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
                 cgstTotal = 0,
                 sgstTotal = 0,
                 total = 0;
-            if (context.partStockDetail[data.id]) {
-                data.unit = context.partStockDetail[data.id].partStockQty < data.unit ? null : data.unit;
+            if (context.partStock[data.id]) {
+                data.unit = context.partStock[data.id].partStockQty < data.unit ? null : data.unit;
             }
             totalBeforTax = data.unit * data.rate;
             cgst = context.data.mapping.length > 0 ? partDetail.cgst : (context.data.cgst + partDetail.cgst) / context.data.mapping.length;

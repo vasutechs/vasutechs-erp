@@ -30,7 +30,9 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
         getNorms: function(context) {
             var restriction = {
                 partNo: context.data.partNo,
-                source: ['Supplier']
+                filter: {
+                    source: ['Supplier']
+                }
             };
             if (context.data.rmCode && context.data.partNo) {
                 context.data.partNorms = null;

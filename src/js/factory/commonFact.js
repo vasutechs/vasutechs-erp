@@ -70,10 +70,12 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         submit: function(context) {
             var serviceconf = this.getServiceConfig(context.services.list, 'POST');
 
-            serviceApi.callServiceApi(serviceconf, context.data);
-            context.page.name = 'list';
-            context.actions.list(context);
-            context.actions.callBackSubmit && context.actions.callBackSubmit(context);
+            serviceApi.callServiceApi(serviceconf, context.data).then(function() {
+                context.page.name = 'list';
+                context.actions.list(context);
+                context.actions.callBackSubmit && context.actions.callBackSubmit(context);
+            });;
+
         },
         cancel: function(context) {
             context.page.name = 'list';
@@ -176,7 +178,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
                     if (key === null) {
                         data[dataKey] = context.masterData[dataKey];
-                    } else if (field.options[key][dataKey]) {
+                    } else if (key !== undefined && field.options[key][dataKey]) {
                         if (typeof(field.options[key][dataKey]) !== 'object') {
                             data[dataKey] = field.options[key][dataKey];
                         } else if (field.updateMapping) {
@@ -225,21 +227,16 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 var serviceconf = this.getServiceConfig('production.flowMaster');
                 serviceApi.callServiceApi(serviceconf).then(function(res) {
                     var flowMasterData = res.data,
-                        currentPartStock,
                         flowMasterVal;
                     field.options = {};
                     for (var i in flowMasterData) {
                         if (flowMasterData[i].partNo === partNo) {
                             for (var j in flowMasterData[i].mapping) {
-                                flowMasterVal = (restriction.previousFromSource && j > 0 && restriction.previousFromSource.indexOf(flowMasterVal.source) >= 0) ? flowMasterData[i].mapping[j - 1] : flowMasterData[i].mapping[j];
-                                currentPartStock = restriction.partStock && restriction.partStock[partNo + '-' + flowMasterVal.id];
-                                if ((!restriction.partStock || (currentPartStock && currentPartStock.partStockQty > 0)) &&
-                                    (!restriction.limit || limit < restriction.limit) &&
+                                flowMasterVal = flowMasterData[i].mapping[j];
+                                if ((!restriction.limit || limit < restriction.limit) &&
                                     (!restriction.startWith || (restriction.startWith < flowMasterVal.id)) &&
-                                    (!restriction.endWith || (restriction.endWith > flowMasterVal.id)) &&
-                                    (!restriction.source || restriction.source.indexOf(flowMasterVal.source) >= 0) &&
-                                    (restriction.filter === undefined || self.matchFilter(restriction, currentPartStock) === true)) {
-                                    limit++
+                                    (restriction.filter === undefined || self.matchFilter(restriction, flowMasterVal) === true)) {
+                                    limit++;
                                     field.options[flowMasterVal.id] = localOptions[flowMasterVal.id];
                                 }
                             }
@@ -260,15 +257,17 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 }
                 var existingStock = partStock[context.data.partNo + '-' + context.data.operationFrom + '-' + context.data.operationTo];
                 var partStockQty = existingStock && parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) || parseInt(context.data.acceptedQty);
-                var data = {
-                    id: existingStock && existingStock.id || undefined,
-                    partNo: context.data.partNo,
-                    partStockQty: partStockQty,
-                    operationFrom: context.data.operationFrom,
-                    operationTo: context.data.operationTo
+                if (context.updateCurStock === undefined || context.updateCurStock) {
+                    var data = {
+                        id: existingStock && existingStock.id || undefined,
+                        partNo: context.data.partNo,
+                        partStockQty: partStockQty,
+                        operationFrom: context.data.operationFrom,
+                        operationTo: context.data.operationTo
+                    }
+                    serviceconf = serviceconf = existingStock && self.getServiceConfig('report.partStock', 'POST') || self.getServiceConfig('report.partStock', 'POST');
+                    serviceApi.callServiceApi(serviceconf, data);
                 }
-                serviceconf = serviceconf = existingStock && self.getServiceConfig('report.partStock', 'POST') || self.getServiceConfig('report.partStock', 'POST');
-                serviceApi.callServiceApi(serviceconf, data);
 
                 var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
                 if (existingPrevStock && (context.updatePrevStock === undefined || context.updatePrevStock)) {
@@ -285,27 +284,41 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 }
             });
         },
-        updateMaterialIssue: function(context, replaceData, key) {
-            context.actions.getData('production.materialIssueNote', key).then(function(res) {
-                var updateData = res.data;
-                updateData = angular.extend(updateData, replaceData);
-                updateData.id = key;
-                context.actions.updateData('production.materialIssueNote', updateData);
+        updateSCStock: function(context) {
+            var self = this;
+            var serviceconf = self.getServiceConfig('report.subContractorStock');
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                var scStockData = res.data,
+                    scStock = {};
+                for (var i in scStockData) {
+                    scStock[scStockData[i].subContractorCode + '-' + scStockData[i].operationFrom + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
+                    scStock[scStockData[i].subContractorCode + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
+                }
+                var existingStock = scStock[context.data.subContractorCode + '-' + context.data.operationFrom + '-' + context.data.operationTo];
+                var scStockQty = existingStock && parseInt(existingStock.scStockQty) + parseInt(context.data.acceptedQty) || parseInt(context.data.acceptedQty);
+                var data = {
+                    id: existingStock && existingStock.id || undefined,
+                    subContractorCode: context.data.subContractorCode,
+                    scStockQty: scStockQty,
+                    operationFrom: context.data.operationFrom,
+                    operationTo: context.data.operationTo
+                }
+                serviceconf = self.getServiceConfig('report.subContractorStock', 'POST');
+                serviceApi.callServiceApi(serviceconf, data);
             });
         },
         updatePartTotal: function(context, data, newValue, mapKey) {
             var total = 0,
                 totalBeforTax = 0,
                 qty = data.receivedQty || data.acceptedQty,
-                operation = (context.grnSC) ? data.operationTo : data.operationFrom;
-            if (data.id 
-                && operation 
-                && context.partStockDetail[data.id + '-' + operation] 
-                && context.partStockDetail[data.id + '-' + operation].partStockQty < qty) {
-                if(context.grnSC){
+                operation = data.operationFrom;
+            if (data.id &&
+                operation &&
+                context.partStock[data.id + '-' + operation] &&
+                context.partStock[data.id + '-' + operation].partStockQty < qty) {
+                if (context.grnSC) {
                     data.receivedQty = qty = null;
-                }
-                else{
+                } else {
                     data.acceptedQty = qty = null;
                 }
             }
@@ -322,6 +335,17 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
             serviceConfig.cache = true;
             return serviceConfig;
+        },
+        getPartStock: function(context) {
+            var serviceconf = context.actions.getServiceConfig('report.partStock');
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                var partStockData = res.data,
+                    partStock = {};
+                for (var i in partStockData) {
+                    partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
+                }
+                context.partStock = partStock;
+            });
         }
     };
     return {

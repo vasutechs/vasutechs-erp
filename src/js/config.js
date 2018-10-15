@@ -1227,7 +1227,8 @@ var erpAppConfig = {
                             updateData: ['gstin', 'mapping'],
                             dataFrom: 'purchase.subContractorMaster',
                             replaceName: 'subContractorName',
-                            isSingle: true
+                            isSingle: true,
+                            callBack: false
                         },
                         'gstin': {
                             name: 'Party Gstin',
@@ -1584,8 +1585,7 @@ var erpAppConfig = {
                             filter: {
                                 status: 0
                             },
-                            isSingle: true,
-                            callBack: false
+                            isSingle: true
                         }
                     },
                     mapping: {
@@ -1596,7 +1596,6 @@ var erpAppConfig = {
                                 id: 'id',
                                 type: 'select',
                                 options: {},
-                                action: 'updateOperationFrom',
                                 dataFrom: 'marketing.partMaster',
                                 replaceName: 'partNo',
                                 isDisable: true
@@ -1609,7 +1608,8 @@ var erpAppConfig = {
                                 required: true,
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode'
+                                replaceNamePrefixData: 'opCode',
+                                isDisable: true
                             },
                             'operationTo': {
                                 name: 'For the purpose',
@@ -2571,17 +2571,17 @@ var erpAppConfig = {
                             isSingle: true
                         },
                         'startTime': {
-                            name: 'Start Time',
+                            name: 'Start Time: (1-24)',
                             id: 'startTime',
                             type: 'input',
-                            inputType: 'time',
+                            inputType: 'number',
                             required: true
                         },
                         'endTime': {
-                            name: 'End Time',
+                            name: 'End Time: (1-24)',
                             id: 'endTime',
                             type: 'input',
-                            inputType: 'time',
+                            inputType: 'number',
                             required: true,
                             action: 'calculatePlanQty'
                         },
@@ -2826,6 +2826,92 @@ var erpAppConfig = {
                 services: {
                     list: {
                         url: 'api/partStock/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
+            },
+            subContractorStock: {
+                title: 'SubContractor Stock',
+                masterData: {
+                    subContractorCode: null,
+                    scStockQty: null,
+                    operationFrom: null,
+                    operationTo: null
+                },
+                form: {
+                    name: 'subContractorStock',
+                    id: 'subContractorStock',
+                    fields: {
+                        'subContractorCode': {
+                            name: 'SubContractor Code',
+                            id: 'subContractorCode',
+                            type: 'select',
+                            options: {} ,
+                            dataFrom: 'purchase.subContractorMaster',
+                            replaceName: 'subContractorName',
+                            //action: 'updatePartDetails',
+                            isSingle: true
+                        },
+                        'sctockQty': {
+                            name: 'SubContractor Qty',
+                            id: 'scStockQty',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
+                        'operationFrom': {
+                            name: 'Operation From',
+                            id: 'operationFrom',
+                            type: 'select',
+                            options: {} ,
+                            dataFrom: 'production.operationMaster',
+                            replaceName: 'opName',
+                            isSingle: true
+                        },
+                        'operationTo': {
+                            name: 'Operation To',
+                            id: 'operationTo',
+                            type: 'select',
+                            options: {} ,
+                            dataFrom: 'production.operationMaster',
+                            replaceName: 'opName',
+                            isSingle: true
+                        }
+                    }
+                },
+                listView: [{
+                        title: 'SubContractor Code',
+                        id: 'subContractorCode',
+                        dataFrom: 'purchase.subContractorMaster',
+                        replaceName: 'subContractorName'
+                    },
+                    {
+                        title: 'SubContractor Stock Qty',
+                        id: 'scStockQty'
+                    }, {
+                        title: 'Operation From',
+                        id: 'operationFrom',
+                        dataFrom: 'production.operationMaster',
+                        replaceName: 'opName'
+                    }, {
+                        title: 'Operation To',
+                        id: 'operationTo',
+                        dataFrom: 'production.operationMaster',
+                        replaceName: 'opName'
+                    },
+                    {
+                        action: true
+                    }
+                ],
+                page: {
+                    link: 'report/subContractorStock/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'subContractorStockCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/subContractorStock/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
