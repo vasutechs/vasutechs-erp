@@ -1,14 +1,6 @@
 erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         callBackList: function(context) {
-            // var newList =[],
-            // jobCardNos = {};
-            // for(va i in context.listViewData){
-            //     jobCardNos[i] = context.listViewData[i];
-            //     newList.push();
-            // }
-            // context.listViewData = newList
-
             context.actions.getPartStock(context);
         },
         checkAcceptedQty: function(context) {
@@ -97,11 +89,12 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
             var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
             var jobCardQty = jobCard && jobCard.qtyCanMake;
             jobCard.status = 1;
-            context.actions.getPRQty(context).then(function(PRStock) {
-                if (parseInt(jobCardQty) <= parseInt(PRStock)) {
-                    context.actions.updateData('production.materialIssueNote', jobCard);
-                }
-            });
+            context.actions.updateData('production.materialIssueNote', jobCard);
+            // context.actions.getPRQty(context).then(function(PRStock) {
+            //     if (parseInt(jobCardQty) <= parseInt(PRStock)) {
+            //         context.actions.updateData('production.materialIssueNote', jobCard);
+            //     }
+            // });
         },
         getJobQty: function(context) {
             var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
@@ -114,14 +107,16 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
             return DCQty;
         },
         getPRQty: function(context) {
-            var PRQty = 0;
+            var PRRejQty = parseInt(context.data.rejectionQty) + parseInt(context.data.rwQty);
+            var PRQty = context.data.acceptedQty;
             return context.actions.getData('production.productionEntry').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     if (context.data.jobCardNo === listViewData[i].jobCardNo) {
-                        PRQty += parseInt(listViewData[i].acceptedQty) + parseInt(listViewData[i].rejectionQty) + parseInt(listViewData[i].rwQty);
+                        PRRejQty += parseInt(listViewData[i].rejectionQty) + parseInt(listViewData[i].rwQty);
                     }
                 }
+                PRQty += PRRejQty;
                 return PRQty;
             });
         },

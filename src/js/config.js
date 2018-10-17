@@ -2407,9 +2407,7 @@ var erpAppConfig = {
                         'qtyCanMake': {
                             name: 'Qty Can Make',
                             id: 'qtyCanMake',
-                            type: 'input',
-                            inputType: 'number',
-                            required: true
+                            type: 'span'
                         },
                         'operationTo': {
                             name: 'Issue Stage',
@@ -2438,6 +2436,11 @@ var erpAppConfig = {
                     {
                         title: 'Qty Can Make',
                         id: 'qtyCanMake'
+                    },
+                    {
+                        title: 'Date',
+                        id: 'date',
+                        type: 'date'
                     },
                     {
                         title: 'Status',
@@ -2621,24 +2624,28 @@ var erpAppConfig = {
                 listView: [{
                         title: 'Job Card No',
                         id: 'jobCardNo',
-                        idPrefix: 'VT-'
+                        idPrefix: 'VT-',
+                        filterBy: true
                     }, {
                         title: 'Part No',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partNo'
+                        replaceName: 'partNo',
+                        filterBy: true
                     },
                     {
                         title: 'Operation From',
                         id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
-                        replaceName: 'opName'
+                        replaceName: 'opName',
+                        filterBy: true
                     },
                     {
                         title: 'Operation To',
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
-                        replaceName: 'opName'
+                        replaceName: 'opName',
+                        filterBy: true
                     },
                     {
                         title: 'Accepted Qty',

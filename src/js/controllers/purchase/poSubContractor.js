@@ -15,7 +15,7 @@ erpApp.controller('poSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact'
                     if (flowMasterData[i].partNo === partNo) {
                         for (var j in flowMasterData[i].mapping) {
                             prevOpp = flowMasterData[i].mapping[j - 1];
-                            if (prevOpp && context.partStock[partNo + '-' + prevOpp.id] && context.partStock[partNo + '-' + prevOpp.id].partStockQty > 0 && flowMasterData[i].mapping[j].source === 'Sub-Contractor') {
+                            if (prevOpp && flowMasterData[i].mapping[j].source === 'Sub-Contractor') {
                                 operationFrom = prevOpp.id;
                             }
                         }

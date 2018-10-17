@@ -29,16 +29,7 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
             });
         },
         callBackChangeMapping: function(context) {
-            var serviceconf = context.actions.getServiceConfig('report.partStock');
-            context.grnSC = true;
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
-                var partStockData = res.data,
-                    partStock = {};
-                for (var i in partStockData) {
-                    partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
-                }
-                context.partStock = partStock;
-            });
+            context.actions.getSCStock(context);
         },
         callBackUpdatePartTotal: function(context) {
             var qty = 0,

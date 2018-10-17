@@ -42,7 +42,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             context.page.name = 'list';
             context.currentPage = 0;
             context.pageSize = 10;
-            context.q = '';
+            context.filterBy = '';
             context.listViewData = [];
             context.orderByProperty = 'updated';
             serviceApi.callServiceApi(serviceconf).then(function(res) {
@@ -62,7 +62,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             });
         },
         getPageData: function(context) {
-            return $filter('filter')(context.listViewData, context.q) || [];
+            return $filter('filter')(context.listViewData, context.filterBy) || [];
         },
         numberOfPages: function(context) {
             return Math.ceil(context.actions.getPageData(context).length / context.pageSize);
@@ -271,11 +271,14 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
 
                 var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
                 if (existingPrevStock && (context.updatePrevStock === undefined || context.updatePrevStock)) {
-                    partStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(context.data.acceptedQty);
+                    var existPartStockQty = parseInt(partStockQty);
+                    existPartStockQty += parseInt(context.data.rejectionQty) || 0;
+                    existPartStockQty += parseInt(context.data.rwQty) || 0;
+                    existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
                     data = {
                         id: existingPrevStock.id,
                         partNo: context.data.partNo,
-                        partStockQty: partStockQty,
+                        partStockQty: existPartStockQty,
                         operationFrom: existingPrevStock.operationFrom,
                         operationTo: existingPrevStock.operationTo
                     }
@@ -345,6 +348,17 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                     partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                 }
                 context.partStock = partStock;
+            });
+        },
+        getSCStock: function(context) {
+            var serviceconf = context.actions.getServiceConfig('report.subContractorStock');
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                var scStockData = res.data,
+                    scStock = {};
+                for (var i in scStockData) {
+                    scStock[scStockData[i].partNo + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
+                }
+                context.partStock = scStock;
             });
         }
     };

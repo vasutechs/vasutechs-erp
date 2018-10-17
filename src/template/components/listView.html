@@ -9,7 +9,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="dataList in context.listViewData | orderBy:context.orderByProperty: true  | filter:context.q | startFrom:context.currentPage*context.pageSize | limitTo:context.pageSize">
+            <tr ng-repeat="dataList in context.listViewData | orderBy:context.orderByProperty: true  | filter:context.filterBy | startFrom:context.currentPage*context.pageSize | limitTo:context.pageSize">
                 <td ng-repeat="(key, list) in context.listView">
                     <div ng-if="!list.action">{{list.idPrefix}}{{dataList[list.id]}}</div>
                     <div ng-if="list.action" class="row">
