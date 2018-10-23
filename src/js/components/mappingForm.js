@@ -1,6 +1,6 @@
 erpApp.directive('mappingForm', ['erpAppConfig', function(erpAppConfig) {
     var mappingFormComp = function($scope, element, attrs) {
-        element.ready(function() {
+        var applyFieldValues = function($scope) {
             for (var i in $scope.context.form.mapping.fields) {
                 var type = $scope.context.form.mapping.fields[i].type,
                     dataFrom = $scope.context.form.mapping.fields[i].dataFrom;
@@ -13,7 +13,14 @@ erpApp.directive('mappingForm', ['erpAppConfig', function(erpAppConfig) {
                 }
 
             }
-        });
+        };
+        if (!$scope.context.page.printView) {
+            applyFieldValues($scope);
+        } else {
+            element.ready(function() {
+                applyFieldValues($scope);
+            });
+        }
     };
 
     return {

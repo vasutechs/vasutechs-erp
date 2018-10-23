@@ -1,5 +1,8 @@
 erpApp.directive('listView', ['erpAppConfig', function(erpAppConfig) {
     var listViewComp = function($scope, element, attrs) {
+        element.ready(function() {
+
+        });
     };
     return {
         restrict: 'E',

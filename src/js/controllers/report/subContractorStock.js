@@ -3,7 +3,7 @@ erpApp.controller('subContractorStockCtrl', ['erpAppConfig', '$scope', 'commonFa
         callBackList: function(context) {
             var newList = angular.copy(context.listViewData);
             newList = context.listViewData.filter(function(data) {
-                return data.scStockQty > 0;
+                return data.partStockQty > 0;
             });
             context.listViewData = newList
         },

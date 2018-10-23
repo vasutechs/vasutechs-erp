@@ -31,7 +31,7 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                     },
                     operation = [];
                 for (var i in context.partStock) {
-                    if (context.partStock[i].partStockQty > 0) {
+                    if (context.partStock[i].partStockQty > 0 && context.data.partNo === context.partStock[i].partNo) {
                         operation.push(context.partStock[i].operationTo);
                     }
                 }
@@ -63,10 +63,11 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                         prevOpp;
                     for (var i in flowMasterData) {
                         if (flowMasterData[i].partNo === partNo) {
-                            for (var j in flowMasterData[i].mapping) {
-                                prevOpp = flowMasterData[i].mapping[j - 1];
+                            var flowMasterMap = context.actions.objectSort(flowMasterData[i].mapping, 'id');
+                            for (var j in flowMasterMap) {
+                                prevOpp = flowMasterMap[j - 1];
                                 if (prevOpp && context.partStock[partNo + '-' + prevOpp.id] && context.partStock[partNo + '-' + prevOpp.id].partStockQty > 0) {
-                                    operation.push(flowMasterData[i].mapping[j].id);
+                                    operation.push(flowMasterMap[j].id);
                                 }
                             }
                         }
@@ -88,32 +89,26 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
         updateMaterialIssue: function(context, replaceData, key) {
             var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
             var jobCardQty = jobCard && jobCard.qtyCanMake;
-            jobCard.status = 1;
-            context.actions.updateData('production.materialIssueNote', jobCard);
-            // context.actions.getPRQty(context).then(function(PRStock) {
-            //     if (parseInt(jobCardQty) <= parseInt(PRStock)) {
-            //         context.actions.updateData('production.materialIssueNote', jobCard);
-            //     }
-            // });
-        },
-        getJobQty: function(context) {
-            var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
-            var DCQty = 0;
-            var poNo = context.data.poNo;
-
-            for (var i in jobCard.mapping) {
-                DCQty += jobCard.mapping[i].acceptedQty;
-            }
-            return DCQty;
+            var jobCardPrdQty = jobCard && jobCard.productionQty || 0 ;
+            context.actions.getPRQty(context).then(function(PRStock) {
+                jobCard.productionQty = PRStock;
+                if (parseInt(jobCardQty) <= parseInt(jobCard.productionQty)) {
+                    jobCard.status = 1;
+                }
+                context.actions.updateData('production.materialIssueNote', jobCard);
+            });
         },
         getPRQty: function(context) {
-            var PRRejQty = parseInt(context.data.rejectionQty) + parseInt(context.data.rwQty);
-            var PRQty = context.data.acceptedQty;
+            var PRRejQty = 0;
+            var PRQty = 0;
             return context.actions.getData('production.productionEntry').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     if (context.data.jobCardNo === listViewData[i].jobCardNo) {
                         PRRejQty += parseInt(listViewData[i].rejectionQty) + parseInt(listViewData[i].rwQty);
+                        if(listViewData[i].operationTo === erpAppConfig.finalStageOpp){
+                           PRQty += parseInt(listViewData[i].acceptedQty);
+                        }
                     }
                 }
                 PRQty += PRRejQty;

@@ -231,8 +231,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                     field.options = {};
                     for (var i in flowMasterData) {
                         if (flowMasterData[i].partNo === partNo) {
-                            for (var j in flowMasterData[i].mapping) {
-                                flowMasterVal = flowMasterData[i].mapping[j];
+                            var flowMasterMap = context.actions.objectSort(flowMasterData[i].mapping, 'id');
+                            for (var j in flowMasterMap) {
+                                flowMasterVal = flowMasterMap[j];
                                 if ((!restriction.limit || limit < restriction.limit) &&
                                     (!restriction.startWith || (restriction.startWith < flowMasterVal.id)) &&
                                     (restriction.filter === undefined || self.matchFilter(restriction, flowMasterVal) === true)) {
@@ -266,7 +267,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                         operationTo: context.data.operationTo
                     }
                     serviceconf = serviceconf = existingStock && self.getServiceConfig('report.partStock', 'POST') || self.getServiceConfig('report.partStock', 'POST');
-                    serviceApi.callServiceApi(serviceconf, data);
+                    serviceApi.callServiceApi(serviceconf, data).then(function(){
+                        context.actions.getPartStock(context);
+                    });
                 }
 
                 var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
@@ -283,7 +286,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                         operationTo: existingPrevStock.operationTo
                     }
                     serviceconf = self.getServiceConfig('report.partStock', 'POST');
-                    serviceApi.callServiceApi(serviceconf, data);
+                    serviceApi.callServiceApi(serviceconf, data).then(function(){
+                        context.actions.getPartStock(context);
+                    });
                 }
             });
         },
@@ -294,15 +299,16 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 var scStockData = res.data,
                     scStock = {};
                 for (var i in scStockData) {
-                    scStock[scStockData[i].subContractorCode + '-' + scStockData[i].operationFrom + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
-                    scStock[scStockData[i].subContractorCode + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
+                    scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
+                    scStock[scStockData[i].partNo + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
                 }
-                var existingStock = scStock[context.data.subContractorCode + '-' + context.data.operationFrom + '-' + context.data.operationTo];
-                var scStockQty = existingStock && parseInt(existingStock.scStockQty) + parseInt(context.data.acceptedQty) || parseInt(context.data.acceptedQty);
+                var existingStock = scStock[context.data.partNo + '-' + context.data.operationFrom + '-' + context.data.operationTo];
+                var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) : parseInt(context.data.acceptedQty);
                 var data = {
                     id: existingStock && existingStock.id || undefined,
+                    partNo: context.data.partNo,
                     subContractorCode: context.data.subContractorCode,
-                    scStockQty: scStockQty,
+                    partStockQty: partStockQty,
                     operationFrom: context.data.operationFrom,
                     operationTo: context.data.operationTo
                 }
@@ -317,8 +323,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 operation = data.operationFrom;
             if (data.id &&
                 operation &&
-                context.partStock[data.id + '-' + operation] &&
-                context.partStock[data.id + '-' + operation].partStockQty < qty) {
+                (context.partStock === undefined || 
+                context.partStock[data.id + '-' + operation] === undefined ||
+                context.partStock[data.id + '-' + operation].partStockQty < qty)) {
                 if (context.grnSC) {
                     data.receivedQty = qty = null;
                 } else {
@@ -336,7 +343,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', erpAppConfig.calendarYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
-            serviceConfig.cache = true;
+            //serviceConfig.cache = true;
             return serviceConfig;
         },
         getPartStock: function(context) {
@@ -356,10 +363,21 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 var scStockData = res.data,
                     scStock = {};
                 for (var i in scStockData) {
-                    scStock[scStockData[i].partNo + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
+                    scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom] = scStockData[i] && scStockData[i] || undefined;
                 }
                 context.partStock = scStock;
             });
+        },
+        objectSort: function(obj, sortBy) {
+            function compare(a, b) {
+                if (a[sortBy] < b[sortBy])
+                    return -1;
+                if (a[sortBy] > b[sortBy])
+                    return 1;
+                return 0;
+            }
+
+            return obj.sort(compare);
         }
     };
     return {

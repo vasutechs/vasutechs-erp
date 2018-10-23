@@ -1,12 +1,22 @@
-erpApp.controller('subContractorMasterCtrl', ['erpAppConfig', '$scope', 'commonFact', function(erpAppConfig, $scope, commonFact) {
+erpApp.controller('subContractorMasterCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
-    	callBackChangeMapping: function(context, data, key){
-    		var restriction = {
-                    partNo: key,
-                    source: ['Sub-Contractor']
+        callBackList: function(context) {
+            var serviceconf = this.getServiceConfig('production.flowMaster'),
+                partNos = [];
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                var flowMasterData = res.data;
+                for (var i in flowMasterData) {
+                    for (var j in flowMasterData[i].mapping) {
+                        if (flowMasterData[i].mapping[j].source === 'Sub-Contractor') {
+                            partNos.push(flowMasterData[i].partNo);
+                        }
+                    }
+                }
+                context.form.mapping.fields['id'].filter = {
+                    id: partNos
                 };
-    		context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction);
-    	}
+            });
+        }
     });
 
     $scope.context = erpAppConfig.modules.purchase.subContractorMaster;
