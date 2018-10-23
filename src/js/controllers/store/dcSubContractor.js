@@ -13,26 +13,55 @@ erpApp.controller('dcSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact'
             context.actions.makeOptionsFields(context.form.fields['poNo']);
         },
         callBackChangeMapping: function(context) {
-            context.actions.callBackUpdatePartTotal(context);
+            context.actions.checkAcceptedQty(context);
         },
-        callBackUpdatePartTotal: function(context) {
-            var qty = 0,
-                poQty = parseInt(context.actions.getPOQty(context));
-            for (var i in context.data.mapping) {
-                qty += parseInt(context.data.mapping[i].acceptedQty);
-            }
-            context.actions.getDCQty(context).then(function(DCStock) {
-                qty += parseInt(DCStock);
-                if (poQty < qty) {
-                    context.data.mapping[i].acceptedQty = qty = null;
+        checkAcceptedQty: function(context) {
+            var serviceconf = this.getServiceConfig('production.flowMaster'),
+                partNo,
+                operationFrom;
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                var flowMasterData = res.data,
+                    prevOpp,
+                    qty;
+                for (var i in context.data.mapping) {
+                    partNo = context.data.mapping[i].id;
+                    qty = context.data.mapping[i].acceptedQty;
+                    for (var j in flowMasterData) {
+                        if (flowMasterData[j].partNo === partNo) {
+                            for (var k in flowMasterData[j].mapping) {
+                                prevOpp = flowMasterData[j].mapping[k - 1];
+                                if (prevOpp && flowMasterData[j].mapping[k].source === 'Sub-Contractor') {
+                                    operationFrom = prevOpp.id;
+                                }
+                                
+                                if(prevOpp && (context.partStock[partNo + '-' + prevOpp.id] === undefined || context.partStock[partNo + '-' + prevOpp.id].partStockQty < qty)){
+                                    context.data.mapping[i].acceptedQty = qty = null;
+                                }
+                            }
+                        }
+                    }
+                    context.data.mapping[i].operationFrom = operationFrom;
                 }
             });
+        },
+        callBackUpdatePartTotal: function(context) {
+            // var qty = 0,
+            //     poQty = parseInt(context.actions.getPOQty(context));
+            // for (var i in context.data.mapping) {
+            //     qty += parseInt(context.data.mapping[i].acceptedQty);
+            // }
+            // context.actions.getDCQty(context).then(function(DCStock) {
+            //     qty += parseInt(DCStock);
+            //     if (poQty < qty) {
+            //         context.data.mapping[i].acceptedQty = qty = null;
+            //     }
+            // });
         },
         getPOQty: function(context) {
             var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
             var poQty = 0;
             var poNo = context.data.poNo;
-            
+
             for (var i in poSubContractor.mapping) {
                 poQty += poSubContractor.mapping[i].acceptedQty;
             }
@@ -65,16 +94,13 @@ erpApp.controller('dcSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact'
         callBackSubmit: function(context) {
             for (var i in context.data.mapping) {
                 var data = angular.copy(context.data.mapping[i]);
+                var newContext = angular.copy(context);
                 data.partNo = data.id;
                 data.subContractorCode = context.data.subContractorCode;
-                context.actions.updateSCStock({
-                    data: data
-                });
-
-                context.actions.updatePartStock({
-                    updateCurStock: false,
-                    data: data
-                });
+                newContext.data = data;
+                context.actions.updateSCStock(newContext);
+                newContext.updateCurStock = false;
+                context.actions.updatePartStock(newContext);
             }
             context.actions.updatePoSubContractor(context);
         }

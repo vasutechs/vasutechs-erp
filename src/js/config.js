@@ -568,6 +568,13 @@ var erpAppConfig = {
                             inputType: 'number',
                             required: true
                         },
+                        'subTotal': {
+                            name: 'Sub Total',
+                            id: 'subTotal',
+                            type: 'input',
+                            inputType: 'number',
+                            required: true
+                        },
                         'total': {
                             name: 'Total',
                             id: 'total',
@@ -1136,6 +1143,9 @@ var erpAppConfig = {
                                 options: {},
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
+                                filter: {
+                                    source: ['Sub-Contractor']
+                                },
                                 required: true
                             },
                             'rate': {
@@ -1655,8 +1665,7 @@ var erpAppConfig = {
                             }
                         },
                         actions: {
-                            add: false,
-                            delete: false
+                            add: false
                         }
                     }
                 },
@@ -1942,10 +1951,10 @@ var erpAppConfig = {
                             options: [{
                                 optionId: 'Supplier',
                                 optionName: 'Supplier'
-                            },{
+                            }, {
                                 optionId: 'In-House',
                                 optionName: 'IN House'
-                            },{
+                            }, {
                                 optionId: 'Sub-Contractor',
                                 optionName: 'Sub Contractor'
                             }],
@@ -2694,7 +2703,7 @@ var erpAppConfig = {
                             name: 'RM Name',
                             id: 'rmCode',
                             type: 'select',
-                            options: {} ,
+                            options: {},
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
                             isDisable: true,
@@ -2711,7 +2720,7 @@ var erpAppConfig = {
                             name: 'UOM',
                             id: 'uomCode',
                             type: 'select',
-                            options: {} ,
+                            options: {},
                             dataFrom: 'marketing.uomMaster',
                             replaceName: 'uomName',
                             isDisable: true,
@@ -2767,7 +2776,7 @@ var erpAppConfig = {
                             name: 'Part No',
                             id: 'partNo',
                             type: 'select',
-                            options: {} ,
+                            options: {},
                             dataFrom: 'marketing.partMaster',
                             replaceName: 'partNo',
                             action: 'updatePartDetails',
@@ -2784,7 +2793,7 @@ var erpAppConfig = {
                             name: 'Operation From',
                             id: 'operationFrom',
                             type: 'select',
-                            options: {} ,
+                            options: {},
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',
                             isSingle: true
@@ -2793,7 +2802,7 @@ var erpAppConfig = {
                             name: 'Operation To',
                             id: 'operationTo',
                             type: 'select',
-                            options: {} ,
+                            options: {},
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',
                             isSingle: true
@@ -2853,7 +2862,7 @@ var erpAppConfig = {
                             name: 'SubContractor Code',
                             id: 'subContractorCode',
                             type: 'select',
-                            options: {} ,
+                            options: {},
                             dataFrom: 'purchase.subContractorMaster',
                             replaceName: 'subContractorName',
                             //action: 'updatePartDetails',
@@ -2870,7 +2879,7 @@ var erpAppConfig = {
                             name: 'Operation From',
                             id: 'operationFrom',
                             type: 'select',
-                            options: {} ,
+                            options: {},
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',
                             isSingle: true
@@ -2879,7 +2888,7 @@ var erpAppConfig = {
                             name: 'Operation To',
                             id: 'operationTo',
                             type: 'select',
-                            options: {} ,
+                            options: {},
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',
                             isSingle: true
@@ -2893,8 +2902,14 @@ var erpAppConfig = {
                         replaceName: 'subContractorName'
                     },
                     {
-                        title: 'SubContractor Stock Qty',
-                        id: 'scStockQty'
+                        title: 'Part No',
+                        id: 'partNo',
+                        dataFrom: 'marketing.partMaster',
+                        replaceName: 'partNo'
+                    },
+                    {
+                        title: 'Part Stock Qty',
+                        id: 'partStockQty'
                     }, {
                         title: 'Operation From',
                         id: 'operationFrom',

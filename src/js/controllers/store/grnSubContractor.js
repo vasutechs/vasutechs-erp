@@ -1,5 +1,8 @@
 erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+        callBackList: function(context){
+            context.grnSC = true;
+        },
         getDCSubContractor: function(context, data, key, field) {
             context.form.fields['dcNo'] = angular.extend(context.form.fields['dcNo'], {
                 filter: {
@@ -72,12 +75,12 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
             var newQty;
             for (var i in context.data.mapping) {
                 var data = angular.copy(context.data.mapping[i]);
+                var newContext = angular.copy(context);
                 data.partNo = data.id;
                 data.acceptedQty = context.data.mapping[i].receivedQty;
-                context.actions.updatePartStock({
-                    updatePrevStock: false,
-                    data: data
-                });
+                newContext.data = data;
+                newContext.updatePrevStock = false;
+                context.actions.updatePartStock(newContext);
                 var scData = angular.copy(data);
                 scData.subContractorCode = context.data.subContractorCode;
                 scData.acceptedQty = 0 - scData.receivedQty;
