@@ -3,12 +3,12 @@
         <thead>
             <tr>
                 <th ng-repeat="(key, list) in context.listView">
-                    <div ng-if="!list.action">{{list.title}}</div>
-                    <!-- <div ng-if="list.filterBy">
-                        <select id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.actions.viewFilterBy(context, list)" ng-options="option.optionId as option.optionName for option in list.options">
+                    <div ng-if="!list.action && (list.type===undefined || list.type==='date')">{{list.title}}</div>
+                    <div ng-if="list.type==='select'">
+                        <select id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.actions.viewFilterBy(context, list)" ng-options="option.optionName as option.optionName for option in list.options">
                             <option value="">{{list.title}}</option>
                         </select>
-                    </div> -->
+                    </div>
                     <div ng-if="list.action && (list.add===undefined || list.add!=false)" class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.add(context)" class="fa fa-fw fa-plus-square-o">Add</a></div>
                 </th>
             </tr>
