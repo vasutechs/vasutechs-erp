@@ -42,7 +42,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             context.page.name = 'list';
             context.currentPage = 0;
             context.pageSize = 10;
-            context.filterBy = '';
+            context.filterBy = [];
             context.listViewData = [];
             context.orderByProperty = 'updated';
             serviceApi.callServiceApi(serviceconf).then(function(res) {
@@ -378,6 +378,14 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             }
 
             return obj.sort(compare);
+        },
+        viewFilterBy: function(context, list){
+            if(!list.selectedFilterBy){
+                delete context.filterBy[list.id];
+            }
+            else{
+                context.filterBy[list.id] = list.selectedFilterBy;
+            }
         }
     };
     return {

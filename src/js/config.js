@@ -2633,28 +2633,34 @@ var erpAppConfig = {
                 listView: [{
                         title: 'Job Card No',
                         id: 'jobCardNo',
-                        idPrefix: 'VT-',
-                        filterBy: true
+                        dataFrom: 'production.materialIssueNote',
+                        type: 'select',
+                        replaceName: 'id',
+                        replaceNamePrefix: 'VT-',
+                        options: {}
                     }, {
                         title: 'Part No',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
                         replaceName: 'partNo',
-                        filterBy: true
+                        type: 'select',
+                        options: {}
                     },
                     {
                         title: 'Operation From',
                         id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
                         replaceName: 'opName',
-                        filterBy: true
+                        type: 'select',
+                        options: {}
                     },
                     {
                         title: 'Operation To',
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
                         replaceName: 'opName',
-                        filterBy: true
+                        type: 'select',
+                        options: {}
                     },
                     {
                         title: 'Accepted Qty',

@@ -1,7 +1,12 @@
 erpApp.directive('listView', ['erpAppConfig', function(erpAppConfig) {
     var listViewComp = function($scope, element, attrs) {
         element.ready(function() {
-
+            var listView = $scope.context.listView;
+            for (var i in listView) {
+                if (listView[i].type==='select') {
+                    $scope.context.actions.makeOptionsFields(listView[i]);
+                }
+            }
         });
     };
     return {
