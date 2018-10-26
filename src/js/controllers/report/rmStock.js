@@ -2,10 +2,12 @@ erpApp.controller('rmStockCtrl', ['erpAppConfig', '$scope', 'commonFact', functi
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         callBackList: function(context) {
             var newList = angular.copy(context.listViewData);
-            newList = context.listViewData.filter(function(data) {
-                return data.rmStockQty > 0;
-            });
-            context.listViewData = newList
+            if ($location.search() && $location.search()['showall'] === 'no') {
+                newList = context.listViewData.filter(function(data) {
+                    return data.partStockQty > 0;
+                });
+                context.listViewData = newList
+            }
         }
     });
 
