@@ -32,7 +32,8 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
 
                 for (var i in context.data.mapping) {
                     var existingStock = rmStock[context.data.mapping[i].id];
-                    var rmStockQty = existingStock && parseInt(existingStock.rmStockQty) + parseInt(context.data.mapping[i].receivedQty) || parseInt(context.data.mapping[i].receivedQty);
+                    var qty =  context.data.mapping[i].acceptedQty || context.data.mapping[i].receivedQty;
+                    var rmStockQty = existingStock && parseInt(existingStock.rmStockQty) + parseInt(qty) || parseInt(qty);
                     var data = {
                         id: existingStock && existingStock.id || undefined,
                         rmCode: context.data.mapping[i].id,
