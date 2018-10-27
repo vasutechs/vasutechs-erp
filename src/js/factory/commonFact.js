@@ -257,7 +257,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                     partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                 }
                 var existingStock = partStock[context.data.partNo + '-' + context.data.operationFrom + '-' + context.data.operationTo];
-                var partStockQty = existingStock && parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) || parseInt(context.data.acceptedQty);
+                var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) : parseInt(context.data.acceptedQty);
                 if (context.updateCurStock === undefined || context.updateCurStock) {
                     var data = {
                         id: existingStock && existingStock.id || undefined,
@@ -274,7 +274,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
 
                 var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
                 if (existingPrevStock && (context.updatePrevStock === undefined || context.updatePrevStock)) {
-                    var existPartStockQty = parseInt(partStockQty);
+                    var existPartStockQty = parseInt(context.data.acceptedQty);
                     existPartStockQty += parseInt(context.data.rejectionQty) || 0;
                     existPartStockQty += parseInt(context.data.rwQty) || 0;
                     existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
@@ -319,7 +319,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         updatePartTotal: function(context, data, newValue, mapKey) {
             var total = 0,
                 totalBeforTax = 0,
-                qty = data.receivedQty || data.acceptedQty,
+                qty = data.receivedQty > data.acceptedQty && data.receivedQty || data.acceptedQty,
                 operation = data.operationFrom;
             if (data.id &&
                 operation &&
@@ -327,10 +327,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 context.partStock[data.id + '-' + operation] === undefined ||
                 context.partStock[data.id + '-' + operation].partStockQty < qty)) {
                 if (context.grnSC) {
-                    data.receivedQty = qty = null;
-                } else {
-                    data.acceptedQty = qty = null;
+                    data.receivedQty = null;
                 }
+                data.acceptedQty = qty = null;
             }
             totalBeforTax = qty * data.rate;
             total = totalBeforTax + (totalBeforTax * (data.gst / 100));
@@ -343,7 +342,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', erpAppConfig.calendarYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
-            //serviceConfig.cache = true;
+            serviceConfig.cache = true;
             return serviceConfig;
         },
         getPartStock: function(context) {

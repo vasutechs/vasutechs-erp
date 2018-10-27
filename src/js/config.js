@@ -1842,7 +1842,10 @@ var erpAppConfig = {
                             'acceptedQty': {
                                 name: 'Accepted Qty',
                                 id: 'acceptedQty',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                action: 'updatePartTotal',
+                                required: true
                             },
                             'uomCode': {
                                 name: 'UOM',
@@ -2634,7 +2637,7 @@ var erpAppConfig = {
                         title: 'Job Card No',
                         id: 'jobCardNo',
                         dataFrom: 'production.materialIssueNote',
-                        type: 'select',
+                        isFilterBy: true,
                         replaceName: 'id',
                         replaceNamePrefix: 'VT-',
                         options: {}
@@ -2643,7 +2646,7 @@ var erpAppConfig = {
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
                         replaceName: 'partNo',
-                        type: 'select',
+                        isFilterBy: true,
                         options: {}
                     },
                     {
@@ -2651,7 +2654,7 @@ var erpAppConfig = {
                         id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
                         replaceName: 'opName',
-                        type: 'select',
+                        isFilterBy: true,
                         options: {}
                     },
                     {
@@ -2659,7 +2662,7 @@ var erpAppConfig = {
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
                         replaceName: 'opName',
-                        type: 'select',
+                        isFilterBy: true,
                         options: {}
                     },
                     {

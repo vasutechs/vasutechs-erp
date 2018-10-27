@@ -1,4 +1,4 @@
-erpApp.controller('subContractorStockCtrl', ['erpAppConfig', '$scope', 'commonFact', function(erpAppConfig, $scope, commonFact) {
+erpApp.controller('subContractorStockCtrl', ['erpAppConfig', '$scope', 'commonFact', '$location', function(erpAppConfig, $scope, commonFact, $location) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
         callBackList: function(context) {
             var newList = angular.copy(context.listViewData);
