@@ -3,8 +3,8 @@
         <thead>
             <tr>
                 <th ng-repeat="(key, list) in context.listView">
-                    <div ng-if="!list.action && (list.type===undefined || list.type==='date')">{{list.title}}</div>
-                    <div ng-if="list.type==='select'">
+                    <div ng-if="!list.action && list.isFilterBy===undefined">{{list.title}}</div>
+                    <div ng-if="list.isFilterBy">
                         <select id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.actions.viewFilterBy(context, list)" ng-options="option.optionName as option.optionName for option in list.options">
                             <option value="">{{list.title}}</option>
                         </select>

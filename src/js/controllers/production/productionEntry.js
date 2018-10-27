@@ -89,7 +89,7 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
         updateMaterialIssue: function(context, replaceData, key) {
             var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
             var jobCardQty = jobCard && jobCard.qtyCanMake;
-            var jobCardPrdQty = jobCard && jobCard.productionQty || 0 ;
+            var jobCardPrdQty = jobCard && jobCard.productionQty || 0;
             context.actions.getPRQty(context).then(function(PRStock) {
                 jobCard.productionQty = PRStock;
                 if (parseInt(jobCardQty) <= parseInt(jobCard.productionQty)) {
@@ -105,9 +105,9 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     if (context.data.jobCardNo === listViewData[i].jobCardNo) {
-                        PRRejQty += parseInt(listViewData[i].rejectionQty) + parseInt(listViewData[i].rwQty);
-                        if(listViewData[i].operationTo === erpAppConfig.finalStageOpp){
-                           PRQty += parseInt(listViewData[i].acceptedQty);
+                        if (listViewData[i].operationTo === 1) {
+                            PRRejQty += parseInt(listViewData[i].rejectionQty) + parseInt(listViewData[i].rwQty);
+                            PRQty += parseInt(listViewData[i].acceptedQty);
                         }
                     }
                 }

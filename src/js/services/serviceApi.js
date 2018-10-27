@@ -7,6 +7,9 @@ erpApp.service('serviceApi', ['$http', '$cacheFactory', function($http, $cacheFa
         }
         if(serviceConf.method==='POST'){
             httpCache.remove(serviceConf.url);
+            if(inputData.id!==undefined){
+                httpCache.remove(serviceConf.url + '/' + inputData.id);
+            }
         }
         servicePromise = $http(serviceConf);
         return servicePromise;

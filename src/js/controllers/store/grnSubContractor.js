@@ -43,7 +43,8 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
             context.actions.getGRNQty(context).then(function(GRNStock) {
                 qty += parseInt(GRNStock);
                 if (DCQty < qty) {
-                    context.data.mapping[i].receivedQty = qty = null;
+                    context.data.mapping[i].receivedQty = null;
+                    context.data.mapping[i].acceptedQty = null;
                 }
             });
         },
@@ -62,9 +63,9 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
             return context.actions.getData('store.grnSubContractor').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
-                    if (context.data.poNo === listViewData[i].poNo) {
+                    if (context.data.poNo === listViewData[i].poNo && context.data.dcNo === listViewData[i].dcNo) {
                         for (var j in listViewData[i].mapping) {
-                            GRNQty += parseInt(listViewData[i].mapping[j].receivedQty);
+                            GRNQty += parseInt(listViewData[i].mapping[j].acceptedQty);
                         }
                     }
                 }
@@ -77,13 +78,12 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
                 var data = angular.copy(context.data.mapping[i]);
                 var newContext = angular.copy(context);
                 data.partNo = data.id;
-                data.acceptedQty = context.data.mapping[i].receivedQty;
                 newContext.data = data;
                 newContext.updatePrevStock = false;
                 context.actions.updatePartStock(newContext);
                 var scData = angular.copy(data);
                 scData.subContractorCode = context.data.subContractorCode;
-                scData.acceptedQty = 0 - scData.receivedQty;
+                scData.acceptedQty = 0 - scData.acceptedQty;
                 context.actions.updateSCStock({
                     data: scData
                 });
