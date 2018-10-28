@@ -1406,6 +1406,33 @@
                 }
             }
         },
+        "productionEntryNew": {
+            "name": "productionEntry",
+            "fields": {
+                "date": "",
+                "mcNo": "",
+                "jobCardNo": "",
+                "partNo": "",
+                "operationFrom": "",
+                "operationTo": "",
+                "toolNo": "",
+                "operator": "",
+                "startTime": "",
+                "endTime": "",
+                "planQty": "",
+                "acceptedQty": "",
+                "rejectionQty": "",
+                "rmQty": "",
+                "Operator": "",
+                "rwQty": "",
+                "id": "",
+                "added": "",
+                "updated": ""
+            },
+            "data": {
+
+            }
+        },
         "rmStock": {
             "name": "rmStock",
             "fields": {
