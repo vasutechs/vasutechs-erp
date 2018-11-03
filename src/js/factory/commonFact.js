@@ -24,6 +24,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 if (context.data['date']) {
                     context.data['date'] = context.page.printView ? context.actions.dateFormatChange(context.data['date']) : new Date(context.data['date']);
                 }
+                context.printData = angular.copy(context.data);  
                 context.actions.callBackEdit && context.actions.callBackEdit(context, key);
             });
 
@@ -101,7 +102,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                         if (field.type === 'date') {
                             viewData[i][field.id] = self.dateFormatChange(viewData[i][field.id]);
                         } else {
-                            viewData[i][field.id] = viewData[i][field.id] ? list[viewData[i][field.id]][field.replaceName] : '';
+                            viewData[i][field.id] = (viewData[i][field.id] && list[viewData[i][field.id]]) ? list[viewData[i][field.id]][field.replaceName] : '';
                             viewData[i][field.id] = field.replaceNamePrefix ? field.replaceNamePrefix + viewData[i][field.id] : viewData[i][field.id];
                         }
                     }
@@ -112,7 +113,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 serviceApi.callServiceApi(serviceConf).then(function(res) {
                     list = res.data;
                     if (field.isSingle) {
-                        viewData[field.id] = viewData[field.id] ? list[viewData[field.id]][field.replaceName] : '';
+                        viewData[field.id] = (viewData[field.id] && list[viewData[field.id]]) ? list[viewData[field.id]][field.replaceName] : '';
                         viewData[field.id] = field.replaceNamePrefix ? field.replaceNamePrefix + viewData[field.id] : viewData[field.id];
                     } else {
                         listReplace(field);
@@ -124,8 +125,11 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             }
 
         },
-        matchFilter: function(field, list) {
+        matchFilter: function(field, list, context) {
             var returnFlag = false;
+            if(context && context.page.name === 'edit'){
+                return true;
+            }
             for (var i in field.filter) {
                 if (typeof(field.filter[i]) === 'object' && field.filter[i].indexOf(list[i]) < 0) {
                     return false;
@@ -137,7 +141,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             }
             return returnFlag;
         },
-        makeOptionsFields: function(field) {
+        makeOptionsFields: function(field, context) {
             var self = this,
                 list,
                 serviceConf = this.getServiceConfig(field.dataFrom),
@@ -151,7 +155,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             serviceApi.callServiceApi(serviceConf).then(function(res) {
                 list = res.data;
                 for (var i in list) {
-                    if (field.filter === undefined || self.matchFilter(field, list[i]) === true) {
+                    if (field.filter === undefined || self.matchFilter(field, list[i], context) === true) {
                         field.options[list[i].id] = list[i];
                         field.options[list[i].id]['optionName'] = field.replaceNamePrefix && field.replaceNamePrefix || '';
                         field.options[list[i].id]['optionName'] += field.replaceNamePrefixData && list[i][field.replaceNamePrefixData] + ' - ' || '';
@@ -384,6 +388,18 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             }
             else{
                 context.filterBy[list.id] = list.selectedFilterBy;
+            }
+        },
+        applyFieldValues: function(context, fields, data, printView) {
+            for (var i in fields) {
+                if (fields[i].type === 'select') {
+                    if(printView){
+                        context.actions.replaceViewDataVal(data, fields[i]);
+                    }
+                    else{
+                        context.actions.makeOptionsFields(fields[i], context);
+                    }
+                }
             }
         }
     };

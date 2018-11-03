@@ -44,26 +44,31 @@ erpApp.controller('dcSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact'
                 }
             });
         },
-        callBackUpdatePartTotal: function(context) {
-            // var qty = 0,
-            //     poQty = parseInt(context.actions.getPOQty(context));
-            // for (var i in context.data.mapping) {
-            //     qty += parseInt(context.data.mapping[i].acceptedQty);
-            // }
-            // context.actions.getDCQty(context).then(function(DCStock) {
-            //     qty += parseInt(DCStock);
-            //     if (poQty < qty) {
-            //         context.data.mapping[i].acceptedQty = qty = null;
-            //     }
-            // });
+        callBackUpdatePartTotal: function(context, data) {
+            var qty = parseInt(data.acceptedQty),
+                poQty = parseInt(context.actions.getPOQty(context, data));
+                
+            context.actions.getDCQty(context).then(function(DCStock) {
+                qty += parseInt(DCStock);
+                if (poQty < qty) {
+                    data.acceptedQty = null;
+                }
+            });
         },
-        getPOQty: function(context) {
+        getPOQty: function(context, data) {
             var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
             var poQty = 0;
             var poNo = context.data.poNo;
 
             for (var i in poSubContractor.mapping) {
-                poQty += poSubContractor.mapping[i].acceptedQty;
+                if(data && data.id){
+                    if(poSubContractor.mapping[i].id === data.id){
+                        poQty += poSubContractor.mapping[i].acceptedQty;
+                    }
+                }
+                else{
+                    poQty += poSubContractor.mapping[i].acceptedQty;
+                }
             }
             return poQty;
         },

@@ -2478,6 +2478,7 @@ var erpAppConfig = {
             },
             productionEntry: {
                 title: 'Production Entry',
+                disableMenu: true,
                 masterData: {
                     date: null,
                     mcNo: null,
@@ -2694,7 +2695,6 @@ var erpAppConfig = {
             },
             productionEntryNew: {
                 title: 'Production Entry',
-                disableMenu: true,
                 masterData: {
                     date: null,
                     mcNo: null,
@@ -2716,6 +2716,7 @@ var erpAppConfig = {
                 form: {
                     name: 'productionEntry',
                     id: 'productionEntry',
+                    disableByField: 'id',
                     fields: {
                         'date': {
                             name: 'Date',
@@ -2733,6 +2734,7 @@ var erpAppConfig = {
                             replaceName: 'machineNo',
                             replaceNamePrefix: 'VT-M/C-',
                             required: true,
+                            isEditDisable: true,
                             isSingle: true
                         },
                         'jobCardNo': {
@@ -2749,6 +2751,7 @@ var erpAppConfig = {
                             filter: {
                                 status: 0
                             },
+                            isEditDisable: true,
                             isSingle: true
                         },
                         'partNo': {
@@ -2760,6 +2763,7 @@ var erpAppConfig = {
                             dataFrom: 'marketing.partMaster',
                             replaceName: 'partNo',
                             isDisable: true,
+                            isEditDisable: true,
                             isSingle: true
                         }
                     },
@@ -2774,8 +2778,7 @@ var erpAppConfig = {
                                 action: 'updateOperationTo',
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode',
-                                isSingle: true
+                                replaceNamePrefixData: 'opCode'
                             },
                             'operationTo': {
                                 name: 'Operation To',
@@ -2785,28 +2788,25 @@ var erpAppConfig = {
                                 required: true,
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode',
-                                isSingle: true
+                                replaceNamePrefixData: 'opCode'
                             },
                             'toolName': {
                                 name: 'Tool Name',
-                                id: 'toolName',
+                                id: 'toolNo',
                                 type: 'select',
                                 options: {},
                                 required: true,
                                 dataFrom: 'production.toolMaster',
-                                replaceName: 'toolName',
-                                isSingle: true
+                                replaceName: 'toolName'
                             },
-                            'Operator': {
+                            'operator': {
                                 name: 'Operator',
-                                id: 'Operator',
+                                id: 'operator',
                                 type: 'select',
                                 options: {},
                                 required: true,
                                 dataFrom: 'marketing.empMaster',
-                                replaceName: 'employeeName',
-                                isSingle: true
+                                replaceName: 'employeeName'
                             },
                             'startTime': {
                                 name: 'Start Time: (1-24)',
@@ -2854,6 +2854,10 @@ var erpAppConfig = {
                                 required: true,
                                 action: 'checkAcceptedQty'
                             }
+                        },
+                        actions: {
+                            add: false,
+                            delete: false
                         }
                     }
                 },
@@ -2874,33 +2878,12 @@ var erpAppConfig = {
                         options: {}
                     },
                     {
-                        title: 'Operation From',
-                        id: 'operationFrom',
-                        dataFrom: 'production.operationMaster',
-                        replaceName: 'opName',
-                        isFilterBy: true,
-                        options: {}
-                    },
-                    {
-                        title: 'Operation To',
-                        id: 'operationTo',
-                        dataFrom: 'production.operationMaster',
-                        replaceName: 'opName',
-                        isFilterBy: true,
-                        options: {}
-                    },
-                    {
-                        title: 'Accepted Qty',
-                        id: 'acceptedQty'
-                    },
-                    {
                         title: 'Date',
                         id: 'date',
                         type: 'date'
                     },
                     {
-                        action: true,
-                        edit: false
+                        action: true
                     }
                 ],
                 page: {
