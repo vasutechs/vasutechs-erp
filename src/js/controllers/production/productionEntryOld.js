@@ -1,35 +1,24 @@
-erpApp.controller('productionEntryNewCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
+erpApp.controller('productionEntryOldCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
     var actions = angular.extend(angular.copy(commonFact.defaultActions), {
-        callBackAdd: function(context) {
-            context.page.printViewMapping = false;
-            context.finalMapping = 0;
-        },
-        callBackEdit: function(context) {
-            if (!context.page.printView) {
-                context.page.printViewMapping = true;
-                context.actions.applyFieldValues(context, context.form.mapping.fields, context.printData.mapping, context.page.printViewMapping);
-                context.actions.addMapping(context.data.mapping);
-                context.finalMapping = context.data.mapping.length - 1;
-                setTimeout(function() {
-                    context.actions.callBackChangeMapping(context, context.data.mapping[context.finalMapping]);
-                }, 1000);
-            }
-        },
         callBackList: function(context) {
             context.actions.getPartStock(context);
         },
-        checkAcceptedQty: function(context, mappingData, value, key, field) {
+        checkAcceptedQty: function(context) {
             var qtyCanMake = 0,
-                rejectionQty = mappingData.rejectionQty || 0,
-                rwQty = mappingData.rwQty || 0,
-                acceptedQty = mappingData.acceptedQty || 0,
-                qty = acceptedQty + rejectionQty + rwQty;
-            if (context.data.partNo && mappingData.operationFrom) {
-                qtyCanMake = context.partStock[context.data.partNo + '-' + mappingData.operationFrom] && context.partStock[context.data.partNo + '-' + mappingData.operationFrom].partStockQty || 0;
+                rejectionQtyMax = 0,
+                rwQtyMax = 0;
+            if (context.data.partNo && context.data.operationFrom) {
+                qtyCanMake = context.partStock[context.data.partNo + '-' + context.data.operationFrom] && context.partStock[context.data.partNo + '-' + context.data.operationFrom].partStockQty || 0;
             }
-            if (qty > qtyCanMake) {
-                mappingData[field.id] = null
-            }
+            context.form.fields['acceptedQty'].max = qtyCanMake;
+            rejectionQtyMax = qtyCanMake - context.data.acceptedQty;
+            rwQtyMax = context.data.rejectionQty ? qtyCanMake - context.data.acceptedQty - context.data.rejectionQty : qtyCanMake - context.data.acceptedQty;
+            context.form.fields['rejectionQty'].max = rejectionQtyMax;
+            context.form.fields['rwQty'].max = rwQtyMax;
+        },
+        callBackEdit: function(context, key) {
+            context.data['startTime'] = context.actions.timeFormatChange(context.data['startTime']);
+            context.data['endTime'] = context.actions.timeFormatChange(context.data['endTime']);
         },
         callBackChangeMapping: function(context, data, key, field) {
             context.actions.updateOperationFrom(context, data, key, field);
@@ -49,10 +38,10 @@ erpApp.controller('productionEntryNewCtrl', ['erpAppConfig', '$scope', 'commonFa
                 restriction.filter = {
                     id: operation
                 }
-                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationFrom'], restriction);
+                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
             }
         },
-        updateOperationTo: function(context, mappingData, key, field) {
+        updateOperationTo: function(context, data, key, field) {
             if (context.data.jobCardNo) {
                 var partNo = context.data.partNo,
                     restriction = {
@@ -62,10 +51,10 @@ erpApp.controller('productionEntryNewCtrl', ['erpAppConfig', '$scope', 'commonFa
                         }
                     },
                     operation = [];
-                if (mappingData.operationFrom) {
+                if (context.data.operationFrom) {
                     restriction = angular.extend(restriction, {
                         limit: 1,
-                        startWith: mappingData.operationFrom
+                        startWith: context.data.operationFrom
                     });
                 }
                 var serviceconf = this.getServiceConfig('production.flowMaster');
@@ -87,22 +76,27 @@ erpApp.controller('productionEntryNewCtrl', ['erpAppConfig', '$scope', 'commonFa
                         id: operation
                     });
 
-                    context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction);
+                    context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
                 });
             }
         },
-        calculatePlanQty: function(context, mappingData) {
-            var startDate = mappingData.startTime;
-            var endDate = mappingData.endTime;
+        calculatePlanQty: function(context) {
+            var startDate = context.data.startTime;
+            var endDate = context.data.endTime;
             var timeDiff = endDate - startDate;
-            mappingData.planQty = timeDiff * context.form.fields['partNo'].options[context.data.partNo].prodRateHr;
+            context.data.planQty = timeDiff * context.form.fields['partNo'].options[context.data.partNo].prodRateHr;
         },
         updateMaterialIssue: function(context, replaceData, key) {
             var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
             var jobCardQty = jobCard && jobCard.qtyCanMake;
             var jobCardPrdQty = jobCard && jobCard.productionQty || 0;
-            jobCard.status = 1;
-            context.actions.updateData('production.materialIssueNote', jobCard);
+            context.actions.getPRQty(context).then(function(PRStock) {
+                jobCard.productionQty = PRStock;
+                if (parseInt(jobCardQty) <= parseInt(jobCard.productionQty)) {
+                    jobCard.status = 1;
+                }
+                context.actions.updateData('production.materialIssueNote', jobCard);
+            });
         },
         getPRQty: function(context) {
             var PRRejQty = 0;
@@ -122,16 +116,13 @@ erpApp.controller('productionEntryNewCtrl', ['erpAppConfig', '$scope', 'commonFa
             });
         },
         callBackSubmit: function(context) {
-            var newQty;
-            var data = angular.copy(context.data.mapping[context.finalMapping]);
-            var newContext = angular.copy(context);
-            data.partNo = context.data.partNo;
-            newContext.data = data;
-            context.actions.updatePartStock(newContext);
-            context.actions.updateMaterialIssue(context);
+            if (context.data.operationTo === erpAppConfig.finalStageOpp) {
+                context.actions.updateMaterialIssue(context);
+            }
+            context.actions.updatePartStock(context);
         }
     });
-    $scope.context = erpAppConfig.modules.production.productionEntryNew;
+    $scope.context = erpAppConfig.modules.production.productionEntry;
     $scope.context.actions = actions;
     $scope.context.actions.list($scope.context);
 }]);

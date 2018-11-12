@@ -34,17 +34,16 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
         callBackChangeMapping: function(context) {
             context.actions.getSCStock(context);
         },
-        callBackUpdatePartTotal: function(context) {
+        callBackUpdatePartTotal: function(context, data, newValue, mapKey, field) {
             var qty = 0,
                 DCQty = parseInt(context.actions.getDCQty(context));
             for (var i in context.data.mapping) {
-                qty += parseInt(context.data.mapping[i].receivedQty);
+                qty += parseInt(context.data.mapping[i].acceptedQty);
             }
             context.actions.getGRNQty(context).then(function(GRNStock) {
                 qty += parseInt(GRNStock);
                 if (DCQty < qty) {
-                    context.data.mapping[i].receivedQty = null;
-                    context.data.mapping[i].acceptedQty = null;
+                    context.data.mapping[i][field.id] = null;
                 }
             });
         },
