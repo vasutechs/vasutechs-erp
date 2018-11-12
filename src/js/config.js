@@ -1665,7 +1665,8 @@ var erpAppConfig = {
                             }
                         },
                         actions: {
-                            add: false
+                            add: false,
+                            delete: false
                         }
                     }
                 },
@@ -2476,7 +2477,7 @@ var erpAppConfig = {
                     }
                 }
             },
-            productionEntry: {
+            productionEntryOld: {
                 title: 'Production Entry',
                 disableMenu: true,
                 masterData: {
@@ -2693,7 +2694,7 @@ var erpAppConfig = {
                     }
                 }
             },
-            productionEntryNew: {
+            productionEntry: {
                 title: 'Production Entry',
                 masterData: {
                     date: null,
@@ -2710,7 +2711,7 @@ var erpAppConfig = {
                         planQty: null,
                         acceptedQty: null,
                         rejectionQty: null,
-                        rmQty: null
+                        rwQty: null
                     }]
                 },
                 form: {
@@ -2868,33 +2869,37 @@ var erpAppConfig = {
                         isFilterBy: true,
                         replaceName: 'id',
                         replaceNamePrefix: 'VT-',
+                        type: 'select',
                         options: {}
                     }, {
                         title: 'Part No',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
                         replaceName: 'partNo',
+                        type: 'select',
                         isFilterBy: true,
                         options: {}
                     },
                     {
                         title: 'Date',
                         id: 'date',
-                        type: 'date'
+                        type: 'input',
+                        inputType: 'date',
+                        isFilterBy: true
                     },
                     {
                         action: true
                     }
                 ],
                 page: {
-                    link: 'production/productionEntryNew/list',
+                    link: 'production/productionEntry/list',
                     name: 'list',
                     templateUrl: 'template/defaultView.html',
-                    controller: 'productionEntryNewCtrl'
+                    controller: 'productionEntryCtrl'
                 },
                 services: {
                     list: {
-                        url: 'api/productionEntryNew/data/{{YEAR}}',
+                        url: 'api/productionEntry/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }

@@ -5,9 +5,10 @@
                 <th ng-repeat="(key, list) in context.listView">
                     <div ng-if="!list.action && list.isFilterBy===undefined">{{list.title}}</div>
                     <div ng-if="list.isFilterBy">
-                        <select id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.actions.viewFilterBy(context, list)" ng-options="option.optionName as option.optionName for option in list.options">
+                        <select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.actions.viewFilterBy(context, list)" ng-options="option.optionName as option.optionName for option in list.options">
                             <option value="">{{list.title}}</option>
                         </select>
+                        <input  ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.actions.viewFilterBy(context, list)" />
                     </div>
                     <div ng-if="list.action && (list.add===undefined || list.add!=false)" class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.add(context)" class="fa fa-fw fa-plus-square-o">Add</a></div>
                 </th>

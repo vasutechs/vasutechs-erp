@@ -99,7 +99,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 self = this,
                 listReplace = function(field) {
                     for (var i in viewData) {
-                        if (field.type === 'date') {
+                        if (field.type === 'date' || field.inputType === 'date') {
                             viewData[i][field.id] = self.dateFormatChange(viewData[i][field.id]);
                         } else {
                             viewData[i][field.id] = (viewData[i][field.id] && list[viewData[i][field.id]]) ? list[viewData[i][field.id]][field.replaceName] : '';
@@ -224,7 +224,10 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         getOperationFromFlow: function(context, field, restriction) {
             var self = this,
                 partNo = restriction.partNo || context.data.partNo,
-                limit = 0;
+                limit = 0,
+                optionsPromiseResolve, optionsPromise = new Promise(function(resolve, reject) {
+                    optionsPromiseResolve = resolve;
+                });
             if (partNo) {
                 context.actions.makeOptionsFields(field);
                 var localOptions = field.options;
@@ -247,8 +250,10 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                             }
                         }
                     }
+                    optionsPromiseResolve();
                 });
             }
+            return optionsPromise;
         },
         updatePartStock: function(context) {
             var self = this;
@@ -320,25 +325,22 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 serviceApi.callServiceApi(serviceconf, data);
             });
         },
-        updatePartTotal: function(context, data, newValue, mapKey) {
+        updatePartTotal: function(context, data, newValue, mapKey, field) {
             var total = 0,
                 totalBeforTax = 0,
-                qty = data.receivedQty > data.acceptedQty && data.receivedQty || data.acceptedQty,
+                qty = newValue,
                 operation = data.operationFrom;
             if (data.id &&
                 operation &&
                 (context.partStock === undefined || 
                 context.partStock[data.id + '-' + operation] === undefined ||
                 context.partStock[data.id + '-' + operation].partStockQty < qty)) {
-                if (context.grnSC) {
-                    data.receivedQty = null;
-                }
-                data.acceptedQty = qty = null;
+                data[field.id] = qty = null;
             }
             totalBeforTax = qty * data.rate;
             total = totalBeforTax + (totalBeforTax * (data.gst / 100));
             data.total = parseFloat(total).toFixed(2);
-            context.actions.callBackUpdatePartTotal && context.actions.callBackUpdatePartTotal(context, data, newValue, mapKey);
+            context.actions.callBackUpdatePartTotal && context.actions.callBackUpdatePartTotal(context, data, newValue, mapKey, field);
 
         },
         getServiceConfig: function(module, replaceMethod, appendValue) {
@@ -401,6 +403,33 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                     }
                 }
             }
+        },
+        getFlowMaster: function(context) {
+            var serviceconf = this.getServiceConfig('production.flowMaster');
+            context.flowMasterData = {};
+            context.flowMasterByPart = {};
+
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                var flowMasterData = res.data,
+                    prevOpp;
+
+                context.flowMasterData = flowMasterData;
+                for (var i in flowMasterData) {
+                    for (var j in flowMasterData[i].mapping) {
+                        context.flowMasterByPart[flowMasterData[i].partNo + '-' + flowMasterData[i].mapping[j].id] = flowMasterData[i].mapping[j];
+                    }
+                }
+            });
+
+        },
+        getOperations: function(context) {
+            var serviceconf = this.getServiceConfig('production.operationMaster');
+            context.operationsData = {};
+
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                context.operationsData = res.data;
+            });
+
         }
     };
     return {
