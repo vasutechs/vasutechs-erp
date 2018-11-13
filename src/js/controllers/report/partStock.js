@@ -19,6 +19,9 @@ erpApp.controller('partStockCtrl', ['erpAppConfig', '$scope', 'commonFact', '$lo
                 restriction.startWith = context.data.operationFrom;
                 context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
             }
+        // },
+        // preSubmit: function(context){
+        //     console.log(context);
         }
     });
 

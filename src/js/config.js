@@ -1030,8 +1030,7 @@ var erpAppConfig = {
                             }
                         },
                         actions: {
-                            add: false,
-                            delete: false
+                            add: false
                         }
                     }
                 },
@@ -1316,8 +1315,7 @@ var erpAppConfig = {
                             }
                         },
                         actions: {
-                            add: false,
-                            delete: false
+                            add: false
                         }
                     }
                 },
@@ -1500,8 +1498,7 @@ var erpAppConfig = {
                             }
                         },
                         actions: {
-                            add: false,
-                            delete: false
+                            add: false
                         }
                     }
                 },
@@ -1665,8 +1662,7 @@ var erpAppConfig = {
                             }
                         },
                         actions: {
-                            add: false,
-                            delete: false
+                            add: false
                         }
                     }
                 },
@@ -1884,8 +1880,7 @@ var erpAppConfig = {
                             }
                         },
                         actions: {
-                            add: false,
-                            delete: false
+                            add: false
                         }
                     }
                 },
@@ -2779,7 +2774,8 @@ var erpAppConfig = {
                                 action: 'updateOperationTo',
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode'
+                                replaceNamePrefixData: 'opCode',
+                                required: true
                             },
                             'operationTo': {
                                 name: 'Operation To',
