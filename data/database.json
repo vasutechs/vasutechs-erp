@@ -1,6 +1,6 @@
 {
     "dbName": "Vasutechs-ERP",
-    "updated": "2018-10-26T00:14:17.626Z",
+    "updated": "2018-11-12T14:59:42.753Z",
     "tables": {
         "partMaster": {
             "name": "partMaster",
@@ -1339,6 +1339,22 @@
                         "id": 3,
                         "added": "2018-11-11T02:21:16.443Z",
                         "updated": "2018-11-11T02:21:16.443Z"
+                    },
+                    "4": {
+                        "jobCardNo": 4,
+                        "date": "2018-11-13T02:38:33.596Z",
+                        "rmCode": 2,
+                        "partNo": 3,
+                        "partNorms": "1",
+                        "issueQty": 10,
+                        "qtyCanMake": 10,
+                        "operationTo": 1,
+                        "status": 1,
+                        "id": 4,
+                        "added": "2018-11-13T02:38:43.247Z",
+                        "updated": "2018-11-13T03:02:22.088Z",
+                        "optionName": "VT-4",
+                        "optionId": 4
                     }
                 }
             }
@@ -1480,6 +1496,65 @@
                         "id": 2,
                         "added": "2018-11-07T00:38:22.535Z",
                         "updated": "2018-11-07T00:38:22.535Z"
+                    },
+                    "3": {
+                        "date": "2018-11-13T02:55:45.502Z",
+                        "mcNo": 1,
+                        "jobCardNo": 4,
+                        "partNo": 3,
+                        "mapping": [
+                            {
+                                "operationFrom": 1,
+                                "operationTo": 2,
+                                "toolNo": 1,
+                                "operator": 1,
+                                "startTime": 1,
+                                "endTime": 2,
+                                "planQty": 200,
+                                "acceptedQty": 10,
+                                "rejectionQty": 0,
+                                "rwQty": 0
+                            },
+                            {
+                                "operationFrom": 2,
+                                "operationTo": 5,
+                                "toolNo": 1,
+                                "operator": 1,
+                                "startTime": 1,
+                                "endTime": 2,
+                                "planQty": 200,
+                                "acceptedQty": 10,
+                                "rejectionQty": 0,
+                                "rwQty": 0
+                            },
+                            {
+                                "operationFrom": 5,
+                                "operationTo": 6,
+                                "toolNo": 1,
+                                "operator": 1,
+                                "startTime": 1,
+                                "endTime": 2,
+                                "planQty": 200,
+                                "acceptedQty": 10,
+                                "rejectionQty": 0,
+                                "rwQty": 0
+                            },
+                            {
+                                "operationFrom": 6,
+                                "operationTo": 7,
+                                "toolNo": 1,
+                                "operator": 1,
+                                "startTime": 1,
+                                "endTime": 2,
+                                "planQty": 200,
+                                "acceptedQty": 10,
+                                "rejectionQty": 0,
+                                "rwQty": 0
+                            }
+                        ],
+                        "id": 3,
+                        "added": "2018-11-13T02:56:48.076Z",
+                        "updated": "2018-11-13T03:02:22.068Z"
                     }
                 }
             }
@@ -1498,9 +1573,9 @@
                     "1": {
                         "id": 1,
                         "rmCode": 2,
-                        "rmStockQty": 30,
+                        "rmStockQty": 20,
                         "uomCode": 1,
-                        "updated": "2018-11-11T02:21:16.465Z"
+                        "updated": "2018-11-13T02:38:43.263Z"
                     }
                 }
             }
@@ -1556,6 +1631,46 @@
                         "id": 5,
                         "added": "2018-11-11T02:14:58.380Z",
                         "updated": "2018-11-11T02:14:58.380Z"
+                    },
+                    "6": {
+                        "id": 6,
+                        "partNo": 3,
+                        "partStockQty": 0,
+                        "operationTo": 1,
+                        "updated": "2018-11-13T02:56:48.109Z"
+                    },
+                    "7": {
+                        "id": 7,
+                        "partNo": 3,
+                        "partStockQty": 0,
+                        "operationFrom": 1,
+                        "operationTo": 2,
+                        "updated": "2018-11-13T03:01:29.353Z"
+                    },
+                    "8": {
+                        "id": 8,
+                        "partNo": 3,
+                        "partStockQty": 0,
+                        "operationFrom": 2,
+                        "operationTo": 5,
+                        "updated": "2018-11-13T03:01:54.972Z"
+                    },
+                    "9": {
+                        "id": 9,
+                        "partNo": 3,
+                        "partStockQty": 0,
+                        "operationFrom": 5,
+                        "operationTo": 6,
+                        "updated": "2018-11-13T03:02:22.103Z"
+                    },
+                    "10": {
+                        "partNo": 3,
+                        "partStockQty": 10,
+                        "operationFrom": 6,
+                        "operationTo": 7,
+                        "id": 10,
+                        "added": "2018-11-13T03:02:22.096Z",
+                        "updated": "2018-11-13T03:02:22.096Z"
                     }
                 }
             }
