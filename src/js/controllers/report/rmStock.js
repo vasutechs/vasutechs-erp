@@ -8,6 +8,20 @@ erpApp.controller('rmStockCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
                 });
                 context.listViewData = newList
             }
+        },
+        submit: function(context) {
+            var stockData;
+            context.actions.getData('report.rmStock').then(function(res) {
+                stockData = res.data;
+                for (var i in stockData) {
+                    if (!context.data.id && stockData[i].rmCode === context.data.rmCode) {
+                        context.data.id = stockData[i].id;
+                        context.data.rmStockQty = parseInt(context.data.rmStockQty) + parseInt(stockData[i].rmStockQty);
+                    }
+                }
+                commonFact.defaultActions.submit(context);
+            });
+
         }
     });
 

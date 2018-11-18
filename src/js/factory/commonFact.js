@@ -258,7 +258,8 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         updatePartStock: function(context) {
             var self = this;
             var serviceconf = self.getServiceConfig('report.partStock');
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
+            var returnPromise = [];
+            var partStockPromise = serviceApi.callServiceApi(serviceconf).then(function(res) {
                 var partStockData = res.data,
                     partStock = {};
                 for (var i in partStockData) {
@@ -276,9 +277,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                         operationTo: context.data.operationTo
                     }
                     serviceconf = serviceconf = existingStock && self.getServiceConfig('report.partStock', 'POST') || self.getServiceConfig('report.partStock', 'POST');
-                    serviceApi.callServiceApi(serviceconf, data).then(function(){
+                    returnPromise.push(serviceApi.callServiceApi(serviceconf, data).then(function(){
                         context.actions.getPartStock(context);
-                    });
+                    }));
                 }
 
                 var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
@@ -295,16 +296,20 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                         operationTo: existingPrevStock.operationTo
                     }
                     serviceconf = self.getServiceConfig('report.partStock', 'POST');
-                    serviceApi.callServiceApi(serviceconf, data).then(function(){
+                    returnPromise.push(serviceApi.callServiceApi(serviceconf, data).then(function(){
                         context.actions.getPartStock(context);
-                    });
+                    }));
                 }
             });
+            returnPromise.push(partStockPromise);
+
+            return Promise.all(returnPromise);
         },
         updateSCStock: function(context) {
             var self = this;
             var serviceconf = self.getServiceConfig('report.subContractorStock');
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
+            var returnPromise = [];
+            var partStockPromise = serviceApi.callServiceApi(serviceconf).then(function(res) {
                 var scStockData = res.data,
                     scStock = {};
                 for (var i in scStockData) {
@@ -322,8 +327,12 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                     operationTo: context.data.operationTo
                 }
                 serviceconf = self.getServiceConfig('report.subContractorStock', 'POST');
-                serviceApi.callServiceApi(serviceconf, data);
+                returnPromise.push(serviceApi.callServiceApi(serviceconf, data));
             });
+
+            returnPromise.push(partStockPromise);
+
+            return Promise.all(returnPromise);
         },
         updatePartTotal: function(context, data, newValue, mapKey, field) {
             var total = 0,

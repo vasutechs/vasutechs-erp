@@ -35,7 +35,7 @@
             <div class="col-2">
             </div>
             <div class="col-10">
-                <button type="button" class="btn btn-primary" id="submit" ng-click="context.actions.preSubmit ? context.actions.preSubmit(context) : context.actions.submit(context)" ng-disabled="customForm.$invalid">Submit</button>
+                <button type="button" class="btn btn-primary" id="submit" ng-click="context.actions.submit(context)" ng-disabled="customForm.$invalid">Submit</button>
                 <button type="button" class="btn btn-primary" id="cancel" ng-click="context.actions.cancel(context)">Cancel</button>
             </div>
         </div>

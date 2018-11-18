@@ -6,6 +6,15 @@ var erpAppConfig = {
     dataDownloadUrl: '/api/download',
     calendarYear: new Date().getFullYear(),
     finalStageOpp: 9,
+    companyDetail:{
+        name: 'Vasu Techs',
+        logoUrl: 'assets/img/logo.gif',
+        address: '32, South kumara kattalai street, Mayiladuthurai, Nagapattinam(DT) 609001',
+        mobile: '9003206361',
+        email: 'vasutechs@gmail.com',
+        gstin: '33BORPS568IBIZM',
+        arnno: 'AA330717090935R'
+    },
     modules: {
         databaseUpload: {
             name: 'Database Upload',
@@ -2921,9 +2930,10 @@ var erpAppConfig = {
                             id: 'rmCode',
                             type: 'select',
                             options: {},
+                            action: 'changeMapping',
+                            updateData: ['uomCode'],
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
-                            isDisable: true,
                             isSingle: true
                         },
                         'rmStockQty': {
@@ -2940,7 +2950,6 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'marketing.uomMaster',
                             replaceName: 'uomName',
-                            isDisable: true,
                             isSingle: true
                         }
                     }
@@ -2996,7 +3005,6 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'marketing.partMaster',
                             replaceName: 'partNo',
-                            action: 'updatePartDetails',
                             isSingle: true
                         },
                         'partStockQty': {
@@ -3067,7 +3075,7 @@ var erpAppConfig = {
                 title: 'SubContractor Stock',
                 masterData: {
                     subContractorCode: null,
-                    scStockQty: null,
+                    partStockQty: null,
                     operationFrom: null,
                     operationTo: null
                 },
@@ -3082,12 +3090,21 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'purchase.subContractorMaster',
                             replaceName: 'subContractorName',
-                            //action: 'updatePartDetails',
+                            action: 'getPartNo',
                             isSingle: true
                         },
-                        'sctockQty': {
+                        'partNo': {
+                            name: 'Part No',
+                            id: 'partNo',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'marketing.partMaster',
+                            replaceName: 'partNo',
+                            isSingle: true
+                        },
+                        'partStockQty': {
                             name: 'SubContractor Qty',
-                            id: 'scStockQty',
+                            id: 'partStockQty',
                             type: 'input',
                             inputType: 'number',
                             required: true
