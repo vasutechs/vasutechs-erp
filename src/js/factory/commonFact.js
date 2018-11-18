@@ -32,6 +32,13 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         printView: function(context, key, printView) {
             this.edit(context, key, printView);
         },
+        disable: function(context, key) {
+            var serviceconf = this.getServiceConfig(context.services.list, 'POST');
+            context.listViewDataMaster[key]['disabled'] = true;
+            serviceApi.callServiceApi(serviceconf, context.listViewData[key]);
+            context.actions.list(context);
+            context.actions.callBackDelete && context.actions.callBackDelete(context, key);
+        },
         delete: function(context, key) {
             var serviceconf = this.getServiceConfig(context.services.list, 'POST');
             serviceApi.callServiceApi(serviceconf, { key: key, delete: 'yes' });
@@ -48,6 +55,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             context.orderByProperty = 'updated';
             serviceApi.callServiceApi(serviceconf).then(function(res) {
                 var listViewData = res.data;
+                context.listViewDataMaster = listViewData;
                 context.lastData = listViewData[Object.keys(listViewData)[Object.keys(listViewData).length - 1]];
                 for (var i in context.listView) {
                     if (context.listView[i].dataFrom) {
@@ -57,7 +65,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                     }
                 }
                 for (var x in listViewData) {
-                    listViewData.hasOwnProperty(x) && context.listViewData.push(listViewData[x])
+                    listViewData.hasOwnProperty(x) && !listViewData[x].disabled && context.listViewData.push(listViewData[x])
                 }
                 context.actions.callBackList && context.actions.callBackList(context);
             });
