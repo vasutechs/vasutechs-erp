@@ -5,7 +5,7 @@
                 <tr>
                     <td><b>{{context.form.fields.invoiceNo.name}}</b></td>
                     <td colspan="2">
-                        <span id="{{context.form.fields.invoiceNo.id}}">{{context.form.fields.invoiceNo.idPrefix}}{{context.data[context.form.fields.invoiceNo.id]}}</span>
+                        <span id="{{context.form.fields.invoiceNo.id}}"><b>{{context.form.fields.invoiceNo.idPrefix}}{{context.data[context.form.fields.invoiceNo.id]}}</b></span>
                     </td>
                     <td align="right"><b>{{context.form.fields.date.name}}</b></td>
                     <td colspan="2">
@@ -19,9 +19,9 @@
                         <select ng-if="!context.page.printView" id="{{context.form.fields.customerCode.id}}" class="form-control" ng-model="context.data[context.form.fields.customerCode.id]" ng-required="{{context.form.fields.customerCode.required}}" ng-change="context.form.fields.customerCode.action && context.actions[context.form.fields.customerCode.action] && context.actions[context.form.fields.customerCode.action](context, context.data, context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)" ng-options="option.optionId as option.optionName for option in context.form.fields.customerCode.options" ng-disabled="context.form.fields.customerCode.isDisable" ng-required="{{context.form.fields.customerCode.required}}">
                             <option value="">--Select--</option>
                         </select>
-                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}">{{context.form.fields.customerCode.idPrefix}}{{context.data[context.form.fields.customerCode.id]}}</span>
+                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}"><b>{{context.form.fields.customerCode.idPrefix}}{{context.data[context.form.fields.customerCode.id]}}</b></span>
 
-                        <span id="{{context.form.fields.address.id}}">, {{context.data[context.form.fields.address.id]}}</span>
+                        <span id="{{context.form.fields.address.id}}"><b>, {{context.data[context.form.fields.address.id]}}</b></span>
 
                     </td>
                 </tr>
@@ -73,7 +73,7 @@
                 <tr>
                     <td colspan="3"></td>
                     <td align="right"><b>{{context.form.fields.total.name}}:</b></td>
-                    <td colspan="2"><span id="{{context.form.fields.total.id}}" ng-bind="context.data[context.form.fields.total.id]"></span></td>
+                    <td colspan="2"><b><span id="{{context.form.fields.total.id}}" ng-bind="context.data[context.form.fields.total.id]"></span></b></td>
                 </tr>
             </tbody>
         </table>

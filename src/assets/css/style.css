@@ -499,7 +499,7 @@ footer.sticky-footer {
 
 
 .logo {
-    width: 200px;
+    width: 250px;
     margin: 5px;
 }
 
@@ -543,5 +543,8 @@ footer.sticky-footer {
     }
     table{
         line-height: 0.5;
+    }
+    body{
+        font-size: 1.3rem !important;
     }
 }

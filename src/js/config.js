@@ -8,7 +8,7 @@ var erpAppConfig = {
     finalStageOpp: 9,
     companyDetail:{
         name: 'Vasu Techs',
-        logoUrl: 'assets/img/logo.gif',
+        logoUrl: 'assets/img/vasu-techs-logo.png',
         address: '32, South kumara kattalai street, Mayiladuthurai, Nagapattinam(DT) 609001',
         mobile: '9003206361',
         email: 'vasutechs@gmail.com',
