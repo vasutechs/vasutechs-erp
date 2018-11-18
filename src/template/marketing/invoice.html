@@ -18,19 +18,18 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="row">
+                <div ng-if="context.page.printView" class="row">
                     <div class="col-4"><img class="logo" src="{{context.companyDetail.logoUrl}}" title="{{context.companyDetail.name}}" /></div>
                     <div class="col-6">
                         <p class="font-italic"><b>{{context.companyDetail.address}}</b></p>
-                        <p class="font-italic"><b>Mobile:</b> {{context.companyDetail.mobile}}</p>
+                        <p class="font-italic"><b>Mobile:</b> {{context.companyDetail.mobile}} <b>Email:</b> {{context.companyDetail.email}}</p>
                         <p class="font-italic"><b>GSTIN:</b> {{context.companyDetail.gstin}}</p>
-                        <p class="font-italic"><b>ARN No:</b> {{context.companyDetail.arnno}}</p>
                     </div>
                 </div>
                 <div class="card-body">
                     <entry-invoice></entry-invoice>
                 </div>
-                <div class="row">
+                <div ng-if="context.page.printView" class="row">
                 <div class="col-7"></div>
                 <div class="col-3">
                     <p class="text-center font-italic"><b>For {{context.companyDetail.name}}</b></p>

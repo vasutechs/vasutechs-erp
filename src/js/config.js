@@ -12,8 +12,7 @@ var erpAppConfig = {
         address: '32, South kumara kattalai street, Mayiladuthurai, Nagapattinam(DT) 609001',
         mobile: '9003206361',
         email: 'vasutechs@gmail.com',
-        gstin: '33BORPS568IBIZM',
-        arnno: 'AA330717090935R'
+        gstin: '33BORPS568IBIZM'
     },
     modules: {
         databaseUpload: {
@@ -490,6 +489,7 @@ var erpAppConfig = {
                     invoiceNo: null,
                     date: null,
                     customerCode: null,
+                    address: null,
                     gstin: null,
                     subTotal: null,
                     includeTax: null,
@@ -534,10 +534,14 @@ var erpAppConfig = {
                             options: {},
                             action: 'changeMapping',
                             updateMapping: true,
-                            updateData: ['gstin', 'mapping'],
+                            updateData: ['gstin', 'address', 'mapping'],
                             dataFrom: 'marketing.customerMaster',
                             replaceName: 'customerName',
                             isSingle: true
+                        },
+                        'address': {
+                            name: 'Customer Address',
+                            id: 'address'
                         },
                         'partyGstin': {
                             name: 'Party GSTIN',

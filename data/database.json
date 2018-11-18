@@ -1550,13 +1550,12 @@
                         "updated": "2018-11-17T16:00:48.728Z"
                     },
                     "5": {
+                        "id": 5,
                         "partNo": 2,
-                        "partStockQty": 1,
+                        "partStockQty": 8,
                         "operationFrom": 8,
                         "operationTo": 9,
-                        "id": 5,
-                        "added": "2018-11-11T02:14:58.380Z",
-                        "updated": "2018-11-11T02:14:58.380Z"
+                        "updated": "2018-11-18T04:27:14.971Z"
                     }
                 }
             }
@@ -1675,6 +1674,41 @@
                         "id": 2,
                         "added": "2018-11-03T23:50:25.537Z",
                         "updated": "2018-11-03T23:50:25.537Z"
+                    },
+                    "3": {
+                        "invoiceNo": "3/2018",
+                        "date": "2018-11-18T04:26:57.689Z",
+                        "customerCode": 1,
+                        "address": "myl",
+                        "gstin": "18",
+                        "subTotal": "1.75",
+                        "includeTax": null,
+                        "taxRate": 18,
+                        "cgst": 9,
+                        "sgst": 9,
+                        "cgstTotal": "0.16",
+                        "sgstTotal": "0.16",
+                        "totalBeforTax": null,
+                        "total": "2.06",
+                        "mapping": [
+                            {
+                                "id": 2,
+                                "hsnCode": "73070000",
+                                "unit": "1",
+                                "rate": 1.75,
+                                "amount": "1.75",
+                                "partName": "PVC GI Clamp",
+                                "gst": 18,
+                                "operationFrom": 8,
+                                "operationTo": 9,
+                                "cgst": 9,
+                                "sgst": 9,
+                                "taxRate": 18
+                            }
+                        ],
+                        "id": 3,
+                        "added": "2018-11-18T04:27:14.948Z",
+                        "updated": "2018-11-18T04:27:14.948Z"
                     }
                 }
             }
