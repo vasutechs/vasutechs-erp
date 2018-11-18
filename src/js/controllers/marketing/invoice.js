@@ -125,6 +125,7 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
         $scope.context.cashBill = false;
     }
 
+    $scope.context.companyDetail = erpAppConfig.companyDetail;
     $scope.context.actions = actions;
     $scope.context.actions.list($scope.context);
 
