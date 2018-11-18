@@ -20,6 +20,9 @@
                             <option value="">--Select--</option>
                         </select>
                         <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}">{{context.form.fields.customerCode.idPrefix}}{{context.data[context.form.fields.customerCode.id]}}</span>
+
+                        <span id="{{context.form.fields.address.id}}">, {{context.data[context.form.fields.address.id]}}</span>
+
                     </td>
                 </tr>
                 <tr>
