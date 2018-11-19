@@ -9,6 +9,31 @@ erpApp.controller('partStockCtrl', ['erpAppConfig', '$scope', 'commonFact', '$lo
                 context.listViewData = newList
             }
         },
+        updateOperationFrom: function(context, data, key, field) {
+            if (context.data.partNo) {
+                var restriction = {
+                        partNo: context.data.partNo
+                    };
+                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
+            }
+        },
+        updateOperationTo: function(context, data, key, field) {
+            if (context.data.partNo) {
+                var partNo = context.data.partNo,
+                    restriction = {
+                        partNo: partNo
+                    };
+
+                if (data.operationFrom) {
+                    restriction = angular.extend(restriction, {
+                        limit: 1,
+                        startWith: data.operationFrom
+                    });
+                }
+
+                context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
+            }
+        },
         submit: function(context) {
             var submitService;
             var serviceconf = this.getServiceConfig(context.services.list, 'POST');

@@ -6,7 +6,7 @@ var erpAppConfig = {
     dataDownloadUrl: '/api/download',
     calendarYear: new Date().getFullYear(),
     finalStageOpp: 9,
-    companyDetail:{
+    companyDetail: {
         name: 'Vasu Techs',
         logoUrl: 'assets/img/vasu-techs-logo.png',
         address: '32, South kumara kattalai street, Mayiladuthurai, Nagapattinam(DT) 609001',
@@ -39,6 +39,7 @@ var erpAppConfig = {
             name: 'Dashboard',
             title: 'Dashboard',
             icon: 'dashboard',
+            disableMenu: true,
             page: {
                 link: 'dashboard',
                 name: 'dashboard',
@@ -3009,6 +3010,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'marketing.partMaster',
                             replaceName: 'partNo',
+                            action: 'updateOperationFrom',
                             isSingle: true
                         },
                         'partStockQty': {
@@ -3024,6 +3026,7 @@ var erpAppConfig = {
                             type: 'select',
                             options: {},
                             dataFrom: 'production.operationMaster',
+                            action: 'updateOperationTo',
                             replaceName: 'opName',
                             isSingle: true
                         },
@@ -3094,7 +3097,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'purchase.subContractorMaster',
                             replaceName: 'subContractorName',
-                            action: 'getPartNo',
+                            action: 'getPartNos',
                             isSingle: true
                         },
                         'partNo': {
@@ -3104,6 +3107,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'marketing.partMaster',
                             replaceName: 'partNo',
+                            action: 'updateOperationFrom',
                             isSingle: true
                         },
                         'partStockQty': {
@@ -3119,6 +3123,7 @@ var erpAppConfig = {
                             type: 'select',
                             options: {},
                             dataFrom: 'production.operationMaster',
+                            action: 'updateOperationTo',
                             replaceName: 'opName',
                             isSingle: true
                         },
