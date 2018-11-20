@@ -217,7 +217,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         },
         setAutoGenKey: function(context) {
             var lastDataKey = context.lastData ? context.lastData[context.form.autoGenKey] : undefined;
-            lastDataKey = lastDataKey ? parseInt(lastDataKey) + 1 : 1;
+            lastDataKey = lastDataKey ? parseInt(lastDataKey) + 1 : context.form.autoGenValStart ? context.form.autoGenValStart : 1;
             context.data[context.form.autoGenKey] = lastDataKey;
             context.actions.callBackSetAutoGenKey && context.actions.callBackSetAutoGenKey(context);
         },

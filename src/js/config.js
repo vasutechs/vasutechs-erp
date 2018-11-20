@@ -4,7 +4,7 @@ var erpAppConfig = {
     appName: 'VASUTECHS',
     appBaseUrl: '/dashboard',
     dataDownloadUrl: '/api/download',
-    calendarYear: new Date().getFullYear(),
+    calendarYear: new Date().getMonth() > 4 ? new Date().getFullYear() : new Date().getFullYear() - 1,
     finalStageOpp: 9,
     companyDetail: {
         name: 'Vasu Techs',
@@ -513,6 +513,7 @@ var erpAppConfig = {
                     name: 'Invoice',
                     id: 'invoice',
                     autoGenKey: 'invoiceNo',
+                    autoGenValStart: '30', 
                     fields: {
                         'invoiceNo': {
                             name: 'Invoice No',
@@ -3181,6 +3182,12 @@ var erpAppConfig = {
                     }
                 }
             }
+        },
+        admin: {
+            name: 'Admin',
+            title: 'Admin',
+            icon: 'stack-exchange',
+            partMaster: {}
         }
     }
 };
