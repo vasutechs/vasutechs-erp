@@ -7,9 +7,11 @@ erpApp.directive('header', ['erpAppConfig', '$location', function(erpAppConfig, 
         $scope.calendarYear = erpAppConfig.calendarYear;
         $scope.calendarYearList = [];
         for (var i = 10; i >= 0; i--) {
+            var nextYear = parseInt($scope.calendarYear - i + 1);
+
             $scope.calendarYearList.push({
                 optionId: $scope.calendarYear - i,
-                optionName: $scope.calendarYear - i
+                optionName: $scope.calendarYear - i + '-' + ('' + nextYear).substring(2)
             });
         }
         $scope.showSubModule = function(module) {
@@ -17,7 +19,7 @@ erpApp.directive('header', ['erpAppConfig', '$location', function(erpAppConfig, 
             $scope.subModules = {};
 
             for (var i in module) {
-                if(i!=='name' && i!=='title' && i!=='icon' && i!=='page'){
+                if (i !== 'name' && i !== 'title' && i !== 'icon' && i !== 'page') {
                     $scope.subModules[i] = module[i];
                     isSubModule = true;
                 }
