@@ -512,8 +512,7 @@ var erpAppConfig = {
                 form: {
                     name: 'Invoice',
                     id: 'invoice',
-                    autoGenKey: 'invoiceNo',
-                    autoGenValStart: '30', 
+                    autoGenKey: 'invoiceNo', 
                     fields: {
                         'invoiceNo': {
                             name: 'Invoice No',
