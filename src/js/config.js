@@ -76,6 +76,7 @@ var erpAppConfig = {
                             id: 'partNo',
                             type: 'input',
                             inputType: 'text',
+                            action: 'isCheckExistField',
                             required: true
                         },
                         'partName': {
@@ -83,6 +84,7 @@ var erpAppConfig = {
                             id: 'partName',
                             type: 'input',
                             inputType: 'text',
+                            action: 'isCheckExistField',
                             required: true
                         },
                         'rmCode': {
@@ -92,6 +94,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
+                            replaceNamePrefixData: 'grade',
                             isSingle: true
                         },
                         'inputWeight': {
@@ -333,6 +336,7 @@ var erpAppConfig = {
                             id: 'employeeName',
                             type: 'input',
                             inputType: 'text',
+                            action: 'isCheckExistField',
                             required: true
                         },
                         'address': {
@@ -454,6 +458,7 @@ var erpAppConfig = {
                             id: 'uomName',
                             type: 'input',
                             inputType: 'text',
+                            action: 'isCheckExistField',
                             required: true
                         }
                     }
@@ -513,6 +518,7 @@ var erpAppConfig = {
                     name: 'Invoice',
                     id: 'invoice',
                     autoGenKey: 'invoiceNo', 
+                    autoGenValStart: '16',
                     fields: {
                         'invoiceNo': {
                             name: 'Invoice No',
@@ -668,6 +674,7 @@ var erpAppConfig = {
                 name: 'cashBill',
                 title: 'Cash Bill',
                 form: {
+                    autoGenValStart: null,
                     fields: {
                         'invoiceNo': {
                             name: 'CashBill No',
@@ -731,6 +738,7 @@ var erpAppConfig = {
                             id: 'rmName',
                             type: 'input',
                             inputType: 'text',
+                            action: 'isCheckExistField',
                             required: true
                         },
                         'grade': {
@@ -850,6 +858,7 @@ var erpAppConfig = {
                             id: 'supplierName',
                             type: 'input',
                             inputType: 'text',
+                            action: 'isCheckExistField',
                             required: true
                         },
                         'address': {
@@ -884,7 +893,8 @@ var erpAppConfig = {
                                 options: {},
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
-                                replaceName: 'rmName'
+                                replaceName: 'rmName',
+                                replaceNamePrefixData: 'grade'
                             },
                             'rate': {
                                 name: 'Rate',
@@ -995,6 +1005,7 @@ var erpAppConfig = {
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
                                 replaceName: 'rmName',
+                                replaceNamePrefixData: 'grade',
                                 isDisable: true
                             },
                             'qty': {
@@ -1112,6 +1123,7 @@ var erpAppConfig = {
                             id: 'subContractorName',
                             type: 'input',
                             inputType: 'text',
+                            action: 'isCheckExistField',
                             required: true
                         },
                         'address': {
@@ -1463,6 +1475,7 @@ var erpAppConfig = {
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
                                 replaceName: 'rmName',
+                                replaceNamePrefixData: 'grade',
                                 isDisable: true
                             },
                             'qty': {
@@ -1955,6 +1968,7 @@ var erpAppConfig = {
                             id: 'opName',
                             type: 'input',
                             inputType: 'text',
+                            action: 'isCheckExistField',
                             required: true
                         },
                         'source': {
@@ -2035,6 +2049,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
+                            replaceNamePrefixData: 'grade',
                             isDisable: true,
                             isSingle: true
                         },
@@ -2057,7 +2072,8 @@ var erpAppConfig = {
                         title: 'RM Name',
                         id: 'rmCode',
                         dataFrom: 'purchase.rmMaster',
-                        replaceName: 'rmName'
+                        replaceName: 'rmName',
+                        replaceNamePrefixData: 'grade'
                     },
                     {
                         action: true
@@ -2103,6 +2119,7 @@ var erpAppConfig = {
                             id: 'machineName',
                             type: 'input',
                             inputType: 'text',
+                            action: 'isCheckExistField',
                             required: true
                         },
                         'make': {
@@ -2279,6 +2296,7 @@ var erpAppConfig = {
                             id: 'toolName',
                             type: 'input',
                             inputType: 'text',
+                            action: 'isCheckExistField',
                             required: true
                         },
                         'partNo': {
@@ -2397,6 +2415,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
+                            replaceNamePrefixData: 'grade',
                             action: 'getPartNo',
                             isSingle: true
                         },
@@ -2482,223 +2501,6 @@ var erpAppConfig = {
                 services: {
                     list: {
                         url: 'api/materialIssueNote/data/{{YEAR}}',
-                        method: 'GET'
-                    }
-                }
-            },
-            productionEntryOld: {
-                title: 'Production Entry',
-                disableMenu: true,
-                masterData: {
-                    date: null,
-                    mcNo: null,
-                    jobCardNo: null,
-                    partNo: null,
-                    operationFrom: null,
-                    operationTo: null,
-                    toolNo: null,
-                    operator: null,
-                    startTime: null,
-                    endTime: null,
-                    planQty: null,
-                    acceptedQty: null,
-                    rejectionQty: null,
-                    rmQty: null
-                },
-                form: {
-                    name: 'productionEntry',
-                    id: 'productionEntry',
-                    fields: {
-                        'date': {
-                            name: 'Date',
-                            id: 'date',
-                            type: 'input',
-                            inputType: 'date',
-                            required: true
-                        },
-                        'mcNo': {
-                            name: 'M/C No',
-                            id: 'mcNo',
-                            type: 'select',
-                            options: {},
-                            dataFrom: 'production.machineMaster',
-                            replaceName: 'machineNo',
-                            replaceNamePrefix: 'VT-M/C-',
-                            required: true,
-                            isSingle: true
-                        },
-                        'jobCardNo': {
-                            name: 'Job Card No',
-                            id: 'jobCardNo',
-                            type: 'select',
-                            options: {},
-                            required: true,
-                            dataFrom: 'production.materialIssueNote',
-                            replaceName: 'jobCardNo',
-                            replaceNamePrefix: 'VT-',
-                            action: 'changeMapping',
-                            updateData: ['partNo'],
-                            filter: {
-                                status: 0
-                            },
-                            isSingle: true
-                        },
-                        'partNo': {
-                            name: 'Part No',
-                            id: 'partNo',
-                            type: 'select',
-                            options: {},
-                            required: true,
-                            dataFrom: 'marketing.partMaster',
-                            replaceName: 'partNo',
-                            isDisable: true,
-                            isSingle: true
-                        },
-                        'operationFrom': {
-                            name: 'Operation From',
-                            id: 'operationFrom',
-                            type: 'select',
-                            options: {},
-                            action: 'updateOperationTo',
-                            dataFrom: 'production.operationMaster',
-                            replaceName: 'opName',
-                            replaceNamePrefixData: 'opCode',
-                            isSingle: true
-                        },
-                        'operationTo': {
-                            name: 'Operation To',
-                            id: 'operationTo',
-                            type: 'select',
-                            options: {},
-                            required: true,
-                            dataFrom: 'production.operationMaster',
-                            replaceName: 'opName',
-                            replaceNamePrefixData: 'opCode',
-                            isSingle: true
-                        },
-                        'toolName': {
-                            name: 'Tool Name',
-                            id: 'toolName',
-                            type: 'select',
-                            options: {},
-                            required: true,
-                            dataFrom: 'production.toolMaster',
-                            replaceName: 'toolName',
-                            isSingle: true
-                        },
-                        'Operator': {
-                            name: 'Operator',
-                            id: 'Operator',
-                            type: 'select',
-                            options: {},
-                            required: true,
-                            dataFrom: 'marketing.empMaster',
-                            replaceName: 'employeeName',
-                            isSingle: true
-                        },
-                        'startTime': {
-                            name: 'Start Time: (1-24)',
-                            id: 'startTime',
-                            type: 'input',
-                            inputType: 'number',
-                            required: true
-                        },
-                        'endTime': {
-                            name: 'End Time: (1-24)',
-                            id: 'endTime',
-                            type: 'input',
-                            inputType: 'number',
-                            required: true,
-                            action: 'calculatePlanQty'
-                        },
-                        'planQty': {
-                            name: 'Plan Qty',
-                            id: 'planQty',
-                            type: 'input',
-                            inputType: 'text',
-                            required: true
-                        },
-                        'acceptedQty': {
-                            name: 'Accepted Qty',
-                            id: 'acceptedQty',
-                            type: 'input',
-                            inputType: 'number',
-                            required: true,
-                            action: 'checkAcceptedQty'
-                        },
-                        'rejectionQty': {
-                            name: 'Rejection Qty',
-                            id: 'rejectionQty',
-                            type: 'input',
-                            inputType: 'number',
-                            required: true,
-                            action: 'checkAcceptedQty'
-                        },
-                        'rwQty': {
-                            name: 'R/w Qty',
-                            id: 'rwQty',
-                            type: 'input',
-                            inputType: 'number',
-                            required: true,
-                            action: 'checkAcceptedQty'
-                        }
-                    }
-                },
-                listView: [{
-                        title: 'Job Card No',
-                        id: 'jobCardNo',
-                        dataFrom: 'production.materialIssueNote',
-                        isFilterBy: true,
-                        replaceName: 'id',
-                        replaceNamePrefix: 'VT-',
-                        options: {}
-                    }, {
-                        title: 'Part No',
-                        id: 'partNo',
-                        dataFrom: 'marketing.partMaster',
-                        replaceName: 'partNo',
-                        isFilterBy: true,
-                        options: {}
-                    },
-                    {
-                        title: 'Operation From',
-                        id: 'operationFrom',
-                        dataFrom: 'production.operationMaster',
-                        replaceName: 'opName',
-                        isFilterBy: true,
-                        options: {}
-                    },
-                    {
-                        title: 'Operation To',
-                        id: 'operationTo',
-                        dataFrom: 'production.operationMaster',
-                        replaceName: 'opName',
-                        isFilterBy: true,
-                        options: {}
-                    },
-                    {
-                        title: 'Accepted Qty',
-                        id: 'acceptedQty'
-                    },
-                    {
-                        title: 'Date',
-                        id: 'date',
-                        type: 'date'
-                    },
-                    {
-                        action: true,
-                        edit: false
-                    }
-                ],
-                page: {
-                    link: 'production/productionEntry/list',
-                    name: 'list',
-                    templateUrl: 'template/defaultView.html',
-                    controller: 'productionEntryCtrl'
-                },
-                services: {
-                    list: {
-                        url: 'api/productionEntry/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -2939,6 +2741,7 @@ var erpAppConfig = {
                             updateData: ['uomCode'],
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
+                            replaceNamePrefixData: 'grade',
                             isSingle: true
                         },
                         'rmStockQty': {
@@ -2963,7 +2766,8 @@ var erpAppConfig = {
                         title: 'Raw Material Name',
                         id: 'rmCode',
                         dataFrom: 'purchase.rmMaster',
-                        replaceName: 'rmName'
+                        replaceName: 'rmName',
+                        replaceNamePrefixData: 'grade'
                     },
                     {
                         title: 'Rm Stock Qty',
@@ -2973,6 +2777,10 @@ var erpAppConfig = {
                         id: 'uomCode',
                         dataFrom: 'marketing.uomMaster',
                         replaceName: 'uomName'
+                    }, {
+                        title: 'Updated',
+                        id: 'updated',
+                        type: 'date'
                     },
                     {
                         action: true
@@ -3060,6 +2868,10 @@ var erpAppConfig = {
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
                         replaceName: 'opName'
+                    }, {
+                        title: 'Updated',
+                        id: 'updated',
+                        type: 'date'
                     },
                     {
                         action: true
@@ -3163,6 +2975,10 @@ var erpAppConfig = {
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
                         replaceName: 'opName'
+                    }, {
+                        title: 'Updated',
+                        id: 'updated',
+                        type: 'date'
                     },
                     {
                         action: true

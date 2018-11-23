@@ -24,7 +24,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 if (context.data['date']) {
                     context.data['date'] = context.page.printView ? context.actions.dateFormatChange(context.data['date']) : new Date(context.data['date']);
                 }
-                context.printData = angular.copy(context.data);  
+                context.printData = angular.copy(context.data);
                 context.actions.callBackEdit && context.actions.callBackEdit(context, key);
             });
 
@@ -107,11 +107,13 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 self = this,
                 listReplace = function(field) {
                     for (var i in viewData) {
+                        var orgViewDataFieldId = viewData[i][field.id];
                         if (field.type === 'date' || field.inputType === 'date') {
                             viewData[i][field.id] = self.dateFormatChange(viewData[i][field.id]);
                         } else {
-                            viewData[i][field.id] = (viewData[i][field.id] && list[viewData[i][field.id]]) ? list[viewData[i][field.id]][field.replaceName] : '';
+                            viewData[i][field.id] = (viewData[i][field.id] && list[orgViewDataFieldId]) ? list[viewData[i][field.id]][field.replaceName] : '';
                             viewData[i][field.id] = field.replaceNamePrefix ? field.replaceNamePrefix + viewData[i][field.id] : viewData[i][field.id];
+                            viewData[i][field.id] = field.replaceNamePrefixData ? list[orgViewDataFieldId][field.replaceNamePrefixData] + ' - ' + viewData[i][field.id] : viewData[i][field.id];
                         }
                     }
                 };
@@ -119,10 +121,12 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             if (field.dataFrom) {
                 serviceConf = self.getServiceConfig(field.dataFrom);
                 serviceApi.callServiceApi(serviceConf).then(function(res) {
+                    var orgViewDataFieldId = viewData[field.id];
                     list = res.data;
                     if (field.isSingle) {
-                        viewData[field.id] = (viewData[field.id] && list[viewData[field.id]]) ? list[viewData[field.id]][field.replaceName] : '';
+                        viewData[field.id] = (viewData[field.id] && list[viewData[field.id]]) ? list[orgViewDataFieldId][field.replaceName] : '';
                         viewData[field.id] = field.replaceNamePrefix ? field.replaceNamePrefix + viewData[field.id] : viewData[field.id];
+                        viewData[field.id] = field.replaceNamePrefixData ? list[orgViewDataFieldId][field.replaceNamePrefixData] + ' - ' + viewData[field.id] : viewData[field.id];
                     } else {
                         listReplace(field);
                     }
@@ -135,7 +139,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         },
         matchFilter: function(field, list, context) {
             var returnFlag = false;
-            if(context && context.page.name === 'edit'){
+            if (context && context.page.name === 'edit') {
                 return true;
             }
             for (var i in field.filter) {
@@ -285,7 +289,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                         operationTo: context.data.operationTo
                     }
                     serviceconf = serviceconf = existingStock && self.getServiceConfig('report.partStock', 'POST') || self.getServiceConfig('report.partStock', 'POST');
-                    returnPromise.push(serviceApi.callServiceApi(serviceconf, data).then(function(){
+                    returnPromise.push(serviceApi.callServiceApi(serviceconf, data).then(function() {
                         context.actions.getPartStock(context);
                     }));
                 }
@@ -304,7 +308,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                         operationTo: existingPrevStock.operationTo
                     }
                     serviceconf = self.getServiceConfig('report.partStock', 'POST');
-                    returnPromise.push(serviceApi.callServiceApi(serviceconf, data).then(function(){
+                    returnPromise.push(serviceApi.callServiceApi(serviceconf, data).then(function() {
                         context.actions.getPartStock(context);
                     }));
                 }
@@ -349,9 +353,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 operation = data.operationFrom;
             if (data.id &&
                 operation &&
-                (context.partStock === undefined || 
-                context.partStock[data.id + '-' + operation] === undefined ||
-                context.partStock[data.id + '-' + operation].partStockQty < qty)) {
+                (context.partStock === undefined ||
+                    context.partStock[data.id + '-' + operation] === undefined ||
+                    context.partStock[data.id + '-' + operation].partStockQty < qty)) {
                 data[field.id] = qty = null;
             }
             totalBeforTax = qty * data.rate;
@@ -401,21 +405,19 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
 
             return obj.sort(compare);
         },
-        viewFilterBy: function(context, list){
-            if(!list.selectedFilterBy){
+        viewFilterBy: function(context, list) {
+            if (!list.selectedFilterBy) {
                 delete context.filterBy[list.id];
-            }
-            else{
+            } else {
                 context.filterBy[list.id] = list.selectedFilterBy;
             }
         },
         applyFieldValues: function(context, fields, data, printView) {
             for (var i in fields) {
                 if (fields[i].type === 'select') {
-                    if(printView){
+                    if (printView) {
                         context.actions.replaceViewDataVal(data, fields[i]);
-                    }
-                    else{
+                    } else {
                         context.actions.makeOptionsFields(fields[i], context);
                     }
                 }
@@ -447,6 +449,19 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 context.operationsData = res.data;
             });
 
+        },
+        isCheckExistField: function(context, data, value, field){
+            if(context.actions.findObjectByKey(context.listViewData, field.id, value)){
+                data[field.id] = null;
+            }
+        },
+        findObjectByKey: function(array, key, value) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i][key] === value) {
+                    return array[i];
+                }
+            }
+            return false;
         }
     };
     return {
