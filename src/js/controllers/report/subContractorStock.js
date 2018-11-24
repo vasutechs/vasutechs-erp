@@ -27,7 +27,7 @@ erpApp.controller('subContractorStockCtrl', ['erpAppConfig', '$scope', 'commonFa
                     context.form.fields['partNo'].filter = {
                         id: partNos
                     };
-                    context.actions.makeOptionsFields(context.form.fields['partNo']);
+                    context.actions.makeOptionsFields(context, context.form.fields['partNo']);
                 });
             }
         },

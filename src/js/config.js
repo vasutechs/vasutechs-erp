@@ -5,7 +5,7 @@ var erpAppConfig = {
     appBaseUrl: '/dashboard',
     dataDownloadUrl: '/api/download',
     calendarYear: new Date().getMonth() > 4 ? new Date().getFullYear() : new Date().getFullYear() - 1,
-    finalStageOpp: 9,
+    finalStageOpp: 11,
     companyDetail: {
         name: 'Vasu Techs',
         logoUrl: 'assets/img/vasu-techs-logo.png',
@@ -518,7 +518,6 @@ var erpAppConfig = {
                     name: 'Invoice',
                     id: 'invoice',
                     autoGenKey: 'invoiceNo', 
-                    autoGenValStart: '16',
                     fields: {
                         'invoiceNo': {
                             name: 'Invoice No',
@@ -2035,6 +2034,7 @@ var erpAppConfig = {
                             replaceName: 'partNo',
                             updateData: ['rmCode', 'partName'],
                             action: 'changeMapping',
+                            existingCheck: true,
                             isSingle: true
                         },
                         'partName': {
@@ -2193,7 +2193,8 @@ var erpAppConfig = {
                     mapping: [{
                         id: null,
                         opName: null,
-                        source: null
+                        source: null,
+                        toolNo: null
                     }]
                 },
                 form: {
@@ -2210,6 +2211,7 @@ var erpAppConfig = {
                             updateData: ['partName'],
                             dataFrom: 'marketing.partMaster',
                             replaceName: 'partNo',
+                            existingCheck: true,
                             isSingle: true
                         },
                         'partName': {
@@ -2241,6 +2243,14 @@ var erpAppConfig = {
                                 name: 'Source',
                                 id: 'source',
                                 type: 'span'
+                            },
+                            'toolNo': {
+                                name: 'Tool Name',
+                                id: 'toolNo',
+                                type: 'select',
+                                options: {},
+                                dataFrom: 'production.toolMaster',
+                                replaceName: 'toolName'
                             }
                         }
                     }
@@ -2273,7 +2283,6 @@ var erpAppConfig = {
                 masterData: {
                     toolNo: null,
                     toolName: null,
-                    partNo: null,
                     make: null,
                     type: null,
                     toolLife: null,
@@ -2298,16 +2307,6 @@ var erpAppConfig = {
                             inputType: 'text',
                             action: 'isCheckExistField',
                             required: true
-                        },
-                        'partNo': {
-                            name: 'Part No',
-                            id: 'partNo',
-                            type: 'select',
-                            options: {},
-                            dataFrom: 'marketing.partMaster',
-                            replaceName: 'partNo',
-                            required: true,
-                            isSingle: true
                         },
                         'make': {
                             name: 'Make',
@@ -2353,12 +2352,6 @@ var erpAppConfig = {
                     }, {
                         title: 'Tool Name',
                         id: 'toolName'
-                    },
-                    {
-                        title: 'PartName',
-                        id: 'partNo',
-                        dataFrom: 'marketing.partMaster',
-                        replaceName: 'partName'
                     },
                     {
                         action: true
@@ -2588,6 +2581,7 @@ var erpAppConfig = {
                                 type: 'select',
                                 options: {},
                                 action: 'updateOperationTo',
+                                makeFieldOptions: false,
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
                                 replaceNamePrefixData: 'opCode',
@@ -2601,6 +2595,8 @@ var erpAppConfig = {
                                 required: true,
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
+                                action: 'updateToolNo',
+                                makeFieldOptions: false,
                                 replaceNamePrefixData: 'opCode'
                             },
                             'toolName': {

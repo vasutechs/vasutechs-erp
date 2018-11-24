@@ -10,7 +10,7 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
                     status: 0
                 }
             });
-            context.actions.makeOptionsFields(context.form.fields['dcNo']);
+            context.actions.makeOptionsFields(context, context.form.fields['dcNo']);
         },
         getPOSubContractor: function(context, data, key, field) {
             context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
@@ -18,7 +18,7 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
                     subContractorCode: key
                 }
             });
-            context.actions.makeOptionsFields(context.form.fields['poNo']);
+            context.actions.makeOptionsFields(context, context.form.fields['poNo']);
         },
         updateDCSubContractor: function(context) {
 
