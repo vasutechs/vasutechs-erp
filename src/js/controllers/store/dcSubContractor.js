@@ -10,7 +10,7 @@ erpApp.controller('dcSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact'
                     status: 0
                 }
             });
-            context.actions.makeOptionsFields(context.form.fields['poNo']);
+            context.actions.makeOptionsFields(context, context.form.fields['poNo']);
         },
         callBackChangeMapping: function(context) {
             context.actions.checkAcceptedQty(context);

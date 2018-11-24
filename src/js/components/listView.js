@@ -4,7 +4,7 @@ erpApp.directive('listView', ['erpAppConfig', function(erpAppConfig) {
             var listView = $scope.context.listView;
             for (var i in listView) {
                 if (listView[i].isFilterBy && listView[i].type === 'select') {
-                    $scope.context.actions.makeOptionsFields(listView[i]);
+                    $scope.context.actions.makeOptionsFields($scope.context, listView[i]);
                 }
             }
         });

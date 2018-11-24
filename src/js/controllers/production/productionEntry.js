@@ -10,9 +10,8 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                 context.actions.applyFieldValues(context, context.form.mapping.fields, context.printData.mapping, context.page.printViewMapping);
                 context.actions.addMapping(context.data.mapping);
                 context.finalMapping = context.data.mapping.length - 1;
-                setTimeout(function() {
-                    context.actions.callBackChangeMapping(context, context.data.mapping[context.finalMapping]);
-                }, 1000);
+                context.actions.updateOperationFrom(context, context.data.mapping[context.finalMapping], context.finalMapping);
+
             }
         },
         callBackList: function(context) {
@@ -38,19 +37,17 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
             prFrmToQtyMap = context.data.jobCardNo + '-' + context.data.partNo + '-' + mappingData.operationFrom + '-to';
 
             if (context.data.partNo && mappingData.operationFrom) {
-                if(context.operationsData[mappingData.operationFrom].source === 'Supplier'){
+                if (context.operationsData[mappingData.operationFrom].source === 'Supplier') {
                     qtyCanMake = context.form.fields['jobCardNo'].options[context.data.jobCardNo].qtyCanMake;
-                }
-                else if(context.operationsData[mappingData.operationFrom].source === 'Sub-Contractor'){
+                } else if (context.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
                     qtyCanMake = context.prQty[context.data.jobCardNo + '-' + context.data.partNo + '-' + context.partStock[context.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to'].prAcpQty || 0;
-                }
-                else{
+                } else {
                     qtyCanMake = context.prQty[prFrmToQtyMap] && context.prQty[prFrmToQtyMap].prAcpQty || 0;
                 }
                 stockQty = context.partStock[context.data.partNo + '-' + mappingData.operationFrom] && context.partStock[context.data.partNo + '-' + mappingData.operationFrom].partStockQty || 0;
                 fullQty = context.prQty[prFrmQtyMap] && parseInt(context.prQty[prFrmQtyMap].prQty) + parseInt(qty) || qty;
             }
-            
+
             if (qty > stockQty || fullQty > qtyCanMake || (context.prQty[prFrmQtyMap] && context.prQty[prFrmQtyMap].prQty < qty) || (context.prQty[prToQtyMap] && context.prQty[prToQtyMap].prAcpQty < qty) || (context.prQty[prFrmToQtyMap] && context.prQty[prFrmToQtyMap].prAcpQty < qty)) {
                 mappingData[field.id] = null
             }
@@ -111,14 +108,17 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                     });
                 }
 
-                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction).then(function(){
+                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction).then(function() {
                     var options = context.form.mapping.fields['operationTo'].options;
                     var firstOption = options[Object.keys(options)[0]];
-                    if(firstOption && firstOption.source === 'Sub-Contractor'){
+                    if (firstOption && firstOption.source === 'Sub-Contractor') {
                         context.form.mapping.fields['operationTo'].options = {};
                     }
                 });
             }
+        },
+        updateToolNo: function(context, mappingData) {
+            mappingData.toolNo = context.data.partNo && mappingData.operationTo && context.flowMasterByPart[context.data.partNo + '-' + mappingData.operationTo].toolNo || null;
         },
         calculatePlanQty: function(context, mappingData) {
             var startDate = mappingData.startTime;
@@ -153,7 +153,7 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                         prFrmAcpQty = context.prQty[prFrmQtyMap] ? parseInt(context.prQty[prFrmQtyMap].acceptedQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
                         prFrmQty = context.prQty[prFrmQtyMap] ? parseInt(context.prQty[prFrmQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
                         prToQty = context.prQty[prToQtyMap] ? parseInt(context.prQty[prToQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
-                         prToAcpQty = context.prQty[prToQtyMap] ? parseInt(context.prQty[prToQtyMap].acceptedQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
+                        prToAcpQty = context.prQty[prToQtyMap] ? parseInt(context.prQty[prToQtyMap].acceptedQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
 
                         context.prQty[prFrmQtyMap] = listViewData[i].mapping[j];
                         context.prQty[prFrmQtyMap].prQty = prFrmQty;

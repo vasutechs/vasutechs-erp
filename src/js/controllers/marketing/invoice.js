@@ -4,8 +4,8 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
             context.actions.getPartStock(context);
         },
         callBackSetAutoGenKey: function(context) {
-            var year = new Date().getFullYear();
-            context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year;
+            var year = erpAppConfig.calendarYear;
+            context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year + '-' + ('' + parseInt(year + 1)).substring(2);
         },
         callBackChangeMapping: function(context, data, key, field) {
             context.actions.getPartStockDetail(context, data, key, field);
@@ -138,7 +138,7 @@ directive('entryInvoice', function() {
                     if ($scope.context.page.printView) {
                         $scope.context.actions.replaceViewDataVal($scope.context.data, $scope.context.form.fields[i]);
                     } else {
-                        $scope.context.actions.makeOptionsFields($scope.context.form.fields[i]);
+                        $scope.context.actions.makeOptionsFields($scope.context, $scope.context.form.fields[i]);
                     }
                 }
             }
@@ -149,7 +149,7 @@ directive('entryInvoice', function() {
                     if ($scope.context.page.printView) {
                         $scope.context.actions.replaceViewDataVal($scope.context.data.mapping, $scope.context.form.mapping.fields[i]);
                     } else {
-                        $scope.context.actions.makeOptionsFields($scope.context.form.mapping.fields[i]);
+                        $scope.context.actions.makeOptionsFields($scope.context, $scope.context.form.mapping.fields[i]);
                     }
                 }
 

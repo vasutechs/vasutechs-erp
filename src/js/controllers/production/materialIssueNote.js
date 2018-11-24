@@ -15,7 +15,7 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
                         id: rmStock
                     }
                 });
-                context.actions.makeOptionsFields(context.form.fields['rmCode']);
+                context.actions.makeOptionsFields(context, context.form.fields['rmCode']);
             });
 
         },
@@ -24,7 +24,7 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
                 context.form.fields['partNo'].filter = {
                     rmCode: context.data.rmCode
                 };
-                context.actions.makeOptionsFields(context.form.fields['partNo']);
+                context.actions.makeOptionsFields(context, context.form.fields['partNo']);
             }
         },
         getNorms: function(context) {

@@ -9,7 +9,7 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
                     status: 0 
                 }
             });
-            context.actions.makeOptionsFields(context.form.fields['poNo']);
+            context.actions.makeOptionsFields(context, context.form.fields['poNo']);
         },
         updateRmTotal: function(context, data, updateValue) {
             var total = 0,
