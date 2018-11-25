@@ -20,8 +20,9 @@
                             <option value="">--Select--</option>
                         </select>
                         <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}"><b>{{context.form.fields.customerCode.idPrefix}}{{context.data[context.form.fields.customerCode.id]}}</b></span>
-                        <br />
-                        <span id="{{context.form.fields.address.id}}"><b>{{context.data[context.form.fields.address.id]}}</b></span>
+
+                        <span id="{{context.form.fields.address.id}}"><b>, {{context.data[context.form.fields.address.id]}}</b></span>
+
                     </td>
                 </tr>
                 <tr>
@@ -41,7 +42,7 @@
                     <td ng-switch="field.type" ng-repeat="field in context.form.mapping.fields">
                         <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>
                         <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id])" ng-required="{{field.required}}" />
-                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field)" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}" ng-disabled="field.isDisable">
+                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field)" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}"  ng-disabled="field.isDisable">
                             <option value="">--Select--</option>
                         </select>
                     </td>
@@ -52,6 +53,7 @@
                         <span id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>
                     </td>
                 </tr>
+                
                 <tr>
                     <td colspan="4" align="right"><b>Sub Total:</b></td>
                     <td colspan="2"><span id="{{context.form.fields.subTotal.id}}" ng-bind="context.data[context.form.fields.subTotal.id]"></span></td>
@@ -69,8 +71,7 @@
                     <td colspan="2"><span id="{{context.form.fields.sgstTotal.id}}" ng-bind="context.data[context.form.fields.sgstTotal.id]"></span></td>
                 </tr>
                 <tr>
-                    <td colspan="3"></td>
-                    <td align="right"><b>{{context.form.fields.total.name}}:</b></td>
+                    <td colspan="4" align="right"><b>{{context.form.fields.total.name}}:</b></td>
                     <td colspan="2"><b><span id="{{context.form.fields.total.id}}" ng-bind="context.data[context.form.fields.total.id]"></span></b></td>
                 </tr>
             </tbody>
