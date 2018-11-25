@@ -10,8 +10,6 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                 context.actions.applyFieldValues(context, context.form.mapping.fields, context.printData.mapping, context.page.printViewMapping);
                 context.actions.addMapping(context.data.mapping);
                 context.finalMapping = context.data.mapping.length - 1;
-                context.actions.updateOperationFrom(context, context.data.mapping[context.finalMapping], context.finalMapping);
-
             }
         },
         callBackList: function(context) {
@@ -48,7 +46,7 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
                 fullQty = context.prQty[prFrmQtyMap] && parseInt(context.prQty[prFrmQtyMap].prQty) + parseInt(qty) || qty;
             }
 
-            if (qty > stockQty || fullQty > qtyCanMake || (context.prQty[prFrmQtyMap] && context.prQty[prFrmQtyMap].prQty < qty) || (context.prQty[prToQtyMap] && context.prQty[prToQtyMap].prAcpQty < qty) || (context.prQty[prFrmToQtyMap] && context.prQty[prFrmToQtyMap].prAcpQty < qty)) {
+            if (qty > stockQty || fullQty > qtyCanMake || (context.prQty[prFrmToQtyMap] && context.prQty[prFrmToQtyMap].prAcpQty < qty)) {
                 mappingData[field.id] = null
             }
         },

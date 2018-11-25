@@ -80,9 +80,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             var serviceconf = this.getServiceConfig(context.services.list, 'POST');
 
             serviceApi.callServiceApi(serviceconf, context.data).then(function() {
+                context.actions.callBackSubmit && context.actions.callBackSubmit(context);
                 context.page.name = 'list';
                 context.actions.list(context);
-                context.actions.callBackSubmit && context.actions.callBackSubmit(context);
             });;
 
         },
@@ -173,6 +173,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                         field.options[list[i].id]['optionId'] = optionIdVal;
                     }
                 }
+                return field;
             });
         },
         addMapping: function(mapping) {
@@ -416,13 +417,18 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             printView = printView || context.page.printView;
 
             for (var i in fields) {
-                if (fields[i].type === 'select') {
+                var field = fields[i];
+                if (field.type === 'select') {
                     if (printView) {
                         data = data || context.printData;
-                        context.actions.replaceViewDataVal(data, fields[i]);
-                    } else if (fields[i].makeFieldOptions === undefined) {
+                        context.actions.replaceViewDataVal(data, field);
+                    } else if (field.makeFieldOptions === undefined) {
                         data = data || context.data;
-                        context.actions.makeOptionsFields(context, fields[i]);
+                        context.actions.makeOptionsFields(context, field).then(function(returnField){
+                            if(returnField.onLoadAction){
+                                context.actions[returnField.action](context, data, data[returnField.id], returnField);
+                            }
+                        });
                     }
                 }
             }

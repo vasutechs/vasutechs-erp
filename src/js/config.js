@@ -5,7 +5,7 @@ var erpAppConfig = {
     appBaseUrl: '/dashboard',
     dataDownloadUrl: '/api/download',
     calendarYear: new Date().getMonth() > 4 ? new Date().getFullYear() : new Date().getFullYear() - 1,
-    finalStageOpp: 11,
+    finalStageOpp: 9,
     companyDetail: {
         name: 'Vasu Techs',
         logoUrl: 'assets/img/vasu-techs-logo.png',
@@ -2557,7 +2557,8 @@ var erpAppConfig = {
                                 status: 0
                             },
                             isEditDisable: true,
-                            isSingle: true
+                            isSingle: true,
+                            onLoadAction: true
                         },
                         'partNo': {
                             name: 'Part No',
@@ -2604,7 +2605,6 @@ var erpAppConfig = {
                                 id: 'toolNo',
                                 type: 'select',
                                 options: {},
-                                required: true,
                                 dataFrom: 'production.toolMaster',
                                 replaceName: 'toolName'
                             },
