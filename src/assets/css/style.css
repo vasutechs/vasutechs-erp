@@ -547,4 +547,13 @@ footer.sticky-footer {
     body{
         font-size: 1.3rem !important;
     }
+    .card{
+        border: 5px solid rgba(0,0,0,.125) !important;
+    }
+    .table-bordered td, .table-bordered th{
+        border: 5px solid #dee2e6 !important;
+    }
+    .table-bordered{
+        border: 5px solid #dee2e6 !important;
+    }
 }
