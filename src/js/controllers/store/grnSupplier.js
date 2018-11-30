@@ -1,5 +1,5 @@
-erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
-    var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+erpApp.controller('grnSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+    var actions = {
         getPOSupplier: function(context, data, key, field) {
             context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
                 dataFrom: 'purchase.poSupplier',
@@ -57,8 +57,8 @@ erpApp.controller('grnSupplierCtrl', ['erpAppConfig', '$scope', 'commonFact', 's
             context.actions.updateRMStockQty(context);
             context.actions.updatePoSupplier(context);
         }
-    });
-    $scope.context = erpAppConfig.modules.store.grnSupplier;
-    $scope.context.actions = actions;
-    $scope.context.actions.list($scope.context);
+    };
+
+    commonFact.initCtrl($scope, 'store.grnSupplier', actions);
+    
 }]);

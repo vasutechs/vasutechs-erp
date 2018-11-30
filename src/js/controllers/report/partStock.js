@@ -1,5 +1,5 @@
-erpApp.controller('partStockCtrl', ['erpAppConfig', '$scope', 'commonFact', '$location', 'serviceApi', function(erpAppConfig, $scope, commonFact, $location, serviceApi) {
-    var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+erpApp.controller('partStockCtrl', ['$scope', 'commonFact', '$location', 'serviceApi', function($scope, commonFact, $location, serviceApi) {
+    var actions = {
         callBackList: function(context) {
             var newList = angular.copy(context.listViewData);
             if ($location.search() && $location.search()['showall'] === 'no') {
@@ -50,10 +50,8 @@ erpApp.controller('partStockCtrl', ['erpAppConfig', '$scope', 'commonFact', '$lo
                 context.actions.list(context);
             });
         }
-    });
+    };
 
-    $scope.context = erpAppConfig.modules.report.partStock;
-    $scope.context.actions = actions;
-    $scope.context.actions.list($scope.context);
+    commonFact.initCtrl($scope, 'report.partStock', actions);
 
 }]);

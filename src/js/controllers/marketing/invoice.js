@@ -125,41 +125,8 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
         $scope.context.cashBill = false;
     }
 
-    $scope.context.companyDetail = erpAppConfig.companyDetail;
+    $scope.context.erpAppConfig = erpAppConfig;
     $scope.context.actions = actions;
     $scope.context.actions.list($scope.context);
 
-}]).
-directive('entryInvoice', function() {
-    var entryInvoice = function($scope, element, attrs) {
-        element.ready(function() {
-            for (var i in $scope.context.form.fields) {
-                if ($scope.context.form.fields[i].type === 'select') {
-                    if ($scope.context.page.printView) {
-                        $scope.context.actions.replaceViewDataVal($scope.context.data, $scope.context.form.fields[i]);
-                    } else {
-                        $scope.context.actions.makeOptionsFields($scope.context, $scope.context.form.fields[i]);
-                    }
-                }
-            }
-
-            for (var i in $scope.context.form.mapping.fields) {
-
-                if ($scope.context.form.mapping.fields[i].type === 'select') {
-                    if ($scope.context.page.printView) {
-                        $scope.context.actions.replaceViewDataVal($scope.context.data.mapping, $scope.context.form.mapping.fields[i]);
-                    } else {
-                        $scope.context.actions.makeOptionsFields($scope.context, $scope.context.form.mapping.fields[i]);
-                    }
-                }
-
-            }
-        });
-    };
-
-    return {
-        restrict: 'E',
-        templateUrl: 'template/components/entryInvoice.html',
-        link: entryInvoice
-    };
-});
+}]);

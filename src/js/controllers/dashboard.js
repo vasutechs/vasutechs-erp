@@ -1,3 +1,3 @@
-erpApp.controller('dashboardCtrl', ['erpAppConfig', function(erpAppConfig) {
+erpApp.controller('dashboardCtrl', [function() {
 	console.log('loaded...');
 }]);

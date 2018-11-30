@@ -1,5 +1,5 @@
-erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
-    var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+    var actions = {
         callBackAdd: function(context) {
             context.page.printViewMapping = false;
             context.finalMapping = 0;
@@ -173,8 +173,8 @@ erpApp.controller('productionEntryCtrl', ['erpAppConfig', '$scope', 'commonFact'
             context.actions.updatePartStock(newContext);
             context.actions.updateMaterialIssue(context);
         }
-    });
-    $scope.context = erpAppConfig.modules.production.productionEntry;
-    $scope.context.actions = actions;
-    $scope.context.actions.list($scope.context);
+    };
+    
+    commonFact.initCtrl($scope, 'production.productionEntry', actions);
+
 }]);

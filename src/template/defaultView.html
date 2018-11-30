@@ -13,7 +13,7 @@
         <div ng-if="context.page.name=='add' || context.page.name=='edit'">
             <div class="card">
                 <div class="card-header hide-print">
-                    <b ng-if="!context.page.printView">Add/Edit</b>
+                    <b ng-if="!context.page.printView">{{context.form.title||'Add/Edit'}}</b>
                     <a ng-if="context.page.printView" href='javascript: window.print();'><b>Print View</b></a>
                     <button type="button" class="close float-right" aria-label="Close" ng-click="context.actions.cancel(context)">
                         <span aria-hidden="true">&times;</span>

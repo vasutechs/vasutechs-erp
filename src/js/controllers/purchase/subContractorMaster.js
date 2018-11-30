@@ -1,5 +1,5 @@
-erpApp.controller('subContractorMasterCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
-    var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+erpApp.controller('subContractorMasterCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+    var actions = {
         callBackList: function(context) {
             var serviceconf = this.getServiceConfig('production.flowMaster'),
                 partNos = [];
@@ -17,10 +17,8 @@ erpApp.controller('subContractorMasterCtrl', ['erpAppConfig', '$scope', 'commonF
                 };
             });
         }
-    });
+    };
 
-    $scope.context = erpAppConfig.modules.purchase.subContractorMaster;
-    $scope.context.actions = actions;
-    $scope.context.actions.list($scope.context);
+    commonFact.initCtrl($scope, 'purchase.subContractorMaster', actions);
 
 }]);
