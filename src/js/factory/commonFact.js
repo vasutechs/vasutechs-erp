@@ -75,7 +75,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                     listViewData.hasOwnProperty(x) && !listViewData[x].disabled && context.listViewData.push(listViewData[x])
                 }
                 context.listViewDataMaster = angular.copy(context.listViewData);
-                context.lastData = context.listViewData[context.listViewData.length - 1];
+                context.lastData = angular.copy(context.listViewData[context.listViewData.length - 1]);
                 for (var i in context.listView) {
                     context.actions.replaceViewDataVal(context.listViewData, context.listView[i], true);
                 }
