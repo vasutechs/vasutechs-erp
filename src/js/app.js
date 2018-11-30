@@ -7,7 +7,7 @@ var erpApp = angular.module('erpApp', ['ngRoute'])
             templateUrl: 'template/app.html'
         };
     })
-    .config(['$routeProvider', 'erpAppConfig', function($routeProvider, erpAppConfig) {
+    .config(['$routeProvider', 'staticConfig', function($routeProvider, staticConfig) {
         var buildRoute = function(modules) {
             var module,
                 buildPage = function(page) {
@@ -36,7 +36,7 @@ var erpApp = angular.module('erpApp', ['ngRoute'])
         };
         $routeProvider
             .otherwise({
-                redirectTo: erpAppConfig.appBaseUrl
+                redirectTo: staticConfig.appBaseUrl
             });
-        buildRoute(erpAppConfig.modules);
+        buildRoute(staticConfig.modules);
     }]);

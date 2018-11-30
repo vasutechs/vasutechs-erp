@@ -1,5 +1,5 @@
-erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
-    var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+erpApp.controller('grnSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+    var actions = {
         callBackList: function(context){
             context.grnSC = true;
         },
@@ -89,9 +89,8 @@ erpApp.controller('grnSubContractorCtrl', ['erpAppConfig', '$scope', 'commonFact
             }
             context.actions.updateDCSubContractor(context);
         }
-    });;
+    };
 
-    $scope.context = erpAppConfig.modules.store.grnSubContractor;
-    $scope.context.actions = actions;
-    $scope.context.actions.list($scope.context);
+    commonFact.initCtrl($scope, 'store.grnSubContractor', actions);
+
 }]);

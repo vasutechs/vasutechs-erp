@@ -1,19 +1,17 @@
 'use strict'
 
-var erpAppConfig = {
+var staticConfig = {
     appName: 'VASUTECHS',
     appBaseUrl: '/dashboard',
     dataDownloadUrl: '/api/download',
     calendarYear: new Date().getMonth() > 4 ? new Date().getFullYear() : new Date().getFullYear() - 1,
     finalStageOpp: 9,
-    companyDetail: {
-        name: 'Vasu Techs',
-        logoUrl: 'assets/img/vasu-techs-logo.png',
-        address: '32, South kumara kattalai street, Mayiladuthurai, Nagapattinam(DT) 609001',
-        mobile: '9003206361',
-        email: 'vasutechs@gmail.com',
-        gstin: '33BORPS568IBIZM'
-    },
+    companyName: 'Vasu Techs',
+    companyLogoUrl: 'assets/img/vasu-techs-logo.png',
+    companyAddress: '32, South kumara kattalai street, Mayiladuthurai, Nagapattinam(DT) 609001',
+    companyMobile: '9003206361',
+    companyEmail: 'vasutechs@gmail.com',
+    companyGstin: '33BORPS568IBIZM',
     modules: {
         databaseUpload: {
             name: 'Database Upload',
@@ -94,7 +92,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
-                            replaceNamePrefixData: 'grade',
+                            valuePrefixData: 'grade',
                             isSingle: true
                         },
                         'inputWeight': {
@@ -173,7 +171,7 @@ var erpAppConfig = {
                         id: 'partName'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -214,7 +212,7 @@ var erpAppConfig = {
                             name: 'Customer Code',
                             id: 'customerCode',
                             type: 'span',
-                            idPrefix: 'VT-CUS-'
+                            valuePrefix: 'VT-CUS-'
                         },
                         'customerName': {
                             name: 'Customer Name',
@@ -280,14 +278,14 @@ var erpAppConfig = {
                 listView: [{
                         title: 'Customer Code',
                         id: 'customerCode',
-                        idPrefix: 'VT-CUS-'
+                        valuePrefix: 'VT-CUS-'
                     },
                     {
                         title: 'Customer Name',
                         id: 'customerName'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -328,7 +326,7 @@ var erpAppConfig = {
                         'employeeCode': {
                             name: 'Employee Code',
                             id: 'employeeCode',
-                            idPrefix: 'VT-EMP-',
+                            valuePrefix: 'VT-EMP-',
                             type: 'span'
                         },
                         'employeeName': {
@@ -420,7 +418,7 @@ var erpAppConfig = {
                         id: 'mailId'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -451,7 +449,7 @@ var erpAppConfig = {
                             name: 'UOM Code',
                             id: 'uomCode',
                             type: 'span',
-                            idPrefix: 'VT-UOM-'
+                            valuePrefix: 'VT-UOM-'
                         },
                         'uomName': {
                             name: 'UOM Name',
@@ -466,14 +464,14 @@ var erpAppConfig = {
                 listView: [{
                         title: 'UOM Code',
                         id: 'uomCode',
-                        idPrefix: 'VT-UOM-'
+                        valuePrefix: 'VT-UOM-'
                     },
                     {
                         title: 'UOM Name',
                         id: 'uomName'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -517,13 +515,13 @@ var erpAppConfig = {
                 form: {
                     name: 'Invoice',
                     id: 'invoice',
-                    autoGenKey: 'invoiceNo', 
+                    autoGenKey: 'invoiceNo',
                     fields: {
                         'invoiceNo': {
                             name: 'Invoice No',
                             id: 'invoiceNo',
                             type: 'span',
-                            idPrefix: 'H-',
+                            valuePrefix: 'H-',
                             required: true
                         },
                         'date': {
@@ -643,7 +641,7 @@ var erpAppConfig = {
                 listView: [{
                         title: 'Invoice No',
                         id: 'invoiceNo',
-                        idPrefix: 'H-'
+                        valuePrefix: 'H-'
                     },
                     {
                         title: 'Customer',
@@ -652,7 +650,7 @@ var erpAppConfig = {
                         replaceName: 'customerName'
                     },
                     {
-                        action: true,
+                        actions: true,
                         edit: false
                     }
                 ],
@@ -672,6 +670,7 @@ var erpAppConfig = {
             cashBill: {
                 name: 'cashBill',
                 title: 'Cash Bill',
+                parentModule: 'marketing.invoice',
                 form: {
                     autoGenValStart: null,
                     fields: {
@@ -679,7 +678,7 @@ var erpAppConfig = {
                             name: 'CashBill No',
                             id: 'invoiceNo',
                             type: 'span',
-                            idPrefix: '',
+                            valuePrefix: '',
                             required: true
                         }
                     }
@@ -687,7 +686,7 @@ var erpAppConfig = {
                 listView: [{
                     title: 'Cash Bill No',
                     id: 'invoiceNo',
-                    idPrefix: ''
+                    valuePrefix: ''
                 }],
                 page: {
                     link: 'marketing/invoice/list?type=cashBill',
@@ -729,7 +728,7 @@ var erpAppConfig = {
                         'rmCode': {
                             name: 'RM Code',
                             id: 'rmCode',
-                            idPrefix: 'RM-',
+                            valuePrefix: 'RM-',
                             type: 'span'
                         },
                         'rmName': {
@@ -803,14 +802,14 @@ var erpAppConfig = {
                 listView: [{
                         title: 'RM Code',
                         id: 'rmCode',
-                        idPrefix: 'RM-'
+                        valuePrefix: 'RM-'
                     },
                     {
                         title: 'RM Name',
                         id: 'rmName'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -850,7 +849,7 @@ var erpAppConfig = {
                             name: 'Supplier Code',
                             id: 'supplierCode',
                             type: 'span',
-                            idPrefix: 'VT-SP-'
+                            valuePrefix: 'VT-SP-'
                         },
                         'supplierName': {
                             name: 'Supplier Name',
@@ -893,7 +892,7 @@ var erpAppConfig = {
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
                                 replaceName: 'rmName',
-                                replaceNamePrefixData: 'grade'
+                                valuePrefixData: 'grade'
                             },
                             'rate': {
                                 name: 'Rate',
@@ -915,14 +914,14 @@ var erpAppConfig = {
                 listView: [{
                         title: 'Supplier Code',
                         id: 'supplierCode',
-                        idPrefix: 'VT-SP-'
+                        valuePrefix: 'VT-SP-'
                     },
                     {
                         title: 'Supplier Name',
                         id: 'supplierName'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -966,7 +965,7 @@ var erpAppConfig = {
                             name: 'PO Code',
                             id: 'poNo',
                             type: 'span',
-                            idPrefix: 'VT-SP-PO-'
+                            valuePrefix: 'VT-SP-PO-'
                         },
                         'date': {
                             name: 'Date',
@@ -1004,7 +1003,7 @@ var erpAppConfig = {
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
                                 replaceName: 'rmName',
-                                replaceNamePrefixData: 'grade',
+                                valuePrefixData: 'grade',
                                 isDisable: true
                             },
                             'qty': {
@@ -1061,7 +1060,7 @@ var erpAppConfig = {
                 listView: [{
                         title: 'PO NO',
                         id: 'poNo',
-                        idPrefix: 'VT-SP-PO-'
+                        valuePrefix: 'VT-SP-PO-'
                     },
                     {
                         title: 'Supplier Code',
@@ -1074,7 +1073,7 @@ var erpAppConfig = {
                         id: 'status'
                     },
                     {
-                        action: true,
+                        actions: true,
                         edit: false
                     }
                 ],
@@ -1115,7 +1114,7 @@ var erpAppConfig = {
                             name: 'Sub Contractor Code',
                             id: 'subContractorCode',
                             type: 'span',
-                            idPrefix: 'VT-SC-'
+                            valuePrefix: 'VT-SC-'
                         },
                         'subContractorName': {
                             name: 'Sub Contractor Name',
@@ -1190,14 +1189,14 @@ var erpAppConfig = {
                 listView: [{
                         title: 'Sub Contractor Code',
                         id: 'subContractorCode',
-                        idPrefix: 'VT-SC-'
+                        valuePrefix: 'VT-SC-'
                     },
                     {
                         title: 'Sub Contractor Name',
                         id: 'subContractorName'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -1242,7 +1241,7 @@ var erpAppConfig = {
                             name: 'PO Code',
                             id: 'poNo',
                             type: 'span',
-                            idPrefix: 'VT-SC-PO-'
+                            valuePrefix: 'VT-SC-PO-'
                         },
                         'date': {
                             name: 'Date',
@@ -1321,7 +1320,10 @@ var erpAppConfig = {
                             'gst': {
                                 name: 'GST%',
                                 id: 'gst',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                action: 'updateGstPart',
+                                required: true
                             },
                             'cgst': {
                                 name: 'CGST%',
@@ -1347,7 +1349,7 @@ var erpAppConfig = {
                 listView: [{
                         title: 'PO NO',
                         id: 'poNo',
-                        idPrefix: 'VT-SC-PO-'
+                        valuePrefix: 'VT-SC-PO-'
                     },
                     {
                         title: 'SubContractor Code',
@@ -1360,7 +1362,7 @@ var erpAppConfig = {
                         id: 'status'
                     },
                     {
-                        action: true,
+                        actions: true,
                         edit: false
                     }
                 ],
@@ -1413,7 +1415,7 @@ var erpAppConfig = {
                             name: 'GRN No',
                             id: 'grnNo',
                             type: 'span',
-                            idPrefix: 'VT-GRN-'
+                            valuePrefix: 'VT-GRN-'
                         },
                         'date': {
                             name: 'Date',
@@ -1442,7 +1444,7 @@ var erpAppConfig = {
                             updateData: ['mapping'],
                             dataFrom: 'purchase.poSupplier',
                             replaceName: 'poNo',
-                            replaceNamePrefix: 'VT-SP-PO-',
+                            valuePrefix: 'VT-SP-PO-',
                             filter: {
                                 status: 0
                             },
@@ -1474,7 +1476,7 @@ var erpAppConfig = {
                                 action: 'changeMapping',
                                 dataFrom: 'purchase.rmMaster',
                                 replaceName: 'rmName',
-                                replaceNamePrefixData: 'grade',
+                                valuePrefixData: 'grade',
                                 isDisable: true
                             },
                             'qty': {
@@ -1515,7 +1517,10 @@ var erpAppConfig = {
                             'gst': {
                                 name: 'GST%',
                                 id: 'gst',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                action: 'updatePartTotal',
+                                required: true
                             },
                             'total': {
                                 name: 'total',
@@ -1531,7 +1536,7 @@ var erpAppConfig = {
                 listView: [{
                         title: 'GRN NO',
                         id: 'grnNo',
-                        idPrefix: 'VT-GRN-'
+                        valuePrefix: 'VT-GRN-'
                     },
                     {
                         title: 'Supplier',
@@ -1540,7 +1545,7 @@ var erpAppConfig = {
                         replaceName: 'supplierName'
                     },
                     {
-                        action: true,
+                        actions: true,
                         edit: false
                     }
                 ],
@@ -1585,7 +1590,7 @@ var erpAppConfig = {
                             name: 'DC No',
                             id: 'dcNo',
                             type: 'span',
-                            idPrefix: 'VT-DC-'
+                            valuePrefix: 'VT-DC-'
                         },
                         'date': {
                             name: 'Date',
@@ -1612,7 +1617,7 @@ var erpAppConfig = {
                             action: 'changeMapping',
                             dataFrom: 'purchase.poSubContractor',
                             replaceName: 'poNo',
-                            replaceNamePrefix: 'VT-SC-PO-',
+                            valuePrefix: 'VT-SC-PO-',
                             updateMapping: true,
                             updateData: ['mapping'],
                             filter: {
@@ -1641,7 +1646,7 @@ var erpAppConfig = {
                                 required: true,
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode',
+                                valuePrefixData: 'opCode',
                                 isDisable: true
                             },
                             'operationTo': {
@@ -1651,7 +1656,7 @@ var erpAppConfig = {
                                 options: {},
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode',
+                                valuePrefixData: 'opCode',
                                 isDisable: true
                             },
                             'acceptedQty': {
@@ -1679,7 +1684,10 @@ var erpAppConfig = {
                             'gst': {
                                 name: 'GST%',
                                 id: 'gst',
-                                type: 'span'
+                                type: 'input',
+                                inputType: 'text',
+                                action: 'updateGstPart',
+                                required: true
                             },
                             'total': {
                                 name: 'total',
@@ -1695,7 +1703,7 @@ var erpAppConfig = {
                 listView: [{
                         title: 'DC NO',
                         id: 'dcNo',
-                        idPrefix: 'VT-DC-'
+                        valuePrefix: 'VT-DC-'
                     },
                     {
                         title: 'Sub Contractor Code',
@@ -1708,7 +1716,7 @@ var erpAppConfig = {
                         id: 'status'
                     },
                     {
-                        action: true,
+                        actions: true,
                         edit: false
                     }
                 ],
@@ -1758,7 +1766,7 @@ var erpAppConfig = {
                             name: 'GRN No',
                             id: 'grnNo',
                             type: 'span',
-                            idPrefix: 'VT-SC-GRN-'
+                            valuePrefix: 'VT-SC-GRN-'
                         },
                         'date': {
                             name: 'Date',
@@ -1785,7 +1793,7 @@ var erpAppConfig = {
                             action: 'getDCSubContractor',
                             dataFrom: 'purchase.poSubContractor',
                             replaceName: 'poNo',
-                            replaceNamePrefix: 'VT-SC-PO-',
+                            valuePrefix: 'VT-SC-PO-',
                             filter: {
                                 status: 0
                             },
@@ -1799,7 +1807,7 @@ var erpAppConfig = {
                             dataFrom: 'store.dcSubContractor',
                             action: 'changeMapping',
                             replaceName: 'dcNo',
-                            replaceNamePrefix: 'VT-DC-',
+                            valuePrefix: 'VT-DC-',
                             updateMapping: true,
                             updateData: ['mapping'],
                             filter: {
@@ -1841,7 +1849,7 @@ var erpAppConfig = {
                                 options: {},
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode',
+                                valuePrefixData: 'opCode',
                                 isDisable: true
                             },
                             'operationTo': {
@@ -1851,7 +1859,7 @@ var erpAppConfig = {
                                 options: {},
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode',
+                                valuePrefixData: 'opCode',
                                 isDisable: true
                             },
                             'receivedQty': {
@@ -1913,7 +1921,7 @@ var erpAppConfig = {
                 listView: [{
                         title: 'GRN NO',
                         id: 'grnNo',
-                        idPrefix: 'VT-SC-GRN-'
+                        valuePrefix: 'VT-SC-GRN-'
                     },
                     {
                         title: 'Sub Contractor Code',
@@ -1922,7 +1930,7 @@ var erpAppConfig = {
                         replaceName: 'subContractorName'
                     },
                     {
-                        action: true,
+                        actions: true,
                         edit: false
                     }
                 ],
@@ -1974,16 +1982,21 @@ var erpAppConfig = {
                             name: 'Source',
                             id: 'source',
                             type: 'select',
-                            options: [{
-                                optionId: 'Supplier',
-                                optionName: 'Supplier'
-                            }, {
-                                optionId: 'In-House',
-                                optionName: 'IN House'
-                            }, {
-                                optionId: 'Sub-Contractor',
-                                optionName: 'Sub Contractor'
-                            }],
+                            options: {
+                                'Supplier': {
+                                    optionId: 'Supplier',
+                                    optionName: 'Supplier'
+                                },
+                                'In-House': {
+                                    optionId: 'In-House',
+                                    optionName: 'IN House'
+                                },
+                                'Sub-Contractor': {
+                                    optionId: 'Sub-Contractor',
+                                    optionName: 'Sub Contractor'
+                                }
+                            },
+                            makeFieldOptions: false,
                             required: true
                         }
                     }
@@ -1997,7 +2010,7 @@ var erpAppConfig = {
                         id: 'opName'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -2049,7 +2062,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
-                            replaceNamePrefixData: 'grade',
+                            valuePrefixData: 'grade',
                             isDisable: true,
                             isSingle: true
                         },
@@ -2073,10 +2086,10 @@ var erpAppConfig = {
                         id: 'rmCode',
                         dataFrom: 'purchase.rmMaster',
                         replaceName: 'rmName',
-                        replaceNamePrefixData: 'grade'
+                        valuePrefixData: 'grade'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -2112,7 +2125,7 @@ var erpAppConfig = {
                             name: 'Machine No',
                             id: 'machineNo',
                             type: 'span',
-                            idPrefix: 'VT-M/C-'
+                            valuePrefix: 'VT-M/C-'
                         },
                         'machineName': {
                             name: 'Machine Name',
@@ -2162,14 +2175,14 @@ var erpAppConfig = {
                 listView: [{
                         title: 'Machine No',
                         id: 'machineNo',
-                        idPrefix: 'VT-M/C-'
+                        valuePrefix: 'VT-M/C-'
                     },
                     {
                         title: 'Machine Name',
                         id: 'machineName'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -2231,7 +2244,7 @@ var erpAppConfig = {
                                 action: 'changeMapping',
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode',
+                                valuePrefixData: 'opCode',
                                 required: true
                             },
                             'opName': {
@@ -2262,7 +2275,7 @@ var erpAppConfig = {
                         replaceName: 'partNo'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -2298,7 +2311,7 @@ var erpAppConfig = {
                             name: 'Tool No',
                             id: 'toolNo',
                             type: 'span',
-                            idPrefix: 'VT-T'
+                            valuePrefix: 'VT-T'
                         },
                         'toolName': {
                             name: 'Tool Name',
@@ -2348,13 +2361,13 @@ var erpAppConfig = {
                 listView: [{
                         title: 'Tool No',
                         id: 'toolNo',
-                        idPrefix: 'VT-T'
+                        valuePrefix: 'VT-T'
                     }, {
                         title: 'Tool Name',
                         id: 'toolName'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -2392,7 +2405,7 @@ var erpAppConfig = {
                             name: 'Job Card No',
                             id: 'jobCardNo',
                             type: 'span',
-                            idPrefix: 'VT-'
+                            valuePrefix: 'VT-'
                         },
                         'date': {
                             name: 'Job Card Date',
@@ -2408,7 +2421,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
-                            replaceNamePrefixData: 'grade',
+                            valuePrefixData: 'grade',
                             action: 'getPartNo',
                             isSingle: true
                         },
@@ -2451,7 +2464,7 @@ var erpAppConfig = {
                             required: true,
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',
-                            replaceNamePrefixData: 'opCode',
+                            valuePrefixData: 'opCode',
                             isSingle: true
                         }
                     }
@@ -2459,7 +2472,7 @@ var erpAppConfig = {
                 listView: [{
                         title: 'Job Card No',
                         id: 'jobCardNo',
-                        idPrefix: 'VT-'
+                        valuePrefix: 'VT-'
                     },
                     {
                         title: 'PartNo',
@@ -2481,7 +2494,7 @@ var erpAppConfig = {
                         id: 'status'
                     },
                     {
-                        action: true,
+                        actions: true,
                         edit: false
                     }
                 ],
@@ -2537,7 +2550,7 @@ var erpAppConfig = {
                             options: {},
                             dataFrom: 'production.machineMaster',
                             replaceName: 'machineNo',
-                            replaceNamePrefix: 'VT-M/C-',
+                            valuePrefix: 'VT-M/C-',
                             required: true,
                             isEditDisable: true,
                             isSingle: true
@@ -2550,7 +2563,7 @@ var erpAppConfig = {
                             required: true,
                             dataFrom: 'production.materialIssueNote',
                             replaceName: 'jobCardNo',
-                            replaceNamePrefix: 'VT-',
+                            valuePrefix: 'VT-',
                             action: 'changeMapping',
                             updateData: ['partNo'],
                             filter: {
@@ -2558,7 +2571,7 @@ var erpAppConfig = {
                             },
                             isEditDisable: true,
                             isSingle: true,
-                            onLoadAction: true
+                            onLoadActions: true
                         },
                         'partNo': {
                             name: 'Part No',
@@ -2585,7 +2598,7 @@ var erpAppConfig = {
                                 makeFieldOptions: false,
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
-                                replaceNamePrefixData: 'opCode',
+                                valuePrefixData: 'opCode',
                                 required: true
                             },
                             'operationTo': {
@@ -2598,7 +2611,7 @@ var erpAppConfig = {
                                 replaceName: 'opName',
                                 action: 'updateToolNo',
                                 makeFieldOptions: false,
-                                replaceNamePrefixData: 'opCode'
+                                valuePrefixData: 'opCode'
                             },
                             'toolName': {
                                 name: 'Tool Name',
@@ -2676,7 +2689,7 @@ var erpAppConfig = {
                         dataFrom: 'production.materialIssueNote',
                         isFilterBy: true,
                         replaceName: 'id',
-                        replaceNamePrefix: 'VT-',
+                        valuePrefix: 'VT-',
                         type: 'select',
                         options: {}
                     }, {
@@ -2696,7 +2709,7 @@ var erpAppConfig = {
                         isFilterBy: true
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -2737,7 +2750,7 @@ var erpAppConfig = {
                             updateData: ['uomCode'],
                             dataFrom: 'purchase.rmMaster',
                             replaceName: 'rmName',
-                            replaceNamePrefixData: 'grade',
+                            valuePrefixData: 'grade',
                             isSingle: true
                         },
                         'rmStockQty': {
@@ -2763,7 +2776,7 @@ var erpAppConfig = {
                         id: 'rmCode',
                         dataFrom: 'purchase.rmMaster',
                         replaceName: 'rmName',
-                        replaceNamePrefixData: 'grade'
+                        valuePrefixData: 'grade'
                     },
                     {
                         title: 'Rm Stock Qty',
@@ -2779,7 +2792,7 @@ var erpAppConfig = {
                         type: 'date'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -2870,7 +2883,7 @@ var erpAppConfig = {
                         type: 'date'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -2977,7 +2990,7 @@ var erpAppConfig = {
                         type: 'date'
                     },
                     {
-                        action: true
+                        actions: true
                     }
                 ],
                 page: {
@@ -2997,9 +3010,210 @@ var erpAppConfig = {
         admin: {
             name: 'Admin',
             title: 'Admin',
-            icon: 'stack-exchange',
-            partMaster: {}
+            icon: 'cog',
+            settings: {
+                title: 'Settings',
+                masterData: {
+                    companyName: null,
+                    companyLogoUrl: null,
+                    companyAddress: null,
+                    companyMobile: null,
+                    companyEmail: null,
+                    companyGstin: null
+                },
+                form: {
+                    name: 'Settings',
+                    id: 'settings',
+                    fields: {
+                        'companyName': {
+                            name: 'Company Name',
+                            id: 'companyName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyLogoUrl': {
+                            name: 'Company Logo Url',
+                            id: 'companyLogoUrl',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyAddress': {
+                            name: 'Company Address',
+                            id: 'companyAddress',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyMobile': {
+                            name: 'Company Mobile',
+                            id: 'companyMobile',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyLogoUrl': {
+                            name: 'Company Logo Url',
+                            id: 'companyLogoUrl',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyEmail': {
+                            name: 'Company Email',
+                            id: 'companyEmail',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyGstin': {
+                            name: 'Company GSTIN',
+                            id: 'companyGstin',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        finalStageOpp: {
+                            name: 'Operation Final Stage',
+                            id: 'finalStageOpp',
+                            type: 'select',
+                            options: {},
+                            required: true,
+                            dataFrom: 'production.operationMaster',
+                            replaceName: 'opName',
+                            valuePrefixData: 'opCode'
+                        }
+                    }
+                },
+                listView: [{
+                        title: 'Company Name',
+                        id: 'companyName'
+                    },
+                    {
+                        actions: true,
+                        add: false,
+                        delete: false
+                    }
+                ],
+                page: {
+                    link: 'admin/settings/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'settingsCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/settings/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            users: {
+                title: 'Users',
+                masterData: {
+                    userName: null,
+                    password: null,
+                    userType: null
+                },
+                form: {
+                    name: 'Users',
+                    id: 'users',
+                    fields: {
+                        'userName': {
+                            name: 'User Name',
+                            id: 'userName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'password': {
+                            name: 'Password',
+                            id: 'password',
+                            type: 'input',
+                            inputType: 'password',
+                            required: true
+                        },
+                        'userType': {
+                            name: 'User Type',
+                            id: 'userType',
+                            type: 'select',
+                            options: {
+                                1: {
+                                    optionId: '1',
+                                    optionName: 'Admin'
+                                },
+                                2: {
+                                    optionId: '2',
+                                    optionName: 'User'
+                                }
+                            },
+                            makeFieldOptions: false,
+                            required: true
+                        }
+                    }
+                },
+                listView: [{
+                        title: 'User Name',
+                        id: 'userName'
+                    },
+                    {
+                        actions: true
+                    }
+                ],
+                page: {
+                    link: 'admin/users/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'usersCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/users/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            login: {
+                title: 'Login',
+                disableMenu: true,
+                masterData: {
+                    userName: null,
+                    password: null
+                },
+                form: {
+                    name: 'Login',
+                    id: 'login',
+                    title: 'Login',
+                    fields: {
+                        'userName': {
+                            name: 'User Name',
+                            id: 'userName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'password': {
+                            name: 'Password',
+                            id: 'password',
+                            type: 'input',
+                            inputType: 'password',
+                            required: true
+                        }
+                    },
+                    actions: {
+                        cancel: false
+                    }
+                },
+                page: {
+                    link: 'admin/login',
+                    name: 'list',
+                    defaultPage: 'add',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'loginCtrl'
+                }
+            }
         }
     }
 };
-erpApp.constant('erpAppConfig', erpAppConfig);
+erpApp.constant('staticConfig', staticConfig);

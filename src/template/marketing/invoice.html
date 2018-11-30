@@ -19,11 +19,15 @@
                     </button>
                 </div>
                 <div ng-if="context.page.printView" class="row">
-                    <div class="col-4"><img class="logo" src="{{context.companyDetail.logoUrl}}" title="{{context.companyDetail.name}}" /></div>
+                    <div class="col-4">
+                        <img ng-if="context.erpAppConfig.companyLogoUrl" class="logo" src="{{context.erpAppConfig.companyLogoUrl}}" title="{{context.erpAppConfig.companyName}}" />
+                        <h1 ng-if="!context.erpAppConfig.companyLogoUrl" class="logo">{{context.erpAppConfig.companyName}}</h1>
+                    </div>
                     <div class="col-6">
-                        <p class="font-italic"><b>{{context.companyDetail.address}}</b></p>
-                        <p class="font-italic"><b>Mobile:</b> {{context.companyDetail.mobile}} <b>Email:</b> {{context.companyDetail.email}}</p>
-                        <p class="font-italic"><b>GSTIN:</b> {{context.companyDetail.gstin}}</p>
+                        
+                        <p class="font-italic"><b>{{context.erpAppConfig.companyAddress}}</b></p>
+                        <p class="font-italic"><b>Mobile:</b> {{context.erpAppConfig.companyMobile}} <b>Email:</b> {{context.erpAppConfig.companyEmail}}</p>
+                        <p class="font-italic"><b>GSTIN:</b> {{context.erpAppConfig.companyGstin}}</p>
                     </div>
                 </div>
                 <div class="card-body">

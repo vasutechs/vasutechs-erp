@@ -1,5 +1,5 @@
-erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
-    var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+    var actions = {
         callBackEdit: function(context) {
             context.actions.callBackAdd(context);
         },
@@ -95,8 +95,7 @@ erpApp.controller('materialIssueNoteCtrl', ['erpAppConfig', '$scope', 'commonFac
             context.data.acceptedQty = context.data.qtyCanMake;
             context.actions.updatePartStock(context);
         }
-    });
-    $scope.context = erpAppConfig.modules.production.materialIssueNote;
-    $scope.context.actions = actions;
-    $scope.context.actions.list($scope.context);
+    };
+
+    commonFact.initCtrl($scope, 'production.materialIssueNote', actions);
 }]);

@@ -1,5 +1,5 @@
-erpApp.controller('rmStockCtrl', ['erpAppConfig', '$scope', 'commonFact', '$location', function(erpAppConfig, $scope, commonFact, $location) {
-    var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+erpApp.controller('rmStockCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
+    var actions = {
         callBackList: function(context) {
             var newList = angular.copy(context.listViewData);
             if ($location.search() && $location.search()['showall'] === 'no') {
@@ -23,10 +23,8 @@ erpApp.controller('rmStockCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
             });
 
         }
-    });
+    };
 
-    $scope.context = erpAppConfig.modules.report.rmStock;
-    $scope.context.actions = actions;
-    $scope.context.actions.list($scope.context);
+    commonFact.initCtrl($scope, 'report.rmStock', actions);
 
 }]);

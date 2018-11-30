@@ -501,6 +501,7 @@ footer.sticky-footer {
 .logo {
     width: 250px;
     margin: 5px;
+    text-align: center;
 }
 
 .navbar-sidenav {
