@@ -1,16 +1,16 @@
 erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(erpAppConfig, serviceApi, $filter) {
     var initCtrl = function(scope, module, actions) {
-        var module = eval('erpAppConfig.modules.' + module);
+        var module = angular.copy(eval('erpAppConfig.modules.' + module));
         var parentModule;
         if (module.parentModule) {
-            parentModule = eval('erpAppConfig.modules.' + module.parentModule);
+            parentModule = angular.copy(eval('erpAppConfig.modules.' + module.parentModule));
             module = angular.merge({}, angular.copy(parentModule), module);
         }
         scope.context = module;
         scope.context.erpAppConfig = erpAppConfig;
         scope.context.actions = angular.extend(angular.copy(defaultActions), actions || {});
         if (scope.context.page.defaultPage) {
-            return scope.context.actions[scope.context.page.defaultPage](scope.context);
+            return scope.context.actions[scope.context.page.defaultPage] && scope.context.actions[scope.context.page.defaultPage](scope.context) || true;
         } else {
             return scope.context.actions.list(scope.context);
         }
@@ -429,10 +429,15 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             return obj.sort(compare);
         },
         viewFilterBy: function(context, list) {
+            var self = this;
             if (!list.selectedFilterBy) {
                 delete context.filterBy[list.id];
             } else {
-                context.filterBy[list.id] = list.selectedFilterBy;
+                if (list.type === 'date' || list.inputType === 'date') {
+                    context.filterBy[list.id] = self.dateFormatChange(list.selectedFilterBy);
+                } else {
+                    context.filterBy[list.id] = list.selectedFilterBy;
+                }
             }
         },
         applyFieldValues: function(context, fields, data, printView) {

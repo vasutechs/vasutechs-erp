@@ -1,5 +1,5 @@
 erpApp.controller('databaseUploadCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
-    var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+    var actions = {
         uploadDatabase: function(context) {
             var serviceconf = this.getServiceConfig(context.services.list);
             if(context.data.databaseUpload && context.data.databaseUpload.tables){
@@ -13,8 +13,6 @@ erpApp.controller('databaseUploadCtrl', ['erpAppConfig', '$scope', 'commonFact',
             }
             
         }
-    });
-    $scope.context = erpAppConfig.modules.databaseUpload;
-    $scope.context.data = angular.copy($scope.context.masterData);
-    $scope.context.actions = actions;
+    };
+    commonFact.initCtrl($scope, 'purchase.supplierMaster', actions);
 }]);

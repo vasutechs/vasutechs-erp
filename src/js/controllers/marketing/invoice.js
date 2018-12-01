@@ -1,5 +1,5 @@
 erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$location', function(erpAppConfig, $scope, commonFact, $location) {
-    var actions = angular.extend(angular.copy(commonFact.defaultActions), {
+    var actions = {
         callBackList: function(context) {
             context.actions.getPartStock(context);
         },
@@ -116,17 +116,15 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
         callBackSubmit: function(context) {
             context.actions.updateInvocePartStock(context);
         }
-    });
+    };
     if ($location.search() && $location.search()['type'] === 'cashBill') {
-        $scope.context = angular.merge({}, angular.copy(erpAppConfig.modules.marketing.invoice), erpAppConfig.modules.marketing.cashBill);
+        commonFact.initCtrl($scope, 'marketing.cashBill', actions);
         $scope.context.cashBill = true;
     } else {
-        $scope.context = erpAppConfig.modules.marketing.invoice;
+        commonFact.initCtrl($scope, 'marketing.invoice', actions);
         $scope.context.cashBill = false;
     }
 
     $scope.context.erpAppConfig = erpAppConfig;
-    $scope.context.actions = actions;
-    $scope.context.actions.list($scope.context);
 
 }]);

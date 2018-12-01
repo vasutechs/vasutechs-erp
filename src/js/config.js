@@ -23,6 +23,7 @@ var staticConfig = {
             page: {
                 link: 'databaseUpload',
                 name: 'databaseUpload',
+                defaultPage: 'null',
                 templateUrl: 'template/databaseUpload.html',
                 controller: 'databaseUploadCtrl'
             },
@@ -648,6 +649,11 @@ var staticConfig = {
                         id: 'customerCode',
                         dataFrom: 'marketing.customerMaster',
                         replaceName: 'customerName'
+                    },
+                    {
+                        title: 'Date',
+                        id: 'date',
+                        type: 'date'
                     },
                     {
                         actions: true,
@@ -2776,7 +2782,10 @@ var staticConfig = {
                         id: 'rmCode',
                         dataFrom: 'purchase.rmMaster',
                         replaceName: 'rmName',
-                        valuePrefixData: 'grade'
+                        valuePrefixData: 'grade',
+                        isFilterBy: true,
+                        type: 'select',
+                        options: {}
                     },
                     {
                         title: 'Rm Stock Qty',
@@ -2789,7 +2798,9 @@ var staticConfig = {
                     }, {
                         title: 'Updated',
                         id: 'updated',
-                        type: 'date'
+                        type: 'input',
+                        inputType: 'date',
+                        isFilterBy: true
                     },
                     {
                         actions: true
@@ -2862,25 +2873,30 @@ var staticConfig = {
                         title: 'Part No',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partNo'
+                        replaceName: 'partNo',
+                        isFilterBy: true
                     },
                     {
                         title: 'Part Stock Qty',
-                        id: 'partStockQty'
+                        id: 'partStockQty',
+                        isFilterBy: true
                     }, {
                         title: 'Operation From',
                         id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
-                        replaceName: 'opName'
+                        replaceName: 'opName',
+                        isFilterBy: true
                     }, {
                         title: 'Operation To',
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
-                        replaceName: 'opName'
+                        replaceName: 'opName',
+                        isFilterBy: true
                     }, {
                         title: 'Updated',
                         id: 'updated',
-                        type: 'date'
+                        type: 'date',
+                        isFilterBy: true
                     },
                     {
                         actions: true
