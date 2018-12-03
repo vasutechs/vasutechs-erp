@@ -1320,7 +1320,7 @@ var staticConfig = {
                                 id: 'rate',
                                 type: 'input',
                                 inputType: 'text',
-                                action: 'updatePartTotal',
+                                action: 'updateTaxPart',
                                 required: true
                             },
                             'gst': {
@@ -1525,7 +1525,7 @@ var staticConfig = {
                                 id: 'gst',
                                 type: 'input',
                                 inputType: 'text',
-                                action: 'updatePartTotal',
+                                action: 'updateGstPart',
                                 required: true
                             },
                             'total': {
@@ -2874,28 +2874,31 @@ var staticConfig = {
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
                         replaceName: 'partNo',
+                        type: 'select',
                         isFilterBy: true
                     },
                     {
                         title: 'Part Stock Qty',
-                        id: 'partStockQty',
-                        isFilterBy: true
+                        id: 'partStockQty'
                     }, {
                         title: 'Operation From',
                         id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
                         replaceName: 'opName',
+                        type: 'select',
                         isFilterBy: true
                     }, {
                         title: 'Operation To',
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
                         replaceName: 'opName',
+                        type: 'select',
                         isFilterBy: true
                     }, {
                         title: 'Updated',
                         id: 'updated',
-                        type: 'date',
+                        type: 'input',
+                        inputType: 'date',
                         isFilterBy: true
                     },
                     {
@@ -2979,13 +2982,17 @@ var staticConfig = {
                         title: 'SubContractor Code',
                         id: 'subContractorCode',
                         dataFrom: 'purchase.subContractorMaster',
-                        replaceName: 'subContractorName'
+                        replaceName: 'subContractorName',
+                        type: 'select',
+                        isFilterBy: true
                     },
                     {
                         title: 'Part No',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partNo'
+                        replaceName: 'partNo',
+                        type: 'select',
+                        isFilterBy: true
                     },
                     {
                         title: 'Part Stock Qty',
@@ -2994,16 +3001,22 @@ var staticConfig = {
                         title: 'Operation From',
                         id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
-                        replaceName: 'opName'
+                        replaceName: 'opName',
+                        type: 'select',
+                        isFilterBy: true
                     }, {
                         title: 'Operation To',
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
-                        replaceName: 'opName'
+                        replaceName: 'opName',
+                        type: 'select',
+                        isFilterBy: true
                     }, {
                         title: 'Updated',
                         id: 'updated',
-                        type: 'date'
+                        type: 'input',
+                        inputType: 'date',
+                        isFilterBy: true
                     },
                     {
                         actions: true

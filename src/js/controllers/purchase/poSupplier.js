@@ -1,9 +1,10 @@
 erpApp.controller('poSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
     var actions = {
-        updateRmTotal: function(context, data, updateValue) {
+        updateRmTotal: function(context, data) {
             var total = 0,
                 totalBeforTax = 0;
-            totalBeforTax = updateValue * data.rate;
+            var qty = data['qty'];
+            totalBeforTax = qty * data.rate;
             total = totalBeforTax + (totalBeforTax * (data.gst / 100));
             data.total = parseFloat(total).toFixed(2);
         },

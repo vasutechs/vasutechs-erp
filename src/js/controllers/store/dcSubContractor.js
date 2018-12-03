@@ -14,6 +14,7 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
         },
         callBackChangeMapping: function(context) {
             context.actions.checkAcceptedQty(context);
+            context.actions.getDCQty(context);
         },
         checkAcceptedQty: function(context) {
             var serviceconf = this.getServiceConfig('production.flowMaster'),
@@ -33,8 +34,8 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
                                 if (prevOpp && flowMasterData[j].mapping[k].source === 'Sub-Contractor') {
                                     operationFrom = prevOpp.id;
                                 }
-                                
-                                if(prevOpp && (context.partStock[partNo + '-' + prevOpp.id] === undefined || context.partStock[partNo + '-' + prevOpp.id].partStockQty < qty)){
+
+                                if (prevOpp && (context.partStock[partNo + '-' + prevOpp.id] === undefined || context.partStock[partNo + '-' + prevOpp.id].partStockQty < qty)) {
                                     context.data.mapping[i].acceptedQty = qty = null;
                                 }
                             }
@@ -46,14 +47,13 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
         },
         callBackUpdatePartTotal: function(context, data) {
             var qty = parseInt(data.acceptedQty),
-                poQty = parseInt(context.actions.getPOQty(context, data));
-                
-            context.actions.getDCQty(context).then(function(DCStock) {
-                qty += parseInt(DCStock);
-                if (poQty < qty) {
-                    data.acceptedQty = null;
-                }
-            });
+                poQty = parseInt(context.actions.getPOQty(context, data)),
+                dcQty = context.dcQty[context.data['poNo'] + '-' + data.id] || 0;
+
+            qty += parseInt(dcQty);
+            if (poQty < qty) {
+                data.acceptedQty = null;
+            }
         },
         getPOQty: function(context, data) {
             var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
@@ -61,39 +61,53 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
             var poNo = context.data.poNo;
 
             for (var i in poSubContractor.mapping) {
-                if(data && data.id){
-                    if(poSubContractor.mapping[i].id === data.id){
-                        poQty += poSubContractor.mapping[i].acceptedQty;
+                if (data && data.id) {
+                    if (poSubContractor.mapping[i].id === data.id) {
+                        poQty += parseInt(poSubContractor.mapping[i].acceptedQty);
                     }
-                }
-                else{
-                    poQty += poSubContractor.mapping[i].acceptedQty;
+                } else {
+                    poQty += parseInt(poSubContractor.mapping[i].acceptedQty);
                 }
             }
             return poQty;
         },
         updatePoSubContractor: function(context) {
             var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
-            var poQty = context.actions.getPOQty(context);
+            var poQty = 0;
+            var dcQty = 0;
+            var qty = 0;
+            var updatePO = true;
             poSubContractor.status = 1;
-            context.actions.getDCQty(context).then(function(DCStock) {
-                if (parseInt(poQty) <= parseInt(DCStock)) {
-                    context.actions.updateData('purchase.poSubContractor', poSubContractor);
+            for (var i in context.data.mapping) {
+                poQty = context.actions.getPOQty(context, context.data.mapping[i]);
+                dcQty = parseInt(context.dcQty[context.data['poNo'] + '-' + context.data.mapping[i].id]) || 0;
+                qty = parseInt(context.data.mapping[i].acceptedQty) + dcQty;
+                if (parseInt(poQty) > parseInt(qty)) {
+                    updatePO = false;
                 }
-            });
+            }
+            if (updatePO) {
+                context.actions.updateData('purchase.poSubContractor', poSubContractor);
+            }
         },
-        getDCQty: function(context) {
-            var DCQty = 0;
+        getDCQty: function(context, partNo) {
+            var dcQtyTag;
+            var dcQty;
+            context.dcQty = [];
             return context.actions.getData('store.dcSubContractor').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     if (context.data.poNo === listViewData[i].poNo) {
                         for (var j in listViewData[i].mapping) {
-                            DCQty += parseInt(listViewData[i].mapping[j].acceptedQty);
+                            dcQtyTag = listViewData[i].poNo + '-' + listViewData[i].mapping[j].id;
+                            if (partNo === undefined || listViewData[i].mapping[j].id === partNo) {
+                                dcQty = parseInt(listViewData[i].mapping[j].acceptedQty);
+                            }
+                            context.dcQty[dcQtyTag] = context.dcQty[dcQtyTag] === undefined ? dcQty : parseInt(context.dcQty[dcQtyTag]) + dcQty;
                         }
                     }
                 }
-                return DCQty;
+                return dcQty;
             });
         },
         callBackSubmit: function(context) {

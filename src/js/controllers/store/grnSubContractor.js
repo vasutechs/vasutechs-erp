@@ -21,54 +21,73 @@ erpApp.controller('grnSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi',
             context.actions.makeOptionsFields(context, context.form.fields['poNo']);
         },
         updateDCSubContractor: function(context) {
-
             var dcSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
-            var poQty = context.actions.getDCQty(context);
+            var grnQty = 0;
+            var dcQty = 0;
+            var qty = 0;
+            var updateDC = true;
             dcSubContractor.status = 1;
-            context.actions.getGRNQty(context).then(function(GRNStock) {
-                if (parseInt(poQty) <= parseInt(GRNStock)) {
-                    context.actions.updateData('store.dcSubContractor', dcSubContractor);
+            for (var i in context.data.mapping) {
+                dcQty = context.actions.getDCQty(context, context.data.mapping[i]);
+                grnQty = parseInt(context.grnQty[context.data['dcNo'] + '-' + context.data.mapping[i].id]) || 0;
+                qty = parseInt(context.data.mapping[i].acceptedQty) + grnQty;
+                if (parseInt(dcQty) > parseInt(qty)) {
+                    updateDC = false;
                 }
-            });
+            }
+            if (updateDC) {
+                context.actions.updateData('store.dcSubContractor', dcSubContractor);
+            }
+
         },
         callBackChangeMapping: function(context) {
             context.actions.getSCStock(context);
+            context.actions.getGrnQty(context);
         },
         callBackUpdatePartTotal: function(context, data, newValue, mapKey, field) {
-            var qty = 0,
-                DCQty = parseInt(context.actions.getDCQty(context));
-            for (var i in context.data.mapping) {
-                qty += parseInt(context.data.mapping[i].acceptedQty);
+            var qty = parseInt(data.acceptedQty),
+                dcQty = parseInt(context.actions.getDCQty(context, data)),
+                grnQty = context.grnQty[context.data['dcNo'] + '-' + data.id] || 0;
+
+            qty += parseInt(grnQty);
+            if (dcQty < qty) {
+                data.acceptedQty = null;
             }
-            context.actions.getGRNQty(context).then(function(GRNStock) {
-                qty += parseInt(GRNStock);
-                if (DCQty < qty) {
-                    context.data.mapping[i][field.id] = null;
-                }
-            });
         },
-        getDCQty: function(context) {
-            var DCSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
-            var DCQty = 0;
+        getDCQty: function(context, data) {
+            var dcSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
+            var dcQty = 0;
             var poNo = context.data.poNo;
 
-            for (var i in DCSubContractor.mapping) {
-                DCQty += DCSubContractor.mapping[i].acceptedQty;
+            for (var i in dcSubContractor.mapping) {
+                if (data && data.id) {
+                    if (dcSubContractor.mapping[i].id === data.id) {
+                        dcQty += parseInt(dcSubContractor.mapping[i].acceptedQty);
+                    }
+                } else {
+                    dcQty += parseInt(dcSubContractor.mapping[i].acceptedQty);
+                }
             }
-            return DCQty;
+            return dcQty;
         },
-        getGRNQty: function(context) {
-            var GRNQty = 0;
+        getGrnQty: function(context) {
+            var grnQtyTag;
+            var grnQty;
+            context.grnQty = [];
             return context.actions.getData('store.grnSubContractor').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
-                    if (context.data.poNo === listViewData[i].poNo && context.data.dcNo === listViewData[i].dcNo) {
+                    if (context.data.dcNo === listViewData[i].dcNo) {
                         for (var j in listViewData[i].mapping) {
-                            GRNQty += parseInt(listViewData[i].mapping[j].acceptedQty);
+                            grnQtyTag = listViewData[i].dcNo + '-' + listViewData[i].mapping[j].id;
+                            if (partNo === undefined || listViewData[i].mapping[j].id === partNo) {
+                                grnQty = parseInt(listViewData[i].mapping[j].acceptedQty);
+                            }
+                            context.grnQty[grnQtyTag] = context.grnQty[grnQtyTag] === undefined ? grnQty : parseInt(context.grnQty[grnQtyTag]) + grnQty;
                         }
                     }
                 }
-                return GRNQty;
+                return grnQty;
             });
         },
         callBackSubmit: function(context) {
