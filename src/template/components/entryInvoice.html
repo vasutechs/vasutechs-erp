@@ -10,7 +10,7 @@
                     <td align="right"><b>{{context.form.fields.date.name}}</b></td>
                     <td colspan="2">
                         <input ng-if="!context.page.printView" type="date" id="{{context.form.fields.date.id}}" class="form-control" ng-model="context.data[context.form.fields.date.id]" ng-required="{{context.form.fields.date.required}}" />
-                        <span ng-if="context.page.printView" id="{{context.form.fields.date.id}}">{{context.form.fields.date.valuePrefix}}{{context.data[context.form.fields.date.id]}}</span>
+                        <span ng-if="context.page.printView" id="{{context.form.fields.date.id}}" ng-bind="context.actions.replaceFieldVal(context.data[context.form.fields.date.id], context.form.fields.date)">{{context.data[context.form.fields.date.id]}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -19,7 +19,7 @@
                         <select ng-if="!context.page.printView" id="{{context.form.fields.customerCode.id}}" class="form-control" ng-model="context.data[context.form.fields.customerCode.id]" ng-required="{{context.form.fields.customerCode.required}}" ng-change="context.form.fields.customerCode.action && context.actions[context.form.fields.customerCode.action] && context.actions[context.form.fields.customerCode.action](context, context.data, context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)" ng-options="option.optionId as option.optionName for option in context.form.fields.customerCode.options" ng-disabled="context.form.fields.customerCode.isDisable" ng-required="{{context.form.fields.customerCode.required}}">
                             <option value="">--Select--</option>
                         </select>
-                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}"><b>{{context.form.fields.customerCode.valuePrefix}}{{context.data[context.form.fields.customerCode.id]}}</b></span>
+                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}" ng-bind="context.actions.replaceFieldVal(context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)"><b>{{context.data[context.form.fields.customerCode.id]}}</b></span>
 
                         <span id="{{context.form.fields.address.id}}"><b>, {{context.data[context.form.fields.address.id]}}</b></span>
 
@@ -50,7 +50,7 @@
                 </tr>
                 <tr ng-repeat="(key, map) in context.data.mapping" ng-if="context.page.printView">
                     <td ng-repeat="field in context.form.mapping.fields">
-                        <span id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>
+                        <span id="{{field.id}}-{{key}}" ng-bind="context.actions.replaceFieldVal(map[field.id], field)"></span>
                     </td>
                 </tr>
                 

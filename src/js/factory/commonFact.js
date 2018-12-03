@@ -1,19 +1,31 @@
 erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(erpAppConfig, serviceApi, $filter) {
     var initCtrl = function(scope, module, actions) {
-        var module = angular.copy(eval('erpAppConfig.modules.' + module));
+        var context = angular.copy(eval('erpAppConfig.modules.' + module));
         var parentModule;
-        if (module.parentModule) {
-            parentModule = angular.copy(eval('erpAppConfig.modules.' + module.parentModule));
-            module = angular.merge({}, angular.copy(parentModule), module);
+        var returnPage;
+        var returnPromise = [];
+        if (context.parentModule) {
+            parentModule = angular.copy(eval('erpAppConfig.modules.' + context.parentModule));
+            context = angular.merge({}, angular.copy(parentModule), context);
         }
-        scope.context = module;
-        scope.context.erpAppConfig = erpAppConfig;
-        scope.context.actions = angular.extend(angular.copy(defaultActions), actions || {});
-        if (scope.context.page.defaultPage) {
-            return scope.context.actions[scope.context.page.defaultPage] && scope.context.actions[scope.context.page.defaultPage](scope.context) || true;
-        } else {
-            return scope.context.actions.list(scope.context);
+
+        context.erpAppConfig = erpAppConfig;
+        context.actions = angular.extend(angular.copy(defaultActions), actions || {});
+        returnPromise.push(context.actions.updateFields(context, context.form.fields));
+        if (context.form.mapping) {
+            returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
         }
+        returnPromise.push(context.actions.updateFields(context, context.listView));
+        return Promise.all(returnPromise).then(function() {
+            if (context.page.defaultPage) {
+                returnPage = context.actions[context.page.defaultPage] && context.actions[context.page.defaultPage](context) || true;
+            } else {
+                returnPage = context.actions.list(context);
+            }
+            scope.context = context;
+
+            return returnPage;
+        });
     };
     var defaultActions = {
         add: function(context) {
@@ -37,9 +49,6 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
 
             serviceApi.callServiceApi(serviceconf).then(function(res) {
                 context.data = res.data;
-                if (context.data['date']) {
-                    context.data['date'] = context.page.printView ? context.actions.dateFormatChange(context.data['date']) : new Date(context.data['date']);
-                }
                 context.printData = angular.copy(context.data);
                 context.actions.callBackEdit && context.actions.callBackEdit(context, key);
             });
@@ -76,9 +85,6 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 }
                 context.listViewDataMaster = angular.copy(context.listViewData);
                 context.lastData = angular.copy(context.listViewData[context.listViewData.length - 1]);
-                for (var i in context.listView) {
-                    context.actions.replaceViewDataVal(context.listViewData, context.listView[i], true);
-                }
                 context.actions.callBackList && context.actions.callBackList(context);
             });
         },
@@ -113,23 +119,11 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             //Get Part master data
             return serviceApi.callServiceApi(serviceConf, data);
         },
-        replaceViewDataVal: function(viewData, field, isList) {
+        replaceFieldVal: function(viewData, field) {
             var list,
                 serviceConf,
                 self = this,
-                orgViewDataFieldId = viewData[field.id],
-                listReplace = function(field, list) {
-                    for (var i in viewData) {
-                        if (viewData[i]) {
-                            orgViewDataFieldId = viewData[i][field.id];
-                            if (field.type === 'date' || field.inputType === 'date') {
-                                viewData[i][field.id] = self.dateFormatChange(viewData[i][field.id]);
-                            } else {
-                                viewData[i][field.id] = updateField(field, viewData[i][field.id], list);
-                            }
-                        }
-                    }
-                },
+                orgViewDataFieldId = viewData,
                 updateField = function(field, fieldData, list) {
                     fieldData = (fieldData && list && list[orgViewDataFieldId] && field.replaceName) ? list[orgViewDataFieldId][field.replaceName] : fieldData;
                     fieldData = field.valuePrefix ? field.valuePrefix + fieldData : fieldData;
@@ -138,27 +132,13 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 };
             //Get Part master data
             if (field.type === 'select' || field.dataFrom) {
-                if (field.dataFrom) {
-                    serviceConf = self.getServiceConfig(field.dataFrom);
-                    serviceApi.callServiceApi(serviceConf).then(function(res) {
-                        list = res.data;
-                        if (field.isSingle) {
-                            viewData[field.id] = updateField(field, viewData[field.id], list);
-                        } else {
-                            listReplace(field, list);
-                        }
-
-                    });
-
-                } else {
-                    viewData[field.id] = field.options[viewData[field.id]].optionName;
-                }
-            } else if (isList === undefined && field.type !== 'date' && field.inputType !== 'date') {
-                viewData[field.id] = updateField(field, viewData[field.id]);
-            } else if (isList) {
-                listReplace(field);
+                viewData = field.allOptions[viewData] && field.allOptions[viewData].optionName;
+            } else if (field.type === 'date' || field.inputType === 'date') {
+                viewData = self.dateFormatChange(viewData);
+            } else {
+                viewData = updateField(field, viewData);
             }
-
+            return viewData;
         },
         matchFilter: function(field, list, context) {
             var returnFlag = false;
@@ -181,19 +161,23 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 list;
 
             field.options = {};
+            field.allOptions = {};
 
             return context.actions.getData(field.dataFrom).then(function(res) {
                 list = res.data;
                 for (var i in list) {
+                    var optionVal = field.optionId && list[i][field.optionId] || list[i]['id'];
                     var optionIdVal = field.optionId && list[i][field.optionId] || list[i]['id'];
+                    var optionNameVal = field.valuePrefix && field.valuePrefix || '';
+                    optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
+                    optionNameVal += list[i][field.replaceName] || '';
                     var isCheckExistVal = field.existingCheck && context.actions.findObjectByKey(context.listViewDataMaster, field.id, optionIdVal) || false;
+                    field.allOptions[optionVal] = list[i];
+                    field.allOptions[optionVal]['optionName'] = optionNameVal;
+                    field.allOptions[optionVal]['optionId'] = optionIdVal;
                     if ((field.filter === undefined || self.matchFilter(field, list[i], context) === true) &&
                         (!isCheckExistVal || optionIdVal === context.data[field.id])) {
-                        field.options[list[i].id] = list[i];
-                        field.options[list[i].id]['optionName'] = field.valuePrefix && field.valuePrefix || '';
-                        field.options[list[i].id]['optionName'] += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
-                        field.options[list[i].id]['optionName'] += list[i][field.replaceName];
-                        field.options[list[i].id]['optionId'] = optionIdVal;
+                        field.options[optionVal] = field.allOptions[optionVal];
                     }
                 }
                 return field;
@@ -440,25 +424,6 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 }
             }
         },
-        applyFieldValues: function(context, fields, data, printView) {
-            fields = fields || context.form.fields;
-            printView = printView || context.page.printView;
-
-            for (var i in fields) {
-                var field = fields[i];
-                if (printView) {
-                    data = data || context.printData;
-                    context.actions.replaceViewDataVal(data, field);
-                } else if (field.makeFieldOptions === undefined && field.type === 'select') {
-                    data = data || context.data;
-                    context.actions.makeOptionsFields(context, field).then(function(returnField) {
-                        if (returnField.onLoadActions) {
-                            context.actions[returnField.action](context, data, data[returnField.id], returnField);
-                        }
-                    });
-                }
-            }
-        },
         getFlowMaster: function(context) {
             var serviceconf = this.getServiceConfig('production.flowMaster');
             context.flowMasterData = {};
@@ -527,6 +492,16 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 }
             }
             context.actions.updatePartTotal(context, data, data[acceptedQtyField.id], mapKey, acceptedQtyField);
+        },
+        updateFields: function(context, fields) {
+            var fields = fields;
+            var returnPromise = [];
+            for (var i in fields) {
+                if (fields[i].dataFrom) {
+                    returnPromise.push(context.actions.makeOptionsFields(context, fields[i]));
+                }
+            }
+            return Promise.all(returnPromise);
         }
     };
     return {

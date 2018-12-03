@@ -5,11 +5,18 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             context.finalMapping = 0;
         },
         callBackEdit: function(context) {
+            var jobCardField = context.form.fields['jobCardNo'];
             if (!context.page.printView) {
                 context.page.printViewMapping = true;
-                context.actions.applyFieldValues(context, context.form.mapping.fields, context.printData.mapping, context.page.printViewMapping);
                 context.actions.addMapping(context.data.mapping);
                 context.finalMapping = context.data.mapping.length - 1;
+                if (context.data['date']) {
+                    context.data['date'] = new Date(context.data['date']);
+                }
+                jobCardField.filter = {};
+                context.actions.makeOptionsFields(context, jobCardField).then(function(){
+                    context.actions[jobCardField.action](context, context.data, context.data[jobCardField.id], jobCardField)
+                });
             }
         },
         callBackList: function(context) {

@@ -22,7 +22,7 @@
         <div class="form-group row" ng-repeat="field in context.form.fields" ng-if="context.page.printView">
             <label for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div class="col-10">
-                <span id="{{field.id}}">{{field.inputType==='password'?'XXX':context.printData[field.id]}}</span>
+                <span id="{{field.id}}" ng-bind="context.actions.replaceFieldVal(context.printData[field.id], field)">{{field.inputType==='password'?'XXX':context.printData[field.id]}}</span>
             </div>
         </div>
         <div class="form-group row" ng-if="context.form.mapping">

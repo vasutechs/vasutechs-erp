@@ -118,13 +118,17 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
         }
     };
     if ($location.search() && $location.search()['type'] === 'cashBill') {
-        commonFact.initCtrl($scope, 'marketing.cashBill', actions);
-        $scope.context.cashBill = true;
+        commonFact.initCtrl($scope, 'marketing.cashBill', actions).then(function() {
+            $scope.context.cashBill = true;
+            $scope.context.erpAppConfig = erpAppConfig;
+        });
     } else {
-        commonFact.initCtrl($scope, 'marketing.invoice', actions);
-        $scope.context.cashBill = false;
+        commonFact.initCtrl($scope, 'marketing.invoice', actions).then(function() {
+            $scope.context.cashBill = false;
+            $scope.context.erpAppConfig = erpAppConfig;
+        });
     }
 
-    $scope.context.erpAppConfig = erpAppConfig;
+    
 
 }]);
