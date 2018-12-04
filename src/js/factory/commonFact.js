@@ -50,6 +50,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             serviceApi.callServiceApi(serviceconf).then(function(res) {
                 context.data = res.data;
                 context.printData = angular.copy(context.data);
+                if (context.data['date']) {
+                    context.data['date'] = new Date(context.data['date']);
+                }
                 context.actions.callBackEdit && context.actions.callBackEdit(context, key);
             });
 
@@ -132,7 +135,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 };
             //Get Part master data
             if (field.type === 'select' || field.dataFrom) {
-                viewData = field.allOptions[viewData] && field.allOptions[viewData].optionName;
+                viewData = field.options[viewData] ? field.options[viewData].optionName : field.allOptions[viewData] ? field.allOptions[viewData].optionName : viewData;
             } else if (field.type === 'date' || field.inputType === 'date') {
                 viewData = self.dateFormatChange(viewData);
             } else {
@@ -497,7 +500,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             var fields = fields;
             var returnPromise = [];
             for (var i in fields) {
-                if (fields[i].dataFrom) {
+                if (fields[i].dataFrom && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
                     returnPromise.push(context.actions.makeOptionsFields(context, fields[i]));
                 }
             }

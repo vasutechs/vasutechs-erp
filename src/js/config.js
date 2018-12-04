@@ -2500,8 +2500,7 @@ var staticConfig = {
                         id: 'status'
                     },
                     {
-                        actions: true,
-                        edit: false
+                        actions: true
                     }
                 ],
                 page: {

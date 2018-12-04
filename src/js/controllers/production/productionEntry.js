@@ -10,9 +10,6 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
                 context.page.printViewMapping = true;
                 context.actions.addMapping(context.data.mapping);
                 context.finalMapping = context.data.mapping.length - 1;
-                if (context.data['date']) {
-                    context.data['date'] = new Date(context.data['date']);
-                }
                 jobCardField.filter = {};
                 context.actions.makeOptionsFields(context, jobCardField).then(function(){
                     context.actions[jobCardField.action](context, context.data, context.data[jobCardField.id], jobCardField)
