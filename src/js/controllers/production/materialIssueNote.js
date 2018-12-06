@@ -37,6 +37,8 @@ erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi'
             if (context.data.rmCode && context.data.partNo) {
                 context.data.partNorms = null;
                 var serviceconf = context.actions.getServiceConfig('production.bom');
+                context.data.qtyCanMake = null;
+                context.data.issueQty = null;
                 serviceApi.callServiceApi(serviceconf).then(function(res) {
                     var bomData = res.data;
                     for (var i in bomData) {
@@ -59,7 +61,8 @@ erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi'
                     context.form.fields['issueQty'].max = rmStock[context.data.rmCode].rmStockQty;
                     if (context.data.partNorms && context.data.issueQty && context.form.fields['issueQty'].max >= context.data.issueQty) {
                         context.data.qtyCanMake = context.data.issueQty / context.data.partNorms;
-                    } else {
+                    }
+                    else{
                         context.data.qtyCanMake = null;
                     }
                 });

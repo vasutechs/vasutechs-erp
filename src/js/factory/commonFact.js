@@ -92,7 +92,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             });
         },
         getPageData: function(context) {
-            return $filter('filter')(context.listViewData, context.filterBy) || [];
+            return $filter('filter')(context.listViewData, context.filterBy, true) || [];
         },
         numberOfPages: function(context) {
             return Math.ceil(context.actions.getPageData(context).length / context.pageSize);
@@ -174,7 +174,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                     var optionNameVal = field.valuePrefix && field.valuePrefix || '';
                     optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
                     optionNameVal += list[i][field.replaceName] || '';
-                    var isCheckExistVal = field.existingCheck && context.actions.findObjectByKey(context.listViewDataMaster, field.id, optionIdVal) || false;
+                    var isCheckExistVal = field.existingCheck && context.listViewDataMaster && context.actions.findObjectByKey(context.listViewDataMaster, field.id, optionIdVal) || false;
                     field.allOptions[optionVal] = list[i];
                     field.allOptions[optionVal]['optionName'] = optionNameVal;
                     field.allOptions[optionVal]['optionId'] = optionIdVal;
@@ -421,7 +421,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 delete context.filterBy[list.id];
             } else {
                 if (list.type === 'date' || list.inputType === 'date') {
-                    context.filterBy[list.id] = self.dateFormatChange(list.selectedFilterBy);
+                    context.filterBy[list.id] = new Date(list.selectedFilterBy).toISOString();
                 } else {
                     context.filterBy[list.id] = list.selectedFilterBy;
                 }
@@ -469,7 +469,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
 
         },
         isCheckExistField: function(context, data, value, field) {
-            if (context.actions.findObjectByKey(context.listViewData, field.id, value)) {
+            if (context.listViewData && context.actions.findObjectByKey(context.listViewData, field.id, value)) {
                 data[field.id] = null;
             }
         },

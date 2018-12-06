@@ -1,3 +1,11 @@
 erpApp.controller('flowMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    commonFact.initCtrl($scope, 'production.flowMaster');
+	var actions = {
+		callBackAdd: function(context){
+			context.actions.makeOptionsFields(context, context.form.fields['partNo']);
+		},
+		callBackEdit: function(context){
+			context.actions.callBackAdd(context);
+		}
+	};
+    commonFact.initCtrl($scope, 'production.flowMaster', actions);
 }]);

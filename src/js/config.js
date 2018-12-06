@@ -1072,7 +1072,9 @@ var staticConfig = {
                         title: 'Supplier Code',
                         id: 'supplierCode',
                         dataFrom: 'purchase.supplierMaster',
-                        replaceName: 'supplierName'
+                        replaceName: 'supplierName',
+                        type: 'select',
+                        isFilterBy: true
                     },
                     {
                         title: 'Stutus',
@@ -1361,7 +1363,9 @@ var staticConfig = {
                         title: 'SubContractor Code',
                         id: 'subContractorCode',
                         dataFrom: 'purchase.subContractorMaster',
-                        replaceName: 'subContractorName'
+                        replaceName: 'subContractorName',
+                        type: 'select',
+                        isFilterBy: true
                     },
                     {
                         title: 'Stutus',
@@ -2453,7 +2457,7 @@ var staticConfig = {
                             name: 'Issue Qty',
                             id: 'issueQty',
                             type: 'input',
-                            inputType: 'number',
+                            inputType: 'text',
                             required: true,
                             action: 'updateQtyMake'
                         },
@@ -2484,7 +2488,9 @@ var staticConfig = {
                         title: 'PartNo',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
-                        replaceName: 'partNo'
+                        replaceName: 'partNo',
+                        type: 'select',
+                        isFilterBy: true
                     },
                     {
                         title: 'Qty Can Make',
@@ -2500,7 +2506,8 @@ var staticConfig = {
                         id: 'status'
                     },
                     {
-                        actions: true
+                        actions: true,
+                        edit: false
                     }
                 ],
                 page: {
@@ -2710,8 +2717,7 @@ var staticConfig = {
                         title: 'Date',
                         id: 'date',
                         type: 'input',
-                        inputType: 'date',
-                        isFilterBy: true
+                        inputType: 'date'
                     },
                     {
                         actions: true
@@ -2798,8 +2804,7 @@ var staticConfig = {
                         title: 'Updated',
                         id: 'updated',
                         type: 'input',
-                        inputType: 'date',
-                        isFilterBy: true
+                        inputType: 'date'
                     },
                     {
                         actions: true
@@ -2884,21 +2889,18 @@ var staticConfig = {
                         id: 'operationFrom',
                         dataFrom: 'production.operationMaster',
                         replaceName: 'opName',
-                        type: 'select',
-                        isFilterBy: true
+                        type: 'select'
                     }, {
                         title: 'Operation To',
                         id: 'operationTo',
                         dataFrom: 'production.operationMaster',
                         replaceName: 'opName',
-                        type: 'select',
-                        isFilterBy: true
+                        type: 'select'
                     }, {
                         title: 'Updated',
                         id: 'updated',
                         type: 'input',
-                        inputType: 'date',
-                        isFilterBy: true
+                        inputType: 'date'
                     },
                     {
                         actions: true
@@ -2990,8 +2992,7 @@ var staticConfig = {
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
                         replaceName: 'partNo',
-                        type: 'select',
-                        isFilterBy: true
+                        type: 'select'
                     },
                     {
                         title: 'Part Stock Qty',
