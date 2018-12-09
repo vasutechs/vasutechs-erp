@@ -395,13 +395,14 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         },
         getSCStock: function(context) {
             var serviceconf = context.actions.getServiceConfig('report.subContractorStock');
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
+            return serviceApi.callServiceApi(serviceconf).then(function(res) {
                 var scStockData = res.data,
                     scStock = {};
                 for (var i in scStockData) {
                     scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom] = scStockData[i] && scStockData[i] || undefined;
                 }
                 context.partStock = scStock;
+                return scStock;
             });
         },
         objectSort: function(obj, sortBy) {

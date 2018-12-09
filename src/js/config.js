@@ -1401,8 +1401,8 @@ var staticConfig = {
                     date: null,
                     supplierCode: null,
                     poNo: null,
-                    supplierDCCode: null,
-                    supplierDCDate: null,
+                    supplierInvoiceNo: null,
+                    supplierInvoiceDate: null,
                     status: 0,
                     mapping: [{
                         id: null,
@@ -1420,6 +1420,7 @@ var staticConfig = {
                     name: 'grnSupplier',
                     id: 'grnSupplier',
                     autoGenKey: 'grnNo',
+                    disableByField: 'id',
                     fields: {
                         'grnNo': {
                             name: 'GRN No',
@@ -1458,6 +1459,7 @@ var staticConfig = {
                             filter: {
                                 status: 0
                             },
+                            isEditDisable: true,
                             isSingle: true
                         },
                         'supplierInvoiceNo': {
@@ -1555,8 +1557,7 @@ var staticConfig = {
                         replaceName: 'supplierName'
                     },
                     {
-                        actions: true,
-                        edit: false
+                        actions: true
                     }
                 ],
                 page: {
@@ -1770,6 +1771,7 @@ var staticConfig = {
                 form: {
                     name: 'grnSubContractor',
                     id: 'grnSubContractor',
+                    disableByField: 'id',
                     autoGenKey: 'grnNo',
                     fields: {
                         'grnNo': {
@@ -1807,7 +1809,8 @@ var staticConfig = {
                             filter: {
                                 status: 0
                             },
-                            isSingle: true
+                            isSingle: true,
+                            isEditDisable: true
                         },
                         'dcNo': {
                             name: 'Our DC No',
@@ -1823,7 +1826,9 @@ var staticConfig = {
                             filter: {
                                 status: 0
                             },
-                            isSingle: true
+                            isSingle: true,
+                            isEditDisable: true,
+                            onLoadActions: true
                         },
                         'subContractorDCCode': {
                             name: 'Sub Contractor DC Code',
@@ -1876,7 +1881,7 @@ var staticConfig = {
                                 name: 'Received Qty',
                                 id: 'receivedQty',
                                 type: 'input',
-                                inputType: 'number',
+                                inputType: 'text',
                                 action: 'updatePartTotal',
                                 required: true
                             },
@@ -1940,8 +1945,7 @@ var staticConfig = {
                         replaceName: 'subContractorName'
                     },
                     {
-                        actions: true,
-                        edit: false
+                        actions: true
                     }
                 ],
                 page: {
@@ -2464,7 +2468,10 @@ var staticConfig = {
                         'qtyCanMake': {
                             name: 'Qty Can Make',
                             id: 'qtyCanMake',
-                            type: 'span'
+                            type: 'input',
+                            inputType: 'text',
+                            isDisable: true,
+                            required: true
                         },
                         'operationTo': {
                             name: 'Issue Stage',
@@ -2506,8 +2513,7 @@ var staticConfig = {
                         id: 'status'
                     },
                     {
-                        actions: true,
-                        edit: false
+                        actions: true
                     }
                 ],
                 page: {
@@ -2526,11 +2532,11 @@ var staticConfig = {
             productionEntry: {
                 title: 'Production Entry',
                 masterData: {
-                    date: null,
                     mcNo: null,
                     jobCardNo: null,
                     partNo: null,
                     mapping: [{
+                        date: null,
                         operationFrom: null,
                         operationTo: null,
                         toolNo: null,
@@ -2548,13 +2554,6 @@ var staticConfig = {
                     id: 'productionEntry',
                     disableByField: 'id',
                     fields: {
-                        'date': {
-                            name: 'Date',
-                            id: 'date',
-                            type: 'input',
-                            inputType: 'date',
-                            required: true
-                        },
                         'mcNo': {
                             name: 'M/C No',
                             id: 'mcNo',
@@ -2601,6 +2600,13 @@ var staticConfig = {
                     mapping: {
                         name: 'Production Mapping',
                         fields: {
+                            'date': {
+                                name: 'Date',
+                                id: 'date',
+                                type: 'input',
+                                inputType: 'date',
+                                required: true
+                            },
                             'operationFrom': {
                                 name: 'Operation From',
                                 id: 'operationFrom',
@@ -2712,12 +2718,6 @@ var staticConfig = {
                         type: 'select',
                         isFilterBy: true,
                         options: {}
-                    },
-                    {
-                        title: 'Date',
-                        id: 'date',
-                        type: 'input',
-                        inputType: 'date'
                     },
                     {
                         actions: true
