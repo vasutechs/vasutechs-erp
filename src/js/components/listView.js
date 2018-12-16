@@ -1,4 +1,4 @@
-erpApp.directive('listView', ['erpAppConfig', function(erpAppConfig) {
+erpApp.directive('listView', [function() {
     return {
         restrict: 'E',
         templateUrl: 'template/components/listView.html'

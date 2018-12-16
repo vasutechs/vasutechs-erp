@@ -20,14 +20,14 @@
                 </div>
                 <div ng-if="context.page.printView" class="row">
                     <div class="col-4">
-                        <img ng-if="context.erpAppConfig.companyLogoUrl" class="logo" src="{{context.erpAppConfig.companyLogoUrl}}" title="{{context.erpAppConfig.companyName}}" />
-                        <h1 ng-if="!context.erpAppConfig.companyLogoUrl" class="logo">{{context.erpAppConfig.companyName}}</h1>
+                        <img ng-if="context.appConfig.companyLogoUrl" class="logo" src="{{context.appConfig.companyLogoUrl}}" title="{{context.appConfig.companyName}}" />
+                        <h1 ng-if="!context.appConfig.companyLogoUrl" class="logo">{{context.appConfig.companyName}}</h1>
                     </div>
                     <div class="col-6">
                         
-                        <p class="font-italic"><b>{{context.erpAppConfig.companyAddress}}</b></p>
-                        <p class="font-italic"><b>Mobile:</b> {{context.erpAppConfig.companyMobile}} <b>Email:</b> {{context.erpAppConfig.companyEmail}}</p>
-                        <p class="font-italic"><b>GSTIN:</b> {{context.erpAppConfig.companyGstin}}</p>
+                        <p class="font-italic"><b>{{context.appConfig.companyAddress}}</b></p>
+                        <p class="font-italic"><b>Mobile:</b> {{context.appConfig.companyMobile}} <b>Email:</b> {{context.appConfig.companyEmail}}</p>
+                        <p class="font-italic"><b>GSTIN:</b> {{context.appConfig.companyGstin}}</p>
                     </div>
                 </div>
                 <div class="card-body">

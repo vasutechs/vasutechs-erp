@@ -1,4 +1,7 @@
 <div>
+    <div ng-if="context.alertMessage!==undefined" class="alert alert-danger" role="alert">
+      {{context.alertMessage}}
+    </div>
     <form id="{{context.form.id}}" name="customForm">
         <div class="form-group row" ng-switch="field.type" ng-repeat="field in context.form.fields" ng-if="!context.page.printView">
             <label ng-switch-when="span" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>

@@ -1,4 +1,4 @@
-erpApp.controller('databaseUploadCtrl', ['erpAppConfig', '$scope', 'commonFact', 'serviceApi', function(erpAppConfig, $scope, commonFact, serviceApi) {
+erpApp.controller('databaseUploadCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
     var actions = {
         uploadDatabase: function(context) {
             var serviceconf = this.getServiceConfig(context.services.list);
@@ -14,5 +14,5 @@ erpApp.controller('databaseUploadCtrl', ['erpAppConfig', '$scope', 'commonFact',
             
         }
     };
-    commonFact.initCtrl($scope, 'purchase.supplierMaster', actions);
+    commonFact.initCtrl($scope, 'databaseUpload', actions);
 }]);

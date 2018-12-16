@@ -6,12 +6,6 @@ var staticConfig = {
     dataDownloadUrl: '/api/download',
     calendarYear: new Date().getMonth() > 4 ? new Date().getFullYear() : new Date().getFullYear() - 1,
     finalStageOpp: 9,
-    companyName: 'Vasu Techs',
-    companyLogoUrl: 'assets/img/vasu-techs-logo.png',
-    companyAddress: '32, South kumara kattalai street, Mayiladuthurai, Nagapattinam(DT) 609001',
-    companyMobile: '9003206361',
-    companyEmail: 'vasutechs@gmail.com',
-    companyGstin: '33BORPS568IBIZM',
     modules: {
         databaseUpload: {
             name: 'Database Upload',
@@ -23,7 +17,6 @@ var staticConfig = {
             page: {
                 link: 'databaseUpload',
                 name: 'databaseUpload',
-                defaultPage: 'null',
                 templateUrl: 'template/databaseUpload.html',
                 controller: 'databaseUploadCtrl'
             },
@@ -32,6 +25,24 @@ var staticConfig = {
                     url: 'api/upload',
                     method: 'POST'
                 }
+            }
+        },
+        databaseDonwload: {
+            name: 'Database Download',
+            title: 'Database Download',
+            disableMenu: true,
+            page: {
+                link: '/api/download',
+                name: 'databaseUpload'
+            }
+        },
+        calendarYear: {
+            name: 'Calendar Year',
+            title: 'Calendar Year',
+            disableMenu: true,
+            page: {
+                link: 'calendarYear',
+                name: 'calendarYear'
             }
         },
         dashboard: {
@@ -170,9 +181,6 @@ var staticConfig = {
                     {
                         title: 'Part Name',
                         id: 'partName'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -284,9 +292,6 @@ var staticConfig = {
                     {
                         title: 'Customer Name',
                         id: 'customerName'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -417,9 +422,6 @@ var staticConfig = {
                     {
                         title: 'Mail Id',
                         id: 'mailId'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -470,9 +472,6 @@ var staticConfig = {
                     {
                         title: 'UOM Name',
                         id: 'uomName'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -654,10 +653,6 @@ var staticConfig = {
                         title: 'Date',
                         id: 'date',
                         type: 'date'
-                    },
-                    {
-                        actions: true,
-                        edit: false
                     }
                 ],
                 page: {
@@ -813,9 +808,6 @@ var staticConfig = {
                     {
                         title: 'RM Name',
                         id: 'rmName'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -925,9 +917,6 @@ var staticConfig = {
                     {
                         title: 'Supplier Name',
                         id: 'supplierName'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -1079,10 +1068,6 @@ var staticConfig = {
                     {
                         title: 'Stutus',
                         id: 'status'
-                    },
-                    {
-                        actions: true,
-                        edit: false
                     }
                 ],
                 page: {
@@ -1202,9 +1187,6 @@ var staticConfig = {
                     {
                         title: 'Sub Contractor Name',
                         id: 'subContractorName'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -1370,10 +1352,6 @@ var staticConfig = {
                     {
                         title: 'Stutus',
                         id: 'status'
-                    },
-                    {
-                        actions: true,
-                        edit: false
                     }
                 ],
                 page: {
@@ -1555,9 +1533,6 @@ var staticConfig = {
                         id: 'supplierCode',
                         dataFrom: 'purchase.supplierMaster',
                         replaceName: 'supplierName'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -1725,10 +1700,6 @@ var staticConfig = {
                     {
                         title: 'Stutus',
                         id: 'status'
-                    },
-                    {
-                        actions: true,
-                        edit: false
                     }
                 ],
                 page: {
@@ -1943,9 +1914,6 @@ var staticConfig = {
                         id: 'subContractorCode',
                         dataFrom: 'purchase.subContractorMaster',
                         replaceName: 'subContractorName'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -2022,9 +1990,6 @@ var staticConfig = {
                     {
                         title: 'Operation Name',
                         id: 'opName'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -2101,9 +2066,6 @@ var staticConfig = {
                         dataFrom: 'purchase.rmMaster',
                         replaceName: 'rmName',
                         valuePrefixData: 'grade'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -2194,9 +2156,6 @@ var staticConfig = {
                     {
                         title: 'Machine Name',
                         id: 'machineName'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -2283,15 +2242,11 @@ var staticConfig = {
                     }
                 },
                 listView: [{
-                        title: 'Part NO',
-                        id: 'partNo',
-                        dataFrom: 'marketing.partMaster',
-                        replaceName: 'partNo'
-                    },
-                    {
-                        actions: true
-                    }
-                ],
+                    title: 'Part NO',
+                    id: 'partNo',
+                    dataFrom: 'marketing.partMaster',
+                    replaceName: 'partNo'
+                }],
                 page: {
                     link: 'store/flowMaster/list',
                     name: 'list',
@@ -2373,17 +2328,13 @@ var staticConfig = {
                     }
                 },
                 listView: [{
-                        title: 'Tool No',
-                        id: 'toolNo',
-                        valuePrefix: 'VT-T'
-                    }, {
-                        title: 'Tool Name',
-                        id: 'toolName'
-                    },
-                    {
-                        actions: true
-                    }
-                ],
+                    title: 'Tool No',
+                    id: 'toolNo',
+                    valuePrefix: 'VT-T'
+                }, {
+                    title: 'Tool Name',
+                    id: 'toolName'
+                }],
                 page: {
                     link: 'production/toolMaster/list',
                     name: 'list',
@@ -2511,9 +2462,6 @@ var staticConfig = {
                     {
                         title: 'Status',
                         id: 'status'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -2613,7 +2561,7 @@ var staticConfig = {
                                 type: 'select',
                                 options: {},
                                 action: 'updateOperationTo',
-                                makeFieldOptions: false,
+                                //makeFieldOptions: false,
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
                                 valuePrefixData: 'opCode',
@@ -2628,7 +2576,7 @@ var staticConfig = {
                                 dataFrom: 'production.operationMaster',
                                 replaceName: 'opName',
                                 action: 'updateToolNo',
-                                makeFieldOptions: false,
+                                //makeFieldOptions: false,
                                 valuePrefixData: 'opCode'
                             },
                             'toolName': {
@@ -2702,27 +2650,23 @@ var staticConfig = {
                     }
                 },
                 listView: [{
-                        title: 'Job Card No',
-                        id: 'jobCardNo',
-                        dataFrom: 'production.materialIssueNote',
-                        isFilterBy: true,
-                        replaceName: 'id',
-                        valuePrefix: 'VT-',
-                        type: 'select',
-                        options: {}
-                    }, {
-                        title: 'Part No',
-                        id: 'partNo',
-                        dataFrom: 'marketing.partMaster',
-                        replaceName: 'partNo',
-                        type: 'select',
-                        isFilterBy: true,
-                        options: {}
-                    },
-                    {
-                        actions: true
-                    }
-                ],
+                    title: 'Job Card No',
+                    id: 'jobCardNo',
+                    dataFrom: 'production.materialIssueNote',
+                    isFilterBy: true,
+                    replaceName: 'id',
+                    valuePrefix: 'VT-',
+                    type: 'select',
+                    options: {}
+                }, {
+                    title: 'Part No',
+                    id: 'partNo',
+                    dataFrom: 'marketing.partMaster',
+                    replaceName: 'partNo',
+                    type: 'select',
+                    isFilterBy: true,
+                    options: {}
+                }],
                 page: {
                     link: 'production/productionEntry/list',
                     name: 'list',
@@ -2805,9 +2749,6 @@ var staticConfig = {
                         id: 'updated',
                         type: 'input',
                         inputType: 'date'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -2901,9 +2842,6 @@ var staticConfig = {
                         id: 'updated',
                         type: 'input',
                         inputType: 'date'
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -3017,9 +2955,6 @@ var staticConfig = {
                         type: 'input',
                         inputType: 'date',
                         isFilterBy: true
-                    },
-                    {
-                        actions: true
                     }
                 ],
                 page: {
@@ -3048,7 +2983,13 @@ var staticConfig = {
                     companyAddress: null,
                     companyMobile: null,
                     companyEmail: null,
-                    companyGstin: null
+                    companyGstin: null,
+                    mapping: [{
+                        pageId: null,
+                        addAction: null,
+                        editAction: null,
+                        deleteAction: null
+                    }]
                 },
                 form: {
                     name: 'Settings',
@@ -3113,18 +3054,58 @@ var staticConfig = {
                             replaceName: 'opName',
                             valuePrefixData: 'opCode'
                         }
+                    },
+                    mapping: {
+                        name: 'Restrict Mapping',
+                        fields: {
+                            pageId: {
+                                name: 'Page name',
+                                id: 'pageId',
+                                type: 'select',
+                                options: {},
+                                makeFieldOptions: false
+                            },
+                            restrictUser: {
+                                name: 'Restrict Type',
+                                id: 'restrictUser',
+                                type: 'select',
+                                options: {
+                                    1: {
+                                        optionId: '1',
+                                        optionName: 'Admin'
+                                    },
+                                    2: {
+                                        optionId: '2',
+                                        optionName: 'User'
+                                    }
+                                },
+                                makeFieldOptions: false
+                            },
+                            addAction: {
+                                name: 'Add action',
+                                id: 'addAction',
+                                type: 'input',
+                                inputType: 'checkbox'
+                            },
+                            editAction: {
+                                name: 'Edit action',
+                                id: 'editAction',
+                                type: 'input',
+                                inputType: 'checkbox'
+                            },
+                            deleteAction: {
+                                name: 'Delete action',
+                                id: 'deleteAction',
+                                type: 'input',
+                                inputType: 'checkbox'
+                            }
+                        }
                     }
                 },
                 listView: [{
-                        title: 'Company Name',
-                        id: 'companyName'
-                    },
-                    {
-                        actions: true,
-                        add: false,
-                        delete: false
-                    }
-                ],
+                    title: 'Company Name',
+                    id: 'companyName'
+                }],
                 page: {
                     link: 'admin/settings/list',
                     name: 'list',
@@ -3183,13 +3164,9 @@ var staticConfig = {
                     }
                 },
                 listView: [{
-                        title: 'User Name',
-                        id: 'userName'
-                    },
-                    {
-                        actions: true
-                    }
-                ],
+                    title: 'User Name',
+                    id: 'userName'
+                }],
                 page: {
                     link: 'admin/users/list',
                     name: 'list',
@@ -3236,8 +3213,7 @@ var staticConfig = {
                 },
                 page: {
                     link: 'admin/login',
-                    name: 'list',
-                    defaultPage: 'add',
+                    name: 'add',
                     templateUrl: 'template/defaultView.html',
                     controller: 'loginCtrl'
                 }

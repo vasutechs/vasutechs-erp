@@ -1,31 +1,43 @@
-erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(erpAppConfig, serviceApi, $filter) {
+erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', function(staticConfig, serviceApi, $filter, $location) {
+    var erpAppConfig = staticConfig;
+    var loadErpAppConfig = (function() {
+        var settingsService = angular.copy(erpAppConfig.modules.admin.settings.services.list);
+        settingsService.url = settingsService.url + '/1';
+        erpAppConfig.pageAccess = {};
+        return serviceApi.callServiceApi(settingsService).then(function(res) {
+            erpAppConfig = angular.extend(erpAppConfig, res.data);
+            for (var i in erpAppConfig.mapping) {
+                erpAppConfig.pageAccess[erpAppConfig.mapping[i].pageId] = erpAppConfig.mapping[i];
+            }
+            return erpAppConfig;
+        });
+    })();
     var initCtrl = function(scope, module, actions) {
-        var context = angular.copy(eval('erpAppConfig.modules.' + module));
+        var appConfig = getErpAppConfig();
+        var context = angular.copy(eval('appConfig.modules.' + module));
         var parentModule;
         var returnPage;
         var returnPromise = [];
         if (context.parentModule) {
-            parentModule = angular.copy(eval('erpAppConfig.modules.' + context.parentModule));
+            parentModule = angular.copy(eval('appConfig.modules.' + context.parentModule));
             context = angular.merge({}, angular.copy(parentModule), context);
         }
 
-        context.erpAppConfig = erpAppConfig;
+        context.appConfig = appConfig;
         context.actions = angular.extend(angular.copy(defaultActions), actions || {});
         returnPromise.push(context.actions.updateFields(context, context.form.fields));
-        if (context.form.mapping) {
+        if (context.form && context.form.mapping) {
             returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
         }
         returnPromise.push(context.actions.updateFields(context, context.listView));
         return Promise.all(returnPromise).then(function() {
-            if (context.page.defaultPage) {
-                returnPage = context.actions[context.page.defaultPage] && context.actions[context.page.defaultPage](context) || true;
-            } else {
-                returnPage = context.actions.list(context);
-            }
+            returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
             scope.context = context;
-
             return returnPage;
         });
+    };
+    var getErpAppConfig = function() {
+        return erpAppConfig;
     };
     var defaultActions = {
         add: function(context) {
@@ -40,6 +52,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             context.page.editKey = undefined;
             context.page.printView = undefined;
             context.actions.callBackAdd && context.actions.callBackAdd(context);
+            return true;
         },
         edit: function(context, key, printView) {
             var serviceconf = this.getServiceConfig(context.services.list, 'GET', key);
@@ -47,7 +60,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
             context.page.printView = printView;
             context.page.editKey = key;
 
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
+            return serviceApi.callServiceApi(serviceconf).then(function(res) {
                 context.data = res.data;
                 context.printData = angular.copy(context.data);
                 if (context.data['date']) {
@@ -109,6 +122,7 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
         },
         cancel: function(context) {
             context.page.name = 'list';
+            console.log('commonFact');
         },
         getData: function(module, id) {
             var list,
@@ -138,6 +152,8 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 viewData = field.options[viewData] ? field.options[viewData].optionName : field.allOptions[viewData] ? field.allOptions[viewData].optionName : viewData;
             } else if (field.type === 'date' || field.inputType === 'date') {
                 viewData = self.dateFormatChange(viewData);
+            } else if (field.inputType === 'password') {
+                viewData = 'XXX';
             } else {
                 viewData = updateField(field, viewData);
             }
@@ -375,8 +391,9 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
 
         },
         getServiceConfig: function(module, replaceMethod, appendValue) {
-            var serviceConfig = angular.copy(typeof(module) !== 'object' ? eval('erpAppConfig.modules.' + module + '.services.list') : module);
-            serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', erpAppConfig.calendarYear);
+            var appConfig = getErpAppConfig();
+            var serviceConfig = angular.copy(typeof(module) !== 'object' ? eval('appConfig.modules.' + module + '.services.list') : module);
+            serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', appConfig.calendarYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
             serviceConfig.cache = true;
@@ -506,10 +523,27 @@ erpApp.factory('commonFact', ['erpAppConfig', 'serviceApi', '$filter', function(
                 }
             }
             return Promise.all(returnPromise);
+        },
+        isCheckAction: function(context, type) {
+            return true;
+        },
+        showSubModule: function(module) {
+            var subModules = {};
+
+            for (var i in module) {
+                if (i !== 'name' && i !== 'title' && i !== 'icon' && i !== 'page') {
+                    subModules[i] = module[i];
+                }
+            }
+            return subModules;
+        },
+        isModuleAccess: function(module) {
+            console.log(module);
         }
     };
     return {
         defaultActions: defaultActions,
-        initCtrl: initCtrl
+        initCtrl: initCtrl,
+        getErpAppConfig: getErpAppConfig
     };
 }]);

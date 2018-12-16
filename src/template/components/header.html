@@ -1,25 +1,22 @@
 <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top  hide-print" id="mainNav">
-        <a class="navbar-brand" href="#/">{{appName}}</a>
+        <a class="navbar-brand" href="#/">{{headerContext.appName}}</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li ng-if="!module.disableMenu" class="nav-item dropdown" ng-repeat="(key, module) in modules">
+                <li ng-if="!module.disableMenu" class="nav-item dropdown" ng-repeat="(key, module) in headerContext.modules">
                     <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
                         <i class="fa fa-fw fa-{{module.icon}}"></i>
                         <span class="nav-link-text">{{module.title}}</span>
                     </a>
-
                     <a ng-if="!module.page" class="nav-link dropdown-toggle" href="javascript: void(0);" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-fw fa-{{module.icon}}"></i>
                         <span class="nav-link-text">{{module.title}}</span>
                     </a>
-                    
-                    <div ng-if="showSubModule(module)" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <div ng-repeat="subModule in subModules">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div ng-repeat="subModule in headerContext.actions.showSubModule(module)">
                             <a ng-if="!subModule.disableMenu" class="dropdown-item" href="#!{{subModule.page.link}}">{{subModule.title}}</a>
                             <div ng-if="!subModule.disableMenu" class="dropdown-divider"></div>
                         </div>
-                            <!-- <a class="dropdown-item" href="#!{{subModule.page.link}}" ng-repeat="subModule in subModules">{{subModule.title}}</a> -->
                     </div>
                 </li>
             </ul>
@@ -27,71 +24,29 @@
                 <li class="nav-item dropdown">
                 </li>
                 <li class="nav-item">
-                    <select class="form-control" id="calendarYear" ng-change="changeCalendarYear()" ng-model="calendarYear" ng-options="option.optionId as option.optionName for option in calendarYearList">
+                    <select class="form-control" id="calendarYear" ng-change="headerContext.actions.changeCalendarYear(headerContext)" ng-model="headerContext.calendarYear" ng-options="option.optionId as option.optionName for option in headerContext.calendarYearList">
                         <option value="">--Select--</option>
                     </select>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" title="Import data" href="#!/databaseUpload">
+                    <a class="nav-link" title="Import data" href="#!{{headerContext.modules['databaseUpload'].page.link}}">
                         <i class="fa fa-fw fa-upload"></i> 
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" title="Download data" href="{{dataDownloadUrl}}" download="database.json">
+                    <a class="nav-link" title="Download data" href="{{headerContext.modules['databaseDonwload'].page.link}}" download="database.json">
                         <i class="fa fa-fw fa-download"></i> 
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#!/admin/login">
+                    <a ng-if="headerContext.isLogin" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}?type=logout">
+                        Logout 
+                    </a>
+                    <a ng-if="!headerContext.isLogin" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}">
                         Login 
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
-    <!-- Navigation-->
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-        <a class="navbar-brand" href="#/">{{appName}}</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-                <li ng-if="!module.disableMenu" class="nav-item" data-toggle="tooltip" data-placement="right" ng-repeat="(key, module) in modules">
-                    <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
-                        <i class="fa fa-fw fa-{{module.icon}}"></i>
-                        <span class="nav-link-text">{{module.title}}</span>
-                    </a>
-                    <a ng-if="!module.page" class="nav-link  nav-link-collapse collapsed" href="#collapse{{module.title}}" data-toggle="collapse" data-parent="#exampleAccordion">
-                        <i class="fa fa-fw fa-{{module.icon}}"></i>
-                        <span class="nav-link-text">{{module.title}}</span>
-                    </a>
-                    <ul ng-if="showSubModule(module)" class="sidenav-second-level collapse" id="collapse{{module.title}}">
-                        <li ng-repeat="subModule in subModules">
-                            <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown">
-                </li>
-                <li class="nav-item">
-                    <select class="form-control" id="calendarYear" ng-change="changeCalendarYear()" ng-model="calendarYear" ng-options="option.optionId as option.optionName for option in calendarYearList">
-                        <option value="">--Select--</option>
-                    </select>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" title="Import data" href="#!/databaseUpload">
-                        <i class="fa fa-fw fa-upload"></i> 
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" title="Download data" href="{{dataDownloadUrl}}" download="database.json">
-                        <i class="fa fa-fw fa-download"></i> 
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav> -->
 </div>

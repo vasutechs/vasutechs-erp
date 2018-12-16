@@ -1,10 +1,10 @@
-erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$location', function(erpAppConfig, $scope, commonFact, $location) {
+erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
     var actions = {
         callBackList: function(context) {
             context.actions.getPartStock(context);
         },
         callBackSetAutoGenKey: function(context) {
-            var year = erpAppConfig.calendarYear;
+            var year = context.appConfig.calendarYear;
             context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year + '-' + ('' + parseInt(year + 1)).substring(2);
         },
         callBackChangeMapping: function(context, data, key, field) {
@@ -13,12 +13,12 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
         getPartStockDetail: function(context, data, key, field) {
             var newMapData = [];
             newMapData = context.data.mapping.filter(function(data) {
-                if (context.partStock[data.id + '-' + erpAppConfig.finalStageOpp]) {
-                    data.operationFrom = context.partStock[data.id + '-' + erpAppConfig.finalStageOpp].operationFrom;
-                    data.operationTo = context.partStock[data.id + '-' + erpAppConfig.finalStageOpp].operationTo;
+                if (context.partStock[data.id + '-' + context.appConfig.finalStageOpp]) {
+                    data.operationFrom = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].operationFrom;
+                    data.operationTo = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].operationTo;
                 }
 
-                return (context.partStock && context.partStock[data.id + '-' + erpAppConfig.finalStageOpp] && parseInt(context.partStock[data.id + '-' + erpAppConfig.finalStageOpp].partStockQty) > 0);
+                return (context.partStock && context.partStock[data.id + '-' + context.appConfig.finalStageOpp] && parseInt(context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty) > 0);
             });
             context.data.mapping = newMapData;
         },
@@ -29,8 +29,8 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
                 sgst = 0,
                 totalBeforTax = 0;
 
-            if (context.partStock[data.id + '-' + erpAppConfig.finalStageOpp]) {
-                data.unit = context.partStock[data.id + '-' + erpAppConfig.finalStageOpp].partStockQty < data.unit ? null : data.unit;
+            if (context.partStock[data.id + '-' + context.appConfig.finalStageOpp]) {
+                data.unit = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty < data.unit ? null : data.unit;
             }
 
             totalBeforTax = data.unit * data.rate;
@@ -88,7 +88,7 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
                 //         partStock[partStockData[j].partNo + '-' + partStockData[j].operationFrom + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
                 //         partStock[partStockData[j].partNo + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
                 //     }
-                //     var existingStock = partStock[context.data.mapping[i].id + '-' + erpAppConfig.finalStageOpp];
+                //     var existingStock = partStock[context.data.mapping[i].id + '-' + context.appConfig.finalStageOpp];
 
                 //     var partStockQty = parseInt(existingStock.partStockQty) - parseInt(context.data.mapping[i].unit);
                 //     var data = {
@@ -120,12 +120,10 @@ erpApp.controller('invoiceCtrl', ['erpAppConfig', '$scope', 'commonFact', '$loca
     if ($location.search() && $location.search()['type'] === 'cashBill') {
         commonFact.initCtrl($scope, 'marketing.cashBill', actions).then(function() {
             $scope.context.cashBill = true;
-            $scope.context.erpAppConfig = erpAppConfig;
         });
     } else {
         commonFact.initCtrl($scope, 'marketing.invoice', actions).then(function() {
             $scope.context.cashBill = false;
-            $scope.context.erpAppConfig = erpAppConfig;
         });
     }
 
