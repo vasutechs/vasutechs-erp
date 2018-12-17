@@ -3121,19 +3121,19 @@ var staticConfig = {
                                 inputType: 'checkbox'
                             },
                             add: {
-                                name: 'Add action',
+                                name: 'Only Show Add action',
                                 id: 'add',
                                 type: 'input',
                                 inputType: 'checkbox'
                             },
                             edit: {
-                                name: 'Edit action',
+                                name: 'Only Show Edit action',
                                 id: 'edit',
                                 type: 'input',
                                 inputType: 'checkbox'
                             },
                             delete: {
-                                name: 'Delete action',
+                                name: 'Only Show Delete action',
                                 id: 'delete',
                                 type: 'input',
                                 inputType: 'checkbox'
