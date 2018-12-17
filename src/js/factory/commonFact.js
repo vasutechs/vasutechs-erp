@@ -1,4 +1,4 @@
-erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', function(staticConfig, serviceApi, $filter, $location) {
+erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', function(staticConfig, serviceApi, $filter, $location, authFact) {
     var erpAppConfig = staticConfig;
     var loadErpAppConfig = (function() {
         var settingsService = angular.copy(erpAppConfig.modules.admin.settings.services.list);
@@ -524,24 +524,33 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             return Promise.all(returnPromise);
         },
-        isCheckAction: function(context, type) {
-            return true;
-        },
         showSubModule: function(module) {
             var subModules = {};
 
             for (var i in module) {
-                if (i !== 'name' && i !== 'title' && i !== 'icon' && i !== 'page') {
+                if (i !== 'name' && i !== 'title' && i !== 'icon' && i !== 'page' && i !== 'id') {
                     subModules[i] = module[i];
                 }
             }
             return subModules;
         },
         isModuleAccess: function(module) {
-            var appConfig = getErpAppConfig();
-            console.log(module);
-            if(appConfig.pageAccess && appConfig.pageAccess[module]){
-                console.log(appConfig.pageAccess[module]);
+            var erpAppConfig = getErpAppConfig();
+            var userType = authFact.isLogin();
+            if (erpAppConfig.pageAccess && erpAppConfig.pageAccess[module] && erpAppConfig.pageAccess[module].onlyShowMenu) {
+                if (!userType || (userType && erpAppConfig.pageAccess[module].restrictUser !== userType)) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        isActionAccess: function(module, action) {
+            var erpAppConfig = getErpAppConfig();
+            var userType = authFact.isLogin();
+            if (erpAppConfig.pageAccess && erpAppConfig.pageAccess[module]) {
+                if (!userType || (userType && (erpAppConfig.pageAccess[module].restrictUser !== userType || !erpAppConfig.pageAccess[module][action]))) {
+                    return false;
+                }
             }
             return true;
         }

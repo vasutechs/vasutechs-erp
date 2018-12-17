@@ -9,7 +9,7 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
         makeModuleOptions: function(context, module, field) {
             for (var i in module) {
                 var optionVal = angular.copy(module[i]);
-                var optionIdVal = i;
+                var optionIdVal = optionVal.id;
                 var optionNameVal = optionVal.title;
                 //if (optionVal.page) {
                     field.allOptions[optionIdVal] = optionVal;
