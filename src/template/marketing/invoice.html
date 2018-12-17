@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-header hide-print">
                     <b ng-if="!context.page.printView">Add/Edit</b>
-                    <a ng-if="context.page.printView" class="fa fa-print" href='javascript: window.print();'><b>Print View</b></a>
+                    <a ng-if="context.page.printView" class="fa fa-print" href='javascript: void();' onclick="window.print()"><b>Print View</b></a>
                     <button type="button" class="close float-right" aria-label="Close" ng-click="context.actions.cancel(context)">
                         <span aria-hidden="true">&times;</span>
                     </button>

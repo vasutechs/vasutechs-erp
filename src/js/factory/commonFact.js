@@ -12,6 +12,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             return erpAppConfig;
         });
     })();
+
     var initCtrl = function(scope, module, actions) {
         var appConfig = getErpAppConfig();
         var context = angular.copy(eval('appConfig.modules.' + module));
@@ -122,7 +123,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         },
         cancel: function(context) {
             context.page.name = 'list';
-            console.log('commonFact');
         },
         getData: function(module, id) {
             var list,
@@ -538,7 +538,12 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             return subModules;
         },
         isModuleAccess: function(module) {
+            var appConfig = getErpAppConfig();
             console.log(module);
+            if(appConfig.pageAccess && appConfig.pageAccess[module]){
+                console.log(appConfig.pageAccess[module]);
+            }
+            return true;
         }
     };
     return {
