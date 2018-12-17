@@ -26,7 +26,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
 
         context.appConfig = appConfig;
         context.actions = angular.extend(angular.copy(defaultActions), actions || {});
-        returnPromise.push(context.actions.updateFields(context, context.form.fields));
+        context.form && returnPromise.push(context.actions.updateFields(context, context.form.fields));
         if (context.form && context.form.mapping) {
             returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
         }

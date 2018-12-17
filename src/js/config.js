@@ -3115,25 +3115,25 @@ var staticConfig = {
                                 makeFieldOptions: false
                             },
                             onlyShowMenu:{
-                                name: 'Only Show Menu',
-                                id: 'onlyShowMenu',
+                                name: 'Show in Menu',
+                                id: 'show',
                                 type: 'input',
                                 inputType: 'checkbox'
                             },
                             add: {
-                                name: 'Only Show Add action',
+                                name: 'Show Add action',
                                 id: 'add',
                                 type: 'input',
                                 inputType: 'checkbox'
                             },
                             edit: {
-                                name: 'Only Show Edit action',
+                                name: 'Show Edit action',
                                 id: 'edit',
                                 type: 'input',
                                 inputType: 'checkbox'
                             },
                             delete: {
-                                name: 'Only Show Delete action',
+                                name: 'Show Delete action',
                                 id: 'delete',
                                 type: 'input',
                                 inputType: 'checkbox'

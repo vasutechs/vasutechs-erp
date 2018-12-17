@@ -2,14 +2,15 @@ erpApp.controller('databaseUploadCtrl', ['$scope', 'commonFact', 'serviceApi', f
     var actions = {
         uploadDatabase: function(context) {
             var serviceconf = this.getServiceConfig(context.services.list);
-            if(context.data.databaseUpload && context.data.databaseUpload.tables){
+            if(context.data && context.data.databaseUpload && context.data.databaseUpload.tables){
                 serviceApi.callServiceApi(serviceconf, context.data.databaseUpload.tables).then(function(){
-                    context.data.uploadSuccess = "Successfully uploded...";
-                    context.data.databaseUpload = '';
+                    context.message = 'Successfully uploded...';
+                    context.alertMessage = undefined;
                 });
             }
             else{
-                context.data.uploadSuccess = "Failed uploded...";
+                context.alertMessage = 'Failed uploded...';
+                context.message = undefined;
             }
             
         }
