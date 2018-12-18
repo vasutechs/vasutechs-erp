@@ -3019,9 +3019,10 @@ var staticConfig = {
                     companyGstin: null,
                     mapping: [{
                         pageId: null,
-                        addAction: null,
-                        editAction: null,
-                        deleteAction: null
+                        restrictUser: null,
+                        add: null,
+                        edit: null,
+                        delete: null
                     }]
                 },
                 form: {
@@ -3113,12 +3114,6 @@ var staticConfig = {
                                     }
                                 },
                                 makeFieldOptions: false
-                            },
-                            onlyShowMenu:{
-                                name: 'Show in Menu',
-                                id: 'show',
-                                type: 'input',
-                                inputType: 'checkbox'
                             },
                             add: {
                                 name: 'Show Add action',

@@ -537,7 +537,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         isModuleAccess: function(module) {
             var erpAppConfig = getErpAppConfig();
             var userType = authFact.isLogin();
-            if (erpAppConfig.pageAccess && erpAppConfig.pageAccess[module] && erpAppConfig.pageAccess[module].onlyShowMenu) {
+            if (erpAppConfig.pageAccess && erpAppConfig.pageAccess[module] && erpAppConfig.pageAccess[module].restrictUser) {
                 if (!userType || (userType && erpAppConfig.pageAccess[module].restrictUser !== userType)) {
                     return false;
                 }
