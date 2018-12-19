@@ -1,24 +1,24 @@
 erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
     var actions = {
         callBackList: function(context) {
-            var pageIdField = context.form.mapping.fields['pageId'];
-            pageIdField.options = {};
-            pageIdField.allOptions = {};
-            context.actions.makeModuleOptions(context, context.appConfig.modules, pageIdField);
+            var moduleField = context.form.mapping.fields['module'];
+            moduleField.options = {};
+            moduleField.allOptions = {};
+            context.actions.makeModuleOptions(context, context.appConfig.modules, moduleField);
         },
-        makeModuleOptions: function(context, module, field) {
-            for (var i in module) {
-                var optionVal = angular.copy(module[i]);
-                var optionIdVal = optionVal.id;
-                var optionNameVal = optionVal.title;
+        makeModuleOptions: function(context, modules, field, parentModule) {
+            for (var i in modules) {
+                var optionVal = angular.copy(modules[i]);
+                var optionIdVal = parentModule && parentModule.id + '.' + optionVal.id || optionVal.id;
+                var optionNameVal = parentModule && '-- ' + optionVal.title || optionVal.title;
                 //if (optionVal.page) {
-                    field.allOptions[optionIdVal] = optionVal;
-                    field.allOptions[optionIdVal]['optionName'] = optionNameVal;
-                    field.allOptions[optionIdVal]['optionId'] = optionIdVal;
-                    field.options[optionIdVal] = field.allOptions[optionIdVal];
+                field.allOptions[optionIdVal] = optionVal;
+                field.allOptions[optionIdVal]['optionName'] = optionNameVal;
+                field.allOptions[optionIdVal]['optionId'] = optionIdVal;
+                field.options[optionIdVal] = field.allOptions[optionIdVal];
                 //}
-                if(!optionVal.page){
-                    context.actions.makeModuleOptions(context, context.actions.showSubModule(module[i]), field);
+                if (!optionVal.page) {
+                    context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
                 }
             }
         }

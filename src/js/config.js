@@ -3018,7 +3018,7 @@ var staticConfig = {
                     companyEmail: null,
                     companyGstin: null,
                     mapping: [{
-                        pageId: null,
+                        module: null,
                         restrictUser: null,
                         add: null,
                         edit: null,
@@ -3092,9 +3092,9 @@ var staticConfig = {
                     mapping: {
                         name: 'Restrict Mapping',
                         fields: {
-                            pageId: {
+                            module: {
                                 name: 'Page name',
-                                id: 'pageId',
+                                id: 'module',
                                 type: 'select',
                                 options: {},
                                 makeFieldOptions: false

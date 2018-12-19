@@ -1,40 +1,45 @@
 erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', function(staticConfig, serviceApi, $filter, $location, authFact) {
     var erpAppConfig = staticConfig;
+    var erpLoadPrsRes;
+    var erpLoadPrs = new Promise(function(resolve, reject) {
+        erpLoadPrsRes = resolve;
+    });
     var loadErpAppConfig = (function() {
+        var userType = authFact.isLogin();
         var settingsService = angular.copy(erpAppConfig.modules.admin.settings.services.list);
         settingsService.url = settingsService.url + '/1';
-        erpAppConfig.pageAccess = {};
         return serviceApi.callServiceApi(settingsService).then(function(res) {
             erpAppConfig = angular.extend(erpAppConfig, res.data);
-            for (var i in erpAppConfig.mapping) {
-                erpAppConfig.pageAccess[erpAppConfig.mapping[i].pageId] = erpAppConfig.mapping[i];
-            }
+            defaultActions.moduleAccess(erpAppConfig);
+            erpLoadPrsRes();
             return erpAppConfig;
         });
     })();
 
     var initCtrl = function(scope, module, actions) {
-        var appConfig = getErpAppConfig();
-        var context = angular.copy(eval('appConfig.modules.' + module));
-        var parentModule;
-        var returnPage;
-        var returnPromise = [];
-        if (context.parentModule) {
-            parentModule = angular.copy(eval('appConfig.modules.' + context.parentModule));
-            context = angular.merge({}, angular.copy(parentModule), context);
-        }
+        return erpLoadPrs.then(function(){
+            var appConfig = getErpAppConfig();
+            var context = angular.copy(eval('appConfig.modules.' + module));
+            var parentModule;
+            var returnPage;
+            var returnPromise = [];
+            if (context.parentModule) {
+                parentModule = angular.copy(eval('appConfig.modules.' + context.parentModule));
+                context = angular.merge({}, angular.copy(parentModule), context);
+            }
 
-        context.appConfig = appConfig;
-        context.actions = angular.extend(angular.copy(defaultActions), actions || {});
-        context.form && returnPromise.push(context.actions.updateFields(context, context.form.fields));
-        if (context.form && context.form.mapping) {
-            returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
-        }
-        returnPromise.push(context.actions.updateFields(context, context.listView));
-        return Promise.all(returnPromise).then(function() {
-            returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
-            scope.context = context;
-            return returnPage;
+            context.appConfig = appConfig;
+            context.actions = angular.extend(angular.copy(defaultActions), actions || {});
+            context.form && returnPromise.push(context.actions.updateFields(context, context.form.fields));
+            if (context.form && context.form.mapping) {
+                returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
+            }
+            returnPromise.push(context.actions.updateFields(context, context.listView));
+            return Promise.all(returnPromise).then(function() {
+                returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
+                scope.context = context;
+                return returnPage;
+            });
         });
     };
     var getErpAppConfig = function() {
@@ -534,20 +539,26 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             return subModules;
         },
-        isModuleAccess: function(module) {
-            var erpAppConfig = getErpAppConfig();
+        moduleAccess: function(erpAppConfig) {
             var userType = authFact.isLogin();
-            if (erpAppConfig.pageAccess && erpAppConfig.pageAccess[module] && erpAppConfig.pageAccess[module].restrictUser) {
-                if (!userType || (userType && erpAppConfig.pageAccess[module].restrictUser !== userType)) {
-                    return false;
+            if (userType !== '1') {
+                for (var i in erpAppConfig.mapping) {
+                    var map = erpAppConfig.mapping[i];
+                    var module = eval('erpAppConfig.modules.' + map.module);
+                    if (!userType || (userType && map.restrictUser !== userType)) {
+                        module.disable = map.restrictUser ? true : false;
+                    }
+                    module.page.actions = {};
+                    module.page.actions.add = map.restrictUser === userType && map['add'] || false;
+                    module.page.actions.edit = map.restrictUser === userType && map['edit'] || false;
+                    module.page.actions.delete = map.restrictUser === userType && map['delete'] || false;
                 }
             }
-            return true;
         },
         isActionAccess: function(module, action) {
             var erpAppConfig = getErpAppConfig();
             var userType = authFact.isLogin();
-            if (erpAppConfig.pageAccess && erpAppConfig.pageAccess[module]) {
+            if (!userType !== 1 && erpAppConfig.pageAccess && erpAppConfig.pageAccess[module]) {
                 if (!userType || (userType && (erpAppConfig.pageAccess[module].restrictUser !== userType || !erpAppConfig.pageAccess[module][action]))) {
                     return false;
                 }
