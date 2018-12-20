@@ -10,7 +10,7 @@
     <div class="mb-3">
         <h3>{{context.title}}</h3>
         <ul class="navbar-nav">
-            <li ng-if="!module.disableMenu" ng-repeat="(key, module) in headerContext.modules">
+            <li ng-if="!module.disableMenu && !module.disable" ng-repeat="(key, module) in headerContext.modules">
                 <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
                     <i class="fa fa-fw fa-{{module.icon}}"></i>
                     <span class="nav-link-text">{{module.title}}</span>
@@ -20,7 +20,7 @@
                     <span class="nav-link-text">{{module.title}}</span>
                   </a>
                 <ul>
-                    <li ng-repeat="subModule in headerContext.actions.showSubModule(module)">
+                    <li ng-if="!subModule.disableMenu && !subModule.disable" ng-repeat="subModule in headerContext.actions.showSubModule(module)">
                         <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>
                     </li>
                 </ul>

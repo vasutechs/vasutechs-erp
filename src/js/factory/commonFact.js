@@ -154,7 +154,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 };
             //Get Part master data
             if (field.type === 'select' || field.dataFrom) {
-                viewData = field.options[viewData] ? field.options[viewData].optionName : field.allOptions[viewData] ? field.allOptions[viewData].optionName : viewData;
+                viewData = field.options[viewData] && field.options[viewData].optionName || (field.allOptions && field.allOptions[viewData]) && field.allOptions[viewData].optionName || viewData;
             } else if (field.type === 'date' || field.inputType === 'date') {
                 viewData = self.dateFormatChange(viewData);
             } else if (field.inputType === 'password') {
@@ -548,10 +548,12 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     if (!userType || (userType && map.restrictUser !== userType)) {
                         module.disable = map.restrictUser ? true : false;
                     }
-                    module.page.actions = {};
-                    module.page.actions.add = map.restrictUser === userType && map['add'] || false;
-                    module.page.actions.edit = map.restrictUser === userType && map['edit'] || false;
-                    module.page.actions.delete = map.restrictUser === userType && map['delete'] || false;
+                    if(module.page){
+                        module.page.actions = {};
+                        module.page.actions.add = map.restrictUser === userType && map['add'] || false;
+                        module.page.actions.edit = map.restrictUser === userType && map['edit'] || false;
+                        module.page.actions.delete = map.restrictUser === userType && map['delete'] || false;
+                    }
                 }
             }
         },

@@ -718,7 +718,7 @@ var staticConfig = {
             id:'purchase',
             name: 'Purchase',
             title: 'Purchase',
-            icon: 'money',
+            icon: 'shopping-bag',
             rmMaster: {
                 title: 'Raw Material Master',
                 masterData: {
@@ -3001,6 +3001,10 @@ var staticConfig = {
                         method: 'GET'
                     }
                 }
+            // },
+            // partSalesAnalysis: {
+            //     id:'partSalesAnalysis',
+            //     title: 'Part Sales Analysis'
             }
         },
         admin: {
@@ -3009,6 +3013,7 @@ var staticConfig = {
             title: 'Admin',
             icon: 'cog',
             settings: {
+                id: 'settings',
                 title: 'Settings',
                 masterData: {
                     companyName: null,

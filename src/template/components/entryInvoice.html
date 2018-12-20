@@ -19,9 +19,9 @@
                         <select ng-if="!context.page.printView" id="{{context.form.fields.customerCode.id}}" class="form-control" ng-model="context.data[context.form.fields.customerCode.id]" ng-required="{{context.form.fields.customerCode.required}}" ng-change="context.form.fields.customerCode.action && context.actions[context.form.fields.customerCode.action] && context.actions[context.form.fields.customerCode.action](context, context.data, context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)" ng-options="option.optionId as option.optionName for option in context.form.fields.customerCode.options" ng-disabled="context.form.fields.customerCode.isDisable" ng-required="{{context.form.fields.customerCode.required}}">
                             <option value="">--Select--</option>
                         </select>
-                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}" ng-bind="context.actions.replaceFieldVal(context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)"><b>{{context.data[context.form.fields.customerCode.id]}}</b></span>
+                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}" ng-bind="context.actions.replaceFieldVal(context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)"></span>
 
-                        <span id="{{context.form.fields.address.id}}"><b>, {{context.data[context.form.fields.address.id]}}</b></span>
+                        <span id="{{context.form.fields.address.id}}">, {{context.data[context.form.fields.address.id]}}</span>
 
                     </td>
                 </tr>
