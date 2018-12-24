@@ -1,0 +1,13 @@
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th ng-repeat="(key, list) in context.filterView">
+					{{list.title}}:<select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="context.filterViewData[list.id]" ng-change="context.actions.viewFilterBy(context, list)" ng-options="option.optionId as option.optionName for option in list.options">
+                        <option value="">{{list.title}}</option>
+                    </select> <input ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="context.filterViewData[list.id]" ng-change="context.actions[list.action] && context.actions[list.action](context, list)" />
+                </th>
+            </tr>
+        </thead>
+    </table>
+</div>

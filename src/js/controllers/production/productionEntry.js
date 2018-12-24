@@ -11,7 +11,7 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
                 context.actions.addMapping(context.data.mapping);
                 context.finalMapping = context.data.mapping.length - 1;
                 jobCardField.filter = {};
-                context.actions.makeOptionsFields(context, jobCardField).then(function(){
+                context.actions.makeOptionsFields(context, jobCardField).then(function() {
                     context.actions[jobCardField.action](context, context.data, context.data[jobCardField.id], jobCardField)
                 });
             }
@@ -135,27 +135,27 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             context.actions.updateData('production.materialIssueNote', jobCard);
         },
         getPRQty: function(context) {
-            var prFrmQty = 0;
-            var prToQty = 0;
-            var prQty = 0;
-            var prFrmAcpQty = 0;
-            var prToAcpQty = 0;
-            var prFrmQtyMap;
-            var prToQtyMap;
+
 
             context.prQty = {};
             return context.actions.getData('production.productionEntry').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     for (var j in listViewData[i].mapping) {
+                        var prFrmQty = 0;
+                        var prToQty = 0;
+                        var prQty = 0;
+                        var prFrmAcpQty = 0;
+                        var prToAcpQty = 0;
+                        var prFrmQtyMap;
+                        var prToQtyMap;
                         prFrmQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationFrom + '-frm';
                         prToQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationTo + '-to';
                         prQty = parseInt(listViewData[i].mapping[j].acceptedQty) + parseInt(listViewData[i].mapping[j].rejectionQty) + parseInt(listViewData[i].mapping[j].rwQty);
-                        prQty = parseInt(listViewData[i].mapping[j].acceptedQty) + parseInt(listViewData[i].mapping[j].rejectionQty) + parseInt(listViewData[i].mapping[j].rwQty);
-                        prFrmAcpQty = context.prQty[prFrmQtyMap] ? parseInt(context.prQty[prFrmQtyMap].acceptedQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
+                        prFrmAcpQty = context.prQty[prFrmQtyMap] ? parseInt(context.prQty[prFrmQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
                         prFrmQty = context.prQty[prFrmQtyMap] ? parseInt(context.prQty[prFrmQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
                         prToQty = context.prQty[prToQtyMap] ? parseInt(context.prQty[prToQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
-                        prToAcpQty = context.prQty[prToQtyMap] ? parseInt(context.prQty[prToQtyMap].acceptedQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
+                        prToAcpQty = context.prQty[prToQtyMap] ? parseInt(context.prQty[prToQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
 
                         context.prQty[prFrmQtyMap] = listViewData[i].mapping[j];
                         context.prQty[prFrmQtyMap].prQty = prFrmQty;
@@ -178,7 +178,7 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             context.actions.updateMaterialIssue(context);
         }
     };
-    
+
     commonFact.initCtrl($scope, 'production.productionEntry', actions);
 
 }]);

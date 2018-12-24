@@ -549,7 +549,9 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                         module.disable = map.restrictUser ? true : false;
                     }
                     if(module.page){
-                        module.page.actions = {};
+                        module.page.actions = {
+                            print: true
+                        };
                         module.page.actions.add = map.restrictUser === userType && map['add'] || false;
                         module.page.actions.edit = map.restrictUser === userType && map['edit'] || false;
                         module.page.actions.delete = map.restrictUser === userType && map['delete'] || false;

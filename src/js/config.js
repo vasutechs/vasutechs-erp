@@ -67,7 +67,7 @@ var staticConfig = {
             title: 'Marketing',
             icon: 'stack-exchange',
             partMaster: {
-                id:'partMaster',
+                id: 'partMaster',
                 title: 'Part Master',
                 masterData: {
                     partNo: null,
@@ -446,7 +446,7 @@ var staticConfig = {
                 }
             },
             uomMaster: {
-                id:'uomMaster',
+                id: 'uomMaster',
                 title: 'UOM Master',
                 masterData: {
                     uomCode: null,
@@ -497,7 +497,7 @@ var staticConfig = {
                 }
             },
             invoice: {
-                id:'invoice',
+                id: 'invoice',
                 title: 'Invoice',
                 masterData: {
                     invoiceNo: null,
@@ -679,7 +679,7 @@ var staticConfig = {
                 }
             },
             cashBill: {
-                id:'cashBill',
+                id: 'cashBill',
                 name: 'cashBill',
                 title: 'Cash Bill',
                 parentModule: 'marketing.invoice',
@@ -715,7 +715,7 @@ var staticConfig = {
             }
         },
         purchase: {
-            id:'purchase',
+            id: 'purchase',
             name: 'Purchase',
             title: 'Purchase',
             icon: 'shopping-bag',
@@ -836,7 +836,7 @@ var staticConfig = {
                 }
             },
             supplierMaster: {
-                id:'supplierMaster',
+                id: 'supplierMaster',
                 title: 'Supplier Master',
                 masterData: {
                     supplierCode: null,
@@ -946,7 +946,7 @@ var staticConfig = {
                 }
             },
             poSupplier: {
-                id:'poSupplier',
+                id: 'poSupplier',
                 title: 'Purchase Order - Supplier',
                 masterData: {
                     poNo: null,
@@ -1098,7 +1098,7 @@ var staticConfig = {
                 }
             },
             subContractorMaster: {
-                id:'subContractorMaster',
+                id: 'subContractorMaster',
                 title: 'Sub Contractor Master',
                 masterData: {
                     subContractorCode: null,
@@ -1218,7 +1218,7 @@ var staticConfig = {
                 }
             },
             poSubContractor: {
-                id:'poSubContractor',
+                id: 'poSubContractor',
                 title: 'Purchase Order - Sub Contractor',
                 masterData: {
                     poNo: null,
@@ -1385,12 +1385,12 @@ var staticConfig = {
             }
         },
         store: {
-            id:'store',
+            id: 'store',
             name: 'Store',
             title: 'Store',
             icon: 'suitcase',
             grnSupplier: {
-                id:'grnSupplier',
+                id: 'grnSupplier',
                 title: 'Good Receipt Note - Supplier',
                 masterData: {
                     grnNo: null,
@@ -1567,7 +1567,7 @@ var staticConfig = {
                 }
             },
             dcSubContractor: {
-                id:'dcSubContractor',
+                id: 'dcSubContractor',
                 title: 'Delivery Chellan - Sub Contractor',
                 masterData: {
                     dcNo: null,
@@ -1735,7 +1735,7 @@ var staticConfig = {
                 }
             },
             grnSubContractor: {
-                id:'grnSubContractor',
+                id: 'grnSubContractor',
                 title: 'Good Receipt Note - Sub Contractor',
                 masterData: {
                     grnNo: null,
@@ -1951,12 +1951,12 @@ var staticConfig = {
             }
         },
         production: {
-            id:'production',
+            id: 'production',
             name: 'Production',
             title: 'Production',
             icon: 'cogs',
             operationMaster: {
-                id:'operationMaster',
+                id: 'operationMaster',
                 title: 'Operation Master',
                 masterData: {
                     opCode: null,
@@ -2028,7 +2028,7 @@ var staticConfig = {
                 }
             },
             bom: {
-                id:'bom',
+                id: 'bom',
                 title: 'BOM',
                 masterData: {
                     partNo: null,
@@ -2196,7 +2196,7 @@ var staticConfig = {
                 }
             },
             flowMaster: {
-                id:'flowMaster',
+                id: 'flowMaster',
                 title: 'Flow Master',
                 masterData: {
                     partNo: null,
@@ -2286,7 +2286,7 @@ var staticConfig = {
                 }
             },
             toolMaster: {
-                id:'toolMaster',
+                id: 'toolMaster',
                 title: 'Tool Master',
                 masterData: {
                     toolNo: null,
@@ -2375,7 +2375,7 @@ var staticConfig = {
                 }
             },
             materialIssueNote: {
-                id:'materialIssueNote',
+                id: 'materialIssueNote',
                 title: 'Material Issue Note',
                 masterData: {
                     jobCardNo: null,
@@ -2505,7 +2505,7 @@ var staticConfig = {
                 }
             },
             productionEntry: {
-                id:'productionEntry',
+                id: 'productionEntry',
                 title: 'Production Entry',
                 masterData: {
                     mcNo: null,
@@ -2710,12 +2710,12 @@ var staticConfig = {
             }
         },
         report: {
-            id:'report',
+            id: 'report',
             name: 'Report',
             title: 'Report',
             icon: 'tasks',
             rmStock: {
-                id:'rmStock',
+                id: 'rmStock',
                 title: 'Raw Material Stock',
                 masterData: {
                     rmName: null,
@@ -2795,7 +2795,7 @@ var staticConfig = {
                 }
             },
             partStock: {
-                id:'partStock',
+                id: 'partStock',
                 title: 'Part Stock',
                 masterData: {
                     partNo: null,
@@ -2889,7 +2889,7 @@ var staticConfig = {
                 }
             },
             subContractorStock: {
-                id:'subContractorStock',
+                id: 'subContractorStock',
                 title: 'SubContractor Stock',
                 masterData: {
                     subContractorCode: null,
@@ -3001,14 +3001,64 @@ var staticConfig = {
                         method: 'GET'
                     }
                 }
-            // },
-            // partSalesAnalysis: {
-            //     id:'partSalesAnalysis',
-            //     title: 'Part Sales Analysis'
+            },
+            partSalesAnalysis: {
+                id: 'partSalesAnalysis',
+                title: 'Partwise Sales Analysis',
+                filterViewData:{
+                    frmDate: null,
+                    toDate: null
+                },
+                filterView: [{
+                        title: 'From Date',
+                        id: 'frmDate',
+                        type: 'input',
+                        inputType: 'date',
+                        action:'partSalesFilter'
+                    },
+                    {
+                        title: 'To Date',
+                        id: 'toDate',
+                        type: 'input',
+                        inputType: 'date',
+                        action:'partSalesFilter'
+                    }
+                ],
+                listView: [{
+                        title: 'Part No',
+                        id: 'partNo',
+                        dataFrom: 'marketing.partMaster',
+                        replaceName: 'partNo',
+                        type: 'select'
+                    },
+                    {
+                        title: 'Part Qty',
+                        id: 'unit'
+                    }, {
+                        title: 'Part Price',
+                        id: 'rate'
+                    }, {
+                        title: 'Sales Value',
+                        id: 'amount'
+                    }
+                ],
+                page: {
+                    link: 'report/partSalesAnalysis/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'partSalesAnalysisCtrl',
+                    actions: false
+                },
+                services: {
+                    list: {
+                        url: 'api/invoice/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
             }
         },
         admin: {
-            id:'admin',
+            id: 'admin',
             name: 'Admin',
             title: 'Admin',
             icon: 'cog',
@@ -3149,7 +3199,8 @@ var staticConfig = {
                     link: 'admin/settings/list',
                     name: 'list',
                     templateUrl: 'template/defaultView.html',
-                    controller: 'settingsCtrl'
+                    controller: 'settingsCtrl',
+                    actions: false
                 },
                 services: {
                     list: {
@@ -3159,7 +3210,7 @@ var staticConfig = {
                 }
             },
             users: {
-                id:'users',
+                id: 'users',
                 title: 'Users',
                 masterData: {
                     userName: null,
@@ -3221,7 +3272,7 @@ var staticConfig = {
                 }
             },
             login: {
-                id:'login',
+                id: 'login',
                 title: 'Login',
                 disableMenu: true,
                 masterData: {
@@ -3256,7 +3307,8 @@ var staticConfig = {
                     link: 'admin/login',
                     name: 'add',
                     templateUrl: 'template/defaultView.html',
-                    controller: 'loginCtrl'
+                    controller: 'loginCtrl',
+                    actions: false
                 }
             }
         }
