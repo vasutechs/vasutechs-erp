@@ -150,6 +150,9 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     fieldData = (fieldData && list && list[orgViewDataFieldId] && field.replaceName) ? list[orgViewDataFieldId][field.replaceName] : fieldData;
                     fieldData = field.valuePrefix ? field.valuePrefix + fieldData : fieldData;
                     fieldData = field.valuePrefixData ? list[orgViewDataFieldId][field.valuePrefixData] + ' - ' + fieldData : fieldData;
+                    if(self.isFloat(fieldData)){
+                        fieldData = parseFloat(fieldData).toFixed(2);
+                    }
                     return fieldData;
                 };
             //Get Part master data
@@ -568,6 +571,9 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 }
             }
             return true;
+        },
+        isFloat:  function(n){
+            return Number(n) === n && n % 1 !== 0;
         }
     };
     return {

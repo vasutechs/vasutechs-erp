@@ -2643,7 +2643,7 @@ var staticConfig = {
                                 name: 'Plan Qty',
                                 id: 'planQty',
                                 type: 'input',
-                                inputType: 'text',
+                                inputType: 'number',
                                 required: true
                             },
                             'acceptedQty': {

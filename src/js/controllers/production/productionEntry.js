@@ -135,8 +135,6 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             context.actions.updateData('production.materialIssueNote', jobCard);
         },
         getPRQty: function(context) {
-
-
             context.prQty = {};
             return context.actions.getData('production.productionEntry').then(function(res) {
                 var listViewData = res.data;
