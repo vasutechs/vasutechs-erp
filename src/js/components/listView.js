@@ -10,4 +10,4 @@ erpApp.filter('startFrom', function() {
         start = +start; //parse to int
         return input.slice(start);
     }
-})
+});

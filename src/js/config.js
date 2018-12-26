@@ -3002,29 +3002,45 @@ var staticConfig = {
                     }
                 }
             },
-            partSalesAnalysis: {
-                id: 'partSalesAnalysis',
-                title: 'Partwise Sales Analysis',
-                filterViewData:{
-                    frmDate: null,
-                    toDate: null
-                },
-                filterView: [{
-                        title: 'From Date',
-                        id: 'frmDate',
-                        type: 'input',
-                        inputType: 'date',
-                        action:'partSalesFilter'
+            salesAnalysis: {
+                id: 'salesAnalysis',
+                title: 'Sales Analysis',
+                filterView: {
+                    title: 'Filter',
+                    data: {
+                        frmDate: null,
+                        toDate: null
                     },
-                    {
-                        title: 'To Date',
-                        id: 'toDate',
-                        type: 'input',
-                        inputType: 'date',
-                        action:'partSalesFilter'
-                    }
-                ],
+                    fields: [{
+                            title: 'Customer',
+                            id: 'customerCode',
+                            type: 'select',
+                            action: 'partSalesFilter',
+                            dataFrom: 'marketing.customerMaster',
+                            replaceName: 'customerName'
+                        }, {
+                            title: 'From Date',
+                            id: 'frmDate',
+                            type: 'input',
+                            inputType: 'date',
+                            action: 'partSalesFilter'
+                        },
+                        {
+                            title: 'To Date',
+                            id: 'toDate',
+                            type: 'input',
+                            inputType: 'date',
+                            action: 'partSalesFilter'
+                        }
+                    ]
+                },
                 listView: [{
+                        title: 'Customer',
+                        id: 'customerCode',
+                        type: 'select',
+                        dataFrom: 'marketing.customerMaster',
+                        replaceName: 'customerName'
+                    }, {
                         title: 'Part No',
                         id: 'partNo',
                         dataFrom: 'marketing.partMaster',
@@ -3043,15 +3059,171 @@ var staticConfig = {
                     }
                 ],
                 page: {
-                    link: 'report/partSalesAnalysis/list',
+                    link: 'report/salesAnalysis/list',
                     name: 'list',
                     templateUrl: 'template/defaultView.html',
-                    controller: 'partSalesAnalysisCtrl',
-                    actions: false
+                    controller: 'salesAnalysisCtrl',
+                    actions: {
+                        downloadExcel: true
+                    }
                 },
                 services: {
                     list: {
                         url: 'api/invoice/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
+            }
+        },
+        accounts: {
+            id: 'accounts',
+            name: 'Accounts',
+            title: 'Accounts',
+            icon: 'money',
+            disableMenu: true,
+            customerPayment: {
+                id: 'customerPayment',
+                title: 'Customer Payment',
+                masterData: {
+                    companyName: null,
+                    companyLogoUrl: null,
+                    companyAddress: null,
+                    companyMobile: null,
+                    companyEmail: null,
+                    companyGstin: null,
+                    mapping: [{
+                        module: null,
+                        restrictUser: null,
+                        add: null,
+                        edit: null,
+                        delete: null
+                    }]
+                },
+                form: {
+                    name: 'Settings',
+                    id: 'settings',
+                    fields: {
+                        'companyName': {
+                            name: 'Company Name',
+                            id: 'companyName',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyLogoUrl': {
+                            name: 'Company Logo Url',
+                            id: 'companyLogoUrl',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyAddress': {
+                            name: 'Company Address',
+                            id: 'companyAddress',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyMobile': {
+                            name: 'Company Mobile',
+                            id: 'companyMobile',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyLogoUrl': {
+                            name: 'Company Logo Url',
+                            id: 'companyLogoUrl',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyEmail': {
+                            name: 'Company Email',
+                            id: 'companyEmail',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'companyGstin': {
+                            name: 'Company GSTIN',
+                            id: 'companyGstin',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        finalStageOpp: {
+                            name: 'Operation Final Stage',
+                            id: 'finalStageOpp',
+                            type: 'select',
+                            options: {},
+                            required: true,
+                            dataFrom: 'production.operationMaster',
+                            replaceName: 'opName',
+                            valuePrefixData: 'opCode'
+                        }
+                    },
+                    mapping: {
+                        name: 'Restrict Mapping',
+                        fields: {
+                            module: {
+                                name: 'Page name',
+                                id: 'module',
+                                type: 'select',
+                                options: {},
+                                makeFieldOptions: false
+                            },
+                            restrictUser: {
+                                name: 'Restrict Type',
+                                id: 'restrictUser',
+                                type: 'select',
+                                options: {
+                                    1: {
+                                        optionId: '1',
+                                        optionName: 'Admin'
+                                    },
+                                    2: {
+                                        optionId: '2',
+                                        optionName: 'User'
+                                    }
+                                },
+                                makeFieldOptions: false
+                            },
+                            add: {
+                                name: 'Show Add action',
+                                id: 'add',
+                                type: 'input',
+                                inputType: 'checkbox'
+                            },
+                            edit: {
+                                name: 'Show Edit action',
+                                id: 'edit',
+                                type: 'input',
+                                inputType: 'checkbox'
+                            },
+                            delete: {
+                                name: 'Show Delete action',
+                                id: 'delete',
+                                type: 'input',
+                                inputType: 'checkbox'
+                            }
+                        }
+                    }
+                },
+                listView: [{
+                    title: 'Company Name',
+                    id: 'companyName'
+                }],
+                page: {
+                    link: 'admin/settings/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'settingsCtrl',
+                    actions: false
+                },
+                services: {
+                    list: {
+                        url: 'api/settings/data',
                         method: 'GET'
                     }
                 }

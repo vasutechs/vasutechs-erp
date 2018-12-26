@@ -17,7 +17,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
     })();
 
     var initCtrl = function(scope, module, actions) {
-        return erpLoadPrs.then(function(){
+        return erpLoadPrs.then(function() {
             var appConfig = getErpAppConfig();
             var context = angular.copy(eval('appConfig.modules.' + module));
             var parentModule;
@@ -31,6 +31,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.appConfig = appConfig;
             context.actions = angular.extend(angular.copy(defaultActions), actions || {});
             context.form && returnPromise.push(context.actions.updateFields(context, context.form.fields));
+            context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
             if (context.form && context.form.mapping) {
                 returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
             }
@@ -111,7 +112,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             });
         },
         getPageData: function(context) {
-            return $filter('filter')(context.listViewData, context.filterBy, true) || [];
+            return $filter('filter')(context.listViewData, context.filterBy) || [];
         },
         numberOfPages: function(context) {
             return Math.ceil(context.actions.getPageData(context).length / context.pageSize);
@@ -150,7 +151,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     fieldData = (fieldData && list && list[orgViewDataFieldId] && field.replaceName) ? list[orgViewDataFieldId][field.replaceName] : fieldData;
                     fieldData = field.valuePrefix ? field.valuePrefix + fieldData : fieldData;
                     fieldData = field.valuePrefixData ? list[orgViewDataFieldId][field.valuePrefixData] + ' - ' + fieldData : fieldData;
-                    if(self.isFloat(fieldData)){
+                    if (self.isFloat(fieldData)) {
                         fieldData = parseFloat(fieldData).toFixed(2);
                     }
                     return fieldData;
@@ -551,7 +552,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     if (!userType || (userType && map.restrictUser !== userType)) {
                         module.disable = map.restrictUser ? true : false;
                     }
-                    if(module.page){
+                    if (module.page) {
                         module.page.actions = {
                             print: true
                         };
@@ -572,8 +573,24 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             return true;
         },
-        isFloat:  function(n){
+        isFloat: function(n) {
             return Number(n) === n && n % 1 !== 0;
+        },
+        downloadExcel: function(table, name) {
+            var uri = 'data:application/vnd.ms-excel;base64,',
+                template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+                base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+                format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) };
+            if (!table.nodeType) table = document.getElementById(table);
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            var downloadLink = document.createElement("a");
+            downloadLink.href = uri + base64(format(template, ctx));
+            downloadLink.download = "downloadExcel.xls";
+
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+
         }
     };
     return {
