@@ -1466,7 +1466,7 @@ var staticConfig = {
                             required: true
                         },
                         'supplierInvoiceDate': {
-                            name: 'Supplier Invoce Date',
+                            name: 'Supplier Invoice Date',
                             id: 'supplierInvoiceDate',
                             type: 'input',
                             inputType: 'date',
@@ -2985,8 +2985,7 @@ var staticConfig = {
                         title: 'Updated',
                         id: 'updated',
                         type: 'input',
-                        inputType: 'date',
-                        isFilterBy: true
+                        inputType: 'date'
                     }
                 ],
                 page: {
@@ -3002,9 +3001,9 @@ var staticConfig = {
                     }
                 }
             },
-            salesAnalysis: {
-                id: 'salesAnalysis',
-                title: 'Sales Analysis',
+            salesAnalysisInvoice: {
+                id: 'salesAnalysisInvoice',
+                title: 'Sales Analysis - Invoice',
                 filterView: {
                     title: 'Filter',
                     data: {
@@ -3059,10 +3058,10 @@ var staticConfig = {
                     }
                 ],
                 page: {
-                    link: 'report/salesAnalysis/list',
+                    link: 'report/salesAnalysisInvoice/list',
                     name: 'list',
                     templateUrl: 'template/defaultView.html',
-                    controller: 'salesAnalysisCtrl',
+                    controller: 'salesAnalysisInvoiceCtrl',
                     actions: {
                         downloadExcel: true
                     }
@@ -3073,6 +3072,27 @@ var staticConfig = {
                         method: 'GET'
                     }
                 }
+            },
+            salesAnalysisCashBill: {
+                id: 'salesAnalysisCashBill',
+                name: 'salesAnalysisCashBill',
+                title: 'Sales Analysis - Cash Bill',
+                parentModule: 'report.salesAnalysisInvoice',
+                page: {
+                    link: 'report/salesAnalysisInvoice/list?type=cashBill',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'salesAnalysisInvoiceCtrl',
+                    actions: {
+                        downloadExcel: true
+                    }
+                },
+                services: {
+                    list: {
+                        url: 'api/cashBill/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
             }
         },
         accounts: {
@@ -3080,150 +3100,152 @@ var staticConfig = {
             name: 'Accounts',
             title: 'Accounts',
             icon: 'money',
-            disableMenu: true,
-            customerPayment: {
-                id: 'customerPayment',
-                title: 'Customer Payment',
+            customerPaymentInvoice: {
+                id: 'customerPaymentInvoice',
+                title: 'Customer Payment - Invoice',
                 masterData: {
-                    companyName: null,
-                    companyLogoUrl: null,
-                    companyAddress: null,
-                    companyMobile: null,
-                    companyEmail: null,
-                    companyGstin: null,
+                    invoiceNo: null,
+                    date: null,
+                    customerCode: null,
+                    total: null,
+                    balanceAmount:0,
                     mapping: [{
-                        module: null,
-                        restrictUser: null,
-                        add: null,
-                        edit: null,
-                        delete: null
+                        amount: null,
+                        date: null,
+                        remark: null
                     }]
                 },
                 form: {
-                    name: 'Settings',
-                    id: 'settings',
+                    name: 'Customer Payment',
+                    id: 'customerPayment',
                     fields: {
-                        'companyName': {
-                            name: 'Company Name',
-                            id: 'companyName',
-                            type: 'input',
-                            inputType: 'text',
-                            required: true
-                        },
-                        'companyLogoUrl': {
-                            name: 'Company Logo Url',
-                            id: 'companyLogoUrl',
-                            type: 'input',
-                            inputType: 'text',
-                            required: true
-                        },
-                        'companyAddress': {
-                            name: 'Company Address',
-                            id: 'companyAddress',
-                            type: 'input',
-                            inputType: 'text',
-                            required: true
-                        },
-                        'companyMobile': {
-                            name: 'Company Mobile',
-                            id: 'companyMobile',
-                            type: 'input',
-                            inputType: 'text',
-                            required: true
-                        },
-                        'companyLogoUrl': {
-                            name: 'Company Logo Url',
-                            id: 'companyLogoUrl',
-                            type: 'input',
-                            inputType: 'text',
-                            required: true
-                        },
-                        'companyEmail': {
-                            name: 'Company Email',
-                            id: 'companyEmail',
-                            type: 'input',
-                            inputType: 'text',
-                            required: true
-                        },
-                        'companyGstin': {
-                            name: 'Company GSTIN',
-                            id: 'companyGstin',
-                            type: 'input',
-                            inputType: 'text',
-                            required: true
-                        },
-                        finalStageOpp: {
-                            name: 'Operation Final Stage',
-                            id: 'finalStageOpp',
+                        'invoiceNo': {
+                            name: 'Invoice No',
+                            id: 'invoiceNo',
                             type: 'select',
                             options: {},
+                            action: 'changeMapping',
+                            updateData: ['date', 'customerCode', 'total'],
+                            dataFrom: 'marketing.invoice',
+                            replaceName: 'id',
+                            valuePrefix: 'H-',
                             required: true,
-                            dataFrom: 'production.operationMaster',
-                            replaceName: 'opName',
-                            valuePrefixData: 'opCode'
+                            isSingle: true
+                        },
+                        'date': {
+                            name: 'Date',
+                            id: 'date',
+                            type: 'span'
+                        },
+                        'customerCode': {
+                            name: 'Customer Code',
+                            id: 'customerCode',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'marketing.customerMaster',
+                            replaceName: 'customerName',
+                            isSingle: true,
+                            isDisable: true
+                        },
+                        'total': {
+                            name: 'Total',
+                            id: 'total',
+                            type: 'span'
+                        },
+                        'balanceAmount': {
+                            name: 'Balance Amount',
+                            id: 'balanceAmount',
+                            type: 'span'
                         }
                     },
                     mapping: {
-                        name: 'Restrict Mapping',
+                        name: 'Received instalment',
                         fields: {
-                            module: {
-                                name: 'Page name',
-                                id: 'module',
-                                type: 'select',
-                                options: {},
-                                makeFieldOptions: false
-                            },
-                            restrictUser: {
-                                name: 'Restrict Type',
-                                id: 'restrictUser',
-                                type: 'select',
-                                options: {
-                                    1: {
-                                        optionId: '1',
-                                        optionName: 'Admin'
-                                    },
-                                    2: {
-                                        optionId: '2',
-                                        optionName: 'User'
-                                    }
-                                },
-                                makeFieldOptions: false
-                            },
-                            add: {
-                                name: 'Show Add action',
-                                id: 'add',
+                            amount: {
+                                name: 'Amount',
+                                id: 'amount',
                                 type: 'input',
-                                inputType: 'checkbox'
+                                inputType: 'number',
+                                action:'updateBalanceAmount',
+                                required: true
                             },
-                            edit: {
-                                name: 'Show Edit action',
-                                id: 'edit',
+                            date: {
+                                name: 'Date',
+                                id: 'date',
                                 type: 'input',
-                                inputType: 'checkbox'
+                                inputType: 'date',
+                                required: true
                             },
-                            delete: {
-                                name: 'Show Delete action',
-                                id: 'delete',
+                            remark: {
+                                name: 'Remark',
+                                id: 'remark',
                                 type: 'input',
-                                inputType: 'checkbox'
+                                inputType: 'text'
                             }
                         }
                     }
                 },
                 listView: [{
-                    title: 'Company Name',
-                    id: 'companyName'
+                    title: 'Invoice No',
+                    id: 'invoiceNo',
+                    valuePrefix: 'H-'
+                },
+                {
+                    title: 'Total Amount',
+                    id: 'total'
+                },
+                {
+                    title: 'Balance Amount',
+                    id: 'balanceAmount'
                 }],
                 page: {
-                    link: 'admin/settings/list',
+                    link: 'accounts/customerPaymentInvoice/list',
                     name: 'list',
                     templateUrl: 'template/defaultView.html',
-                    controller: 'settingsCtrl',
-                    actions: false
+                    controller: 'customerPaymentInvoiceCtrl'
                 },
                 services: {
                     list: {
-                        url: 'api/settings/data',
+                        url: 'api/customerPaymentInvoice/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
+            },
+            customerPaymentCashBill: {
+                id: 'customerPaymentCashBill',
+                name: 'customerPaymentCashBill',
+                title: 'Customer Payment - Cash Bill',
+                parentModule: 'accounts.customerPaymentInvoice',
+                form: {
+                    fields: {
+                        'invoiceNo': {
+                            name: 'CashBill No',
+                            id: 'invoiceNo',
+                            options: {},
+                            action: 'changeMapping',
+                            updateData: ['date', 'customerCode', 'total'],
+                            dataFrom: 'marketing.cashBill',
+                            replaceName: 'id',
+                            valuePrefix: '',
+                            required: true,
+                            isSingle: true
+                        }
+                    }
+                },
+                listView: [{
+                    title: 'Cash Bill No',
+                    id: 'invoiceNo',
+                    valuePrefix: ''
+                }],
+                page: {
+                    link: 'accounts/customerPaymentInvoice/list?type=cashBill',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'customerPaymentInvoiceCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/customerPaymentCashBill/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }

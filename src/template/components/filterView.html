@@ -1,5 +1,5 @@
 <div>
-	<h3>{{context.filterView.title}} <div ng-if="context.page.actions.downloadExcel" class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.downloadExcel('listView')" title="Download Excel" class="fa fa-fw fa-file-excel-o"></a></div></h3>
+	<h3>{{context.filterView.title}} <div ng-if="context.page.actions.downloadExcel" class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.downloadExcel(context, 'listView')" title="Download Excel" class="fa fa-fw fa-file-excel-o"></a></div></h3>
     <table class="table table-bordered">
         <thead>
             <tr>

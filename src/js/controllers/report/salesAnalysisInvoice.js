@@ -1,4 +1,4 @@
-erpApp.controller('salesAnalysisCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+erpApp.controller('salesAnalysisInvoiceCtrl', ['$scope', 'commonFact', 'serviceApi', '$location', function($scope, commonFact, serviceApi, $location) {
     var actions = {
         callBackList: function(context) {
             var partDetailList = [];
@@ -41,6 +41,10 @@ erpApp.controller('salesAnalysisCtrl', ['$scope', 'commonFact', 'serviceApi', fu
         }
     };
 
-    commonFact.initCtrl($scope, 'report.salesAnalysis', actions);
+    if ($location.search() && $location.search()['type'] === 'cashBill') {
+        commonFact.initCtrl($scope, 'report.salesAnalysisCashBill', actions);
+    } else {
+        commonFact.initCtrl($scope, 'report.salesAnalysisInvoice', actions);
+    }
 
 }]);
