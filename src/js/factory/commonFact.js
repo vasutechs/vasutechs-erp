@@ -576,6 +576,15 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         isFloat: function(n) {
             return Number(n) === n && n % 1 !== 0;
         },
+        makeDownloadExcel: function(context){
+            var path = context.page.link;
+            if(angular.equals($location.search(), {})){
+                path = path + '?download=xls';
+            }else{
+                path = path + '&download=xls';
+            }
+            $location.url(path);
+        },
         downloadExcel: function(context, table) {
             var uri = 'data:application/vnd.ms-excel;base64,',
                 template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',

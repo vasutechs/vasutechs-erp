@@ -2306,7 +2306,7 @@ var staticConfig = {
                             name: 'Tool No',
                             id: 'toolNo',
                             type: 'span',
-                            valuePrefix: 'VT-T'
+                            valuePrefix: 'VT-T-'
                         },
                         'toolName': {
                             name: 'Tool Name',
@@ -2356,7 +2356,7 @@ var staticConfig = {
                 listView: [{
                     title: 'Tool No',
                     id: 'toolNo',
-                    valuePrefix: 'VT-T'
+                    valuePrefix: 'VT-T-'
                 }, {
                     title: 'Tool Name',
                     id: 'toolName'
