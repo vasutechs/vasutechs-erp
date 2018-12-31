@@ -3105,7 +3105,6 @@ var staticConfig = {
                 title: 'Customer Payment - Invoice',
                 masterData: {
                     invoiceNo: null,
-                    date: null,
                     customerCode: null,
                     total: null,
                     balanceAmount:0,
@@ -3125,17 +3124,13 @@ var staticConfig = {
                             type: 'select',
                             options: {},
                             action: 'changeMapping',
-                            updateData: ['date', 'customerCode', 'total'],
+                            updateData: ['customerCode', 'total'],
                             dataFrom: 'marketing.invoice',
-                            replaceName: 'id',
+                            replaceName: 'invoiceNo',
                             valuePrefix: 'H-',
                             required: true,
+                            existingCheck: true,
                             isSingle: true
-                        },
-                        'date': {
-                            name: 'Date',
-                            id: 'date',
-                            type: 'span'
                         },
                         'customerCode': {
                             name: 'Customer Code',
@@ -3188,7 +3183,12 @@ var staticConfig = {
                 listView: [{
                     title: 'Invoice No',
                     id: 'invoiceNo',
-                    valuePrefix: 'H-'
+                    dataFrom: 'marketing.invoice',
+                    valuePrefix: 'H-',
+                    replaceName: 'invoiceNo',
+                    isFilterBy: true,
+                    type: 'select',
+                    options: {}
                 },
                 {
                     title: 'Total Amount',
@@ -3228,6 +3228,7 @@ var staticConfig = {
                             replaceName: 'id',
                             valuePrefix: '',
                             required: true,
+                            existingCheck: true,
                             isSingle: true
                         }
                     }
@@ -3235,7 +3236,12 @@ var staticConfig = {
                 listView: [{
                     title: 'Cash Bill No',
                     id: 'invoiceNo',
-                    valuePrefix: ''
+                    valuePrefix: '',
+                    dataFrom: 'marketing.cashBill',
+                    replaceName: 'invoiceNo',
+                    isFilterBy: true,
+                    type: 'select',
+                    options: {}
                 }],
                 page: {
                     link: 'accounts/customerPaymentInvoice/list?type=cashBill',
@@ -3266,6 +3272,8 @@ var staticConfig = {
                     companyMobile: null,
                     companyEmail: null,
                     companyGstin: null,
+                    finalStageOpp: null,
+                    forceLoginSite: null,
                     mapping: [{
                         module: null,
                         restrictUser: null,
@@ -3336,6 +3344,12 @@ var staticConfig = {
                             dataFrom: 'production.operationMaster',
                             replaceName: 'opName',
                             valuePrefixData: 'opCode'
+                        },
+                        forceLoginSite: {
+                            name: 'Force login to site',
+                            id: 'forceLoginSite',
+                            type: 'input',
+                            inputType: 'checkbox'
                         }
                     },
                     mapping: {
@@ -3394,7 +3408,9 @@ var staticConfig = {
                     name: 'list',
                     templateUrl: 'template/defaultView.html',
                     controller: 'settingsCtrl',
-                    actions: false
+                    actions: {
+                        edit: true
+                    }
                 },
                 services: {
                     list: {
