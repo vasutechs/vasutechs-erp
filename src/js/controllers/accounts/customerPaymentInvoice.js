@@ -9,7 +9,7 @@ erpApp.controller('customerPaymentInvoiceCtrl', ['$scope', 'commonFact', '$locat
         	}
 		},
         callBackChangeMapping: function(context, data, key, field) {
-            context.data.balanceAmount = parseFloat(context.data.total);
+            context.data.balanceAmount = context.data.total;
         },
         updateBalanceAmount: function(context, data, key, field) {
         	var amount = 0;

@@ -3107,7 +3107,7 @@ var staticConfig = {
                     invoiceNo: null,
                     customerCode: null,
                     total: null,
-                    balanceAmount:0,
+                    balanceAmount: 0,
                     mapping: [{
                         amount: null,
                         date: null,
@@ -3161,7 +3161,7 @@ var staticConfig = {
                                 id: 'amount',
                                 type: 'input',
                                 inputType: 'number',
-                                action:'updateBalanceAmount',
+                                action: 'updateBalanceAmount',
                                 required: true
                             },
                             date: {
@@ -3181,23 +3181,33 @@ var staticConfig = {
                     }
                 },
                 listView: [{
-                    title: 'Invoice No',
-                    id: 'invoiceNo',
-                    dataFrom: 'marketing.invoice',
-                    valuePrefix: 'H-',
-                    replaceName: 'invoiceNo',
-                    isFilterBy: true,
-                    type: 'select',
-                    options: {}
-                },
-                {
-                    title: 'Total Amount',
-                    id: 'total'
-                },
-                {
-                    title: 'Balance Amount',
-                    id: 'balanceAmount'
-                }],
+                        title: 'Invoice No',
+                        id: 'invoiceNo',
+                        dataFrom: 'marketing.invoice',
+                        valuePrefix: 'H-',
+                        replaceName: 'invoiceNo',
+                        isFilterBy: true,
+                        type: 'select',
+                        options: {}
+                    },
+                    {
+                        title: 'Customer',
+                        id: 'customerCode',
+                        dataFrom: 'marketing.customerMaster',
+                        replaceName: 'customerName',
+                        isFilterBy: true,
+                        type: 'select',
+                        options: {}
+                    },
+                    {
+                        title: 'Total Amount',
+                        id: 'total'
+                    },
+                    {
+                        title: 'Balance Amount',
+                        id: 'balanceAmount'
+                    }
+                ],
                 page: {
                     link: 'accounts/customerPaymentInvoice/list',
                     name: 'list',
@@ -3252,6 +3262,290 @@ var staticConfig = {
                 services: {
                     list: {
                         url: 'api/customerPaymentCashBill/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
+            },
+            suppilerPayment: {
+                id: 'suppilerPayment',
+                title: 'Suppiler Payment',
+                masterData: {
+                    grnNo: null,
+                    supplierCode: null,
+                    supplierInvoiceNo: null,
+                    supplierInvoiceDate: null,
+                    total: null,
+                    balanceAmount: 0,
+                    mapping: [{
+                        amount: null,
+                        date: null,
+                        remark: null
+                    }]
+                },
+                form: {
+                    name: 'Suppiler Payment',
+                    id: 'suppilerPayment',
+                    fields: {
+                        'grnNo': {
+                            name: 'GRN No',
+                            id: 'grnNo',
+                            type: 'select',
+                            options: {},
+                            action: 'changeMapping',
+                            updateData: ['supplierCode', 'supplierInvoiceNo', 'supplierInvoiceDate'],
+                            dataFrom: 'store.grnSupplier',
+                            replaceName: 'grnNo',
+                            valuePrefix: 'VT-GRN-',
+                            required: true,
+                            existingCheck: true,
+                            isSingle: true
+                        },
+                        'supplierCode': {
+                            name: 'Supplier Name',
+                            id: 'supplierCode',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'purchase.supplierMaster',
+                            replaceName: 'supplierName',
+                            required: true,
+                            isDisable: true,
+                            isSingle: true
+                        },
+                        'supplierInvoiceNo': {
+                            name: 'Supplier Invoice No',
+                            id: 'supplierInvoiceNo',
+                            type: 'span'
+                        },
+                        supplierInvoiceDate: {
+                            name: 'Supplier Invoice Date',
+                            id: 'supplierInvoiceDate',
+                            type: 'span'
+                        },
+                        'total': {
+                            name: 'Total',
+                            id: 'total',
+                            type: 'span'
+                        },
+                        'balanceAmount': {
+                            name: 'Balance Amount',
+                            id: 'balanceAmount',
+                            type: 'span'
+                        }
+                    },
+                    mapping: {
+                        name: 'Received instalment',
+                        fields: {
+                            amount: {
+                                name: 'Amount',
+                                id: 'amount',
+                                type: 'input',
+                                inputType: 'number',
+                                action: 'updateBalanceAmount',
+                                required: true
+                            },
+                            date: {
+                                name: 'Date',
+                                id: 'date',
+                                type: 'input',
+                                inputType: 'date',
+                                required: true
+                            },
+                            remark: {
+                                name: 'Remark',
+                                id: 'remark',
+                                type: 'input',
+                                inputType: 'text'
+                            }
+                        }
+                    }
+                },
+                listView: [{
+                        title: 'GRN No',
+                        id: 'grnNo',
+                        dataFrom: 'store.grnSupplier',
+                        replaceName: 'grnNo',
+                        valuePrefix: 'VT-GRN-',
+                        isFilterBy: true,
+                        type: 'select',
+                        options: {}
+                    },{
+                        title: 'Supplier Name',
+                        id: 'supplierCode',
+                        dataFrom: 'purchase.supplierMaster',
+                        replaceName: 'supplierName',
+                        isFilterBy: true,
+                        type: 'select',
+                        options: {}
+                    },
+                    {
+                        title: 'Supplier InvoiceNo No',
+                        id: 'supplierInvoiceNo',
+                        dataFrom: 'store.grnSupplier',
+                        replaceName: 'supplierInvoiceNo',
+                        isFilterBy: true,
+                        type: 'select',
+                        options: {}
+                    },
+                    {
+                        title: 'Total Amount',
+                        id: 'total'
+                    },
+                    {
+                        title: 'Balance Amount',
+                        id: 'balanceAmount'
+                    }
+                ],
+                page: {
+                    link: 'accounts/suppilerPayment/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'suppilerPaymentCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/suppilerPayment/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
+            },
+            subContractorPayment: {
+                id: 'subContractorPayment',
+                title: 'Sub Contractor Payment',
+                masterData: {
+                    grnNo: null,
+                    subContractorCode: null,
+                    subContractorDCCode: null,
+                    subContractorDCDate: null,
+                    total: null,
+                    balanceAmount: 0,
+                    mapping: [{
+                        amount: null,
+                        date: null,
+                        remark: null
+                    }]
+                },
+                form: {
+                    name: 'Sub Contractor Payment',
+                    id: 'subContractorPayment',
+                    fields: {
+                        'grnNo': {
+                            name: 'GRN No',
+                            id: 'grnNo',
+                            type: 'select',
+                            options: {},
+                            action: 'changeMapping',
+                            updateData: ['subContractorCode', 'subContractorDCCode', 'subContractorDCDate'],
+                            dataFrom: 'store.grnSubContractor',
+                            replaceName: 'grnNo',
+                            valuePrefix: 'VT-SC-GRN',
+                            required: true,
+                            existingCheck: true,
+                            isSingle: true
+                        },
+                        'subContractorCode': {
+                            name: 'Sub Contractor Name',
+                            id: 'subContractorCode',
+                            type: 'select',
+                            options: {},
+                            dataFrom: 'purchase.subContractorMaster',
+                            replaceName: 'subContractorName',
+                            required: true,
+                            isDisable: true,
+                            isSingle: true
+                        },
+                        'subContractorDCCode': {
+                            name: 'Sub Contractor Invoice No',
+                            id: 'subContractorDCCode',
+                            type: 'span'
+                        },
+                        subContractorDCDate: {
+                            name: 'Sub Contractor Invoice Date',
+                            id: 'subContractorDCDate',
+                            type: 'span'
+                        },
+                        'total': {
+                            name: 'Total',
+                            id: 'total',
+                            type: 'span'
+                        },
+                        'balanceAmount': {
+                            name: 'Balance Amount',
+                            id: 'balanceAmount',
+                            type: 'span'
+                        }
+                    },
+                    mapping: {
+                        name: 'Received instalment',
+                        fields: {
+                            amount: {
+                                name: 'Amount',
+                                id: 'amount',
+                                type: 'input',
+                                inputType: 'number',
+                                action: 'updateBalanceAmount',
+                                required: true
+                            },
+                            date: {
+                                name: 'Date',
+                                id: 'date',
+                                type: 'input',
+                                inputType: 'date',
+                                required: true
+                            },
+                            remark: {
+                                name: 'Remark',
+                                id: 'remark',
+                                type: 'input',
+                                inputType: 'text'
+                            }
+                        }
+                    }
+                },
+                listView: [{
+                        title: 'GRN No',
+                        id: 'grnNo',
+                        dataFrom: 'store.grnSupplier',
+                        replaceName: 'grnNo',
+                        valuePrefix: 'VT-SC-GRN-',
+                        isFilterBy: true,
+                        type: 'select',
+                        options: {}
+                    },{
+                        title: 'Sub Contractor Name',
+                        id: 'subContractorCode',
+                        dataFrom: 'purchase.subContractorMaster',
+                        replaceName: 'subContractorName',
+                        isFilterBy: true,
+                        type: 'select',
+                        options: {}
+                    },
+                    {
+                        title: 'Sub Contractor InvoiceNo No',
+                        id: 'subContractorDCCode',
+                        dataFrom: 'store.grnSupplier',
+                        replaceName: 'subContractorDCCode',
+                        isFilterBy: true,
+                        type: 'select',
+                        options: {}
+                    },
+                    {
+                        title: 'Total Amount',
+                        id: 'total'
+                    },
+                    {
+                        title: 'Balance Amount',
+                        id: 'balanceAmount'
+                    }
+                ],
+                page: {
+                    link: 'accounts/subContractorPayment/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'subContractorPaymentCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/subContractorPayment/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
