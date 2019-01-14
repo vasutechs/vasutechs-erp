@@ -657,7 +657,10 @@ var staticConfig = {
                         title: 'Customer',
                         id: 'customerCode',
                         dataFrom: 'marketing.customerMaster',
-                        replaceName: 'customerName'
+                        replaceName: 'customerName',
+                        isFilterBy: true,
+                        type: 'select',
+                        options: {}
                     },
                     {
                         title: 'Date',
@@ -720,6 +723,7 @@ var staticConfig = {
             title: 'Purchase',
             icon: 'shopping-bag',
             rmMaster: {
+                id:'rmMaster',
                 title: 'Raw Material Master',
                 masterData: {
                     rmCode: null,
@@ -3506,7 +3510,7 @@ var staticConfig = {
                         id: 'grnNo',
                         dataFrom: 'store.grnSupplier',
                         replaceName: 'grnNo',
-                        valuePrefix: 'VT-SC-GRN-',
+                        valuePrefix: 'VT-GRN-',
                         isFilterBy: true,
                         type: 'select',
                         options: {}
@@ -3660,17 +3664,10 @@ var staticConfig = {
                                 name: 'Restrict Type',
                                 id: 'restrictUser',
                                 type: 'select',
-                                options: {
-                                    1: {
-                                        optionId: '1',
-                                        optionName: 'Admin'
-                                    },
-                                    2: {
-                                        optionId: '2',
-                                        optionName: 'User'
-                                    }
-                                },
-                                makeFieldOptions: false
+                                options: {},
+                                required: true,
+                                dataFrom: 'admin.userTypes',
+                                replaceName: 'userTypes'
                             },
                             add: {
                                 name: 'Show Add action',
@@ -3743,18 +3740,10 @@ var staticConfig = {
                             name: 'User Type',
                             id: 'userType',
                             type: 'select',
-                            options: {
-                                1: {
-                                    optionId: '1',
-                                    optionName: 'Admin'
-                                },
-                                2: {
-                                    optionId: '2',
-                                    optionName: 'User'
-                                }
-                            },
-                            makeFieldOptions: false,
-                            required: true
+                            options: {},
+                            required: true,
+                            dataFrom: 'admin.userTypes',
+                            replaceName: 'userTypes'
                         }
                     }
                 },
@@ -3771,6 +3760,50 @@ var staticConfig = {
                 services: {
                     list: {
                         url: 'api/users/data',
+                        method: 'GET'
+                    }
+                }
+            },
+            userTypes: {
+                id: 'userTypes',
+                title: 'User Types',
+                masterData: {
+                    userType: null,
+                    desc: null
+                },
+                form: {
+                    name: 'User Types',
+                    id: 'userTypes',
+                    fields: {
+                        'userTypes': {
+                            name: 'User Types',
+                            id: 'userTypes',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        },
+                        'desc': {
+                            name: 'Description',
+                            id: 'desc',
+                            type: 'input',
+                            inputType: 'text',
+                            required: true
+                        }
+                    }
+                },
+                listView: [{
+                    title: 'User Name',
+                    id: 'userTypes'
+                }],
+                page: {
+                    link: 'admin/userTypes/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'userTypesCtrl'
+                },
+                services: {
+                    list: {
+                        url: 'api/userTypes/data',
                         method: 'GET'
                     }
                 }

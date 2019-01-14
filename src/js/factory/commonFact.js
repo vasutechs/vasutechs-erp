@@ -104,7 +104,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.page.name = 'list';
             context.currentPage = 0;
             context.pageSize = 10;
-            context.filterBy = [];
+            context.filterBy = {};
             context.listViewData = [];
             context.orderByProperty = 'updated';
             return serviceApi.callServiceApi(serviceconf).then(function(res) {
@@ -118,7 +118,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             });
         },
         getPageData: function(context) {
-            return $filter('filter')(context.listViewData, context.filterBy) || [];
+            return $filter('filter')(context.listViewData, context.filterBy, true) || [];
         },
         numberOfPages: function(context) {
             return Math.ceil(context.actions.getPageData(context).length / context.pageSize);
