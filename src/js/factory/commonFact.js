@@ -551,7 +551,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         },
         moduleAccess: function(erpAppConfig) {
             var userType = authFact.isLogin();
-            if (userType !== '1') {
+            if (userType !== 'ADMIN') {
                 for (var i in erpAppConfig.mapping) {
                     var map = erpAppConfig.mapping[i];
                     var module = eval('erpAppConfig.modules.' + map.module);
@@ -572,7 +572,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         isActionAccess: function(module, action) {
             var erpAppConfig = getErpAppConfig();
             var userType = authFact.isLogin();
-            if (!userType !== 1 && erpAppConfig.pageAccess && erpAppConfig.pageAccess[module]) {
+            if (!userType !== 'ADMIN' && erpAppConfig.pageAccess && erpAppConfig.pageAccess[module]) {
                 if (!userType || (userType && (erpAppConfig.pageAccess[module].restrictUser !== userType || !erpAppConfig.pageAccess[module][action]))) {
                     return false;
                 }

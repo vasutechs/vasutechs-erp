@@ -5,20 +5,29 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
             moduleField.options = {};
             moduleField.allOptions = {};
             context.actions.makeModuleOptions(context, context.appConfig.modules, moduleField);
+            var adminOption = {
+                userType: 'ADMIN',
+                desc: 'ADMIN',
+                optionName: 'ADMIN',
+                optionId: 'ADMIN'
+            };
+            context.form.mapping.fields['restrictUser'].options['ADMIN'] = adminOption;
         },
         makeModuleOptions: function(context, modules, field, parentModule) {
             for (var i in modules) {
                 var optionVal = angular.copy(modules[i]);
                 var optionIdVal = parentModule && parentModule.id + '.' + optionVal.id || optionVal.id;
                 var optionNameVal = parentModule && '-- ' + optionVal.title || optionVal.title;
-                //if (optionVal.page) {
-                field.allOptions[optionIdVal] = optionVal;
-                field.allOptions[optionIdVal]['optionName'] = optionNameVal;
-                field.allOptions[optionIdVal]['optionId'] = optionIdVal;
-                field.options[optionIdVal] = field.allOptions[optionIdVal];
-                //}
-                if (!optionVal.page) {
-                    context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
+                if (i !== 'disable') {
+                    console.log(modules, modules[i]);
+                    field.allOptions[optionIdVal] = optionVal;
+                    field.allOptions[optionIdVal]['optionName'] = optionNameVal;
+                    field.allOptions[optionIdVal]['optionId'] = optionIdVal;
+                    field.options[optionIdVal] = field.allOptions[optionIdVal];
+
+                    if (!optionVal.page) {
+                        context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
+                    }
                 }
             }
         }

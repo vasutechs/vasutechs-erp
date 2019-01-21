@@ -3667,7 +3667,7 @@ var staticConfig = {
                                 options: {},
                                 required: true,
                                 dataFrom: 'admin.userTypes',
-                                replaceName: 'userTypes'
+                                replaceName: 'userType'
                             },
                             add: {
                                 name: 'Show Add action',
@@ -3743,7 +3743,7 @@ var staticConfig = {
                             options: {},
                             required: true,
                             dataFrom: 'admin.userTypes',
-                            replaceName: 'userTypes'
+                            replaceName: 'userType'
                         }
                     }
                 },
@@ -3775,9 +3775,9 @@ var staticConfig = {
                     name: 'User Types',
                     id: 'userTypes',
                     fields: {
-                        'userTypes': {
-                            name: 'User Types',
-                            id: 'userTypes',
+                        'userType': {
+                            name: 'User Type',
+                            id: 'userType',
                             type: 'input',
                             inputType: 'text',
                             required: true
@@ -3793,7 +3793,7 @@ var staticConfig = {
                 },
                 listView: [{
                     title: 'User Name',
-                    id: 'userTypes'
+                    id: 'userType'
                 }],
                 page: {
                     link: 'admin/userTypes/list',
