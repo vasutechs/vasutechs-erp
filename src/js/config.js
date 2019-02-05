@@ -723,7 +723,7 @@ var staticConfig = {
             title: 'Purchase',
             icon: 'shopping-bag',
             rmMaster: {
-                id:'rmMaster',
+                id: 'rmMaster',
                 title: 'Raw Material Master',
                 masterData: {
                     rmCode: null,
@@ -3011,6 +3011,7 @@ var staticConfig = {
                 filterView: {
                     title: 'Filter',
                     data: {
+                        customerCode: null,
                         frmDate: null,
                         toDate: null
                     },
@@ -3018,22 +3019,19 @@ var staticConfig = {
                             title: 'Customer',
                             id: 'customerCode',
                             type: 'select',
-                            action: 'partSalesFilter',
                             dataFrom: 'marketing.customerMaster',
                             replaceName: 'customerName'
                         }, {
                             title: 'From Date',
                             id: 'frmDate',
                             type: 'input',
-                            inputType: 'date',
-                            action: 'partSalesFilter'
+                            inputType: 'date'
                         },
                         {
                             title: 'To Date',
                             id: 'toDate',
                             type: 'input',
-                            inputType: 'date',
-                            action: 'partSalesFilter'
+                            inputType: 'date'
                         }
                     ]
                 },
@@ -3094,6 +3092,276 @@ var staticConfig = {
                 services: {
                     list: {
                         url: 'api/cashBill/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
+            },
+            productionEntryReport: {
+                id: 'productionEntryReport',
+                title: 'Production Entry Report',
+                filterView: {
+                    title: 'Filter',
+                    data: {
+                        frmDate: null,
+                        toDate: null
+                    },
+                    fields: [{
+                            title: 'From Date',
+                            id: 'frmDate',
+                            type: 'input',
+                            inputType: 'date'
+                        },
+                        {
+                            title: 'To Date',
+                            id: 'toDate',
+                            type: 'input',
+                            inputType: 'date'
+                        }
+                    ]
+                },
+                listView: [{
+                        title: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date'
+                    }, {
+                        title: 'M/C No',
+                        id: 'mcNo',
+                        type: 'select',
+                        dataFrom: 'production.machineMaster',
+                        replaceName: 'machineName'
+                    }, {
+                        title: 'Job Card No',
+                        id: 'jobCardNo',
+                        type: 'input'
+                    }, {
+                        title: 'Part No',
+                        id: 'partNo',
+                        dataFrom: 'marketing.partMaster',
+                        replaceName: 'partNo',
+                        type: 'select'
+                    }, {
+                        title: 'Operation',
+                        id: 'operationTo',
+                        dataFrom: 'production.operationMaster',
+                        replaceName: 'opName',
+                        valuePrefixData: 'opCode',
+                        type: 'select'
+                    },
+                    {
+                        title: 'Operator',
+                        id: 'operator',
+                        type: 'select',
+                        dataFrom: 'marketing.empMaster',
+                        replaceName: 'employeeName'
+                    },
+                    {
+                        title: 'Start Time',
+                        id: 'startTime'
+                    },
+                    {
+                        title: 'End Time',
+                        id: 'endTime'
+                    },
+                    {
+                        title: 'Plan Qty',
+                        id: 'planQty'
+                    },
+                    {
+                        title: 'Qty',
+                        id: 'acceptedQty'
+                    },
+                    {
+                        title: 'Rejection Qty',
+                        id: 'rejectionQty'
+                    },
+                    {
+                        title: 'RW Qty',
+                        id: 'rwQty'
+                    }
+                ],
+                page: {
+                    link: 'report/productionEntryReport/list',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'productionEntryReportCtrl',
+                    actions: {
+                        downloadExcel: true
+                    }
+                },
+                services: {
+                    list: {
+                        url: 'api/productionEntry/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
+            },
+            toolHistoryCard: {
+                id: 'toolHistoryCard',
+                title: 'Tool History Card',
+                filterView: {
+                    title: 'Filter',
+                    data: {
+                        toolNo: null,
+                        partNo: null,
+                        frmDate: null,
+                        toDate: null
+                    },
+                    fields: [{
+                            title: 'Tool Name',
+                            id: 'toolNo',
+                            type: 'select',
+                            dataFrom: 'production.toolMaster',
+                            replaceName: 'toolName'
+                        }, {
+                            title: 'Part No',
+                            id: 'partNo',
+                            dataFrom: 'marketing.partMaster',
+                            replaceName: 'partNo',
+                            type: 'select'
+                        }, {
+                            title: 'From Date',
+                            id: 'frmDate',
+                            type: 'input',
+                            inputType: 'date'
+                        },
+                        {
+                            title: 'To Date',
+                            id: 'toDate',
+                            type: 'input',
+                            inputType: 'date'
+                        }
+                    ]
+                },
+                listView: [{
+                        title: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date'
+                    }, {
+                        title: 'Tool Name',
+                        id: 'toolNo',
+                        type: 'select',
+                        dataFrom: 'production.toolMaster',
+                        replaceName: 'toolName'
+                    }, {
+                        title: 'Part No',
+                        id: 'partNo',
+                        dataFrom: 'marketing.partMaster',
+                        replaceName: 'partNo',
+                        type: 'select'
+                    },
+                    {
+                        title: 'Qty',
+                        id: 'qty'
+                    },
+                    {
+                        title: 'Cummulative Qty',
+                        id: 'cummulativeQty'
+                    }, {
+                        title: 'Activity',
+                        id: 'activity',
+                        dataFrom: 'production.operationMaster',
+                        replaceName: 'opName',
+                        valuePrefixData: 'opCode'
+                    }
+                ],
+                page: {
+                    link: 'report/productionEntryReport/list?type=toolHistoryCard',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'productionEntryReportCtrl',
+                    actions: {
+                        downloadExcel: true
+                    }
+                },
+                services: {
+                    list: {
+                        url: 'api/productionEntry/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
+            },
+            machineRunningTime: {
+                id: 'machineRunningTime',
+                title: 'Machine Running Time',
+                filterView: {
+                    title: 'Filter',
+                    data: {
+                        machineNo: null,
+                        frmDate: null,
+                        toDate: null
+                    },
+                    fields: [{
+                            title: 'Machine Name',
+                            id: 'mcNo',
+                            type: 'select',
+                            dataFrom: 'production.machineMaster',
+                            replaceName: 'machineName'
+                        }, {
+                            title: 'From Date',
+                            id: 'frmDate',
+                            type: 'input',
+                            inputType: 'date'
+                        },
+                        {
+                            title: 'To Date',
+                            id: 'toDate',
+                            type: 'input',
+                            inputType: 'date'
+                        }
+                    ]
+                },
+                listView: [{
+                        title: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date'
+                    }, {
+                        title: 'Machine No',
+                        id: 'mcNo',
+                        type: 'select',
+                        dataFrom: 'production.machineMaster',
+                        replaceName: 'machineNo',
+                        valuePrefix: 'VT-M/C-'
+                    }, {
+                        title: 'Machine No',
+                        id: 'mcNo',
+                        type: 'select',
+                        dataFrom: 'production.machineMaster',
+                        replaceName: 'machineName'
+                    }, {
+                        title: 'Year',
+                        id: 'mcNo',
+                        type: 'select',
+                        dataFrom: 'production.machineMaster',
+                        replaceName: 'yop'
+                    }, {
+                        title: 'Time On',
+                        id: 'startTime'
+                    }, {
+                        title: 'Time Off',
+                        id: 'endTime'
+                    }, {
+                        title: 'Running Time',
+                        id: 'runningTime'
+                    }, {
+                        title: 'Cum Running Time',
+                        id: 'cumRunningTime'
+                    }
+                ],
+                page: {
+                    link: 'report/productionEntryReport/list?type=machineRunningTime',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'productionEntryReportCtrl',
+                    actions: {
+                        downloadExcel: true
+                    }
+                },
+                services: {
+                    list: {
+                        url: 'api/productionEntry/data/{{YEAR}}',
                         method: 'GET'
                     }
                 }
@@ -3372,7 +3640,7 @@ var staticConfig = {
                         isFilterBy: true,
                         type: 'select',
                         options: {}
-                    },{
+                    }, {
                         title: 'Supplier Name',
                         id: 'supplierCode',
                         dataFrom: 'purchase.supplierMaster',
@@ -3514,7 +3782,7 @@ var staticConfig = {
                         isFilterBy: true,
                         type: 'select',
                         options: {}
-                    },{
+                    }, {
                         title: 'Sub Contractor Name',
                         id: 'subContractorCode',
                         dataFrom: 'purchase.subContractorMaster',

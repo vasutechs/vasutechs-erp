@@ -28,10 +28,10 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 parentModule = angular.copy(eval('appConfig.modules.' + context.parentModule));
                 context = angular.merge({}, angular.copy(parentModule), context);
             }
-            if(!userType && appConfig.forceLoginSite){
+            if (!userType && appConfig.forceLoginSite) {
                 $location.url(appConfig.modules.admin.login.page.link);
             }
-            if(context.disable){
+            if (context.disable) {
                 $location.url(appConfig.modules.dashboard.page.link);
             }
             context.appConfig = appConfig;
@@ -507,12 +507,20 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
         },
         findObjectByKey: function(array, key, value) {
+            var isExist = false;
             for (var i = 0; i < array.length; i++) {
-                if (array[i][key] === value) {
-                    return array[i];
+                if(typeof(key) === 'object'){
+                    for(var j in key){
+                        if((!isExist || typeof(isExist) === 'object') && array[i][j] === key[j]){
+                            isExist = array[i];
+                        }
+                    }
+                }
+                else if (array[i][key] === value) {
+                    isExist = array[i];
                 }
             }
-            return false;
+            return isExist;
         },
         updateGstPart: function(context, data, newValue, mapKey, field) {
             var acceptedQtyField = context.form.mapping.fields['acceptedQty'];
@@ -581,15 +589,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         },
         isFloat: function(n) {
             return Number(n) === n && n % 1 !== 0;
-        },
-        makeDownloadExcel: function(context){
-            var path = context.page.link;
-            if(angular.equals($location.search(), {})){
-                path = path + '?download=xls';
-            }else{
-                path = path + '&download=xls';
-            }
-            $location.url(path);
         },
         downloadExcel: function(context, table) {
             var uri = 'data:application/vnd.ms-excel;base64,',

@@ -36,27 +36,13 @@ erpApp.controller('salesAnalysisInvoiceCtrl', ['$scope', 'commonFact', 'serviceA
                     }
                 }
                 context.listViewData = partDetailList;
-                context.pageSize = $location.search()['download'] === 'xls' && context.listViewData.length + 1 || context.pageSize;
-            },
-            partSalesFilter: function(context) {
-                context.actions.callBackList(context);
             }
         };
 
-    var listPromise;
-
     if ($location.search() && $location.search()['type'] === 'cashBill') {
         cashBill = true;
-        listPromise = commonFact.initCtrl($scope, 'report.salesAnalysisCashBill', actions);
+        commonFact.initCtrl($scope, 'report.salesAnalysisCashBill', actions);
     } else {
-        listPromise = commonFact.initCtrl($scope, 'report.salesAnalysisInvoice', actions);
+        commonFact.initCtrl($scope, 'report.salesAnalysisInvoice', actions);
     }
-
-    listPromise.then(function() {
-        if ($location.search() && $location.search()['download'] === 'xls') {
-            $scope.context.actions.downloadExcel($scope.context, 'listView');
-            var path = $scope.context.page.link;
-            //$location.url(path);
-        }
-    });
 }]);

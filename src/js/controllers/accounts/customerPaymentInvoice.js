@@ -28,6 +28,7 @@ erpApp.controller('customerPaymentInvoiceCtrl', ['$scope', 'commonFact', '$locat
             }
             if(context.data.balanceAmount < 0){
                 context.data.balanceAmount = 0;
+                //data.amount = null;
             }
         }
 	};
