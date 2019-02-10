@@ -3319,8 +3319,7 @@ var staticConfig = {
                     id: 'machineNo',
                     type: 'select',
                     dataFrom: 'production.machineMaster',
-                    replaceName: 'machineNo',
-                    valuePrefix: 'VT-M/C-'
+                    replaceName: 'machineName'
                 }, {
                     title: 'Year',
                     id: 'machineNo',
