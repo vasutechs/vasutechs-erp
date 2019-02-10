@@ -46,21 +46,21 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
             for (var i in listViewData) {
                 var frmDate = context.filterView.data['frmDate'];
                 var toDate = context.filterView.data['toDate'];
-                var filterMcNo = context.filterView.data['mcNo'];
-                var mcNo = listViewData[i]['mcNo'];
+                var filterMachineNo = context.filterView.data['machineNo'];
 
                 for (var j in listViewData[i].mapping) {
                     var date = new Date(listViewData[i].mapping[j].date);
-                    if ((!filterMcNo || (mcNo === filterMcNo)) && (!frmDate || (frmDate && new Date(frmDate) <= date)) && (!toDate || toDate && new Date(toDate) >= date)) {
+                    var machineNo = listViewData[i].mapping[j]['machineNo'];
+                    if ((!filterMachineNo || (machineNo === filterMachineNo)) && (!frmDate || (frmDate && new Date(frmDate) <= date)) && (!toDate || toDate && new Date(toDate) >= date)) {
                         var details = {
-                            mcNo: mcNo,
+                            machineNo: machineNo,
                             date: listViewData[i].mapping[j].date,
                             startTime: listViewData[i].mapping[j].startTime,
                             endTime: listViewData[i].mapping[j].endTime
                         };
 
                         details.runningTime = details.cumRunningTime = parseFloat(details.endTime) - parseFloat(details.startTime);
-                        var isExist = context.actions.findObjectByKey(list, { mcNo: details.mcNo});
+                        var isExist = context.actions.findObjectByKey(list, { machineNo: details.machineNo});
                         if (isExist) {
                             details.cumRunningTime += parseFloat(isExist.cumRunningTime);
                         }
@@ -81,7 +81,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                     var date = new Date(listViewData[i].mapping[j].date);
                     if ((!frmDate || (frmDate && new Date(frmDate) <= date)) && (!toDate || toDate && new Date(toDate) >= date)) {
                         var details = {
-                            mcNo: listViewData[i].mcNo,
+                            machineNo: listViewData[i].machineNo,
                             jobCardNo: listViewData[i].jobCardNo,
                             partNo: listViewData[i].partNo,
                             operationFrom: listViewData[i].mapping[j].operationFrom,

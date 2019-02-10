@@ -29,10 +29,11 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context = angular.merge({}, angular.copy(parentModule), context);
             }
             if (!userType && appConfig.forceLoginSite) {
-                $location.url(appConfig.modules.admin.login.page.link);
+                $location.path(appConfig.modules.admin.login.page.link);
+                return;
             }
             if (context.disable) {
-                $location.url(appConfig.modules.dashboard.page.link);
+                $location.path(appConfig.modules.dashboard.page.link);
             }
             context.appConfig = appConfig;
             context.actions = angular.extend(angular.copy(defaultActions), actions || {});

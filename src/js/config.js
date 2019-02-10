@@ -2512,11 +2512,11 @@ var staticConfig = {
                 id: 'productionEntry',
                 title: 'Production Entry',
                 masterData: {
-                    mcNo: null,
                     jobCardNo: null,
                     partNo: null,
                     mapping: [{
                         date: null,
+                        machineNo: null,
                         operationFrom: null,
                         operationTo: null,
                         toolNo: null,
@@ -2534,18 +2534,6 @@ var staticConfig = {
                     id: 'productionEntry',
                     disableByField: 'id',
                     fields: {
-                        'mcNo': {
-                            name: 'M/C No',
-                            id: 'mcNo',
-                            type: 'select',
-                            options: {},
-                            dataFrom: 'production.machineMaster',
-                            replaceName: 'machineNo',
-                            valuePrefix: 'VT-M/C-',
-                            required: true,
-                            isEditDisable: true,
-                            isSingle: true
-                        },
                         'jobCardNo': {
                             name: 'Job Card No',
                             id: 'jobCardNo',
@@ -2585,6 +2573,15 @@ var staticConfig = {
                                 id: 'date',
                                 type: 'input',
                                 inputType: 'date',
+                                required: true
+                            },
+                            'machineNo': {
+                                name: 'M/C No',
+                                id: 'machineNo',
+                                type: 'select',
+                                options: {},
+                                dataFrom: 'production.machineMaster',
+                                replaceName: 'machineName',
                                 required: true
                             },
                             'operationFrom': {
@@ -3294,7 +3291,7 @@ var staticConfig = {
                     },
                     fields: [{
                             title: 'Machine Name',
-                            id: 'mcNo',
+                            id: 'machineNo',
                             type: 'select',
                             dataFrom: 'production.machineMaster',
                             replaceName: 'machineName'
@@ -3313,43 +3310,36 @@ var staticConfig = {
                     ]
                 },
                 listView: [{
-                        title: 'Date',
-                        id: 'date',
-                        type: 'input',
-                        inputType: 'date'
-                    }, {
-                        title: 'Machine No',
-                        id: 'mcNo',
-                        type: 'select',
-                        dataFrom: 'production.machineMaster',
-                        replaceName: 'machineNo',
-                        valuePrefix: 'VT-M/C-'
-                    }, {
-                        title: 'Machine No',
-                        id: 'mcNo',
-                        type: 'select',
-                        dataFrom: 'production.machineMaster',
-                        replaceName: 'machineName'
-                    }, {
-                        title: 'Year',
-                        id: 'mcNo',
-                        type: 'select',
-                        dataFrom: 'production.machineMaster',
-                        replaceName: 'yop'
-                    }, {
-                        title: 'Time On',
-                        id: 'startTime'
-                    }, {
-                        title: 'Time Off',
-                        id: 'endTime'
-                    }, {
-                        title: 'Running Time',
-                        id: 'runningTime'
-                    }, {
-                        title: 'Cum Running Time',
-                        id: 'cumRunningTime'
-                    }
-                ],
+                    title: 'Date',
+                    id: 'date',
+                    type: 'input',
+                    inputType: 'date'
+                }, {
+                    title: 'Machine No',
+                    id: 'machineNo',
+                    type: 'select',
+                    dataFrom: 'production.machineMaster',
+                    replaceName: 'machineNo',
+                    valuePrefix: 'VT-M/C-'
+                }, {
+                    title: 'Year',
+                    id: 'machineNo',
+                    type: 'select',
+                    dataFrom: 'production.machineMaster',
+                    replaceName: 'yop'
+                }, {
+                    title: 'Time On',
+                    id: 'startTime'
+                }, {
+                    title: 'Time Off',
+                    id: 'endTime'
+                }, {
+                    title: 'Running Time',
+                    id: 'runningTime'
+                }, {
+                    title: 'Cum Running Time',
+                    id: 'cumRunningTime'
+                }],
                 page: {
                     link: 'report/productionEntryReport/list?type=machineRunningTime',
                     name: 'list',
