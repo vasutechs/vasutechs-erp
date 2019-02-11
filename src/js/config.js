@@ -3354,6 +3354,100 @@ var staticConfig = {
                         method: 'GET'
                     }
                 }
+            },
+            empPerformanceReport: {
+                id: 'empPerformanceReport',
+                title: 'Employee Performance Report',
+                filterView: {
+                    title: 'Filter',
+                    data: {
+                        partNo: null,
+                        frmDate: null,
+                        toDate: null
+                    },
+                    fields: [{
+                            title: 'Part No',
+                            id: 'partNo',
+                            type: 'select',
+                            dataFrom: 'marketing.partMaster',
+                            replaceName: 'partName'
+                        }, {
+                            title: 'Employee Name',
+                            id: 'operator',
+                            type: 'select',
+                            dataFrom: 'marketing.empMaster',
+                            replaceName: 'employeeName'
+                        }, {
+                            title: 'From Date',
+                            id: 'frmDate',
+                            type: 'input',
+                            inputType: 'date'
+                        },
+                        {
+                            title: 'To Date',
+                            id: 'toDate',
+                            type: 'input',
+                            inputType: 'date'
+                        }
+                    ]
+                },
+                listView: [{
+                        title: 'Date',
+                        id: 'date',
+                        type: 'input',
+                        inputType: 'date'
+                    }, {
+                        title: 'Employee Name',
+                        id: 'operator',
+                        type: 'select',
+                        dataFrom: 'marketing.empMaster',
+                        replaceName: 'employeeName'
+                    }, {
+                        title: 'Part No',
+                        id: 'partNo',
+                        dataFrom: 'marketing.partMaster',
+                        replaceName: 'partNo',
+                        type: 'select'
+                    }, {
+                        title: 'Operation',
+                        id: 'operationTo',
+                        dataFrom: 'production.operationMaster',
+                        replaceName: 'opName',
+                        valuePrefixData: 'opCode',
+                        type: 'select'
+                    },
+                    {
+                        title: 'Start Time',
+                        id: 'startTime'
+                    },
+                    {
+                        title: 'End Time',
+                        id: 'endTime'
+                    },
+                    {
+                        title: 'Plan Qty',
+                        id: 'planQty'
+                    },
+                    {
+                        title: 'Qty',
+                        id: 'acceptedQty'
+                    }
+                ],
+                page: {
+                    link: 'report/productionEntryReport/list?type=empPerformanceReport',
+                    name: 'list',
+                    templateUrl: 'template/defaultView.html',
+                    controller: 'productionEntryReportCtrl',
+                    actions: {
+                        downloadExcel: true
+                    }
+                },
+                services: {
+                    list: {
+                        url: 'api/productionEntry/data/{{YEAR}}',
+                        method: 'GET'
+                    }
+                }
             }
         },
         accounts: {
