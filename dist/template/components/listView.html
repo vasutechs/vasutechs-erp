@@ -1,0 +1,55 @@
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th ng-repeat="(key, list) in context.listView">
+                    <div ng-if="!list.action && list.isFilterBy===undefined">{{list.title}}</div>
+                    <div ng-if="list.isFilterBy">
+                        <select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.actions.viewFilterBy(context, list)" ng-options="option.optionId as option.optionName for option in list.options">
+                            <option value="">{{list.title}}</option>
+                        </select>
+                        <input ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.actions.viewFilterBy(context, list)" />
+                    </div>
+                </th>
+                <th>
+                    <div ng-if="context.page.actions === undefined || context.page.actions.add" class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.add(context)" class="fa fa-fw fa-plus-square-o">Add</a></div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="dataList in context.listViewData | orderBy:context.orderByProperty: true  | filter:context.filterBy:true | startFrom:context.currentPage*context.pageSize | limitTo:context.pageSize">
+                <td ng-repeat="(key, list) in context.listView">
+                    <div ng-if="!list.actions" ng-bind="context.actions.replaceFieldVal(dataList[list.id], list)"></div>
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col">
+                            <a ng-if="context.page.actions === undefined || context.page.actions.print" href="javascript: void(0);" ng-click="context.actions.printView(context, dataList.id, true)" title="Print View" class="fa fa-fw fa-print"> </a>
+                        </div>
+                        <div class="col" ng-if="context.page.actions === undefined || context.page.actions.edit">
+                            <a href="javascript: void(0);" ng-click="context.actions.edit(context, dataList.id)" title="Edit" class="fa fa-fw fa-edit"> </a>
+                        </div>
+                        <div class="col" ng-if="context.page.actions === undefined || context.page.actions.delete">
+                            <a href="javascript: void(0);" title="Delete" ng-click="context.actions.delete(context, dataList.id)" class="fa fa-fw fa-times"> </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-if="context.listViewData.length > 0 && context.listViewData.length >= context.pageSize">
+                <td colspan="{{context.listView.length}}" align="center">
+                    <button ng-disabled="context.currentPage == 0" class="btn btn-primary" ng-click="context.currentPage=context.currentPage-1">
+                        Previous
+                    </button>
+                    {{context.currentPage+1}}/{{context.actions.numberOfPages(context)}}
+                    <button ng-disabled="context.currentPage >= context.actions.getPageData(context).length/context.pageSize - 1" ng-click="context.currentPage=context.currentPage+1" class="btn btn-primary">
+                        Next
+                    </button>
+                </td>
+            </tr>
+            <tr ng-if="!context.listViewData || context.listViewData.length===0">
+                <td colspan="{{context.listView.length}}">No recodes...</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

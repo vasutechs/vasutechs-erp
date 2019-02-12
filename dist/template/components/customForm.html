@@ -1,0 +1,45 @@
+<div>
+    <div ng-if="context.alertMessage!==undefined" class="alert alert-danger" role="alert">
+      {{context.alertMessage}}
+    </div>
+    <form id="{{context.form.id}}" name="customForm">
+        <div class="form-group row" ng-switch="field.type" ng-repeat="field in context.form.fields" ng-if="!context.page.printView">
+            <label ng-switch-when="span" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
+            <div ng-switch-when="span" class="col-10">
+                <span id="{{field.id}}">{{field.valuePrefix}}{{context.data[field.id]}}</span>
+            </div>
+            <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
+            <div ng-switch-when="input" class="col-6">
+                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, context.data, context.data[field.id], field)" max="{{field.max}}" ng-disabled="field.isDisable || (field.isEditDisable && context.data[context.form.disableByField])" />
+            </div>
+            <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
+            <div ng-switch-when="select" class="col-6">
+                <select id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, context.data, context.data[field.id], field)" ng-options="option.optionId as option.optionName for option in field.options" ng-disabled="field.isDisable || (field.isEditDisable && context.data[context.form.disableByField])">
+                    <option value="">--Select--</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <span style="color:red" ng-show="customForm[field.id].$invalid">*Invalid input!</span>
+            </div>
+        </div>
+        <div class="form-group row" ng-repeat="field in context.form.fields" ng-if="context.page.printView">
+            <label for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
+            <div class="col-10">
+                <span id="{{field.id}}" ng-bind="context.actions.replaceFieldVal(context.printData[field.id], field)"></span>
+            </div>
+        </div>
+        <div class="form-group row" ng-if="context.form.mapping">
+            <div class="col-12">
+                <mapping-form></mapping-form>
+            </div>
+        </div>
+        <div class="form-group row" ng-if="!context.page.printView">
+            <div class="col-2">
+            </div>
+            <div class="col-10">
+                <button ng-if="context.form.actions.submit === undefined || context.form.actions.submit" type="button" class="btn btn-primary" id="submit" ng-click="context.form.action.customSubmit && context.form.actions.customSubmit() || context.actions.submit(context)" ng-disabled="customForm.$invalid">Submit</button>
+                <button ng-if="context.form.actions.cancel === undefined || context.form.actions.cancel" type="button" class="btn btn-primary" id="cancel" ng-click="context.actions.cancel(context)">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>

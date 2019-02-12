@@ -1,0 +1,52 @@
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top  hide-print" id="mainNav">
+        <a class="navbar-brand" href="#/">{{headerContext.appName}}</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li ng-if="!module.disableMenu && !module.disable" class="nav-item dropdown" ng-repeat="(key, module) in headerContext.modules">
+                    <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
+                        <i class="fa fa-fw fa-{{module.icon}}"></i>
+                        <span class="nav-link-text">{{module.title}}</span>
+                    </a>
+                    <a ng-if="!module.page" class="nav-link dropdown-toggle" href="javascript: void(0);" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-fw fa-{{module.icon}}"></i>
+                        <span class="nav-link-text">{{module.title}}</span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div ng-repeat="(subKey, subModule) in headerContext.actions.showSubModule(module)">
+                            <a ng-if="!subModule.disableMenu && !subModule.disable" class="dropdown-item" href="#!{{subModule.page.link}}">{{subModule.title}}</a>
+                            <div ng-if="!subModule.disableMenu && !subModule.disable" class="dropdown-divider"></div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                </li>
+                <li ng-if="!headerContext.modules['calendarYear'].disable" class="nav-item">
+                    <select class="form-control" id="calendarYear" ng-change="headerContext.actions.changeCalendarYear(headerContext)" ng-model="headerContext.calendarYear" ng-options="option.optionId as option.optionName for option in headerContext.calendarYearList">
+                        <option value="">--Select--</option>
+                    </select>
+                </li>
+                <li ng-if="!headerContext.modules['databaseUpload'].disable" class="nav-item">
+                    <a class="nav-link" title="Import data" href="#!{{headerContext.modules['databaseUpload'].page.link}}">
+                        <i class="fa fa-fw fa-upload"></i> 
+                    </a>
+                </li>
+                <li ng-if="!headerContext.modules['databaseDonwload'].disable" class="nav-item">
+                    <a class="nav-link" title="Download data" href="{{headerContext.modules['databaseDonwload'].page.link}}" download="database.json">
+                        <i class="fa fa-fw fa-download"></i> 
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a ng-if="headerContext.isLogin" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}?type=logout">
+                        Logout 
+                    </a>
+                    <a ng-if="!headerContext.isLogin" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}">
+                        Login 
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

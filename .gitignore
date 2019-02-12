@@ -1,4 +1,4 @@
-dist
+dist/vendor
 node_modules
 package-lock.json
 data
