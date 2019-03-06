@@ -1,4 +1,4 @@
-erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', function(staticConfig, serviceApi, $filter, $location, authFact) {
+erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', function(staticConfig, serviceApi, $filter, $location, authFact, $injector) {
     var erpAppConfig = staticConfig;
     var erpLoadPrsRes;
     var erpLoadPrs = new Promise(function(resolve, reject) {
@@ -510,14 +510,13 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         findObjectByKey: function(array, key, value) {
             var isExist = false;
             for (var i = 0; i < array.length; i++) {
-                if(typeof(key) === 'object'){
-                    for(var j in key){
-                        if((!isExist || typeof(isExist) === 'object') && array[i][j] === key[j]){
+                if (typeof(key) === 'object') {
+                    for (var j in key) {
+                        if ((!isExist || typeof(isExist) === 'object') && array[i][j] === key[j]) {
                             isExist = array[i];
                         }
                     }
-                }
-                else if (array[i][key] === value) {
+                } else if (array[i][key] === value) {
                     isExist = array[i];
                 }
             }
@@ -563,9 +562,9 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             if (userType !== 'ADMIN') {
                 for (var i in erpAppConfig.mapping) {
                     var map = erpAppConfig.mapping[i];
-                    var module = eval('erpAppConfig.modules.' + map.module);
+                    var module = eval('erpAppConfig.modules.' + map.module) || {};
                     if (!userType || (userType && map.restrictUser !== userType)) {
-                        module.disable = map.restrictUser ? true : false;
+                        module.disable = map.restrictUser && true;
                     }
                     if (module.page) {
                         module.page.actions = {

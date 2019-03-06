@@ -1,4 +1,4 @@
-module.exports = function(gulp, config, task) {
+module.exports = function(config, task, gulp) {
     var JsonDB = require('node-json-db');
     var url = require('url');
     var db = new JsonDB("data/database", true, true);
@@ -53,8 +53,7 @@ module.exports = function(gulp, config, task) {
         data = db.getData('/tables');
         return data;
     };
-
-    gulp.task('db-connect', task.dbConnect = function() {
+    task.apiConnect = function() {
 
         var httpMiddleWare = config.httpMiddleWare;
         // respond to all requests
@@ -64,8 +63,8 @@ module.exports = function(gulp, config, task) {
                 data,
                 inputData = '';
             if (apiUrl.indexOf('/api') > -1) {
-                req.on('data', function(data) {
-                    inputData += data;
+                req.on('data', function(resData) {
+                    inputData += resData;
                 });
 
                 req.on('end', function(data) {
@@ -82,10 +81,29 @@ module.exports = function(gulp, config, task) {
                     res.end(JSON.stringify(data));
                 });
 
+            } else if (apiUrl.indexOf('/releaseProject') > -1) {
+                task.buildProject();
+                res.end();
             } else {
                 res.writeHead(401, { 'Content-Type': 'application/json' });
                 res.end();
             }
         });
+    };
+
+    gulp.task('server', task.server = function() {
+        var connect = require('connect');
+        var http = require('http');
+
+        var middleWare = connect();
+
+        middleWare.use(require('serve-static')(config.webServer.distPath));
+        config.httpMiddleWare = middleWare;
+        task.apiConnect();
+        //create node.js http server and listen on port
+        http.createServer(middleWare).listen(config.webServer.serverPort).on('listening', function() {
+            require('open')(config.webServer.serverPath);
+        });
+
     });
 };

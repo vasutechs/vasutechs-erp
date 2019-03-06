@@ -6,15 +6,17 @@
     "lib": "lib"
   },
   "scripts": {
+    "app-clean": "rm -rf node_modules",
     "app-update": "npm install",
-    "app-start": "npm run app-update && node_modules\\.bin\\gulp build-lib && node_modules\\.bin\\gulp server",
-    "app-build": "node_modules\\.bin\\gulp clean && node_modules\\.bin\\gulp build",
-    "app-ist": "node_modules\\.bin\\gulp clean && node_modules\\.bin\\gulp build-minify",
+    "app-start": "npm run app-update && node_modules\\.bin\\gulp server",
+    "app-build": "node_modules\\.bin\\gulp build",
+    "app-ist": "node_modules\\.bin\\gulp build-minify",
     "app-server": "node_modules\\.bin\\gulp server"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "adm-zip": "0.4.13",
     "angular": "1.7.5",
     "angular-route": "1.7.5",
     "bootstrap": "4.1.2",
@@ -25,6 +27,7 @@
     "googleapis": "^27.0.0",
     "gulp": "3.9.1",
     "gulp-concat": "2.6.1",
+    "gulp-replace": "1.0.0",
     "gulp-uglify": "3.0.0",
     "http": "0.0.0",
     "jquery": "3.3.1",

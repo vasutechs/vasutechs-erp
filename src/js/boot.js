@@ -7,6 +7,7 @@ var erpApp = angular.module('erpApp', ['ngRoute'])
             templateUrl: 'template/app.html'
         };
     })
+    .constant('staticConfig', STATIC_CONFIG)
     .config(['$routeProvider', 'staticConfig', function($routeProvider, staticConfig) {
         var buildRoute = function(modules) {
             var module,
