@@ -7,7 +7,7 @@ erpApp.controller('loginCtrl', ['$scope', 'commonFact', 'authFact', '$location',
                 }
                 else{
                 	location.path(appConfig.modules.dashboard.page.link);
-                	window.location.reload();
+                	setTimeout(function(){ window.location.reload()}, 500);
                 }
             });
         }
@@ -20,7 +20,7 @@ erpApp.controller('loginCtrl', ['$scope', 'commonFact', 'authFact', '$location',
     	authFact.setUserDetail(undefined);
     	location.search('');
     	location.path(appConfig.modules.dashboard.page.link);
-    	window.location.reload();
+    	setTimeout(function(){ window.location.reload()}, 500);
     }
 
     context.appConfig = appConfig;

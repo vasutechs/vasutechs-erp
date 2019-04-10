@@ -2,7 +2,7 @@ erpApp.directive('header', ['commonFact', '$location', 'authFact', function(comm
     var headerComp = function($scope, element, attrs) {
         var appConfig = commonFact.getErpAppConfig();
         var headerContext = {};
-        appConfig.calendarYear = new Date().getMonth() > 4 ? new Date().getFullYear() : new Date().getFullYear() - 1;
+        appConfig.calendarYear = new Date().getMonth() >= 3 ? new Date().getFullYear() : new Date().getFullYear() - 1;
         headerContext.appName = appConfig.appName;
         headerContext.appNavMenus = appConfig.appNavMenus;
         headerContext.modules = appConfig.modules;
