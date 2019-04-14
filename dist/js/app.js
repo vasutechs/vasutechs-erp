@@ -1545,6 +1545,80 @@ erpApp.controller('toolMasterCtrl', ['$scope', 'commonFact', function($scope, co
     commonFact.initCtrl($scope, 'production.toolMaster');
 
 }]);
+erpApp.controller('poSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+	var actions = {
+		updateTaxPart: function(context, data, newValue, mapKey, field) {
+            var acceptedQtyField = context.form.mapping.fields['acceptedQty'];
+            context.actions.updatePartTotal(context, data, data[acceptedQtyField.id], mapKey, acceptedQtyField);
+        }
+	};
+    commonFact.initCtrl($scope, 'purchase.poSubContractor', actions);
+
+}]);
+erpApp.controller('poSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+    var actions = {
+        updateRmTotal: function(context, data) {
+            var total = 0,
+                totalBeforTax = 0;
+            var qty = data['qty'];
+            totalBeforTax = qty * data.rate;
+            total = totalBeforTax + (totalBeforTax * (data.gst / 100));
+            data.total = parseFloat(total).toFixed(2);
+        },
+        updateRMDetails: function(mapping) {
+            context.actions.getData('purchase.rmMaster', mapping.id).then(function(res) {
+                var rmData = res.data;
+                for (var mapKey in rmData) {
+                    if (mapping[mapKey] === null || mapping[mapKey] === '') {
+                        mapping[mapKey] = rmData[mapKey];
+                    }
+                }
+            });
+        },
+        callBackChangeMapping: function(data, key, field) {
+            for (var key in data.mapping) {
+                this.updateRMDetails(data.mapping[key]);
+            }
+        }
+    };
+
+    commonFact.initCtrl($scope, 'purchase.poSupplier', actions);
+
+}]);
+erpApp.controller('rmMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
+	
+    commonFact.initCtrl($scope, 'purchase.rmMaster');
+
+}]);
+erpApp.controller('subContractorMasterCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+    var actions = {
+        callBackList: function(context) {
+            var serviceconf = this.getServiceConfig('production.flowMaster'),
+                partNos = [];
+            serviceApi.callServiceApi(serviceconf).then(function(res) {
+                var flowMasterData = res.data;
+                for (var i in flowMasterData) {
+                    for (var j in flowMasterData[i].mapping) {
+                        if (flowMasterData[i].mapping[j].source === 'Sub-Contractor') {
+                            partNos.push(flowMasterData[i].partNo);
+                        }
+                    }
+                }
+                context.form.mapping.fields['id'].filter = {
+                    id: partNos
+                };
+            });
+        }
+    };
+
+    commonFact.initCtrl($scope, 'purchase.subContractorMaster', actions);
+
+}]);
+erpApp.controller('supplierMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
+
+    commonFact.initCtrl($scope, 'purchase.supplierMaster');
+
+}]);
 erpApp.controller('partStockCtrl', ['$scope', 'commonFact', '$location', 'serviceApi', function($scope, commonFact, $location, serviceApi) {
     var actions = {
         callBackList: function(context) {
@@ -2276,79 +2350,5 @@ erpApp.controller('grnSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', func
         };
 
     commonFact.initCtrl($scope, 'store.grnSupplier', actions);
-
-}]);
-erpApp.controller('poSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-	var actions = {
-		updateTaxPart: function(context, data, newValue, mapKey, field) {
-            var acceptedQtyField = context.form.mapping.fields['acceptedQty'];
-            context.actions.updatePartTotal(context, data, data[acceptedQtyField.id], mapKey, acceptedQtyField);
-        }
-	};
-    commonFact.initCtrl($scope, 'purchase.poSubContractor', actions);
-
-}]);
-erpApp.controller('poSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
-        updateRmTotal: function(context, data) {
-            var total = 0,
-                totalBeforTax = 0;
-            var qty = data['qty'];
-            totalBeforTax = qty * data.rate;
-            total = totalBeforTax + (totalBeforTax * (data.gst / 100));
-            data.total = parseFloat(total).toFixed(2);
-        },
-        updateRMDetails: function(mapping) {
-            context.actions.getData('purchase.rmMaster', mapping.id).then(function(res) {
-                var rmData = res.data;
-                for (var mapKey in rmData) {
-                    if (mapping[mapKey] === null || mapping[mapKey] === '') {
-                        mapping[mapKey] = rmData[mapKey];
-                    }
-                }
-            });
-        },
-        callBackChangeMapping: function(data, key, field) {
-            for (var key in data.mapping) {
-                this.updateRMDetails(data.mapping[key]);
-            }
-        }
-    };
-
-    commonFact.initCtrl($scope, 'purchase.poSupplier', actions);
-
-}]);
-erpApp.controller('rmMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-	
-    commonFact.initCtrl($scope, 'purchase.rmMaster');
-
-}]);
-erpApp.controller('subContractorMasterCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
-        callBackList: function(context) {
-            var serviceconf = this.getServiceConfig('production.flowMaster'),
-                partNos = [];
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
-                var flowMasterData = res.data;
-                for (var i in flowMasterData) {
-                    for (var j in flowMasterData[i].mapping) {
-                        if (flowMasterData[i].mapping[j].source === 'Sub-Contractor') {
-                            partNos.push(flowMasterData[i].partNo);
-                        }
-                    }
-                }
-                context.form.mapping.fields['id'].filter = {
-                    id: partNos
-                };
-            });
-        }
-    };
-
-    commonFact.initCtrl($scope, 'purchase.subContractorMaster', actions);
-
-}]);
-erpApp.controller('supplierMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-
-    commonFact.initCtrl($scope, 'purchase.supplierMaster');
 
 }]);
