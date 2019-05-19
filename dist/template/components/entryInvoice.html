@@ -58,6 +58,11 @@
                     <td colspan="4" align="right"><b>Sub Total:</b></td>
                     <td colspan="2"><span id="{{context.form.fields.subTotal.id}}" ng-bind="context.data[context.form.fields.subTotal.id]"></span></td>
                 </tr>
+                <tr ng-if="context.cashBill">
+                    <td colspan="4" align="right"><b>Previous Balance:</b></td>
+                    <td colspan="2"><input ng-if="!context.page.printView" type="text" id="{{context.form.fields.preBalance.id}}" class="form-control" ng-model="context.data[context.form.fields.preBalance.id]" ng-change="context.form.fields.preBalance.action && context.actions[context.form.fields.preBalance.action] && context.actions[context.form.fields.preBalance.action](context, map, map[context.form.fields.preBalance.id], field)" />
+                    <span ng-if="context.page.printView" id="{{context.form.fields.preBalance.id}}">{{context.data[context.form.fields.preBalance.id]}}</span></td>
+                </tr>
                 <tr ng-if="!context.cashBill">
                     <td rowspan="2" align="right"><b>{{context.form.fields.taxRate.name}}</b></td>
                     <td rowspan="2"><span id="{{context.form.fields.taxRate.id}}" ng-bind="context.data[context.form.fields.taxRate.id]"></span>%</td>

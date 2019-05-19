@@ -809,6 +809,14 @@
                             "type": "span",
                             "valuePrefix": "",
                             "required": true
+                        },
+                        "preBalance":
+                        {
+                            "name": "Previous Balance",
+                            "id": "preBalance",
+                            "type": "input",
+                            "inputType": "text",
+                            "action": "updatePreBalance"
                         }
                     }
                 },
@@ -2585,7 +2593,8 @@
                         "id": null,
                         "opName": null,
                         "source": null,
-                        "toolNo": null
+                        "toolNo": null,
+                        "palnQtyPerHr": null
                     }]
                 },
                 "form":
@@ -2655,6 +2664,14 @@
                                 {},
                                 "dataFrom": "production.toolMaster",
                                 "replaceName": "toolName"
+                            },
+                            "palnQtyPerHr":
+                            {
+                                "name": "Paln Qty Per Hr",
+                                "id": "palnQtyPerHr",
+                                "type": "input",
+                                "inputType": "number",
+                                "required": true
                             }
                         }
                     }
@@ -3576,6 +3593,14 @@
                 {
                     "title": "Sales Value",
                     "id": "amount"
+                },
+                {
+                    "title": "Dates",
+                    "id": "dates"
+                },
+                {
+                    "title": "Invoice Nos",
+                    "id": "invoiceNos"
                 }],
                 "page":
                 {
@@ -3827,7 +3852,7 @@
                 {
                     "list":
                     {
-                        "url": "api/productionEntry/data/{{YEAR}}",
+                        "url": "api/productionEntry/data",
                         "method": "GET"
                     }
                 }
@@ -3918,7 +3943,7 @@
                 {
                     "list":
                     {
-                        "url": "api/productionEntry/data/{{YEAR}}",
+                        "url": "api/productionEntry/data",
                         "method": "GET"
                     }
                 }
@@ -4044,6 +4069,7 @@
                 {
                     "invoiceNo": null,
                     "customerCode": null,
+                    "date": null,
                     "total": null,
                     "balanceAmount": 0,
                     "mapping": [
@@ -4086,6 +4112,12 @@
                             "replaceName": "customerName",
                             "isSingle": true,
                             "isDisable": true
+                        },
+                        "date":
+                        {
+                            "name": "Invoice Date",
+                            "id": "date",
+                            "type": "span"
                         },
                         "total":
                         {
@@ -4243,6 +4275,8 @@
                     "supplierCode": null,
                     "supplierInvoiceNo": null,
                     "supplierInvoiceDate": null,
+                    "invoiceDate": null,
+                    "date": null,
                     "total": null,
                     "balanceAmount": 0,
                     "mapping": [
@@ -4266,7 +4300,7 @@
                             "options":
                             {},
                             "action": "changeMapping",
-                            "updateData": ["supplierCode", "supplierInvoiceNo", "supplierInvoiceDate"],
+                            "updateData": ["supplierCode", "supplierInvoiceNo", "supplierInvoiceDate", "date"],
                             "dataFrom": "store.grnSupplier",
                             "replaceName": "grnNo",
                             "valuePrefix": "VT-GRN-",
@@ -4297,6 +4331,12 @@
                         {
                             "name": "Supplier Invoice Date",
                             "id": "supplierInvoiceDate",
+                            "type": "span"
+                        },
+                        "date":
+                        {
+                            "name": "GRN Date",
+                            "id": "date",
                             "type": "span"
                         },
                         "total":
@@ -4410,6 +4450,7 @@
                     "subContractorCode": null,
                     "subContractorDCCode": null,
                     "subContractorDCDate": null,
+                    "date": null,
                     "total": null,
                     "balanceAmount": 0,
                     "mapping": [
@@ -4433,7 +4474,7 @@
                             "options":
                             {},
                             "action": "changeMapping",
-                            "updateData": ["subContractorCode", "subContractorDCCode", "subContractorDCDate"],
+                            "updateData": ["subContractorCode", "subContractorDCCode", "subContractorDCDate", "date"],
                             "dataFrom": "store.grnSubContractor",
                             "replaceName": "grnNo",
                             "valuePrefix": "VT-SC-GRN",
@@ -4464,6 +4505,12 @@
                         {
                             "name": "Sub Contractor Invoice Date",
                             "id": "subContractorDCDate",
+                            "type": "span"
+                        },
+                        "date":
+                        {
+                            "name": "GRN Date",
+                            "id": "date",
                             "type": "span"
                         },
                         "total":

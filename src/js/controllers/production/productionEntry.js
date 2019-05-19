@@ -126,7 +126,8 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             var startDate = mappingData.startTime;
             var endDate = mappingData.endTime;
             var timeDiff = endDate - startDate;
-            mappingData.planQty = timeDiff * context.form.fields['partNo'].options[context.data.partNo].prodRateHr;
+            var palnQtyPerHr = context.data.partNo && mappingData.operationTo && context.flowMasterByPart[context.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
+            mappingData.planQty = timeDiff * palnQtyPerHr;
         },
         updateMaterialIssue: function(context, replaceData, key) {
             var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];

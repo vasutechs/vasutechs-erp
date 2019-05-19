@@ -18,7 +18,9 @@ erpApp.controller('salesAnalysisInvoiceCtrl', ['$scope', 'commonFact', 'serviceA
                                 rate: listViewData[i].mapping[j].rate,
                                 taxRate: listViewData[i].mapping[j].taxRate,
                                 unit: listViewData[i].mapping[j].unit,
-                                customerCode: listViewData[i]['customerCode']
+                                customerCode: listViewData[i]['customerCode'],
+                                dates: context.actions.dateFormatChange(date),
+                                invoiceNos: !cashBill ? 'H-' + listViewData[i]['invoiceNo'] : listViewData[i]['invoiceNo']
                             };
 
                             if (!cashBill) {
@@ -28,6 +30,8 @@ erpApp.controller('salesAnalysisInvoiceCtrl', ['$scope', 'commonFact', 'serviceA
                             if (isPartExist && isPartExist.customerCode === partDetail.customerCode) {
                                 isPartExist.amount = parseFloat(isPartExist.amount) + parseFloat(partDetail.amount);
                                 isPartExist.unit = parseFloat(isPartExist.unit) + parseFloat(partDetail.unit);
+                                isPartExist.dates = isPartExist.dates + ', ' + partDetail.dates;
+                                isPartExist.invoiceNos = isPartExist.invoiceNos + ', ' + partDetail.invoiceNos; 
 
                             } else {
                                 partDetailList.push(partDetail);
