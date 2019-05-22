@@ -1144,7 +1144,9 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
 
             context.data.subTotal = parseFloat(subTotal).toFixed(2);
             context.data.total = parseFloat(total).toFixed(2);
-            context.actions.updatePreBalance(context);
+            if (context.cashBill) {
+                context.actions.updatePreBalance(context);
+            }
         },
         updatePreBalance: function(context) {
             var total = parseFloat(context.data.subTotal);

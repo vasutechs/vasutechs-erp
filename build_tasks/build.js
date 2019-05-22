@@ -32,14 +32,14 @@ module.exports = function(config, task, gulp) {
 
     gulp.task('build-js', task.buildJs = function() {
         return gulp.src(config.src.defaultSrcJsFiles)
-            .pipe(gp_concat('app.js'))
+            .pipe(gp_concat('boot.js'))
             .pipe(replace('STATIC_CONFIG', applyAppConfig))
             .pipe(gulp.dest(config.dist.js));
     });
 
     gulp.task('build-js-minify', task.buildJsMinify = function() {
         return gulp.src(config.src.defaultSrcJsFiles)
-            .pipe(gp_concat('app.js'))
+            .pipe(gp_concat('boot.js'))
             .pipe(replace('STATIC_CONFIG', applyAppConfig))
             .pipe(gp_uglify())
             .pipe(gulp.dest(config.dist.js));
@@ -71,7 +71,7 @@ module.exports = function(config, task, gulp) {
             .pipe(gulp.dest(config.releaseProject.path));
 
         gulp.src(config.src.defaultSrcJsFiles)
-            .pipe(gp_concat('app.js'))
+            .pipe(gp_concat('boot.js'))
             .pipe(replace('STATIC_CONFIG', applyAppConfig))
             .pipe(gulp.dest(config.releaseProject.js));
         
