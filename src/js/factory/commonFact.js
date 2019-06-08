@@ -41,25 +41,12 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             context.appConfig = appConfig;
             context.actions = angular.extend(angular.copy(defaultActions), actions || {});
-            formPromise = context.form && context.actions.updateFields(context, context.form.fields);
-            if (formPromise) {
-                formPromise && returnPromise.push(formPromise);
-                formPromise.then(function() {
-                    filterViewPromise = context.filterView && context.actions.updateFields(context, context.filterView.fields);
-                    filterViewPromise && returnPromise.push(filterViewPromise);
-                });
-                if (context.form && context.form.mapping) {
-                    formPromise.then(function() {
-                        mappingPromise = context.actions.updateFields(context, context.form.mapping.fields);
-                        mappingPromise && returnPromise.push(mappingPromise);
-                    });
-                }
-
-                formPromise.then(function() {
-                    listViewPromise = context.actions.updateFields(context, context.listView);
-                    listViewPromise && returnPromise.push(listViewPromise);
-                });
+            context.form && returnPromise.push(context.actions.updateFields(context, context.form.fields));
+            context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
+            if (context.form && context.form.mapping) {
+                returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
             }
+            returnPromise.push(context.actions.updateFields(context, context.listView));
 
             return Promise.all(returnPromise).then(function() {
                 returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
