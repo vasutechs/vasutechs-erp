@@ -4040,13 +4040,6 @@
                             "inputType": "text",
                             "required": true
                         },
-                        "companyLogoUrl": {
-                            "name": "Company Logo Url",
-                            "id": "companyLogoUrl",
-                            "type": "input",
-                            "inputType": "text",
-                            "required": true
-                        },
                         "companyEmail": {
                             "name": "Company Email",
                             "id": "companyEmail",
