@@ -4093,7 +4093,7 @@
                             "options":
                             {},
                             "action": "changeMapping",
-                            "updateData": ["customerCode", "total"],
+                            "updateData": ["customerCode", "total", "date"],
                             "dataFrom": "marketing.invoice",
                             "replaceName": "invoiceNo",
                             "valuePrefix": "H-",

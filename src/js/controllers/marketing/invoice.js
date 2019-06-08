@@ -1,132 +1,156 @@
 erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
-        callBackList: function(context) {
-            context.actions.getPartStock(context);
-        },
-        callBackSetAutoGenKey: function(context) {
-            var year = context.appConfig.calendarYear;
-            context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year + '-' + ('' + parseInt(year + 1)).substring(2);
-        },
-        callBackChangeMapping: function(context, data, key, field) {
-            context.actions.getPartStockDetail(context, data, key, field);
-        },
-        getPartStockDetail: function(context, data, key, field) {
-            var newMapData = [];
-            newMapData = context.data.mapping.filter(function(data) {
+    var orgItemVal = null,
+        actions = {
+            callBackList: function(context) {
+                context.actions.getPartStock(context);
+                orgItemVal = null;
+            },
+            callBackSetAutoGenKey: function(context) {
+                var year = context.appConfig.calendarYear;
+                context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year + '-' + ('' + parseInt(year + 1)).substring(2);
+            },
+            callBackChangeMapping: function(context, data, key, field) {
+                context.actions.getPartStockDetail(context, data, key, field);
+                orgItemVal.mapping = angular.copy(context.data.mapping);
+            },
+            callBackRemoveMapping: function(context, data, key) {
+                delete orgItemVal.mapping.splice(key, 1);
+            },
+            callBackAdd: function(context) {
+                orgItemVal = angular.copy(context.data);
+            },
+            callBackEdit: function(context) {
+                orgItemVal = angular.copy(context.data);
+            },
+            getPartStockDetail: function(context, data, key, field) {
+                var newMapData = [];
+                newMapData = context.data.mapping.filter(function(data) {
+                    if (context.partStock[data.id + '-' + context.appConfig.finalStageOpp]) {
+                        data.operationFrom = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].operationFrom;
+                        data.operationTo = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].operationTo;
+                    }
+
+                    return (context.partStock && context.partStock[data.id + '-' + context.appConfig.finalStageOpp] && parseInt(context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty) > 0);
+                });
+                context.data.mapping = newMapData;
+            },
+            updateTotal: function(context, data, updateValue) {
+                var partDetail = context.form.mapping.fields['id'].options[data.id],
+                    taxRate = 0,
+                    cgst = 0,
+                    sgst = 0,
+                    totalBeforTax = 0;
+
                 if (context.partStock[data.id + '-' + context.appConfig.finalStageOpp]) {
-                    data.operationFrom = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].operationFrom;
-                    data.operationTo = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].operationTo;
+                    data.unit = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty < data.unit ? null : data.unit;
                 }
 
-                return (context.partStock && context.partStock[data.id + '-' + context.appConfig.finalStageOpp] && parseInt(context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty) > 0);
-            });
-            context.data.mapping = newMapData;
-        },
-        updateTotal: function(context, data, updateValue) {
-            var partDetail = context.form.mapping.fields['id'].options[data.id],
-                taxRate = 0,
-                cgst = 0,
-                sgst = 0,
-                totalBeforTax = 0;
+                totalBeforTax = data.unit * data.rate;
 
-            if (context.partStock[data.id + '-' + context.appConfig.finalStageOpp]) {
-                data.unit = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty < data.unit ? null : data.unit;
+                data.amount = parseFloat(totalBeforTax).toFixed(2);
+                data.cgst = partDetail.cgst;
+                data.sgst = partDetail.sgst;
+                data.taxRate = partDetail.gst;
+
+                context.actions.updateTotalAmount(context);
+
+            },
+            updateTotalAmount: function(context) {
+                var taxRate = 0,
+                    cgst = 0,
+                    sgst = 0,
+                    taxRateTotal = 0,
+                    cgstTotal = 0,
+                    sgstTotal = 0,
+                    total = 0,
+                    subTotal = 0,
+                    mapping = context.data.mapping;
+
+                for (var i in mapping) {
+                    cgst += mapping[i].cgst;
+                    sgst += mapping[i].sgst;
+                    taxRate += mapping[i].taxRate;
+
+                    cgstTotal += (parseFloat(mapping[i].amount) * parseFloat(mapping[i].cgst / 100));
+                    sgstTotal += (parseFloat(mapping[i].amount) * parseFloat(mapping[i].sgst / 100));
+                    taxRateTotal += (parseFloat(mapping[i].amount) * parseFloat(mapping[i].taxRate / 100));
+                    subTotal += parseFloat(mapping[i].amount);
+                }
+
+                if (context.cashBill === false) {
+                    total = subTotal + cgstTotal + sgstTotal;
+                    context.data.taxRate = parseInt(taxRate) / mapping.length;
+                    context.data.cgst = parseInt(cgst) / mapping.length;
+                    context.data.sgst = parseInt(sgst) / mapping.length;
+                    context.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
+                    context.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
+                } else {
+                    total = subTotal;
+                }
+
+                context.data.subTotal = parseFloat(subTotal).toFixed(2);
+                context.data.total = parseFloat(total).toFixed(2);
+                if (context.cashBill) {
+                    context.actions.updatePreBalance(context);
+                }
+            },
+            updatePreBalance: function(context) {
+                var total = parseFloat(context.data.subTotal);
+                if (context.data.preBalance) {
+                    total = total + parseFloat(context.data.preBalance);
+                }
+                context.data.total = total.toFixed(2);
+            },
+            updateInvocePartStock: function(context) {
+                for (var i in context.data.mapping) {
+                    // context.actions.getData('report.partStock').then(function(res) {
+                    //     var partStockData = res.data,
+                    //         partStock = {};
+                    //     for (var j in partStockData) {
+                    //         partStock[partStockData[j].partNo + '-' + partStockData[j].operationFrom + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
+                    //         partStock[partStockData[j].partNo + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
+                    //     }
+                    //     var existingStock = partStock[context.data.mapping[i].id + '-' + context.appConfig.finalStageOpp];
+
+                    //     var partStockQty = parseInt(existingStock.partStockQty) - parseInt(context.data.mapping[i].unit);
+                    //     var data = {
+                    //         id: existingStock.id,
+                    //         partNo: existingStock.partNo,
+                    //         partStockQty: partStockQty,
+                    //         operationFrom: existingStock.operationFrom,
+                    //         operationTo: existingStock.operationTo
+                    //     }
+
+                    //     context.actions.updateData('report.partStock', data);
+                    // });
+
+                    var data = angular.copy(context.data.mapping[i]);
+                    var newContext = angular.copy(context);
+                    data.partNo = data.id;
+                    if (orgItemVal && orgItemVal.mapping && orgItemVal.mapping[i]) {
+                        if (orgItemVal.id) {
+                            data.acceptedQty = parseInt(orgItemVal.mapping[i].unit) - parseInt(context.data.mapping[i].unit);
+                        } else {
+                            data.acceptedQty = 0 - parseInt(context.data.mapping[i].unit);
+                        }
+                    } else {
+                        data.acceptedQty = parseInt(context.data.mapping[i].unit);
+                    }
+                    newContext.data = data;
+                    newContext.updatePrevStock = false;
+                    context.actions.updatePartStock(newContext);
+
+                }
+
+            },
+            callBackSubmit: function(context) {
+                context.actions.updateInvocePartStock(context);
+            },
+            callBeforeDelete: function(context, id, item) {
+                context.data = item;
+                context.actions.updateInvocePartStock(context);
             }
-
-            totalBeforTax = data.unit * data.rate;
-
-            data.amount = parseFloat(totalBeforTax).toFixed(2);
-            data.cgst = partDetail.cgst;
-            data.sgst = partDetail.sgst;
-            data.taxRate = partDetail.gst;
-
-            context.actions.updateTotalAmount(context);
-
-        },
-        updateTotalAmount: function(context) {
-            var taxRate = 0,
-                cgst = 0,
-                sgst = 0,
-                taxRateTotal = 0,
-                cgstTotal = 0,
-                sgstTotal = 0,
-                total = 0,
-                subTotal = 0,
-                mapping = context.data.mapping;
-
-            for (var i in mapping) {
-                cgst += mapping[i].cgst;
-                sgst += mapping[i].sgst;
-                taxRate += mapping[i].taxRate;
-
-                cgstTotal += (parseFloat(mapping[i].amount) * parseFloat(mapping[i].cgst / 100));
-                sgstTotal += (parseFloat(mapping[i].amount) * parseFloat(mapping[i].sgst / 100));
-                taxRateTotal += (parseFloat(mapping[i].amount) * parseFloat(mapping[i].taxRate / 100));
-                subTotal += parseFloat(mapping[i].amount);
-            }
-
-            if (context.cashBill === false) {
-                total = subTotal + cgstTotal + sgstTotal;
-                context.data.taxRate = parseInt(taxRate) / mapping.length;
-                context.data.cgst = parseInt(cgst) / mapping.length;
-                context.data.sgst = parseInt(sgst) / mapping.length;
-                context.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
-                context.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
-            } else {
-                total = subTotal;
-            }
-
-            context.data.subTotal = parseFloat(subTotal).toFixed(2);
-            context.data.total = parseFloat(total).toFixed(2);
-            if (context.cashBill) {
-                context.actions.updatePreBalance(context);
-            }
-        },
-        updatePreBalance: function(context) {
-            var total = parseFloat(context.data.subTotal);
-            if (context.data.preBalance) {
-                total = total + parseFloat(context.data.preBalance);
-            }
-            context.data.total = total.toFixed(2);
-        },
-        updateInvocePartStock: function(context) {
-            for (var i in context.data.mapping) {
-                // context.actions.getData('report.partStock').then(function(res) {
-                //     var partStockData = res.data,
-                //         partStock = {};
-                //     for (var j in partStockData) {
-                //         partStock[partStockData[j].partNo + '-' + partStockData[j].operationFrom + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
-                //         partStock[partStockData[j].partNo + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
-                //     }
-                //     var existingStock = partStock[context.data.mapping[i].id + '-' + context.appConfig.finalStageOpp];
-
-                //     var partStockQty = parseInt(existingStock.partStockQty) - parseInt(context.data.mapping[i].unit);
-                //     var data = {
-                //         id: existingStock.id,
-                //         partNo: existingStock.partNo,
-                //         partStockQty: partStockQty,
-                //         operationFrom: existingStock.operationFrom,
-                //         operationTo: existingStock.operationTo
-                //     }
-
-                //     context.actions.updateData('report.partStock', data);
-                // });
-
-                var data = angular.copy(context.data.mapping[i]);
-                var newContext = angular.copy(context);
-                data.partNo = data.id;
-                data.acceptedQty = 0 - parseInt(context.data.mapping[i].unit);
-                newContext.data = data;
-                newContext.updatePrevStock = false;
-                context.actions.updatePartStock(newContext);
-
-            }
-
-        },
-        callBackSubmit: function(context) {
-            context.actions.updateInvocePartStock(context);
-        }
-    };
+        };
     if ($location.search() && $location.search()['type'] === 'cashBill') {
         commonFact.initCtrl($scope, 'marketing.cashBill', actions).then(function() {
             $scope.context.cashBill = true;
@@ -136,7 +160,4 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
             $scope.context.cashBill = false;
         });
     }
-
-
-
 }]);

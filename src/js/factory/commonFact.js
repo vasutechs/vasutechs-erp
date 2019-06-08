@@ -24,6 +24,10 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var returnPage;
             var returnPromise = [];
             var userType = authFact.isLogin();
+            var formPromise;
+            var filterViewPromise;
+            var mappingPromise;
+            var listViewPromise;
             if (context.parentModule) {
                 parentModule = angular.copy(eval('appConfig.modules.' + context.parentModule));
                 context = angular.merge({}, angular.copy(parentModule), context);
@@ -37,12 +41,26 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             context.appConfig = appConfig;
             context.actions = angular.extend(angular.copy(defaultActions), actions || {});
-            context.form && returnPromise.push(context.actions.updateFields(context, context.form.fields));
-            context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
-            if (context.form && context.form.mapping) {
-                returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
+            formPromise = context.form && context.actions.updateFields(context, context.form.fields);
+            if (formPromise) {
+                formPromise && returnPromise.push(formPromise);
+                formPromise.then(function() {
+                    filterViewPromise = context.filterView && context.actions.updateFields(context, context.filterView.fields);
+                    filterViewPromise && returnPromise.push(filterViewPromise);
+                });
+                if (context.form && context.form.mapping) {
+                    formPromise.then(function() {
+                        mappingPromise = context.actions.updateFields(context, context.form.mapping.fields);
+                        mappingPromise && returnPromise.push(mappingPromise);
+                    });
+                }
+
+                formPromise.then(function() {
+                    listViewPromise = context.actions.updateFields(context, context.listView);
+                    listViewPromise && returnPromise.push(listViewPromise);
+                });
             }
-            returnPromise.push(context.actions.updateFields(context, context.listView));
+
             return Promise.all(returnPromise).then(function() {
                 returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
                 scope.context = context;
@@ -81,24 +99,27 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     context.data['date'] = new Date(context.data['date']);
                 }
                 context.actions.callBackEdit && context.actions.callBackEdit(context, key);
+                return context;
             });
 
         },
         printView: function(context, key, printView) {
             this.edit(context, key, printView);
         },
-        disable: function(context, key) {
+        disable: function(context, id, item) {
             var serviceconf = this.getServiceConfig(context.services.list, 'POST');
-            context.listViewDataMaster[key]['disabled'] = true;
-            serviceApi.callServiceApi(serviceconf, context.listViewData[key]);
+            context.actions.callBeforeDelete && context.actions.callBeforeDelete(context, item);
+            context.listViewDataMaster[id]['disabled'] = true;
+            serviceApi.callServiceApi(serviceconf, context.listViewData[id]);
             context.actions.list(context);
-            context.actions.callBackDelete && context.actions.callBackDelete(context, key);
+            context.actions.callBackDelete && context.actions.callBackDelete(context, id, item);
         },
-        delete: function(context, key) {
+        delete: function(context, id, item) {
             var serviceconf = this.getServiceConfig(context.services.list, 'POST');
-            serviceApi.callServiceApi(serviceconf, { key: key, delete: 'yes' });
+            context.actions.callBeforeDelete && context.actions.callBeforeDelete(context, id, item);
+            serviceApi.callServiceApi(serviceconf, { key: id, delete: 'yes' });
             context.actions.list(context);
-            context.actions.callBackDelete && context.actions.callBackDelete(context, key);
+            context.actions.callBackDelete && context.actions.callBackDelete(context, id, item);
         },
         list: function(context) {
             var serviceconf = this.getServiceConfig(context.services.list);
@@ -131,7 +152,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.page.name = 'list';
                 context.actions.list(context);
                 context.actions.callBackSubmit && context.actions.callBackSubmit(context);
-            });;
+            });
 
         },
         cancel: function(context) {
@@ -225,8 +246,9 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             mapping.push(newMapping);
         },
-        removeData: function(data, key) {
+        removeMapping: function(context, data, key) {
             delete data.splice(key, 1);
+            context.actions.callBackRemoveMapping && context.actions.callBackRemoveMapping(context, data, key);
         },
         changeMapping: function(context, data, key, field, mapKey) {
             for (var dataKey in data) {
