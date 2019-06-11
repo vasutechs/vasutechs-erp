@@ -28,6 +28,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var filterViewPromise;
             var mappingPromise;
             var listViewPromise;
+            var formPromise;
             if (context.parentModule) {
                 parentModule = angular.copy(eval('appConfig.modules.' + context.parentModule));
                 context = angular.merge({}, angular.copy(parentModule), context);
@@ -41,18 +42,23 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             context.appConfig = appConfig;
             context.actions = angular.extend(angular.copy(defaultActions), actions || {});
-            context.form && returnPromise.push(context.actions.updateFields(context, context.form.fields));
-            context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
-            if (context.form && context.form.mapping) {
-                returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
-            }
-            returnPromise.push(context.actions.updateFields(context, context.listView));
+            formPromise = context.form && context.actions.updateFields(context, context.form.fields);
+            if (formPromise) {
+                formPromise && returnPromise.push(formPromise);
+                formPromise.then(function() {
+                    context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
+                    if (context.form && context.form.mapping) {
+                        returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
+                    }
+                    returnPromise.push(context.actions.updateFields(context, context.listView));
 
-            return Promise.all(returnPromise).then(function() {
-                returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
-                scope.context = context;
-                return returnPage;
-            });
+                    return Promise.all(returnPromise).then(function() {
+                        returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
+                        scope.context = context;
+                        return returnPage;
+                    });
+                });
+            }
         });
     };
     var getErpAppConfig = function() {
@@ -417,8 +423,9 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         },
         getServiceConfig: function(module, replaceMethod, appendValue) {
             var appConfig = getErpAppConfig();
+            var currentYear = new Date().getMonth() >= 3 ? new Date().getFullYear() : new Date().getFullYear() - 1;
             var serviceConfig = angular.copy(typeof(module) !== 'object' ? eval('appConfig.modules.' + module + '.services.list') : module);
-            serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', appConfig.calendarYear);
+            serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', appConfig.calendarYear || currentYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
             serviceConfig.cache = true;
