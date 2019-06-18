@@ -1,9 +1,11 @@
 erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
     var orgItemVal = null,
+        delMapItemVal = [],
         actions = {
             callBackList: function(context) {
                 context.actions.getPartStock(context);
                 orgItemVal = null;
+                delMapItemVal = [];
             },
             callBackSetAutoGenKey: function(context) {
                 var year = context.appConfig.calendarYear;
@@ -14,13 +16,18 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 orgItemVal.mapping = angular.copy(context.data.mapping);
             },
             callBackRemoveMapping: function(context, data, key) {
+                if (context.page.name === 'edit') {
+                    delMapItemVal.push(orgItemVal.mapping[key]);
+                }
                 delete orgItemVal.mapping.splice(key, 1);
             },
             callBackAdd: function(context) {
                 orgItemVal = angular.copy(context.data);
+                delMapItemVal = [];
             },
             callBackEdit: function(context) {
                 orgItemVal = angular.copy(context.data);
+                delMapItemVal = [];
             },
             getPartStockDetail: function(context, data, key, field) {
                 var newMapData = [];
@@ -34,15 +41,20 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 });
                 context.data.mapping = newMapData;
             },
-            updateTotal: function(context, data, updateValue) {
+            updateTotal: function(context, data, updateValue, key) {
                 var partDetail = context.form.mapping.fields['id'].options[data.id],
                     taxRate = 0,
                     cgst = 0,
                     sgst = 0,
-                    totalBeforTax = 0;
+                    totalBeforTax = 0,
+                    partStock = 0;
 
                 if (context.partStock[data.id + '-' + context.appConfig.finalStageOpp]) {
-                    data.unit = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty < data.unit ? null : data.unit;
+                    partStock = parseInt(context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty);
+                    if (context.page.name === 'edit') {
+                        partStock += parseInt(orgItemVal.mapping[key].unit);
+                    }
+                    data.unit = partStock < data.unit ? null : data.unit;
                 }
 
                 totalBeforTax = data.unit * data.rate;
@@ -102,44 +114,28 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 context.data.total = total.toFixed(2);
             },
             updateInvocePartStock: function(context) {
-                for (var i in context.data.mapping) {
-                    // context.actions.getData('report.partStock').then(function(res) {
-                    //     var partStockData = res.data,
-                    //         partStock = {};
-                    //     for (var j in partStockData) {
-                    //         partStock[partStockData[j].partNo + '-' + partStockData[j].operationFrom + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
-                    //         partStock[partStockData[j].partNo + '-' + partStockData[j].operationTo] = partStockData[j] && partStockData[j] || undefined;
-                    //     }
-                    //     var existingStock = partStock[context.data.mapping[i].id + '-' + context.appConfig.finalStageOpp];
-
-                    //     var partStockQty = parseInt(existingStock.partStockQty) - parseInt(context.data.mapping[i].unit);
-                    //     var data = {
-                    //         id: existingStock.id,
-                    //         partNo: existingStock.partNo,
-                    //         partStockQty: partStockQty,
-                    //         operationFrom: existingStock.operationFrom,
-                    //         operationTo: existingStock.operationTo
-                    //     }
-
-                    //     context.actions.updateData('report.partStock', data);
-                    // });
-
-                    var data = angular.copy(context.data.mapping[i]);
+                var mapStockUpdate = function(map, key, del) {
+                    var data = angular.copy(map);
                     var newContext = angular.copy(context);
                     data.partNo = data.id;
-                    if (orgItemVal && orgItemVal.mapping && orgItemVal.mapping[i]) {
+                    if (!del && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[key]) {
                         if (orgItemVal.id) {
-                            data.acceptedQty = parseInt(orgItemVal.mapping[i].unit) - parseInt(context.data.mapping[i].unit);
+                            data.acceptedQty = parseInt(orgItemVal.mapping[key].unit) - parseInt(map.unit);
                         } else {
-                            data.acceptedQty = 0 - parseInt(context.data.mapping[i].unit);
+                            data.acceptedQty = 0 - parseInt(map.unit);
                         }
                     } else {
-                        data.acceptedQty = parseInt(context.data.mapping[i].unit);
+                        data.acceptedQty = parseInt(map.unit);
                     }
                     newContext.data = data;
                     newContext.updatePrevStock = false;
                     context.actions.updatePartStock(newContext);
-
+                };
+                for (var i in context.data.mapping) {
+                    mapStockUpdate(context.data.mapping[i], i, false);
+                }
+                for (var j in delMapItemVal) {
+                    mapStockUpdate(delMapItemVal[j], j, true);
                 }
 
             },

@@ -51,14 +51,13 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                         returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
                     }
                     returnPromise.push(context.actions.updateFields(context, context.listView));
-
-                    return Promise.all(returnPromise).then(function() {
-                        returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
-                        scope.context = context;
-                        return returnPage;
-                    });
                 });
             }
+            return Promise.all(returnPromise).then(function() {
+                returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
+                scope.context = context;
+                return returnPage;
+            });
         });
     };
     var getErpAppConfig = function() {
@@ -130,6 +129,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.listViewDataMaster = angular.copy(context.listViewData);
                 context.lastData = angular.copy(context.listViewData[context.listViewData.length - 1]);
                 context.actions.callBackList && context.actions.callBackList(context);
+                return context;
             });
         },
         getPageData: function(context) {
@@ -141,15 +141,15 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         submit: function(context) {
             var serviceconf = this.getServiceConfig(context.services.list, 'POST');
 
-            serviceApi.callServiceApi(serviceconf, context.data).then(function() {
-                context.page.name = 'list';
+            return serviceApi.callServiceApi(serviceconf, context.data).then(function() {
                 context.actions.list(context);
                 context.actions.callBackSubmit && context.actions.callBackSubmit(context);
+                return context;
             });
 
         },
         cancel: function(context) {
-            context.page.name = 'list';
+            context.actions.list(context);
         },
         getData: function(module, id) {
             var list,

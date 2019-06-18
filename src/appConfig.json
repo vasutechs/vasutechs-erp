@@ -524,6 +524,7 @@
                     "name": "Invoice",
                     "id": "invoice",
                     "autoGenKey": "invoiceNo",
+                    "disableByField": "id",
                     "fields": {
                         "invoiceNo": {
                             "name": "Invoice No",
@@ -549,6 +550,7 @@
                             "updateData": ["gstin", "address", "mapping"],
                             "dataFrom": "marketing.customerMaster",
                             "replaceName": "customerName",
+                            "isEditDisable": true,
                             "isSingle": true
                         },
                         "address": {
