@@ -27,7 +27,7 @@
 
                     </td>
                 </tr>
-                <tr>
+                <tr ng-if="!context.cashBill">
                     <td><b>{{context.form.fields.partyGstin.name}}</b></td>
                     <td colspan="2">
                         <input ng-if="!context.page.printView" type="text" id="{{context.form.fields.partyGstin.id}}" class="form-control" ng-model="context.data[context.form.fields.partyGstin.id]" ng-required="{{context.form.fields.required}}" />

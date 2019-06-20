@@ -75,7 +75,7 @@ erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi'
                     });
                 }
             },
-            removeRMStockQty: function(context) {
+            removeRMStockQty: function(context, del) {
                 context.actions.getData('report.rmStock').then(function(res) {
                     var rmStockData = res.data,
                         rmStock = {},
@@ -88,9 +88,11 @@ erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi'
                     existingStock = rmStock[rmCode];
                     if (existingStock) {
                         var rmStockQty;
-                        if (orgItemVal && orgItemVal.issueQty) {
+                        if (!del && orgItemVal && orgItemVal.issueQty) {
                             removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
                             rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
+                        } else if (del) {
+                            rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
                         } else {
                             rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
                         }
@@ -116,6 +118,13 @@ erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi'
                 } else {
                     context.data.acceptedQty = context.data.qtyCanMake;
                 }
+                context.actions.updatePartStock(context);
+            },
+            callBeforeDelete: function(context, id, item) {
+                var qtyCanMake;
+                context.data = item;
+                context.actions.removeRMStockQty(context, true);
+                context.data.acceptedQty = 0 - parseInt(context.data.qtyCanMake);
                 context.actions.updatePartStock(context);
             }
         };

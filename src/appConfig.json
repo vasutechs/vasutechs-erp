@@ -2412,6 +2412,7 @@
                     "name": "materialIssueNote",
                     "id": "materialIssueNote",
                     "autoGenKey": "jobCardNo",
+                    "disableByField": "id",
                     "fields": {
                         "jobCardNo": {
                             "name": "Job Card No",
@@ -2435,6 +2436,7 @@
                             "replaceName": "rmName",
                             "valuePrefixData": "grade",
                             "action": "getPartNo",
+                            "isEditDisable": true,
                             "isSingle": true
                         },
                         "partNo": {
@@ -2445,6 +2447,7 @@
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
                             "action": "getNorms",
+                            "isEditDisable": true,
                             "isSingle": true
                         },
                         "partNorms": {
@@ -2480,6 +2483,7 @@
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
                             "valuePrefixData": "opCode",
+                            "isEditDisable": true,
                             "isSingle": true
                         }
                     }
