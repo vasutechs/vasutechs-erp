@@ -3,9 +3,10 @@ module.exports = function(config, task, gulp) {
     var gp_concat = require('gulp-concat'),
         gp_uglify = require('gulp-uglify'),
         replace = require('gulp-replace'),
+        ngHtml2Js = require("gulp-ng-html2js"),
         del = require('del'),
         fs = require('fs'),
-        applyAppConfig = function(){
+        applyAppConfig = function() {
             appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
             return JSON.stringify(appConfig);
         };
@@ -27,7 +28,13 @@ module.exports = function(config, task, gulp) {
     });
 
     gulp.task('build-template', task.buildTemplate = function() {
-        return gulp.src(config.src.template + '/**/**.html').pipe(gulp.dest(config.dist.template));
+        return gulp.src(config.src.template + '/**/**.html')
+            .pipe(ngHtml2Js({
+                moduleName: "erpApp",
+                prefix: "template/"
+            }))
+            .pipe(gp_concat('template.js'))
+            .pipe(gulp.dest(config.dist.js));
     });
 
     gulp.task('build-js', task.buildJs = function() {
@@ -45,19 +52,17 @@ module.exports = function(config, task, gulp) {
             .pipe(gulp.dest(config.dist.js));
     });
 
-    gulp.task('build', ['clean'], task.build = function() {
+    gulp.task('build', ['clean', 'build-template'], task.build = function() {
         task.buildIndex();
         task.buildLib();
         task.buildAssets();
-        task.buildTemplate();
         task.buildJs();
     });
 
-    gulp.task('build-minify', ['clean'], task.buildMinify = function() {
+    gulp.task('build-minify', ['clean', 'build-template'], task.buildMinify = function() {
         task.buildIndex();
         task.buildLib();
         task.buildAssets();
-        task.buildTemplate();
         task.buildJsMinify();
     });
 
@@ -74,7 +79,7 @@ module.exports = function(config, task, gulp) {
             .pipe(gp_concat('boot.js'))
             .pipe(replace('STATIC_CONFIG', applyAppConfig))
             .pipe(gulp.dest(config.releaseProject.js));
-        
+
         newArchive(config.releaseProject.namePefix + 'Project.zip', config.releaseProject.defaultFiles);
 
         function newArchive(zipFileName, pathNames) {

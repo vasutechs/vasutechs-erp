@@ -10,7 +10,7 @@
         "app-update": "npm install",
         "app-start": "npm run app-update && node_modules\\.bin\\gulp server",
         "app-build": "node_modules\\.bin\\gulp build",
-        "app-ist": "node_modules\\.bin\\gulp build-minify",
+        "app-qa": "node_modules\\.bin\\gulp build-minify",
         "app-server": "node_modules\\.bin\\gulp server"
     },
     "author": "",
@@ -27,6 +27,7 @@
         "googleapis": "^27.0.0",
         "gulp": "3.9.1",
         "gulp-concat": "2.6.1",
+        "gulp-ng-html2js": "0.2.3",
         "gulp-replace": "1.0.0",
         "gulp-uglify": "3.0.0",
         "http": "0.0.0",
