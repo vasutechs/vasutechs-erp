@@ -3658,7 +3658,7 @@
                             "action": "changeMapping",
                             "updateData": ["date", "customerCode", "total"],
                             "dataFrom": "marketing.cashBill",
-                            "replaceName": "id",
+                            "replaceName": "invoiceNo",
                             "valuePrefix": "",
                             "required": true,
                             "existingCheck": true,
