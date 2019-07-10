@@ -15,7 +15,10 @@ erpApp.controller('grnSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', func
             updateRmTotal: function(context, data, updateValue) {
                 var total = 0,
                     totalBeforTax = 0;
-                totalBeforTax = updateValue * data.rate;
+                var qty = updateValue || 0;
+                var extraAmount = data.extraAmount || 0;
+                totalBeforTax = qty * data.rate;
+                totalBeforTax += extraAmount;
                 total = totalBeforTax + (totalBeforTax * (data.gst / 100))
                 data.total = parseFloat(total).toFixed(2);
             },

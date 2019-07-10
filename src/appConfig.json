@@ -328,7 +328,13 @@
                     "hra": null,
                     "ca": null,
                     "ot": null,
-                    "totalSalary": null
+                    "totalSalary": null,
+                    "mapping": [{
+                        "id": null,
+                        "partName": null,
+                        "operationTo": null,
+                        "laborCost": null
+                    }]
                 },
                 "form": {
                     "name": "empMaster",
@@ -418,6 +424,44 @@
                             "type": "input",
                             "inputType": "number",
                             "required": true
+                        }
+                    },
+                    "mapping": {
+                        "name": "Part Mapping",
+                        "fields": {
+                            "id": {
+                                "name": "Part No",
+                                "id": "id",
+                                "type": "select",
+                                "options": {},
+                                "action": "changeMapping",
+                                "dataFrom": "marketing.partMaster",
+                                "replaceName": "partNo"
+                            },
+                            "partName": {
+                                "name": "Part Name",
+                                "id": "partName",
+                                "type": "span"
+                            },
+                            "operationTo": {
+                                "name": "Stage",
+                                "id": "operationTo",
+                                "type": "select",
+                                "options": {},
+                                "required": true,
+                                "dataFrom": "production.operationMaster",
+                                "replaceName": "opName",
+                                "valuePrefixData": "opCode",
+                                "isEditDisable": true,
+                                "isSingle": true
+                            },
+                            "laborCost": {
+                                "name": "Labor Cost",
+                                "id": "laborCost",
+                                "type": "input",
+                                "inputType": "text",
+                                "required": true
+                            }
                         }
                     }
                 },
@@ -970,6 +1014,7 @@
                         "qty": null,
                         "uomCode": null,
                         "rate": null,
+                        "extraAmount": null,
                         "gst": null,
                         "cgst": null,
                         "sgst": null,
@@ -1048,6 +1093,14 @@
                                 "id": "rate",
                                 "type": "input",
                                 "inputType": "text",
+                                "action": "updateRmTotal",
+                                "required": true
+                            },
+                            "extraAmount": {
+                                "name": "Extra Amount",
+                                "id": "extraAmount",
+                                "type": "input",
+                                "inputType": "number",
                                 "action": "updateRmTotal",
                                 "required": true
                             },
@@ -1418,6 +1471,7 @@
                         "receivedQty": null,
                         "acceptedQty": null,
                         "rate": null,
+                        "extraAmount": null,
                         "gst": null,
                         "cost": null,
                         "total": null
@@ -1531,6 +1585,11 @@
                             "rate": {
                                 "name": "Rate",
                                 "id": "rate",
+                                "type": "span"
+                            },
+                            "extraAmount": {
+                                "name": "Extra Amount",
+                                "id": "extraAmount",
                                 "type": "span"
                             },
                             "gst": {

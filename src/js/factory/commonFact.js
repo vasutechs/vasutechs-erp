@@ -52,6 +52,9 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     }
                     returnPromise.push(context.actions.updateFields(context, context.listView));
                 });
+            } else {
+                returnPromise.push(context.actions.updateFields(context, context.listView));
+                context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
             }
             return Promise.all(returnPromise).then(function() {
                 returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
@@ -179,7 +182,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 };
             //Get Part master data
             if (field.type === 'select' || field.dataFrom) {
-                viewData = field.options[viewData] && field.options[viewData].optionName || (field.allOptions && field.allOptions[viewData]) && field.allOptions[viewData].optionName || viewData;
+                viewData = field.options && field.options[viewData] && field.options[viewData].optionName || (field.allOptions && field.allOptions[viewData]) && field.allOptions[viewData].optionName || viewData;
             } else if (field.type === 'date' || field.inputType === 'date') {
                 viewData = self.dateFormatChange(viewData);
             } else if (field.inputType === 'password') {
