@@ -1,14 +1,17 @@
 erpApp.controller('empMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
     var actions = {
-        callBackChangeMapping: function(context, mappingData, key, field) {
+        callBackChangeMapping: function(context, mappingData, key, field, _this) {
+
+        },
+        updateStage: function(context, mappingData, key, field, _this) {
             var restriction = {
-                partNo: mappingData.id,
-                filter: {
-                    source: ['Supplier']
-                }
+                partNo: mappingData.id
             };
-            //context.form.mapping.fields['operationTo'].options = {};
-            //context.actions.getOperationFromFlow(context, context.form.mapping[key].fields['operationTo'], restriction);
+            field.options = {};
+            context.actions.getOperationFromFlow(context, field, restriction);
+        },
+        callBackEdit: function(context) {
+            context.data.mapping = !context.data.mapping && context.masterData.mapping || context.data.mapping;
         }
     };
     commonFact.initCtrl($scope, 'marketing.empMaster', actions);

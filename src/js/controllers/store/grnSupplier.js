@@ -13,14 +13,11 @@ erpApp.controller('grnSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', func
                 context.actions.makeOptionsFields(context, context.form.fields['poNo']);
             },
             updateRmTotal: function(context, data, updateValue) {
-                var total = 0,
-                    totalBeforTax = 0;
+                var total = 0;
                 var qty = updateValue || 0;
-                var extraAmount = data.extraAmount || 0;
-                totalBeforTax = qty * data.rate;
-                totalBeforTax += extraAmount;
-                total = totalBeforTax + (totalBeforTax * (data.gst / 100))
+                total = qty * data.rate;
                 data.total = parseFloat(total).toFixed(2);
+                context.actions.updatePOTotalAmount(context);
             },
             callBackAdd: function(context) {
                 orgItemVal = null;

@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header"><b>{{context.form.mapping.name}}</b></div>
+    <div class="card-header" ng-if="!context.form.mapping.disableTitle"><b>{{context.form.mapping.name}}</b></div>
     <div class="card-body">
         <table class="table table-bordered">
             <thead>
@@ -22,8 +22,8 @@
                         <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>
                         <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], key, field)"
                             ng-required="{{field.required}}" max="{{field.max}}" />
-                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field)" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options"
-                            ng-required="{{field.required}}" ng-disabled="field.isDisable">
+                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-focus="field.focusAction && context.actions[field.focusAction] && context.actions[field.focusAction](context, map, map[field.id], field, this)" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field, this)"
+                            ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}" ng-disabled="field.isDisable">
                             <option value="">--Select--</option>
                         </select>
                     </td>

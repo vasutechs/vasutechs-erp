@@ -34,11 +34,11 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context = angular.merge({}, angular.copy(parentModule), context);
             }
             if (!userType && appConfig.forceLoginSite) {
-                $location.path(appConfig.modules.admin.login.page.link);
+                window.location.hash = '#!/' + appConfig.modules.admin.login.page.link;
                 return;
             }
             if (context.disable) {
-                $location.path(appConfig.modules.dashboard.page.link);
+                window.location.hash = '#!/' + appConfig.modules.dashboard.page.link;
             }
             context.appConfig = appConfig;
             context.actions = angular.extend(angular.copy(defaultActions), actions || {});
@@ -246,7 +246,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             delete data.splice(key, 1);
             context.actions.callBackRemoveMapping && context.actions.callBackRemoveMapping(context, data, key);
         },
-        changeMapping: function(context, data, key, field, mapKey) {
+        changeMapping: function(context, data, key, field, mapKey, _this) {
             for (var dataKey in data) {
                 if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
                     if (key === null) {
@@ -274,7 +274,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     }
                 }
             }
-            field.callBack !== false && context.actions.callBackChangeMapping && context.actions.callBackChangeMapping(context, data, key, field, mapKey);
+            field.callBack !== false && context.actions.callBackChangeMapping && context.actions.callBackChangeMapping(context, data, key, field, mapKey, _this);
         },
         setAutoGenKey: function(context) {
             var lastDataKey = context.lastData ? context.lastData[context.form.autoGenKey] : undefined;
@@ -623,6 +623,34 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
+        },
+        updatePORmTotal: function(context, data) {
+            var total = 0;
+            var qty = data['qty'] || 0;
+            total = qty * data.rate;
+            data.total = parseFloat(total).toFixed(2);
+            context.actions.updatePOTotalAmount(context);
+
+        },
+        updatePOTotalAmount: function(context) {
+            var gst = 0,
+                gstTotal = 0,
+                total = 0,
+                subTotal = 0,
+                mapping = context.data.mapping,
+                extraAmount = context.data.extraAmount || 0;
+
+            for (var i in mapping) {
+                gst += parseFloat(mapping[i].gst / 100);
+                gstTotal += (parseFloat(mapping[i].total) * parseFloat(mapping[i].gst / 100));
+                subTotal += parseFloat(mapping[i].total);
+            }
+            gstTotal += (parseFloat(extraAmount * parseFloat(gst / mapping.length)));
+            total = subTotal + gstTotal + extraAmount;
+            context.data.gstTotal = parseFloat(gstTotal).toFixed(2);
+
+            context.data.subTotal = parseFloat(subTotal).toFixed(2);
+            context.data.total = parseInt(total);
         }
     };
     return {

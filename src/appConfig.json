@@ -452,7 +452,6 @@
                                 "dataFrom": "production.operationMaster",
                                 "replaceName": "opName",
                                 "valuePrefixData": "opCode",
-                                "isEditDisable": true,
                                 "isSingle": true
                             },
                             "laborCost": {
@@ -548,7 +547,6 @@
                     "address": null,
                     "gstin": null,
                     "subTotal": null,
-                    "includeTax": null,
                     "taxRate": null,
                     "cgst": null,
                     "sgst": null,
@@ -1009,16 +1007,19 @@
                     "supplierCode": null,
                     "gstin": null,
                     "status": 0,
+                    "subTotal": null,
+                    "extraAmount": null,
+                    "gstTotal": null,
+                    "total": null,
                     "mapping": [{
                         "id": null,
                         "qty": null,
                         "uomCode": null,
                         "rate": null,
-                        "extraAmount": null,
                         "gst": null,
                         "cgst": null,
                         "sgst": null,
-                        "total": null
+                        "amount": null
                     }]
                 },
                 "form": {
@@ -1055,6 +1056,32 @@
                             "name": "Party Gstin",
                             "id": "gstin",
                             "type": "span"
+                        },
+                        "subTotal": {
+                            "name": "Sub Total",
+                            "id": "subTotal",
+                            "afterMapping": true,
+                            "type": "span"
+                        },
+                        "extraAmount": {
+                            "name": "Extra Amount",
+                            "id": "extraAmount",
+                            "type": "input",
+                            "inputType": "number",
+                            "action": "updatePOTotalAmount",
+                            "afterMapping": true
+                        },
+                        "gstTotal": {
+                            "name": "GST Total",
+                            "id": "gstTotal",
+                            "type": "span",
+                            "afterMapping": true
+                        },
+                        "total": {
+                            "name": "Total",
+                            "id": "total",
+                            "type": "span",
+                            "afterMapping": true
                         }
                     },
                     "mapping": {
@@ -1076,7 +1103,7 @@
                                 "id": "qty",
                                 "type": "input",
                                 "inputType": "text",
-                                "action": "updateRmTotal",
+                                "action": "updatePORmTotal",
                                 "required": true
                             },
                             "uomCode": {
@@ -1093,34 +1120,16 @@
                                 "id": "rate",
                                 "type": "input",
                                 "inputType": "text",
-                                "action": "updateRmTotal",
-                                "required": true
-                            },
-                            "extraAmount": {
-                                "name": "Extra Amount",
-                                "id": "extraAmount",
-                                "type": "input",
-                                "inputType": "number",
-                                "action": "updateRmTotal",
+                                "action": "updatePORmTotal",
                                 "required": true
                             },
                             "gst": {
-                                "name": "GST%",
+                                "name": "GST %",
                                 "id": "gst",
                                 "type": "span"
                             },
-                            "cgst": {
-                                "name": "CGST%",
-                                "id": "cgst",
-                                "type": "span"
-                            },
-                            "sgst": {
-                                "name": "SGST%",
-                                "id": "sgst",
-                                "type": "span"
-                            },
                             "total": {
-                                "name": "total",
+                                "name": "Total",
                                 "id": "total",
                                 "type": "span"
                             }
@@ -1464,6 +1473,10 @@
                     "supplierInvoiceNo": null,
                     "supplierInvoiceDate": null,
                     "status": 0,
+                    "subTotal": null,
+                    "extraAmount": null,
+                    "gstTotal": null,
+                    "total": null,
                     "mapping": [{
                         "id": null,
                         "qty": null,
@@ -1471,7 +1484,6 @@
                         "receivedQty": null,
                         "acceptedQty": null,
                         "rate": null,
-                        "extraAmount": null,
                         "gst": null,
                         "cost": null,
                         "total": null
@@ -1513,7 +1525,7 @@
                             "options": {},
                             "action": "changeMapping",
                             "updateMapping": true,
-                            "updateData": ["mapping"],
+                            "updateData": ["mapping", "subTotal", "extraAmount", "gstTotal", "total"],
                             "dataFrom": "purchase.poSupplier",
                             "replaceName": "poNo",
                             "valuePrefix": "VT-SP-PO-",
@@ -1536,6 +1548,32 @@
                             "type": "input",
                             "inputType": "date",
                             "required": true
+                        },
+                        "subTotal": {
+                            "name": "Sub Total",
+                            "id": "subTotal",
+                            "afterMapping": true,
+                            "type": "span"
+                        },
+                        "extraAmount": {
+                            "name": "Extra Amount",
+                            "id": "extraAmount",
+                            "type": "input",
+                            "inputType": "number",
+                            "action": "updatePOTotalAmount",
+                            "afterMapping": true
+                        },
+                        "gstTotal": {
+                            "name": "GST Total",
+                            "id": "gstTotal",
+                            "type": "span",
+                            "afterMapping": true
+                        },
+                        "total": {
+                            "name": "Total",
+                            "id": "total",
+                            "type": "span",
+                            "afterMapping": true
                         }
                     },
                     "mapping": {
@@ -1587,11 +1625,6 @@
                                 "id": "rate",
                                 "type": "span"
                             },
-                            "extraAmount": {
-                                "name": "Extra Amount",
-                                "id": "extraAmount",
-                                "type": "span"
-                            },
                             "gst": {
                                 "name": "GST%",
                                 "id": "gst",
@@ -1601,7 +1634,7 @@
                                 "required": true
                             },
                             "total": {
-                                "name": "total",
+                                "name": "Total",
                                 "id": "total",
                                 "type": "span"
                             }
@@ -2867,7 +2900,10 @@
                     "link": "report/rmStock/list",
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
-                    "controller": "rmStockCtrl"
+                    "controller": "rmStockCtrl",
+                    "actions": {
+                        "downloadExcel": true
+                    }
                 },
                 "services": {
                     "list": {
@@ -2964,7 +3000,10 @@
                     "link": "report/partStock/list",
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
-                    "controller": "partStockCtrl"
+                    "controller": "partStockCtrl",
+                    "actions": {
+                        "downloadExcel": true
+                    }
                 },
                 "services": {
                     "list": {
@@ -3080,7 +3119,10 @@
                     "link": "report/subContractorStock/list",
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
-                    "controller": "subContractorStockCtrl"
+                    "controller": "subContractorStockCtrl",
+                    "actions": {
+                        "downloadExcel": true
+                    }
                 },
                 "services": {
                     "list": {
