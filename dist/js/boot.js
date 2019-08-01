@@ -1231,7 +1231,7 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 }
 
                 context.data.subTotal = parseFloat(subTotal).toFixed(2);
-                context.data.total = parseInt(total);
+                context.data.total = Math.round(total);
                 if (context.cashBill) {
                     context.actions.updatePreBalance(context);
                 }
@@ -1241,7 +1241,7 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 if (context.data.preBalance) {
                     total = total + parseFloat(context.data.preBalance);
                 }
-                context.data.total = parseInt(total);
+                context.data.total = Math.round(total);
             },
             updateInvocePartStock: function(context) {
                 var mapStockUpdate = function(map, key, del) {
@@ -1292,6 +1292,359 @@ erpApp.controller('partMasterCtrl', ['$scope', 'commonFact', function($scope, co
 }]);
 erpApp.controller('uomMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
     commonFact.initCtrl($scope, 'marketing.uomMaster');
+}]);
+erpApp.controller('bomCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
+	var actions = {
+		callBackAdd: function(context){
+			context.actions.makeOptionsFields(context, context.form.fields['partNo']);
+		},
+		callBackEdit: function(context){
+			context.actions.callBackAdd(context);
+		}
+	};
+    commonFact.initCtrl($scope, 'production.bom', actions);
+}]);
+erpApp.controller('flowMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
+	var actions = {
+		callBackAdd: function(context){
+			context.actions.makeOptionsFields(context, context.form.fields['partNo']);
+		},
+		callBackEdit: function(context){
+			context.actions.callBackAdd(context);
+		}
+	};
+    commonFact.initCtrl($scope, 'production.flowMaster', actions);
+}]);
+erpApp.controller('machineMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
+
+    commonFact.initCtrl($scope, 'production.machineMaster');
+
+}]);
+erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+    var orgItemVal = null,
+        actions = {
+            callBackEdit: function(context) {
+                context.actions.callBackAdd(context);
+                orgItemVal = angular.copy(context.data);
+            },
+            callBackAdd: function(context) {
+                orgItemVal = null;
+                context.actions.getData('report.rmStock').then(function(res) {
+                    var rmStockData = res.data,
+                        rmStock = [];
+                    for (var i in rmStockData) {
+                        rmStock.push(rmStockData[i] && rmStockData[i].rmCode || undefined);
+                    }
+                    context.form.fields['rmCode'] = angular.extend(context.form.fields['rmCode'], {
+                        filter: {
+                            id: rmStock
+                        }
+                    });
+                    context.actions.makeOptionsFields(context, context.form.fields['rmCode']);
+                });
+
+            },
+            getPartNo: function(context) {
+                if (context.data.rmCode) {
+                    context.form.fields['partNo'].filter = {
+                        rmCode: context.data.rmCode
+                    };
+                    context.actions.makeOptionsFields(context, context.form.fields['partNo']);
+                }
+            },
+            getNorms: function(context) {
+                var restriction = {
+                    partNo: context.data.partNo,
+                    filter: {
+                        source: ['Supplier']
+                    }
+                };
+                if (context.data.rmCode && context.data.partNo) {
+                    context.data.partNorms = null;
+                    var serviceconf = context.actions.getServiceConfig('production.bom');
+                    context.data.qtyCanMake = null;
+                    context.data.issueQty = null;
+                    serviceApi.callServiceApi(serviceconf).then(function(res) {
+                        var bomData = res.data;
+                        for (var i in bomData) {
+                            if (bomData[i].partNo === context.data.partNo && bomData[i].rmCode === context.data.rmCode) {
+                                context.data.partNorms = bomData[i].partNorms;
+                            }
+                        }
+                    });
+                    context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
+                }
+            },
+            updateQtyMake: function(context) {
+                if (context.data.rmCode) {
+                    context.actions.getData('report.rmStock').then(function(res) {
+                        var rmStockData = res.data,
+                            rmStock = {};
+                        for (var i in rmStockData) {
+                            rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
+                        }
+                        if (orgItemVal && orgItemVal.issueQty) {
+                            context.form.fields['issueQty'].max = parseInt(orgItemVal.issueQty) + parseInt(rmStock[context.data.rmCode].rmStockQty);
+                        } else {
+                            context.form.fields['issueQty'].max = rmStock[context.data.rmCode].rmStockQty;
+                        }
+
+                        if (context.data.partNorms && context.data.issueQty && context.form.fields['issueQty'].max >= context.data.issueQty) {
+                            context.data.qtyCanMake = context.data.issueQty / context.data.partNorms;
+                        } else {
+                            context.data.qtyCanMake = null;
+                        }
+                    });
+                }
+            },
+            removeRMStockQty: function(context, del) {
+                context.actions.getData('report.rmStock').then(function(res) {
+                    var rmStockData = res.data,
+                        rmStock = {},
+                        rmCode = context.data.rmCode,
+                        existingStock = null,
+                        removeQty = context.data.issueQty;
+                    for (var i in rmStockData) {
+                        rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
+                    }
+                    existingStock = rmStock[rmCode];
+                    if (existingStock) {
+                        var rmStockQty;
+                        if (!del && orgItemVal && orgItemVal.issueQty) {
+                            removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
+                            rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
+                        } else if (del) {
+                            rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
+                        } else {
+                            rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
+                        }
+                        var data = {
+                                id: existingStock.id,
+                                rmCode: rmCode,
+                                rmStockQty: rmStockQty,
+                                uomCode: existingStock.uomCode
+                            },
+                            serviceconf = context.actions.getServiceConfig('report.rmStock', 'POST');
+                        serviceApi.callServiceApi(serviceconf, data);
+                    }
+
+                })
+            },
+            callBackSubmit: function(context) {
+                var qtyCanMake;
+                context.actions.removeRMStockQty(context);
+
+                if (orgItemVal && orgItemVal.issueQty) {
+                    qtyCanMake = parseInt(context.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
+                    context.data.acceptedQty = qtyCanMake;
+                } else {
+                    context.data.acceptedQty = context.data.qtyCanMake;
+                }
+                context.actions.updatePartStock(context);
+            },
+            callBeforeDelete: function(context, id, item) {
+                var qtyCanMake;
+                context.data = item;
+                context.actions.removeRMStockQty(context, true);
+                context.data.acceptedQty = 0 - parseInt(context.data.qtyCanMake);
+                context.actions.updatePartStock(context);
+            }
+        };
+
+    commonFact.initCtrl($scope, 'production.materialIssueNote', actions);
+}]);
+erpApp.controller('operationMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
+
+    commonFact.initCtrl($scope, 'production.operationMaster');
+
+}]);
+erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+    var actions = {
+        callBackAdd: function(context) {
+            context.page.printViewMapping = false;
+            context.finalMapping = 0;
+        },
+        callBackEdit: function(context) {
+            var jobCardField = context.form.fields['jobCardNo'];
+            if (!context.page.printView) {
+                context.page.printViewMapping = true;
+                context.actions.addMapping(context.data.mapping);
+                context.finalMapping = context.data.mapping.length - 1;
+                jobCardField.filter = {};
+                context.actions.makeOptionsFields(context, jobCardField).then(function() {
+                    context.actions[jobCardField.action](context, context.data, context.data[jobCardField.id], jobCardField)
+                });
+            }
+        },
+        callBackList: function(context) {
+            context.actions.getPartStock(context);
+            context.actions.getPRQty(context);
+            context.actions.getFlowMaster(context);
+            context.actions.getOperations(context);
+        },
+        checkAcceptedQty: function(context, mappingData, value, key, field) {
+            var qtyCanMake = 0,
+                rejectionQty = mappingData.rejectionQty || 0,
+                rwQty = mappingData.rwQty || 0,
+                acceptedQty = mappingData.acceptedQty || 0,
+                qty = acceptedQty + rejectionQty + rwQty;
+            var fullQty;
+            var prFrmQtyMap;
+            var prFrmToQtyMap;
+            var prToQtyMap;
+            var stockQty;
+
+            prFrmQtyMap = context.data.jobCardNo + '-' + context.data.partNo + '-' + mappingData.operationFrom + '-frm';
+            prToQtyMap = context.data.jobCardNo + '-' + context.data.partNo + '-' + mappingData.operationTo + '-to';
+            prFrmToQtyMap = context.data.jobCardNo + '-' + context.data.partNo + '-' + mappingData.operationFrom + '-to';
+
+            if (context.data.partNo && mappingData.operationFrom) {
+                if (context.operationsData[mappingData.operationFrom].source === 'Supplier') {
+                    qtyCanMake = context.form.fields['jobCardNo'].options[context.data.jobCardNo].qtyCanMake;
+                } else if (context.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
+                    qtyCanMake = context.prQty[context.data.jobCardNo + '-' + context.data.partNo + '-' + context.partStock[context.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to'].prAcpQty || 0;
+                } else {
+                    qtyCanMake = context.prQty[prFrmToQtyMap] && context.prQty[prFrmToQtyMap].prAcpQty || 0;
+                }
+                stockQty = context.partStock[context.data.partNo + '-' + mappingData.operationFrom] && context.partStock[context.data.partNo + '-' + mappingData.operationFrom].partStockQty || 0;
+                fullQty = context.prQty[prFrmQtyMap] && parseInt(context.prQty[prFrmQtyMap].prQty) + parseInt(qty) || qty;
+            }
+
+            if (qty > stockQty || fullQty > qtyCanMake || (context.prQty[prFrmToQtyMap] && context.prQty[prFrmToQtyMap].prAcpQty < qty)) {
+                mappingData[field.id] = null
+            }
+        },
+        callBackChangeMapping: function(context, data, key, field) {
+            context.actions.updateOperationFrom(context, data, key, field);
+            context.actions.updateOperationTo(context, data, key, field);
+        },
+        updateOperationFrom: function(context, data, key, field) {
+            var prQtyFrmMap;
+            var prQtyPrevMap;
+            var prQtyToMap;
+            var flwMap;
+            var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
+            var jobCardQty = jobCard && jobCard.qtyCanMake;
+
+            if (context.data.jobCardNo) {
+                var restriction = {
+                        partNo: context.data.partNo
+                    },
+                    operation = [];
+                for (var i in context.partStock) {
+                    if (context.partStock[i].partStockQty > 0 && context.data.partNo === context.partStock[i].partNo) {
+                        prQtyPrevMap = context.data.jobCardNo + '-' + context.partStock[i].partNo + '-' + context.partStock[i].operationFrom + '-frm';
+                        prQtyFrmMap = context.data.jobCardNo + '-' + context.partStock[i].partNo + '-' + context.partStock[i].operationTo + '-frm';
+                        prQtyToMap = context.data.jobCardNo + '-' + context.partStock[i].partNo + '-' + context.partStock[i].operationFrom + '-to';
+                        flwMap = context.partStock[i].partNo + '-' + context.partStock[i].operationTo;
+
+                        if ((!context.prQty[prQtyFrmMap] &&
+                                (!context.partStock[i].operationFrom ||
+                                    (context.prQty[prQtyPrevMap] && context.prQty[prQtyPrevMap].prQty > 0))) ||
+                            (context.prQty[prQtyFrmMap] && context.prQty[prQtyFrmMap].prQty < jobCardQty) ||
+                            (context.flowMasterByPart[flwMap] && context.flowMasterByPart[flwMap].source === "Sub-Contractor" && context.prQty[prQtyToMap])) {
+                            operation.push(context.partStock[i].operationTo);
+                        }
+                    }
+                }
+                restriction.filter = {
+                    id: operation
+                }
+                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationFrom'], restriction);
+            }
+        },
+        updateOperationTo: function(context, mappingData, key, field) {
+            if (context.data.jobCardNo) {
+                var partNo = context.data.partNo,
+                    restriction = {
+                        partNo: partNo
+                    },
+                    operation = [];
+                var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
+                var jobCardQty = jobCard && jobCard.qtyCanMake;
+
+                if (mappingData.operationFrom) {
+                    restriction = angular.extend(restriction, {
+                        limit: 1,
+                        startWith: mappingData.operationFrom
+                    });
+                }
+
+                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction).then(function() {
+                    var options = context.form.mapping.fields['operationTo'].options;
+                    var firstOption = options[Object.keys(options)[0]];
+                    if (firstOption && firstOption.source === 'Sub-Contractor') {
+                        context.form.mapping.fields['operationTo'].options = {};
+                    }
+                });
+            }
+        },
+        updateToolNo: function(context, mappingData) {
+            mappingData.toolNo = context.data.partNo && mappingData.operationTo && context.flowMasterByPart[context.data.partNo + '-' + mappingData.operationTo].toolNo || null;
+        },
+        calculatePlanQty: function(context, mappingData) {
+            var startDate = mappingData.startTime;
+            var endDate = mappingData.endTime;
+            var timeDiff = endDate - startDate;
+            var palnQtyPerHr = context.data.partNo && mappingData.operationTo && context.flowMasterByPart[context.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
+            mappingData.planQty = timeDiff * palnQtyPerHr;
+        },
+        updateMaterialIssue: function(context, replaceData, key) {
+            var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
+            var jobCardQty = jobCard && jobCard.qtyCanMake;
+            jobCard.status = 1;
+            context.actions.updateData('production.materialIssueNote', jobCard);
+        },
+        getPRQty: function(context) {
+            context.prQty = {};
+            return context.actions.getData('production.productionEntry').then(function(res) {
+                var listViewData = res.data;
+                for (var i in listViewData) {
+                    for (var j in listViewData[i].mapping) {
+                        var prFrmQty = 0;
+                        var prToQty = 0;
+                        var prQty = 0;
+                        var prFrmAcpQty = 0;
+                        var prToAcpQty = 0;
+                        var prFrmQtyMap;
+                        var prToQtyMap;
+                        prFrmQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationFrom + '-frm';
+                        prToQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationTo + '-to';
+                        prQty = parseInt(listViewData[i].mapping[j].acceptedQty) + parseInt(listViewData[i].mapping[j].rejectionQty) + parseInt(listViewData[i].mapping[j].rwQty);
+                        prFrmAcpQty = context.prQty[prFrmQtyMap] ? parseInt(context.prQty[prFrmQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
+                        prFrmQty = context.prQty[prFrmQtyMap] ? parseInt(context.prQty[prFrmQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
+                        prToQty = context.prQty[prToQtyMap] ? parseInt(context.prQty[prToQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
+                        prToAcpQty = context.prQty[prToQtyMap] ? parseInt(context.prQty[prToQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
+
+                        context.prQty[prFrmQtyMap] = listViewData[i].mapping[j];
+                        context.prQty[prFrmQtyMap].prQty = prFrmQty;
+                        context.prQty[prFrmQtyMap].prAcpQty = prFrmAcpQty;
+                        context.prQty[prToQtyMap] = listViewData[i].mapping[j];
+                        context.prQty[prToQtyMap].prQty = prToQty;
+                        context.prQty[prToQtyMap].prAcpQty = prToAcpQty;
+                    }
+                };
+                return context.prQty;
+            });
+        },
+        callBackSubmit: function(context) {
+            var newQty;
+            var data = angular.copy(context.data.mapping[context.finalMapping]);
+            var newContext = angular.copy(context);
+            data.partNo = context.data.partNo;
+            newContext.data = data;
+            context.actions.updatePartStock(newContext);
+            context.actions.updateMaterialIssue(context);
+        }
+    };
+
+    commonFact.initCtrl($scope, 'production.productionEntry', actions);
+
+}]);
+erpApp.controller('toolMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
+	
+    commonFact.initCtrl($scope, 'production.toolMaster');
+
 }]);
 erpApp.controller('poSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
 	var actions = {
@@ -2103,359 +2456,6 @@ erpApp.controller('grnSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', func
     commonFact.initCtrl($scope, 'store.grnSupplier', actions);
 
 }]);
-erpApp.controller('bomCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-	var actions = {
-		callBackAdd: function(context){
-			context.actions.makeOptionsFields(context, context.form.fields['partNo']);
-		},
-		callBackEdit: function(context){
-			context.actions.callBackAdd(context);
-		}
-	};
-    commonFact.initCtrl($scope, 'production.bom', actions);
-}]);
-erpApp.controller('flowMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-	var actions = {
-		callBackAdd: function(context){
-			context.actions.makeOptionsFields(context, context.form.fields['partNo']);
-		},
-		callBackEdit: function(context){
-			context.actions.callBackAdd(context);
-		}
-	};
-    commonFact.initCtrl($scope, 'production.flowMaster', actions);
-}]);
-erpApp.controller('machineMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-
-    commonFact.initCtrl($scope, 'production.machineMaster');
-
-}]);
-erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var orgItemVal = null,
-        actions = {
-            callBackEdit: function(context) {
-                context.actions.callBackAdd(context);
-                orgItemVal = angular.copy(context.data);
-            },
-            callBackAdd: function(context) {
-                orgItemVal = null;
-                context.actions.getData('report.rmStock').then(function(res) {
-                    var rmStockData = res.data,
-                        rmStock = [];
-                    for (var i in rmStockData) {
-                        rmStock.push(rmStockData[i] && rmStockData[i].rmCode || undefined);
-                    }
-                    context.form.fields['rmCode'] = angular.extend(context.form.fields['rmCode'], {
-                        filter: {
-                            id: rmStock
-                        }
-                    });
-                    context.actions.makeOptionsFields(context, context.form.fields['rmCode']);
-                });
-
-            },
-            getPartNo: function(context) {
-                if (context.data.rmCode) {
-                    context.form.fields['partNo'].filter = {
-                        rmCode: context.data.rmCode
-                    };
-                    context.actions.makeOptionsFields(context, context.form.fields['partNo']);
-                }
-            },
-            getNorms: function(context) {
-                var restriction = {
-                    partNo: context.data.partNo,
-                    filter: {
-                        source: ['Supplier']
-                    }
-                };
-                if (context.data.rmCode && context.data.partNo) {
-                    context.data.partNorms = null;
-                    var serviceconf = context.actions.getServiceConfig('production.bom');
-                    context.data.qtyCanMake = null;
-                    context.data.issueQty = null;
-                    serviceApi.callServiceApi(serviceconf).then(function(res) {
-                        var bomData = res.data;
-                        for (var i in bomData) {
-                            if (bomData[i].partNo === context.data.partNo && bomData[i].rmCode === context.data.rmCode) {
-                                context.data.partNorms = bomData[i].partNorms;
-                            }
-                        }
-                    });
-                    context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
-                }
-            },
-            updateQtyMake: function(context) {
-                if (context.data.rmCode) {
-                    context.actions.getData('report.rmStock').then(function(res) {
-                        var rmStockData = res.data,
-                            rmStock = {};
-                        for (var i in rmStockData) {
-                            rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
-                        }
-                        if (orgItemVal && orgItemVal.issueQty) {
-                            context.form.fields['issueQty'].max = parseInt(orgItemVal.issueQty) + parseInt(rmStock[context.data.rmCode].rmStockQty);
-                        } else {
-                            context.form.fields['issueQty'].max = rmStock[context.data.rmCode].rmStockQty;
-                        }
-
-                        if (context.data.partNorms && context.data.issueQty && context.form.fields['issueQty'].max >= context.data.issueQty) {
-                            context.data.qtyCanMake = context.data.issueQty / context.data.partNorms;
-                        } else {
-                            context.data.qtyCanMake = null;
-                        }
-                    });
-                }
-            },
-            removeRMStockQty: function(context, del) {
-                context.actions.getData('report.rmStock').then(function(res) {
-                    var rmStockData = res.data,
-                        rmStock = {},
-                        rmCode = context.data.rmCode,
-                        existingStock = null,
-                        removeQty = context.data.issueQty;
-                    for (var i in rmStockData) {
-                        rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
-                    }
-                    existingStock = rmStock[rmCode];
-                    if (existingStock) {
-                        var rmStockQty;
-                        if (!del && orgItemVal && orgItemVal.issueQty) {
-                            removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
-                            rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
-                        } else if (del) {
-                            rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
-                        } else {
-                            rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
-                        }
-                        var data = {
-                                id: existingStock.id,
-                                rmCode: rmCode,
-                                rmStockQty: rmStockQty,
-                                uomCode: existingStock.uomCode
-                            },
-                            serviceconf = context.actions.getServiceConfig('report.rmStock', 'POST');
-                        serviceApi.callServiceApi(serviceconf, data);
-                    }
-
-                })
-            },
-            callBackSubmit: function(context) {
-                var qtyCanMake;
-                context.actions.removeRMStockQty(context);
-
-                if (orgItemVal && orgItemVal.issueQty) {
-                    qtyCanMake = parseInt(context.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
-                    context.data.acceptedQty = qtyCanMake;
-                } else {
-                    context.data.acceptedQty = context.data.qtyCanMake;
-                }
-                context.actions.updatePartStock(context);
-            },
-            callBeforeDelete: function(context, id, item) {
-                var qtyCanMake;
-                context.data = item;
-                context.actions.removeRMStockQty(context, true);
-                context.data.acceptedQty = 0 - parseInt(context.data.qtyCanMake);
-                context.actions.updatePartStock(context);
-            }
-        };
-
-    commonFact.initCtrl($scope, 'production.materialIssueNote', actions);
-}]);
-erpApp.controller('operationMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-
-    commonFact.initCtrl($scope, 'production.operationMaster');
-
-}]);
-erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
-        callBackAdd: function(context) {
-            context.page.printViewMapping = false;
-            context.finalMapping = 0;
-        },
-        callBackEdit: function(context) {
-            var jobCardField = context.form.fields['jobCardNo'];
-            if (!context.page.printView) {
-                context.page.printViewMapping = true;
-                context.actions.addMapping(context.data.mapping);
-                context.finalMapping = context.data.mapping.length - 1;
-                jobCardField.filter = {};
-                context.actions.makeOptionsFields(context, jobCardField).then(function() {
-                    context.actions[jobCardField.action](context, context.data, context.data[jobCardField.id], jobCardField)
-                });
-            }
-        },
-        callBackList: function(context) {
-            context.actions.getPartStock(context);
-            context.actions.getPRQty(context);
-            context.actions.getFlowMaster(context);
-            context.actions.getOperations(context);
-        },
-        checkAcceptedQty: function(context, mappingData, value, key, field) {
-            var qtyCanMake = 0,
-                rejectionQty = mappingData.rejectionQty || 0,
-                rwQty = mappingData.rwQty || 0,
-                acceptedQty = mappingData.acceptedQty || 0,
-                qty = acceptedQty + rejectionQty + rwQty;
-            var fullQty;
-            var prFrmQtyMap;
-            var prFrmToQtyMap;
-            var prToQtyMap;
-            var stockQty;
-
-            prFrmQtyMap = context.data.jobCardNo + '-' + context.data.partNo + '-' + mappingData.operationFrom + '-frm';
-            prToQtyMap = context.data.jobCardNo + '-' + context.data.partNo + '-' + mappingData.operationTo + '-to';
-            prFrmToQtyMap = context.data.jobCardNo + '-' + context.data.partNo + '-' + mappingData.operationFrom + '-to';
-
-            if (context.data.partNo && mappingData.operationFrom) {
-                if (context.operationsData[mappingData.operationFrom].source === 'Supplier') {
-                    qtyCanMake = context.form.fields['jobCardNo'].options[context.data.jobCardNo].qtyCanMake;
-                } else if (context.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
-                    qtyCanMake = context.prQty[context.data.jobCardNo + '-' + context.data.partNo + '-' + context.partStock[context.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to'].prAcpQty || 0;
-                } else {
-                    qtyCanMake = context.prQty[prFrmToQtyMap] && context.prQty[prFrmToQtyMap].prAcpQty || 0;
-                }
-                stockQty = context.partStock[context.data.partNo + '-' + mappingData.operationFrom] && context.partStock[context.data.partNo + '-' + mappingData.operationFrom].partStockQty || 0;
-                fullQty = context.prQty[prFrmQtyMap] && parseInt(context.prQty[prFrmQtyMap].prQty) + parseInt(qty) || qty;
-            }
-
-            if (qty > stockQty || fullQty > qtyCanMake || (context.prQty[prFrmToQtyMap] && context.prQty[prFrmToQtyMap].prAcpQty < qty)) {
-                mappingData[field.id] = null
-            }
-        },
-        callBackChangeMapping: function(context, data, key, field) {
-            context.actions.updateOperationFrom(context, data, key, field);
-            context.actions.updateOperationTo(context, data, key, field);
-        },
-        updateOperationFrom: function(context, data, key, field) {
-            var prQtyFrmMap;
-            var prQtyPrevMap;
-            var prQtyToMap;
-            var flwMap;
-            var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
-            var jobCardQty = jobCard && jobCard.qtyCanMake;
-
-            if (context.data.jobCardNo) {
-                var restriction = {
-                        partNo: context.data.partNo
-                    },
-                    operation = [];
-                for (var i in context.partStock) {
-                    if (context.partStock[i].partStockQty > 0 && context.data.partNo === context.partStock[i].partNo) {
-                        prQtyPrevMap = context.data.jobCardNo + '-' + context.partStock[i].partNo + '-' + context.partStock[i].operationFrom + '-frm';
-                        prQtyFrmMap = context.data.jobCardNo + '-' + context.partStock[i].partNo + '-' + context.partStock[i].operationTo + '-frm';
-                        prQtyToMap = context.data.jobCardNo + '-' + context.partStock[i].partNo + '-' + context.partStock[i].operationFrom + '-to';
-                        flwMap = context.partStock[i].partNo + '-' + context.partStock[i].operationTo;
-
-                        if ((!context.prQty[prQtyFrmMap] &&
-                                (!context.partStock[i].operationFrom ||
-                                    (context.prQty[prQtyPrevMap] && context.prQty[prQtyPrevMap].prQty > 0))) ||
-                            (context.prQty[prQtyFrmMap] && context.prQty[prQtyFrmMap].prQty < jobCardQty) ||
-                            (context.flowMasterByPart[flwMap] && context.flowMasterByPart[flwMap].source === "Sub-Contractor" && context.prQty[prQtyToMap])) {
-                            operation.push(context.partStock[i].operationTo);
-                        }
-                    }
-                }
-                restriction.filter = {
-                    id: operation
-                }
-                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationFrom'], restriction);
-            }
-        },
-        updateOperationTo: function(context, mappingData, key, field) {
-            if (context.data.jobCardNo) {
-                var partNo = context.data.partNo,
-                    restriction = {
-                        partNo: partNo
-                    },
-                    operation = [];
-                var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
-                var jobCardQty = jobCard && jobCard.qtyCanMake;
-
-                if (mappingData.operationFrom) {
-                    restriction = angular.extend(restriction, {
-                        limit: 1,
-                        startWith: mappingData.operationFrom
-                    });
-                }
-
-                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction).then(function() {
-                    var options = context.form.mapping.fields['operationTo'].options;
-                    var firstOption = options[Object.keys(options)[0]];
-                    if (firstOption && firstOption.source === 'Sub-Contractor') {
-                        context.form.mapping.fields['operationTo'].options = {};
-                    }
-                });
-            }
-        },
-        updateToolNo: function(context, mappingData) {
-            mappingData.toolNo = context.data.partNo && mappingData.operationTo && context.flowMasterByPart[context.data.partNo + '-' + mappingData.operationTo].toolNo || null;
-        },
-        calculatePlanQty: function(context, mappingData) {
-            var startDate = mappingData.startTime;
-            var endDate = mappingData.endTime;
-            var timeDiff = endDate - startDate;
-            var palnQtyPerHr = context.data.partNo && mappingData.operationTo && context.flowMasterByPart[context.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
-            mappingData.planQty = timeDiff * palnQtyPerHr;
-        },
-        updateMaterialIssue: function(context, replaceData, key) {
-            var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
-            var jobCardQty = jobCard && jobCard.qtyCanMake;
-            jobCard.status = 1;
-            context.actions.updateData('production.materialIssueNote', jobCard);
-        },
-        getPRQty: function(context) {
-            context.prQty = {};
-            return context.actions.getData('production.productionEntry').then(function(res) {
-                var listViewData = res.data;
-                for (var i in listViewData) {
-                    for (var j in listViewData[i].mapping) {
-                        var prFrmQty = 0;
-                        var prToQty = 0;
-                        var prQty = 0;
-                        var prFrmAcpQty = 0;
-                        var prToAcpQty = 0;
-                        var prFrmQtyMap;
-                        var prToQtyMap;
-                        prFrmQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationFrom + '-frm';
-                        prToQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationTo + '-to';
-                        prQty = parseInt(listViewData[i].mapping[j].acceptedQty) + parseInt(listViewData[i].mapping[j].rejectionQty) + parseInt(listViewData[i].mapping[j].rwQty);
-                        prFrmAcpQty = context.prQty[prFrmQtyMap] ? parseInt(context.prQty[prFrmQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
-                        prFrmQty = context.prQty[prFrmQtyMap] ? parseInt(context.prQty[prFrmQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
-                        prToQty = context.prQty[prToQtyMap] ? parseInt(context.prQty[prToQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
-                        prToAcpQty = context.prQty[prToQtyMap] ? parseInt(context.prQty[prToQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
-
-                        context.prQty[prFrmQtyMap] = listViewData[i].mapping[j];
-                        context.prQty[prFrmQtyMap].prQty = prFrmQty;
-                        context.prQty[prFrmQtyMap].prAcpQty = prFrmAcpQty;
-                        context.prQty[prToQtyMap] = listViewData[i].mapping[j];
-                        context.prQty[prToQtyMap].prQty = prToQty;
-                        context.prQty[prToQtyMap].prAcpQty = prToAcpQty;
-                    }
-                };
-                return context.prQty;
-            });
-        },
-        callBackSubmit: function(context) {
-            var newQty;
-            var data = angular.copy(context.data.mapping[context.finalMapping]);
-            var newContext = angular.copy(context);
-            data.partNo = context.data.partNo;
-            newContext.data = data;
-            context.actions.updatePartStock(newContext);
-            context.actions.updateMaterialIssue(context);
-        }
-    };
-
-    commonFact.initCtrl($scope, 'production.productionEntry', actions);
-
-}]);
-erpApp.controller('toolMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-	
-    commonFact.initCtrl($scope, 'production.toolMaster');
-
-}]);
 (function(module) {
 try {
   module = angular.module('erpApp');
@@ -2516,89 +2516,6 @@ module.run(['$templateCache', function($templateCache) {
     '        <div ng-if="context.page.name==\'list\'">\n' +
     '            <filter-view></filter-view>\n' +
     '            <list-view></list-view>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('erpApp');
-} catch (e) {
-  module = angular.module('erpApp', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('template/controllers/dashboard.html',
-    '<div class="container-fluid">\n' +
-    '    <!-- Breadcrumbs-->\n' +
-    '    <ol class="breadcrumb">\n' +
-    '        <li class="breadcrumb-item">\n' +
-    '            <a href="#/">Dashboard</a>\n' +
-    '        </li>\n' +
-    '        <li class="breadcrumb-item active">My Dashboard</li>\n' +
-    '    </ol>\n' +
-    '    <!-- Example DataTables Card-->\n' +
-    '    <div class="mb-3">\n' +
-    '        <h3>{{context.title}}</h3>\n' +
-    '        <ul class="navbar-nav">\n' +
-    '            <li ng-if="!module.disableMenu && !module.disable" ng-repeat="(key, module) in headerContext.modules">\n' +
-    '                <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">\n' +
-    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
-    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
-    '                  </a>\n' +
-    '                <a ng-if="!module.page" class="nav-link">\n' +
-    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
-    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
-    '                  </a>\n' +
-    '                <ul>\n' +
-    '                    <li ng-if="!subModule.disableMenu && !subModule.disable" ng-repeat="subModule in headerContext.actions.showSubModule(module)">\n' +
-    '                        <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
-    '                    </li>\n' +
-    '                </ul>\n' +
-    '            </li>\n' +
-    '        </ul>\n' +
-    '    </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('erpApp');
-} catch (e) {
-  module = angular.module('erpApp', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('template/controllers/databaseUpload.html',
-    '<div class="container-fluid">\n' +
-    '    <!-- Breadcrumbs-->\n' +
-    '    <ol class="breadcrumb">\n' +
-    '        <li class="breadcrumb-item">\n' +
-    '            <a href="#/">Dashboard</a>\n' +
-    '        </li>\n' +
-    '        <li class="breadcrumb-item active">My Dashboard</li>\n' +
-    '    </ol>\n' +
-    '    <!-- Example DataTables Card-->\n' +
-    '    <div class="mb-3">\n' +
-    '        <h3>{{context.title}}</h3>\n' +
-    '        <div>\n' +
-    '            <div class="card">\n' +
-    '                <div class="card-body">\n' +
-    '                    <div ng-if="context.alertMessage!==undefined" class="alert alert-danger" role="alert">\n' +
-    '                      {{context.alertMessage}}\n' +
-    '                    </div>\n' +
-    '                    <div ng-if="context.message!==undefined" class="alert alert-success" role="alert">\n' +
-    '                      {{context.message}}\n' +
-    '                    </div>\n' +
-    '                    <h5 style="color:green;">{{context.data.uploadSuccess}}</h5>\n' +
-    '                    <form name="customForm">\n' +
-    '                        <input type="file" file-model="context.data.databaseUpload" class="form-control" />\n' +
-    '\n' +
-    '                        <button ng-click="context.actions.uploadDatabase(context)" class="btn btn-primary">Submit</button>\n' +
-    '                    </form>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '</div>');
@@ -3017,6 +2934,89 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="row" ng-if="!context.page.printView && (context.form.mapping.actions.add || context.form.mapping.actions.add==undefined)">\n' +
     '            <div class="col">\n' +
     '                <a class="fa fa-fw fa-plus-square-o" href="javascript: void(0);" ng-click="context.actions.addMapping(context.data.mapping)"> </a>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('erpApp');
+} catch (e) {
+  module = angular.module('erpApp', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('template/controllers/dashboard.html',
+    '<div class="container-fluid">\n' +
+    '    <!-- Breadcrumbs-->\n' +
+    '    <ol class="breadcrumb">\n' +
+    '        <li class="breadcrumb-item">\n' +
+    '            <a href="#/">Dashboard</a>\n' +
+    '        </li>\n' +
+    '        <li class="breadcrumb-item active">My Dashboard</li>\n' +
+    '    </ol>\n' +
+    '    <!-- Example DataTables Card-->\n' +
+    '    <div class="mb-3">\n' +
+    '        <h3>{{context.title}}</h3>\n' +
+    '        <ul class="navbar-nav">\n' +
+    '            <li ng-if="!module.disableMenu && !module.disable" ng-repeat="(key, module) in headerContext.modules">\n' +
+    '                <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">\n' +
+    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
+    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
+    '                  </a>\n' +
+    '                <a ng-if="!module.page" class="nav-link">\n' +
+    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
+    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
+    '                  </a>\n' +
+    '                <ul>\n' +
+    '                    <li ng-if="!subModule.disableMenu && !subModule.disable" ng-repeat="subModule in headerContext.actions.showSubModule(module)">\n' +
+    '                        <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
+    '                    </li>\n' +
+    '                </ul>\n' +
+    '            </li>\n' +
+    '        </ul>\n' +
+    '    </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('erpApp');
+} catch (e) {
+  module = angular.module('erpApp', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('template/controllers/databaseUpload.html',
+    '<div class="container-fluid">\n' +
+    '    <!-- Breadcrumbs-->\n' +
+    '    <ol class="breadcrumb">\n' +
+    '        <li class="breadcrumb-item">\n' +
+    '            <a href="#/">Dashboard</a>\n' +
+    '        </li>\n' +
+    '        <li class="breadcrumb-item active">My Dashboard</li>\n' +
+    '    </ol>\n' +
+    '    <!-- Example DataTables Card-->\n' +
+    '    <div class="mb-3">\n' +
+    '        <h3>{{context.title}}</h3>\n' +
+    '        <div>\n' +
+    '            <div class="card">\n' +
+    '                <div class="card-body">\n' +
+    '                    <div ng-if="context.alertMessage!==undefined" class="alert alert-danger" role="alert">\n' +
+    '                      {{context.alertMessage}}\n' +
+    '                    </div>\n' +
+    '                    <div ng-if="context.message!==undefined" class="alert alert-success" role="alert">\n' +
+    '                      {{context.message}}\n' +
+    '                    </div>\n' +
+    '                    <h5 style="color:green;">{{context.data.uploadSuccess}}</h5>\n' +
+    '                    <form name="customForm">\n' +
+    '                        <input type="file" file-model="context.data.databaseUpload" class="form-control" />\n' +
+    '\n' +
+    '                        <button ng-click="context.actions.uploadDatabase(context)" class="btn btn-primary">Submit</button>\n' +
+    '                    </form>\n' +
+    '                </div>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +

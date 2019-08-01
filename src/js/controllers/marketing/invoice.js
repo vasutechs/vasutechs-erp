@@ -101,7 +101,7 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 }
 
                 context.data.subTotal = parseFloat(subTotal).toFixed(2);
-                context.data.total = parseInt(total);
+                context.data.total = Math.round(total);
                 if (context.cashBill) {
                     context.actions.updatePreBalance(context);
                 }
@@ -111,7 +111,7 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 if (context.data.preBalance) {
                     total = total + parseFloat(context.data.preBalance);
                 }
-                context.data.total = parseInt(total);
+                context.data.total = Math.round(total);
             },
             updateInvocePartStock: function(context) {
                 var mapStockUpdate = function(map, key, del) {
