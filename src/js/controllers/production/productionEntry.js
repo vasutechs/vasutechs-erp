@@ -22,7 +22,7 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             context.actions.getFlowMaster(context);
             context.actions.getOperations(context);
         },
-        checkAcceptedQty: function(context, mappingData, value, key, field) {
+        checkAcceptedQty: function(context, mappingData, value, field, fieldMapkey) {
             var qtyCanMake = 0,
                 rejectionQty = mappingData.rejectionQty || 0,
                 rwQty = mappingData.rwQty || 0,

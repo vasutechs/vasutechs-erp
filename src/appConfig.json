@@ -3203,7 +3203,11 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "salesAnalysisInvoiceCtrl",
                     "actions": {
-                        "downloadExcel": true
+                        "downloadExcel": true,
+                        "add": false,
+                        "edit": false,
+                        "delete": false,
+                        "printView": false
                     }
                 },
                 "services": {
@@ -3224,7 +3228,11 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "salesAnalysisInvoiceCtrl",
                     "actions": {
-                        "downloadExcel": true
+                        "downloadExcel": true,
+                        "add": false,
+                        "edit": false,
+                        "delete": false,
+                        "printView": false
                     }
                 },
                 "services": {
@@ -3328,7 +3336,11 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "productionEntryReportCtrl",
                     "actions": {
-                        "downloadExcel": true
+                        "downloadExcel": true,
+                        "add": false,
+                        "edit": false,
+                        "delete": false,
+                        "printView": false
                     }
                 },
                 "services": {
@@ -3419,7 +3431,11 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "productionEntryReportCtrl",
                     "actions": {
-                        "downloadExcel": true
+                        "downloadExcel": true,
+                        "add": false,
+                        "edit": false,
+                        "delete": false,
+                        "printView": false
                     }
                 },
                 "services": {
@@ -3503,7 +3519,11 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "productionEntryReportCtrl",
                     "actions": {
-                        "downloadExcel": true
+                        "downloadExcel": true,
+                        "add": false,
+                        "edit": false,
+                        "delete": false,
+                        "printView": false
                     }
                 },
                 "services": {
@@ -3602,7 +3622,11 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "productionEntryReportCtrl",
                     "actions": {
-                        "downloadExcel": true
+                        "downloadExcel": true,
+                        "add": false,
+                        "edit": false,
+                        "delete": false,
+                        "printView": false
                     }
                 },
                 "services": {
@@ -3736,7 +3760,10 @@
                     "link": "accounts/customerPaymentInvoice/list",
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
-                    "controller": "customerPaymentInvoiceCtrl"
+                    "controller": "customerPaymentInvoiceCtrl",
+                    "actions": {
+                        "downloadExcel": true
+                    }
                 },
                 "services": {
                     "list": {
@@ -3781,7 +3808,10 @@
                     "link": "accounts/customerPaymentInvoice/list?type=cashBill",
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
-                    "controller": "customerPaymentInvoiceCtrl"
+                    "controller": "customerPaymentInvoiceCtrl",
+                    "actions": {
+                        "downloadExcel": true
+                    }
                 },
                 "services": {
                     "list": {
@@ -3931,7 +3961,10 @@
                     "link": "accounts/suppilerPayment/list",
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
-                    "controller": "suppilerPaymentCtrl"
+                    "controller": "suppilerPaymentCtrl",
+                    "actions": {
+                        "downloadExcel": true
+                    }
                 },
                 "services": {
                     "list": {
@@ -4080,11 +4113,188 @@
                     "link": "accounts/subContractorPayment/list",
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
-                    "controller": "subContractorPaymentCtrl"
+                    "controller": "subContractorPaymentCtrl",
+                    "actions": {
+                        "downloadExcel": true
+                    }
                 },
                 "services": {
                     "list": {
                         "url": "api/subContractorPayment/data/{{YEAR}}",
+                        "method": "GET"
+                    }
+                }
+            },
+            "empPayment": {
+                "id": "empPayment",
+                "title": "Employee Labor Payment",
+                "masterData": {
+                    "employeeCode": null,
+                    "frmDate": null,
+                    "toDate": null,
+                    "total": 0,
+                    "balanceAmount": 0,
+                    "mapping": [{
+                        "id": null,
+                        "operationTo": null,
+                        "qty": null,
+                        "laborCost": null,
+                        "totalCost": null,
+                        "date": null,
+                        "paidStatus": false
+                    }]
+                },
+                "form": {
+                    "name": "Employee Payment",
+                    "id": "employeePayment",
+                    "disableByField": "id",
+                    "fields": {
+                        "employeeCode": {
+                            "name": "Employee Name",
+                            "id": "employeeCode",
+                            "type": "select",
+                            "options": {},
+                            "action": "addPartMap",
+                            "updateMapping": true,
+                            "updateData": ["mapping"],
+                            "required": true,
+                            "dataFrom": "marketing.empMaster",
+                            "replaceName": "employeeName",
+                            "isEditDisable": true
+                        },
+                        "frmDate": {
+                            "name": "From Date",
+                            "id": "frmDate",
+                            "type": "input",
+                            "action": "addPartMap",
+                            "inputType": "date",
+                            "isEditDisable": true
+                        },
+                        "toDate": {
+                            "name": "To Date",
+                            "id": "toDate",
+                            "type": "input",
+                            "action": "addPartMap",
+                            "inputType": "date",
+                            "isEditDisable": true
+                        },
+                        "total": {
+                            "name": "Total",
+                            "id": "total",
+                            "type": "span"
+                        },
+                        "balanceAmount": {
+                            "name": "Balance Amount",
+                            "id": "balanceAmount",
+                            "type": "span"
+                        }
+                    },
+                    "mapping": {
+                        "name": "Payment",
+                        "fields": {
+                            "id": {
+                                "name": "Part No",
+                                "id": "id",
+                                "type": "select",
+                                "options": {},
+                                "dataFrom": "marketing.partMaster",
+                                "replaceName": "partNo",
+                                "isDisable": true
+                            },
+                            "partName": {
+                                "name": "Part Name",
+                                "id": "partName",
+                                "type": "span"
+                            },
+                            "operationTo": {
+                                "name": "Stage",
+                                "id": "operationTo",
+                                "type": "select",
+                                "options": {},
+                                "required": true,
+                                "dataFrom": "production.operationMaster",
+                                "replaceName": "opName",
+                                "valuePrefixData": "opCode",
+                                "isSingle": true,
+                                "isDisable": true
+                            },
+                            "qty": {
+                                "name": "Qty",
+                                "id": "qty",
+                                "type": "span"
+                            },
+                            "laborCost": {
+                                "name": "Labor Cost",
+                                "id": "laborCost",
+                                "type": "span"
+                            },
+                            "totalLaborCost": {
+                                "name": "Total Labor Cost",
+                                "id": "totalLaborCost",
+                                "type": "span"
+                            },
+                            "date": {
+                                "name": "Date",
+                                "id": "date",
+                                "type": "input",
+                                "inputType": "date"
+                            },
+                            "paidStatus": {
+                                "name": "Paid Status",
+                                "id": "paidStatus",
+                                "type": "input",
+                                "action": "updateBalanceAmount",
+                                "inputType": "checkbox"
+                            }
+                        },
+                        "actions": {
+                            "add": false,
+                            "delete": false
+                        }
+                    }
+                },
+                "listView": [{
+                        "title": "Employee Name",
+                        "id": "employeeCode",
+                        "dataFrom": "marketing.empMaster",
+                        "replaceName": "employeeName",
+                        "isFilterBy": true,
+                        "type": "select",
+                        "options": {}
+                    },
+                    {
+                        "title": "From Date",
+                        "id": "frmDate",
+                        "type": "input",
+                        "inputType": "date"
+                    },
+                    {
+                        "title": "To Date",
+                        "id": "toDate",
+                        "type": "input",
+                        "inputType": "date"
+                    },
+                    {
+                        "title": "Total Amount",
+                        "id": "total"
+                    },
+                    {
+                        "title": "Balance Amount",
+                        "id": "balanceAmount"
+                    }
+                ],
+                "page": {
+                    "link": "accounts/empPayment/list",
+                    "name": "list",
+                    "templateUrl": "template/defaultView.html",
+                    "controller": "empPaymentCtrl",
+                    "actions": {
+                        "downloadExcel": true
+                    }
+                },
+                "services": {
+                    "list": {
+                        "url": "api/empPayment/data/{{YEAR}}",
                         "method": "GET"
                     }
                 }

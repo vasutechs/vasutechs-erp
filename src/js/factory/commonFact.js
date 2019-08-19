@@ -93,6 +93,12 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 if (context.data['date']) {
                     context.data['date'] = new Date(context.data['date']);
                 }
+                if (context.data['frmDate']) {
+                    context.data['frmDate'] = new Date(context.data['frmDate']);
+                }
+                if (context.data['toDate']) {
+                    context.data['toDate'] = new Date(context.data['toDate']);
+                }
                 context.actions.callBackEdit && context.actions.callBackEdit(context, key);
                 return context;
             });
@@ -246,7 +252,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             delete data.splice(key, 1);
             context.actions.callBackRemoveMapping && context.actions.callBackRemoveMapping(context, data, key);
         },
-        changeMapping: function(context, data, key, field, mapKey, _this) {
+        changeMapping: function(context, data, key, field, fieldMapKey) {
             for (var dataKey in data) {
                 if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
                     if (key === null) {
@@ -274,7 +280,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     }
                 }
             }
-            field.callBack !== false && context.actions.callBackChangeMapping && context.actions.callBackChangeMapping(context, data, key, field, mapKey, _this);
+            field.callBack !== false && context.actions.callBackChangeMapping && context.actions.callBackChangeMapping(context, data, key, field, fieldMapKey);
         },
         setAutoGenKey: function(context) {
             var lastDataKey = context.lastData ? context.lastData[context.form.autoGenKey] : undefined;
@@ -406,7 +412,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
 
             return Promise.all(returnPromise);
         },
-        updatePartTotal: function(context, data, newValue, mapKey, field) {
+        updatePartTotal: function(context, data, newValue, field, fieldMapKey) {
             var total = 0,
                 totalBeforTax = 0,
                 qty = newValue,
@@ -421,7 +427,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             totalBeforTax = qty * data.rate;
             total = totalBeforTax + (totalBeforTax * (data.gst / 100));
             data.total = parseFloat(total).toFixed(2);
-            context.actions.callBackUpdatePartTotal && context.actions.callBackUpdatePartTotal(context, data, newValue, mapKey, field);
+            context.actions.callBackUpdatePartTotal && context.actions.callBackUpdatePartTotal(context, data, newValue, field, fieldMapKey);
 
         },
         getServiceConfig: function(module, replaceMethod, appendValue) {
@@ -541,7 +547,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             return isExist;
         },
-        updateGstPart: function(context, data, newValue, mapKey, field) {
+        updateGstPart: function(context, data, newValue, field, fieldMapKey) {
             var acceptedQtyField = context.form.mapping.fields['acceptedQty'];
             var cgstField = context.form.mapping.fields['cgst'];
             var sgstField = context.form.mapping.fields['sgst'];
@@ -554,7 +560,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     data[sgstField.id] = 0;
                 }
             }
-            context.actions.updatePartTotal(context, data, data[acceptedQtyField.id], mapKey, acceptedQtyField);
+            context.actions.updatePartTotal(context, data, data[acceptedQtyField.id], acceptedQtyField, fieldMapKey);
         },
         updateFields: function(context, fields) {
             var fields = fields;

@@ -1,6 +1,6 @@
 erpApp.controller('empMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
     var actions = {
-        callBackChangeMapping: function(context, mappingData, key, field, _this) {
+        callBackChangeMapping: function(context, mappingData, key, field, fieldMapKey) {
 
         },
         updateStage: function(context, mappingData, key, field, _this) {

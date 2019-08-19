@@ -12,7 +12,7 @@
                     </div>
                 </th>
                 <th>
-                    <div ng-if="context.page.actions === undefined || context.page.actions.add" class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.add(context)" class="fa fa-fw fa-plus-square-o">Add</a></div>
+                    <div ng-if="context.page.actions === undefined  || context.page.actions.add === undefined || context.page.actions.add" class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.add(context)" class="fa fa-fw fa-plus-square-o">Add</a></div>
                 </th>
             </tr>
         </thead>
@@ -24,12 +24,13 @@
                 <td>
                     <div class="row">
                         <div class="col">
-                            <a ng-if="context.page.actions === undefined || context.page.actions.print" href="javascript: void(0);" ng-click="context.actions.printView(context, dataList.id, true)" title="Print View" class="fa fa-fw fa-print"> </a>
+                            <a ng-if="context.page.actions === undefined || context.page.actions.printView === undefined || context.page.actions.print" href="javascript: void(0);" ng-click="context.actions.printView(context, dataList.id, true)" title="Print View" class="fa fa-fw fa-print">
+                            </a>
                         </div>
-                        <div class="col" ng-if="context.page.actions === undefined || context.page.actions.edit">
+                        <div class="col" ng-if="context.page.actions === undefined || context.page.actions.edit === undefined || context.page.actions.edit">
                             <a href="javascript: void(0);" ng-click="context.actions.edit(context, dataList.id)" title="Edit" class="fa fa-fw fa-edit"> </a>
                         </div>
-                        <div class="col" ng-if="context.page.actions === undefined || context.page.actions.delete">
+                        <div class="col" ng-if="context.page.actions === undefined || context.page.actions.delete === undefined || context.page.actions.delete">
                             <a href="javascript: void(0);" title="Delete" ng-click="context.actions.delete(context, dataList.id, dataList)" class="fa fa-fw fa-times"> </a>
                         </div>
                     </div>

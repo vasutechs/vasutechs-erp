@@ -19,7 +19,6 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
                 var optionIdVal = parentModule && parentModule.id + '.' + optionVal.id || optionVal.id;
                 var optionNameVal = parentModule && '-- ' + optionVal.title || optionVal.title;
                 if (i !== 'disable') {
-                    console.log(modules, modules[i]);
                     field.allOptions[optionIdVal] = optionVal;
                     field.allOptions[optionIdVal]['optionName'] = optionNameVal;
                     field.allOptions[optionIdVal]['optionId'] = optionIdVal;

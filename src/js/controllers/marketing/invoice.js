@@ -41,7 +41,7 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 });
                 context.data.mapping = newMapData;
             },
-            updateTotal: function(context, data, updateValue, key) {
+            updateTotal: function(context, data, updateValue, field, fieldKey) {
                 var partDetail = context.form.mapping.fields['id'].options[data.id],
                     taxRate = 0,
                     cgst = 0,
@@ -52,7 +52,7 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 if (context.partStock[data.id + '-' + context.appConfig.finalStageOpp]) {
                     partStock = parseInt(context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty);
                     if (context.page.name === 'edit') {
-                        partStock += parseInt(orgItemVal.mapping[key].unit);
+                        partStock += parseInt(orgItemVal.mapping[fieldKey].unit);
                     }
                     data.unit = partStock < data.unit ? null : data.unit;
                 }
