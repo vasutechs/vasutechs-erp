@@ -56,6 +56,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 returnPromise.push(context.actions.updateFields(context, context.listView));
                 context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
             }
+            scope.$broadcast('showAlertRol');
             return Promise.all(returnPromise).then(function() {
                 returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
                 scope.context = context;
@@ -616,6 +617,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             return Number(n) === n && n % 1 !== 0;
         },
         downloadExcel: function(context, table) {
+            context.filterBy = [];
             var uri = 'data:application/vnd.ms-excel;base64,',
                 template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
                 base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },

@@ -1,0 +1,20 @@
+<div>
+    <div class="card" ng-if="alertRolContext.partRolRed.length > 0 || alertRolContext.partRolYellow.length > 0">
+        <div class="card-header hide-print">
+            <h4>Re-Order Level</h4>
+        </div>
+        <div class="card-body">
+            <div ng-repeat="(key,map) in alertRolContext.partRolRed">
+                <div class="alert alert-danger" role="alert">
+                    Part name: {{alertRolContext.partRolRed[key].partName}} - Qty: {{alertRolContext.partRolRed[key].partStockQty}}
+                </div>
+            </div>
+            <div ng-repeat="(key,map) in alertRolContext.partRolYellow">
+                <div class="alert alert-warning" role="alert">
+                    Part name: {{alertRolContext.partRolYellow[key].partName}} - Qty: {{alertRolContext.partRolYellow[key].partStockQty}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

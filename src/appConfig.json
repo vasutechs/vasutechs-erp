@@ -79,7 +79,9 @@
                     "rate": null,
                     "gst": null,
                     "sgst": null,
-                    "cgst": null
+                    "cgst": null,
+                    "rolQtyYellowRage": null,
+                    "rolQtyRedRage": null
                 },
                 "form": {
                     "name": "partMaster",
@@ -175,12 +177,30 @@
                             "type": "input",
                             "inputType": "number",
                             "required": true
+                        },
+                        "rolQtyYellowRage": {
+                            "name": "ROL Qty Yellow Rage",
+                            "id": "rolQtyYellowRage",
+                            "type": "input",
+                            "inputType": "number",
+                            "required": true
+                        },
+                        "rolQtyRedRage": {
+                            "name": "ROL Qty Red Rage",
+                            "id": "rolQtyRedRage",
+                            "type": "input",
+                            "inputType": "number",
+                            "required": true
                         }
                     }
                 },
                 "listView": [{
-                        "title": "Part No",
-                        "id": "partNo"
+                        "title": "PartNo",
+                        "id": "partNo",
+                        "dataFrom": "marketing.partMaster",
+                        "replaceName": "partNo",
+                        "type": "select",
+                        "isFilterBy": true
                     },
                     {
                         "title": "Part Name",
@@ -1584,7 +1604,6 @@
                                 "id": "id",
                                 "type": "select",
                                 "options": {},
-                                "action": "changeMapping",
                                 "dataFrom": "purchase.rmMaster",
                                 "replaceName": "rmName",
                                 "valuePrefixData": "grade",
