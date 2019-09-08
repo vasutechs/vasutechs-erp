@@ -1,6 +1,6 @@
 erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
     var actions = {
-        callBackList: function(context){
+        callBackList: function(context) {
             context.form.mapping.actions = {};
         },
         callBackAdd: function(context) {
@@ -10,17 +10,14 @@ erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', f
             for (var i in context.data.mapping) {
                 context.data.mapping[i].date = new Date(context.data.mapping[i].date);
             }
-            if(context.data.balanceAmount <= 0){
+            if (context.data.balanceAmount <= 0) {
                 context.form.mapping.actions.add = false;
             }
         },
         callBackChangeMapping: function(context, data, key, field) {
             var total = 0;
             var grnMap = field.options[context.data.grnNo];
-            for(var i in grnMap.mapping){
-                total += parseFloat(grnMap.mapping[i].total);
-            }
-            context.data.total = total;
+            context.data.total = grnMap.total;
             context.data.supplierInvoiceDate = context.actions.dateFormatChange(context.data.supplierInvoiceDate);
             context.data.balanceAmount = context.data.total;
         },
@@ -30,10 +27,10 @@ erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', f
                 amount += parseFloat(context.data.mapping[i].amount);
             }
             context.data.balanceAmount = parseFloat(context.data.total) - parseFloat(amount);
-            if(context.data.balanceAmount <= 0){
+            if (context.data.balanceAmount <= 0) {
                 context.form.mapping.actions.add = false;
             }
-            if(context.data.balanceAmount < 0){
+            if (context.data.balanceAmount < 0) {
                 context.data.balanceAmount = 0;
             }
         }

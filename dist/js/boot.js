@@ -43,8 +43,12 @@ var erpApp = angular.module('erpApp', ['ngRoute'])
     }]);
 erpApp.directive('alertRol', ['commonFact', 'authFact', function(commonFact, authFact) {
     var appConfig = commonFact.getErpAppConfig();
+    var showROL = true;
     var showAlertRol = function($scope) {
         var userType = authFact.isLogin();
+        $scope.hideROL = function() {
+            showROL = false;
+        }
         if (userType) {
             commonFact.defaultActions.getData('marketing.partMaster').then(function(res) {
                 var partMaster = res.data;
@@ -69,6 +73,9 @@ erpApp.directive('alertRol', ['commonFact', 'authFact', function(commonFact, aut
                         }
 
                     }
+                    if (($scope.alertRolContext.partRolRed.length > 0 || $scope.alertRolContext.partRolYellow.length > 0) && showROL) {
+                        angular.element('#myModal').modal('show');
+                    }
                 });
             });
         }
@@ -79,7 +86,7 @@ erpApp.directive('alertRol', ['commonFact', 'authFact', function(commonFact, aut
         $scope.alertRolContext.partRolYellow = [];
         $scope.alertRolContext.partRolRed = [];
         $scope.$on('showAlertRol', function() {
-            showAlertRol($scope)
+            showAlertRol($scope);
         });
     };
     return {
@@ -1241,7 +1248,7 @@ erpApp.controller('subContractorPaymentCtrl', ['$scope', 'commonFact', '$locatio
 }]);
 erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
     var actions = {
-        callBackList: function(context){
+        callBackList: function(context) {
             context.form.mapping.actions = {};
         },
         callBackAdd: function(context) {
@@ -1251,17 +1258,14 @@ erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', f
             for (var i in context.data.mapping) {
                 context.data.mapping[i].date = new Date(context.data.mapping[i].date);
             }
-            if(context.data.balanceAmount <= 0){
+            if (context.data.balanceAmount <= 0) {
                 context.form.mapping.actions.add = false;
             }
         },
         callBackChangeMapping: function(context, data, key, field) {
             var total = 0;
             var grnMap = field.options[context.data.grnNo];
-            for(var i in grnMap.mapping){
-                total += parseFloat(grnMap.mapping[i].total);
-            }
-            context.data.total = total;
+            context.data.total = grnMap.total;
             context.data.supplierInvoiceDate = context.actions.dateFormatChange(context.data.supplierInvoiceDate);
             context.data.balanceAmount = context.data.total;
         },
@@ -1271,10 +1275,10 @@ erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', f
                 amount += parseFloat(context.data.mapping[i].amount);
             }
             context.data.balanceAmount = parseFloat(context.data.total) - parseFloat(amount);
-            if(context.data.balanceAmount <= 0){
+            if (context.data.balanceAmount <= 0) {
                 context.form.mapping.actions.add = false;
             }
-            if(context.data.balanceAmount < 0){
+            if (context.data.balanceAmount < 0) {
                 context.data.balanceAmount = 0;
             }
         }
@@ -2707,24 +2711,35 @@ try {
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/components/alertRol.html',
     '<div>\n' +
-    '    <div class="card" ng-if="alertRolContext.partRolRed.length > 0 || alertRolContext.partRolYellow.length > 0">\n' +
-    '        <div class="card-header hide-print">\n' +
-    '            <h4>Re-Order Level</h4>\n' +
-    '        </div>\n' +
-    '        <div class="card-body">\n' +
-    '            <div ng-repeat="(key,map) in alertRolContext.partRolRed">\n' +
-    '                <div class="alert alert-danger" role="alert">\n' +
-    '                    Part name: {{alertRolContext.partRolRed[key].partName}} - Qty: {{alertRolContext.partRolRed[key].partStockQty}}\n' +
+    '    <div class="modal fade" id="myModal" role="dialog">\n' +
+    '        <div class="modal-dialog modal-lg">\n' +
+    '            <div class="modal-content">\n' +
+    '                <div class="modal-header">\n' +
+    '                    <h4>Re-Order Level</h4>\n' +
+    '                    <button type="button" class="close" data-dismiss="modal">&times;</button>\n' +
     '                </div>\n' +
-    '            </div>\n' +
-    '            <div ng-repeat="(key,map) in alertRolContext.partRolYellow">\n' +
-    '                <div class="alert alert-warning" role="alert">\n' +
-    '                    Part name: {{alertRolContext.partRolYellow[key].partName}} - Qty: {{alertRolContext.partRolYellow[key].partStockQty}}\n' +
+    '                <div class="modal-body modal-Scroll">\n' +
+    '\n' +
+    '\n' +
+    '                    <div ng-repeat="(key,map) in alertRolContext.partRolRed">\n' +
+    '                        <div class="alert alert-danger" role="alert">\n' +
+    '                            Part name: {{alertRolContext.partRolRed[key].partName}} - Qty: {{alertRolContext.partRolRed[key].partStockQty}}\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                    <div ng-repeat="(key,map) in alertRolContext.partRolYellow">\n' +
+    '                        <div class="alert alert-warning" role="alert">\n' +
+    '                            Part name: {{alertRolContext.partRolYellow[key].partName}} - Qty: {{alertRolContext.partRolYellow[key].partStockQty}}\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '\n' +
+    '                </div>\n' +
+    '                <div class="modal-footer">\n' +
+    '                    <button type="button" class="btn btn-default" ng-click="hideROL()" data-dismiss="modal">OK</button>\n' +
+    '                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\n' +
     '                </div>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
-    '\n' +
     '</div>');
 }]);
 })();

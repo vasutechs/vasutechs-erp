@@ -1,7 +1,11 @@
 erpApp.directive('alertRol', ['commonFact', 'authFact', function(commonFact, authFact) {
     var appConfig = commonFact.getErpAppConfig();
+    var showROL = true;
     var showAlertRol = function($scope) {
         var userType = authFact.isLogin();
+        $scope.hideROL = function() {
+            showROL = false;
+        }
         if (userType) {
             commonFact.defaultActions.getData('marketing.partMaster').then(function(res) {
                 var partMaster = res.data;
@@ -26,6 +30,9 @@ erpApp.directive('alertRol', ['commonFact', 'authFact', function(commonFact, aut
                         }
 
                     }
+                    if (($scope.alertRolContext.partRolRed.length > 0 || $scope.alertRolContext.partRolYellow.length > 0) && showROL) {
+                        angular.element('#myModal').modal('show');
+                    }
                 });
             });
         }
@@ -36,7 +43,7 @@ erpApp.directive('alertRol', ['commonFact', 'authFact', function(commonFact, aut
         $scope.alertRolContext.partRolYellow = [];
         $scope.alertRolContext.partRolRed = [];
         $scope.$on('showAlertRol', function() {
-            showAlertRol($scope)
+            showAlertRol($scope);
         });
     };
     return {
