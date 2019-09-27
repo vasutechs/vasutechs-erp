@@ -1190,6 +1190,289 @@
                     }
                 }
             },
+            "generalSupplierMaster": {
+                "id": "generalSupplierMaster",
+                "title": "General Supplier Master",
+                "masterData": {
+                    "generalSupplierCode": null,
+                    "generalSupplierName": null,
+                    "address": null,
+                    "contactNo": null,
+                    "gstin": null,
+                    "mapping": [{
+                        "id": null,
+                        "partName": null,
+                        "rate": null,
+                        "gst": null
+                    }]
+                },
+                "form": {
+                    "name": "General Supplier Master",
+                    "id": "generalSupplierMaster",
+                    "autoGenKey": "generalSupplierCode",
+                    "fields": {
+                        "generalSupplierCode": {
+                            "name": "General Supplier Code",
+                            "id": "generalSupplierCode",
+                            "type": "span",
+                            "valuePrefix": "VT-GSP-"
+                        },
+                        "supplierName": {
+                            "name": "General Supplier Name",
+                            "id": "generalSupplierName",
+                            "type": "input",
+                            "inputType": "text",
+                            "action": "isCheckExistField",
+                            "required": true
+                        },
+                        "address": {
+                            "name": "Address",
+                            "id": "address",
+                            "type": "input",
+                            "inputType": "text",
+                            "required": true
+                        },
+                        "contactNo": {
+                            "name": "Contact No",
+                            "id": "contactNo",
+                            "type": "input",
+                            "inputType": "text",
+                            "required": true
+                        },
+                        "gstin": {
+                            "name": "GSTIN",
+                            "id": "gstin",
+                            "type": "input",
+                            "inputType": "text",
+                            "required": true
+                        }
+                    },
+                    "mapping": {
+                        "name": "Part Mapping",
+                        "fields": {
+                            "id": {
+                                "name": "Part No",
+                                "id": "id",
+                                "type": "select",
+                                "options": {},
+                                "action": "changeMapping",
+                                "dataFrom": "marketing.partMaster",
+                                "replaceName": "partNo"
+                            },
+                            "partName": {
+                                "name": "Part Name",
+                                "id": "partName",
+                                "type": "span"
+                            },
+                            "rate": {
+                                "name": "Rate",
+                                "id": "rate",
+                                "type": "input",
+                                "inputType": "text",
+                                "required": true
+                            },
+                            "gst": {
+                                "name": "GST %",
+                                "id": "gst",
+                                "type": "span"
+                            }
+                        }
+                    }
+                },
+                "listView": [{
+                        "title": "General Supplier Code",
+                        "id": "generalSupplierCode",
+                        "valuePrefix": "VT-GSP-"
+                    },
+                    {
+                        "title": "General Supplier Name",
+                        "id": "generalSupplierName"
+                    }
+                ],
+                "page": {
+                    "link": "purchase/generalSupplierMaster/list",
+                    "name": "list",
+                    "templateUrl": "template/defaultView.html",
+                    "controller": "generalSupplierMasterCtrl"
+                },
+                "services": {
+                    "list": {
+                        "url": "api/generalSupplierMaster/data",
+                        "method": "GET"
+                    }
+                }
+            },
+            "poGeneralSupplier": {
+                "id": "poGeneralSupplier",
+                "title": "Purchase Order - General Supplier",
+                "masterData": {
+                    "poNo": null,
+                    "date": null,
+                    "generalSupplierCode": null,
+                    "gstin": null,
+                    "status": 0,
+                    "subTotal": null,
+                    "extraAmount": null,
+                    "gstTotal": null,
+                    "total": null,
+                    "mapping": [{
+                        "id": null,
+                        "qty": null,
+                        "uomCode": null,
+                        "rate": null,
+                        "gst": null,
+                        "cgst": null,
+                        "sgst": null,
+                        "amount": null
+                    }]
+                },
+                "form": {
+                    "name": "poGeneralSupplier",
+                    "id": "poGeneralSupplier",
+                    "autoGenKey": "poNo",
+                    "fields": {
+                        "poNo": {
+                            "name": "PO Code",
+                            "id": "poNo",
+                            "type": "span",
+                            "valuePrefix": "VT-GSP-PO-"
+                        },
+                        "date": {
+                            "name": "Date",
+                            "id": "date",
+                            "type": "input",
+                            "inputType": "date",
+                            "required": true
+                        },
+                        "supplierCode": {
+                            "name": "GeneralSupplier Code",
+                            "id": "generalSupplierCode",
+                            "type": "select",
+                            "options": {},
+                            "action": "changeMapping",
+                            "updateMapping": true,
+                            "updateData": ["gstin", "mapping"],
+                            "dataFrom": "purchase.generalSupplierMaster",
+                            "replaceName": "generalSupplierName",
+                            "isSingle": true
+                        },
+                        "gstin": {
+                            "name": "Party Gstin",
+                            "id": "gstin",
+                            "type": "span"
+                        },
+                        "subTotal": {
+                            "name": "Sub Total",
+                            "id": "subTotal",
+                            "afterMapping": true,
+                            "type": "span"
+                        },
+                        "extraAmount": {
+                            "name": "Extra Amount",
+                            "id": "extraAmount",
+                            "type": "input",
+                            "inputType": "number",
+                            "action": "updatePOTotalAmount",
+                            "afterMapping": true
+                        },
+                        "gstTotal": {
+                            "name": "GST Total",
+                            "id": "gstTotal",
+                            "type": "span",
+                            "afterMapping": true
+                        },
+                        "total": {
+                            "name": "Total",
+                            "id": "total",
+                            "type": "span",
+                            "afterMapping": true
+                        }
+                    },
+                    "mapping": {
+                        "name": "Part Mapping",
+                        "fields": {
+                            "id": {
+                                "name": "Part No",
+                                "id": "id",
+                                "type": "select",
+                                "options": {},
+                                "action": "changeMapping",
+                                "dataFrom": "marketing.partMaster",
+                                "replaceName": "partNo",
+                                "isDisable": true
+                            },
+                            "qty": {
+                                "name": "Qty",
+                                "id": "qty",
+                                "type": "input",
+                                "inputType": "text",
+                                "action": "updatePORmTotal",
+                                "required": true
+                            },
+                            "uomCode": {
+                                "name": "UOM",
+                                "id": "uomCode",
+                                "type": "select",
+                                "options": {},
+                                "dataFrom": "marketing.uomMaster",
+                                "replaceName": "uomName",
+                                "isDisable": true
+                            },
+                            "rate": {
+                                "name": "Rate",
+                                "id": "rate",
+                                "type": "input",
+                                "inputType": "text",
+                                "action": "updatePORmTotal",
+                                "required": true
+                            },
+                            "gst": {
+                                "name": "GST %",
+                                "id": "gst",
+                                "type": "span"
+                            },
+                            "total": {
+                                "name": "Total",
+                                "id": "total",
+                                "type": "span"
+                            }
+                        },
+                        "actions": {
+                            "add": false
+                        }
+                    }
+                },
+                "listView": [{
+                        "title": "PO NO",
+                        "id": "poNo",
+                        "valuePrefix": "VT-GSP-PO-"
+                    },
+                    {
+                        "title": "General Supplier Code",
+                        "id": "generalSupplierCode",
+                        "dataFrom": "purchase.generalSupplierMaster",
+                        "replaceName": "generalSupplierName",
+                        "type": "select",
+                        "isFilterBy": true
+                    },
+                    {
+                        "title": "Stutus",
+                        "id": "status"
+                    }
+                ],
+                "page": {
+                    "link": "purchase/poGeneralSupplier/list",
+                    "name": "list",
+                    "templateUrl": "template/defaultView.html",
+                    "controller": "poGeneralSupplierCtrl"
+                },
+                "services": {
+                    "list": {
+                        "url": "api/poGeneralSupplier/data/{{YEAR}}",
+                        "method": "GET"
+                    }
+                }
+            },
             "subContractorMaster": {
                 "id": "subContractorMaster",
                 "title": "Sub Contractor Master",
@@ -1649,7 +1932,7 @@
                                 "id": "gst",
                                 "type": "input",
                                 "inputType": "text",
-                                "action": "updateGstPart",
+                                "action": "updateGstRM",
                                 "required": true
                             },
                             "total": {
@@ -1688,6 +1971,213 @@
                     }
                 }
             },
+            "grnGeneralSupplier": {
+                "id": "grnGeneralSupplier",
+                "title": "Good Receipt Note - General Supplier",
+                "masterData": {
+                    "grnNo": null,
+                    "date": null,
+                    "generalSupplierCode": null,
+                    "poNo": null,
+                    "generalSupplierInvoiceNo": null,
+                    "generalSupplierInvoiceDate": null,
+                    "status": 0,
+                    "subTotal": null,
+                    "extraAmount": null,
+                    "gstTotal": null,
+                    "total": null,
+                    "mapping": [{
+                        "id": null,
+                        "qty": null,
+                        "uomCode": null,
+                        "receivedQty": null,
+                        "acceptedQty": null,
+                        "rate": null,
+                        "gst": null,
+                        "cost": null,
+                        "total": null
+                    }]
+                },
+                "form": {
+                    "name": "grnSupplier",
+                    "id": "grnSupplier",
+                    "autoGenKey": "grnNo",
+                    "disableByField": "id",
+                    "fields": {
+                        "grnNo": {
+                            "name": "GRN No",
+                            "id": "grnNo",
+                            "type": "span",
+                            "valuePrefix": "VT-GRN-"
+                        },
+                        "date": {
+                            "name": "Date",
+                            "id": "date",
+                            "type": "input",
+                            "inputType": "date",
+                            "required": true
+                        },
+                        "supplierCode": {
+                            "name": "General Supplier Code",
+                            "id": "generalSupplierCode",
+                            "type": "select",
+                            "options": {},
+                            "action": "getPOGeneralSupplier",
+                            "dataFrom": "purchase.generalSupplierMaster",
+                            "replaceName": "generalSupplierName",
+                            "isSingle": true,
+                            "isEditDisable": true
+                        },
+                        "poNo": {
+                            "name": "PO No",
+                            "id": "poNo",
+                            "type": "select",
+                            "options": {},
+                            "action": "changeMapping",
+                            "updateMapping": true,
+                            "updateData": ["mapping", "subTotal", "extraAmount", "gstTotal", "total"],
+                            "dataFrom": "purchase.poGeneralSupplier",
+                            "replaceName": "poNo",
+                            "valuePrefix": "VT-GSP-PO-",
+                            "filter": {
+                                "status": 0
+                            },
+                            "isEditDisable": true,
+                            "isSingle": true
+                        },
+                        "supplierInvoiceNo": {
+                            "name": "General Supplier Invoice No",
+                            "id": "generalSupplierInvoiceNo",
+                            "type": "input",
+                            "inputType": "text",
+                            "required": true
+                        },
+                        "supplierInvoiceDate": {
+                            "name": "General Supplier Invoice Date",
+                            "id": "generalSupplierInvoiceDate",
+                            "type": "input",
+                            "inputType": "date",
+                            "required": true
+                        },
+                        "subTotal": {
+                            "name": "Sub Total",
+                            "id": "subTotal",
+                            "afterMapping": true,
+                            "type": "span"
+                        },
+                        "extraAmount": {
+                            "name": "Extra Amount",
+                            "id": "extraAmount",
+                            "type": "input",
+                            "inputType": "number",
+                            "action": "updatePOTotalAmount",
+                            "afterMapping": true
+                        },
+                        "gstTotal": {
+                            "name": "GST Total",
+                            "id": "gstTotal",
+                            "type": "span",
+                            "afterMapping": true
+                        },
+                        "total": {
+                            "name": "Total",
+                            "id": "total",
+                            "type": "span",
+                            "afterMapping": true
+                        }
+                    },
+                    "mapping": {
+                        "name": "Detail Mapping",
+                        "fields": {
+                            "id": {
+                                "name": "Part No",
+                                "id": "id",
+                                "type": "select",
+                                "options": {},
+                                "action": "changeMapping",
+                                "dataFrom": "marketing.partMaster",
+                                "replaceName": "partNo",
+                                "isDisable": true
+                            },
+                            "qty": {
+                                "name": "PO Qty",
+                                "id": "qty",
+                                "type": "span"
+                            },
+                            "uomCode": {
+                                "name": "UOM",
+                                "id": "uomCode",
+                                "type": "select",
+                                "options": {},
+                                "dataFrom": "marketing.uomMaster",
+                                "replaceName": "uomName",
+                                "isDisable": true
+                            },
+                            "receivedQty": {
+                                "name": "Received Qty",
+                                "id": "receivedQty",
+                                "type": "input",
+                                "inputType": "text",
+                                "action": "updatePTTotal",
+                                "required": true
+                            },
+                            "acceptedQty": {
+                                "name": "Accepted Qty",
+                                "id": "acceptedQty",
+                                "type": "input",
+                                "inputType": "text",
+                                "action": "updatePTTotal",
+                                "required": true
+                            },
+                            "rate": {
+                                "name": "Rate",
+                                "id": "rate",
+                                "type": "span"
+                            },
+                            "gst": {
+                                "name": "GST%",
+                                "id": "gst",
+                                "type": "input",
+                                "inputType": "text",
+                                "action": "updateGstPart",
+                                "required": true
+                            },
+                            "total": {
+                                "name": "Total",
+                                "id": "total",
+                                "type": "span"
+                            }
+                        },
+                        "actions": {
+                            "add": false
+                        }
+                    }
+                },
+                "listView": [{
+                        "title": "GRN NO",
+                        "id": "grnNo",
+                        "valuePrefix": "VT-GRN-"
+                    },
+                    {
+                        "title": "General General Supplier",
+                        "id": "generalSupplierCode",
+                        "dataFrom": "purchase.generalSupplierMaster",
+                        "replaceName": "generalSupplierName"
+                    }
+                ],
+                "page": {
+                    "link": "store/grnGeneralSupplier/list",
+                    "name": "list",
+                    "templateUrl": "template/defaultView.html",
+                    "controller": "grnGeneralSupplierCtrl"
+                },
+                "services": {
+                    "list": {
+                        "url": "api/grnGeneralSupplier/data/{{YEAR}}",
+                        "method": "GET"
+                    }
+                }
+            },
             "dcSubContractor": {
                 "id": "dcSubContractor",
                 "title": "Delivery Chellan - Sub Contractor",
@@ -1711,6 +2201,7 @@
                 "form": {
                     "name": "dcSubContractor",
                     "id": "dcSubContractor",
+                    "disableByField": "id",
                     "autoGenKey": "dcNo",
                     "fields": {
                         "dcNo": {
@@ -1734,7 +2225,8 @@
                             "action": "getPOSubContractor",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
-                            "isSingle": true
+                            "isSingle": true,
+                            "isEditDisable": true
                         },
                         "poNo": {
                             "name": "PO No",
@@ -1750,7 +2242,8 @@
                             "filter": {
                                 "status": 0
                             },
-                            "isSingle": true
+                            "isSingle": true,
+                            "isEditDisable": true
                         }
                     },
                     "mapping": {

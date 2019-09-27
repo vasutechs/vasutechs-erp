@@ -191,7 +191,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             if (field.type === 'select' || field.dataFrom) {
                 viewData = field.options && field.options[viewData] && field.options[viewData].optionName || (field.allOptions && field.allOptions[viewData]) && field.allOptions[viewData].optionName || viewData;
             } else if (field.type === 'date' || field.inputType === 'date') {
-                viewData = self.dateFormatChange(viewData);
+                viewData = viewData && self.dateFormatChange(viewData) || '';
             } else if (field.inputType === 'password') {
                 viewData = 'XXX';
             } else {
@@ -562,6 +562,21 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 }
             }
             context.actions.updatePartTotal(context, data, data[acceptedQtyField.id], acceptedQtyField, fieldMapKey);
+        },
+        updateGstRM: function(context, data, newValue, field, fieldMapKey) {
+            var acceptedQtyField = context.form.mapping.fields['acceptedQty'];
+            var cgstField = context.form.mapping.fields['gst'];
+            var sgstField = context.form.mapping.fields['sgst'];
+            if (cgstField && sgstField) {
+                if (newValue > 0) {
+                    data[cgstField.id] = parseInt(newValue) / 2;
+                    data[sgstField.id] = parseInt(newValue) / 2;
+                } else {
+                    data[cgstField.id] = 0;
+                    data[sgstField.id] = 0;
+                }
+            }
+            context.actions.updateRmTotal(context, data, data[acceptedQtyField.id], acceptedQtyField, fieldMapKey);
         },
         updateFields: function(context, fields) {
             var fields = fields;
