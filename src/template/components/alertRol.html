@@ -11,25 +11,22 @@
                     <div class="row">
 
                         <div class="col-6">
-                            <p><strong>Red alert:</strong></p>
-                            <div ng-repeat="(key,map) in alertRolContext.partRolRed">
+                            <p><b>Red alert:</b></p>
+                            <div ng-repeat="rolRed in alertRolContext.partRolRed | orderBy:'partStockQty'">
                                 <div class="alert alert-danger" role="alert">
-                                    Part name: {{alertRolContext.partRolRed[key].partName}} - Qty: {{alertRolContext.partRolRed[key].partStockQty}}
+                                    <b>Part name:</b> {{rolRed.partName}} - <b>Qty:</b> {{rolRed.partStockQty}}
                                 </div>
                             </div>
                         </div>
                         <div class="col-6">
-                            <p><strong>Yellow alert:</strong></p>
-                            <div ng-repeat="(key,map) in alertRolContext.partRolYellow">
+                            <p><b>Yellow alert:</b></p>
+                            <div ng-repeat="rolYellow in alertRolContext.partRolYellow | orderBy:'partStockQty'">
                                 <div class="alert alert-warning" role="alert">
-                                    Part name: {{alertRolContext.partRolYellow[key].partName}} - Qty: {{alertRolContext.partRolYellow[key].partStockQty}}
+                                    <b>Part name:</b> {{rolYellow.partName}} - <b>Qty:</b> {{rolYellow.partStockQty}}
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" ng-click="hideROL()" data-dismiss="modal">OK</button>

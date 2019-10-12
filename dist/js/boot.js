@@ -2826,25 +2826,22 @@ module.run(['$templateCache', function($templateCache) {
     '                    <div class="row">\n' +
     '\n' +
     '                        <div class="col-6">\n' +
-    '                            <p><strong>Red alert:</strong></p>\n' +
-    '                            <div ng-repeat="(key,map) in alertRolContext.partRolRed">\n' +
+    '                            <p><b>Red alert:</b></p>\n' +
+    '                            <div ng-repeat="rolRed in alertRolContext.partRolRed | orderBy:\'partStockQty\'">\n' +
     '                                <div class="alert alert-danger" role="alert">\n' +
-    '                                    Part name: {{alertRolContext.partRolRed[key].partName}} - Qty: {{alertRolContext.partRolRed[key].partStockQty}}\n' +
+    '                                    <b>Part name:</b> {{rolRed.partName}} - <b>Qty:</b> {{rolRed.partStockQty}}\n' +
     '                                </div>\n' +
     '                            </div>\n' +
     '                        </div>\n' +
     '                        <div class="col-6">\n' +
-    '                            <p><strong>Yellow alert:</strong></p>\n' +
-    '                            <div ng-repeat="(key,map) in alertRolContext.partRolYellow">\n' +
+    '                            <p><b>Yellow alert:</b></p>\n' +
+    '                            <div ng-repeat="rolYellow in alertRolContext.partRolYellow | orderBy:\'partStockQty\'">\n' +
     '                                <div class="alert alert-warning" role="alert">\n' +
-    '                                    Part name: {{alertRolContext.partRolYellow[key].partName}} - Qty: {{alertRolContext.partRolYellow[key].partStockQty}}\n' +
+    '                                    <b>Part name:</b> {{rolYellow.partName}} - <b>Qty:</b> {{rolYellow.partStockQty}}\n' +
     '                                </div>\n' +
     '                            </div>\n' +
     '                        </div>\n' +
     '                    </div>\n' +
-    '\n' +
-    '\n' +
-    '\n' +
     '                </div>\n' +
     '                <div class="modal-footer">\n' +
     '                    <button type="button" class="btn btn-default" ng-click="hideROL()" data-dismiss="modal">OK</button>\n' +
