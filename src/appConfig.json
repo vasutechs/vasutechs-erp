@@ -4,6 +4,7 @@
     "dataDownloadUrl": "/api/download",
     "calendarYear": "",
     "finalStageOpp": 9,
+    "httpServiceCache": false,
     "modules": {
         "databaseUpload": {
             "id": "databaseUpload",
@@ -2094,7 +2095,6 @@
                                 "id": "id",
                                 "type": "select",
                                 "options": {},
-                                "action": "changeMapping",
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
                                 "isDisable": true
@@ -4829,6 +4829,7 @@
                     "companyGstin": null,
                     "finalStageOpp": null,
                     "forceLoginSite": null,
+                    "httpServiceCache": null,
                     "mapping": [{
                         "module": null,
                         "restrictUser": null,
@@ -4896,6 +4897,12 @@
                         "forceLoginSite": {
                             "name": "Force login to site",
                             "id": "forceLoginSite",
+                            "type": "input",
+                            "inputType": "checkbox"
+                        },
+                        "httpServiceCache": {
+                            "name": "Enable Service Cache",
+                            "id": "httpServiceCache",
                             "type": "input",
                             "inputType": "checkbox"
                         }

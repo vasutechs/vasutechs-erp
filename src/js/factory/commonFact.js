@@ -438,7 +438,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', appConfig.calendarYear || currentYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
-            serviceConfig.cache = true;
+            serviceConfig.cache = appConfig.httpServiceCache || false;
             return serviceConfig;
         },
         getPartStock: function(context) {

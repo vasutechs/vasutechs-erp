@@ -7,7 +7,9 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
             var frmDate = context.data.frmDate;
             var toDate = context.data.toDate;
             var filterOperator = context.data.employeeCode;
-            var empPaymentList = context.actions.getEmpPayment(context);
+            var empPaidLast = context.actions.getEmpPaymentLastPaid(context);
+            frmDate = (!frmDate || (empPaidLast > frmDate)) ? empPaidLast : frmDate;
+            console.log(frmDate);
             return context.actions.getData('report.productionEntryReport').then(function(res) {
                 var productionEntry = res.data;
                 var productionEntryList = {};
@@ -15,13 +17,12 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
                     for (var j in productionEntry[i].mapping) {
                         var date = new Date(productionEntry[i].mapping[j].date);
                         var operator = productionEntry[i].mapping[j].operator;
+
                         if ((!filterOperator || (operator === filterOperator)) && (!frmDate || (frmDate && new Date(frmDate) <= date)) && (!toDate || toDate && new Date(toDate) >= date)) {
                             var objKey = productionEntry[i].mapping[j].operator + '-' + productionEntry[i].partNo + '-' + productionEntry[i].mapping[j].operationTo;
                             var qty = parseInt(productionEntry[i].mapping[j].acceptedQty) || 0;
                             if (productionEntryList[objKey]) {
                                 qty += productionEntryList[objKey].qty;
-                            } else if (empPaymentList && empPaymentList[objKey]) {
-                                qty -= empPaymentList[objKey].qty;
                             }
 
                             var details = {
@@ -32,6 +33,7 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
                                 date: productionEntry[i].mapping[j].date
                             };
                             productionEntryList[objKey] = details;
+
                         }
                     }
                 }
@@ -39,36 +41,20 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
             });
 
         },
-        getEmpPayment: function(context) {
+        getEmpPaymentLastPaid: function(context) {
             var listViewData = angular.copy(context.listViewDataMaster);
-            var filterFrmDate = context.data.frmDate;
-            var filterToDate = context.data.toDate;
+            var filterFrmDate = null;
             var filterOperator = context.data.employeeCode;
-            var empPaymentList = {};
+
             for (var i in listViewData) {
                 var operator = listViewData[i].employeeCode;
-                var frmDate = new Date(listViewData[i].frmDate);
-                var toDate = new Date(listViewData[i].toDate);
-                for (var j in listViewData[i].mapping) {
-                    if ((!filterOperator || (operator === filterOperator)) && (!filterFrmDate || (filterFrmDate && new Date(filterFrmDate) > toDate))) {
-                        var objKey = operator + '-' + listViewData[i].mapping[j].id + '-' + listViewData[i].mapping[j].operationTo;
-                        var qty = parseInt(listViewData[i].mapping[j].qty) || 0;
-                        if (empPaymentList[objKey]) {
-                            qty += empPaymentList[objKey].qty;
-                        }
-                        var details = {
-                            partNo: listViewData[i].mapping[j].id,
-                            operationTo: listViewData[i].mapping[j].operationTo,
-                            operator: operator,
-                            qty: qty,
-                            frmDate: frmDate,
-                            toDate: toDate
-                        };
-                        empPaymentList[objKey] = details;
-                    }
+                var toDate = listViewData[i].toDate;
+                if (!filterOperator || (operator === filterOperator) && (!filterFrmDate || (filterFrmDate <= new Date(toDate)))) {
+                    filterFrmDate = new Date(toDate);
                 }
             }
-            return empPaymentList;
+            filterFrmDate && filterFrmDate.setDate(filterFrmDate.getDate() + 1);
+            return filterFrmDate;
         },
         callBackEdit: function(context) {
             for (var i in context.data.mapping) {
@@ -92,7 +78,7 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
                 var newMapData = [];
                 newMapData = context.data.mapping.filter(function(data) {
                     var mapFindKey = employeeCode + '-' + data.id + '-' + data.operationTo;
-                    if (productionEntryList[mapFindKey] !== undefined && productionEntryList[mapFindKey].qty > 0) {
+                    if (productionEntryList[mapFindKey] && productionEntryList[mapFindKey].qty > 0) {
                         data.totalLaborCost = parseInt(productionEntryList[mapFindKey].qty * data.laborCost);
                         data.qty = productionEntryList[mapFindKey].qty;
                         total += data.totalLaborCost;

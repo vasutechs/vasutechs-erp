@@ -8,17 +8,27 @@
                 </div>
                 <div class="modal-body modal-Scroll">
 
+                    <div class="row">
 
-                    <div ng-repeat="(key,map) in alertRolContext.partRolRed">
-                        <div class="alert alert-danger" role="alert">
-                            Part name: {{alertRolContext.partRolRed[key].partName}} - Qty: {{alertRolContext.partRolRed[key].partStockQty}}
+                        <div class="col-6">
+                            <p><strong>Red alert:</strong></p>
+                            <div ng-repeat="(key,map) in alertRolContext.partRolRed">
+                                <div class="alert alert-danger" role="alert">
+                                    Part name: {{alertRolContext.partRolRed[key].partName}} - Qty: {{alertRolContext.partRolRed[key].partStockQty}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <p><strong>Yellow alert:</strong></p>
+                            <div ng-repeat="(key,map) in alertRolContext.partRolYellow">
+                                <div class="alert alert-warning" role="alert">
+                                    Part name: {{alertRolContext.partRolYellow[key].partName}} - Qty: {{alertRolContext.partRolYellow[key].partStockQty}}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div ng-repeat="(key,map) in alertRolContext.partRolYellow">
-                        <div class="alert alert-warning" role="alert">
-                            Part name: {{alertRolContext.partRolYellow[key].partName}} - Qty: {{alertRolContext.partRolYellow[key].partStockQty}}
-                        </div>
-                    </div>
+
+
 
                 </div>
                 <div class="modal-footer">
