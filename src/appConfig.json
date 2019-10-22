@@ -4060,7 +4060,7 @@
                             "id": "partNo",
                             "type": "select",
                             "dataFrom": "marketing.partMaster",
-                            "replaceName": "partName"
+                            "replaceName": "partNo"
                         },
                         {
                             "title": "Employee Name",
@@ -4653,7 +4653,9 @@
                         "laborCost": null,
                         "totalCost": null,
                         "date": null,
-                        "paidStatus": false
+                        "paidStatus": false,
+                        "productionEntryKey": null,
+                        "productionEntryDate": null
                     }]
                 },
                 "form": {
