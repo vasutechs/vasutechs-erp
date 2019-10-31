@@ -34,11 +34,12 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context = angular.merge({}, angular.copy(parentModule), context);
             }
             if (!userType && appConfig.forceLoginSite) {
-                window.location.hash = '#!/' + appConfig.modules.admin.login.page.link;
+                defaultActions.goToPage(appConfig.modules.admin.login.page.link);
                 return;
             }
             if (context.disable) {
-                window.location.hash = '#!/' + appConfig.modules.dashboard.page.link;
+                defaultActions.goToPage(appConfig.modules.dashboard.page.link);
+                return;
             }
             context.appConfig = appConfig;
             context.actions = angular.extend(angular.copy(defaultActions), actions || {});
@@ -438,7 +439,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', appConfig.calendarYear || currentYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
-            serviceConfig.cache = appConfig.httpServiceCache || false;
+            serviceConfig.cache = serviceConfig.cache === undefined ? appConfig.httpCache : serviceConfig.cache;
             return serviceConfig;
         },
         getPartStock: function(context) {
@@ -674,6 +675,12 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
 
             context.data.subTotal = parseFloat(subTotal).toFixed(2);
             context.data.total = parseInt(total);
+        },
+        goToPage: function(url, isReload) {
+            window.location.hash = '#!/' + url;
+            if (isReload) {
+                setTimeout(function() { window.location.reload() }, 500);
+            }
         }
     };
     return {

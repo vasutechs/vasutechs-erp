@@ -4,7 +4,7 @@
     "dataDownloadUrl": "/api/download",
     "calendarYear": "",
     "finalStageOpp": 9,
-    "httpServiceCache": false,
+    "httpCache": true,
     "modules": {
         "databaseUpload": {
             "id": "databaseUpload",
@@ -2892,7 +2892,9 @@
                     "title": "Part NO",
                     "id": "partNo",
                     "dataFrom": "marketing.partMaster",
-                    "replaceName": "partNo"
+                    "replaceName": "partNo",
+                    "type": "select",
+                    "isFilterBy": true
                 }],
                 "page": {
                     "link": "store/flowMaster/list",
@@ -4831,7 +4833,6 @@
                     "companyGstin": null,
                     "finalStageOpp": null,
                     "forceLoginSite": null,
-                    "httpServiceCache": null,
                     "mapping": [{
                         "module": null,
                         "restrictUser": null,
@@ -4899,12 +4900,6 @@
                         "forceLoginSite": {
                             "name": "Force login to site",
                             "id": "forceLoginSite",
-                            "type": "input",
-                            "inputType": "checkbox"
-                        },
-                        "httpServiceCache": {
-                            "name": "Enable Service Cache",
-                            "id": "httpServiceCache",
                             "type": "input",
                             "inputType": "checkbox"
                         }

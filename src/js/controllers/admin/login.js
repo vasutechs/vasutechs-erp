@@ -4,10 +4,8 @@ erpApp.controller('loginCtrl', ['$scope', 'commonFact', 'authFact', '$location',
             authFact.login(context).then(function(userDetail) {
                 if (!userDetail || !userDetail.userType) {
                     context.alertMessage = 'Invalid User!!!';
-                }
-                else{
-                	location.path(appConfig.modules.dashboard.page.link);
-                	setTimeout(function(){ window.location.reload()}, 500);
+                } else {
+                    commonFact.defaultActions.goToPage(appConfig.modules.dashboard.page.link, true);
                 }
             });
         }
@@ -17,10 +15,9 @@ erpApp.controller('loginCtrl', ['$scope', 'commonFact', 'authFact', '$location',
     var context = angular.copy(eval('appConfig.modules.admin.login'));
 
     if (location.search() && location.search()['type'] === 'logout') {
-    	authFact.setUserDetail(undefined);
-    	location.search('');
-    	location.path(appConfig.modules.dashboard.page.link);
-    	setTimeout(function(){ window.location.reload()}, 500);
+        authFact.setUserDetail(undefined);
+        location.search('');
+        commonFact.defaultActions.goToPage(appConfig.modules.dashboard.page.link, true);
     }
 
     context.appConfig = appConfig;

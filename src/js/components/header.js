@@ -22,7 +22,7 @@ erpApp.directive('header', ['commonFact', '$location', 'authFact', function(comm
             showSubModule: commonFact.defaultActions.showSubModule,
             changeCalendarYear: function(context) {
                 appConfig.calendarYear = context.calendarYear;
-                $location.path(appConfig.modules.dashboard.page.link);
+                commonFact.defaultActions.goToPage(appConfig.modules.dashboard.page.link);
             }
         };
         $scope.headerContext = headerContext;
