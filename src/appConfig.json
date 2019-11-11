@@ -82,7 +82,12 @@
                     "sgst": null,
                     "cgst": null,
                     "rolQtyYellowRage": null,
-                    "rolQtyRedRage": null
+                    "rolQtyRedRage": null,
+                    "rejection": null,
+                    "icc": null,
+                    "toolMaintenance": null,
+                    "profit": null,
+                    "transportCostKg": null
                 },
                 "form": {
                     "name": "partMaster",
@@ -189,6 +194,41 @@
                         "rolQtyRedRage": {
                             "name": "ROL Qty Red Rage",
                             "id": "rolQtyRedRage",
+                            "type": "input",
+                            "inputType": "number",
+                            "required": true
+                        },
+                        "rejection": {
+                            "name": "Rejection %",
+                            "id": "rejection",
+                            "type": "input",
+                            "inputType": "number",
+                            "required": true
+                        },
+                        "icc": {
+                            "name": "ICC %",
+                            "id": "icc",
+                            "type": "input",
+                            "inputType": "number",
+                            "required": true
+                        },
+                        "toolMaintenance": {
+                            "name": "Tool Maintenance %",
+                            "id": "toolMaintenance",
+                            "type": "input",
+                            "inputType": "number",
+                            "required": true
+                        },
+                        "profit": {
+                            "name": "Profit %",
+                            "id": "profit",
+                            "type": "input",
+                            "inputType": "number",
+                            "required": true
+                        },
+                        "transportCostKg": {
+                            "name": "Transport cost per kg",
+                            "id": "transportCostKg",
                             "type": "input",
                             "inputType": "number",
                             "required": true
@@ -805,7 +845,9 @@
                     "rate": null,
                     "gst": null,
                     "sgst": null,
-                    "cgst": null
+                    "cgst": null,
+                    "transportCostKg": null,
+                    "scrapRate": null
                 },
                 "form": {
                     "name": "rmMaster",
@@ -880,6 +922,20 @@
                         "cgst": {
                             "name": "CGST",
                             "id": "cgst",
+                            "type": "input",
+                            "inputType": "number",
+                            "required": true
+                        },
+                        "transportCostKg": {
+                            "name": "Transport cost / kg",
+                            "id": "transportCostKg",
+                            "type": "input",
+                            "inputType": "number",
+                            "required": true
+                        },
+                        "scrapRate": {
+                            "name": "Scrap rate",
+                            "id": "scrapRate",
                             "type": "input",
                             "inputType": "number",
                             "required": true
@@ -1114,6 +1170,7 @@
                                 "type": "select",
                                 "options": {},
                                 "action": "changeMapping",
+                                "updateData": ["uomCode"],
                                 "dataFrom": "purchase.rmMaster",
                                 "replaceName": "rmName",
                                 "valuePrefixData": "grade",
@@ -1398,6 +1455,7 @@
                                 "type": "select",
                                 "options": {},
                                 "action": "changeMapping",
+                                "updateData": ["uomCode"],
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
                                 "isDisable": true
@@ -2728,7 +2786,10 @@
                     "model": null,
                     "capacity": null,
                     "yop": null,
-                    "id": null
+                    "id": null,
+                    "machineShiftRate": null,
+                    "shiftHrs": null
+
                 },
                 "form": {
                     "name": "machineMaster",
@@ -2783,6 +2844,20 @@
                             "type": "input",
                             "inputType": "text",
                             "required": true
+                        },
+                        "machineShiftRate": {
+                            "name": "Machine Shift Rate",
+                            "id": "machineShiftRate",
+                            "type": "input",
+                            "inputType": "text",
+                            "required": true
+                        },
+                        "shiftHrs": {
+                            "name": "Shift Hrs",
+                            "id": "shiftHrs",
+                            "type": "input",
+                            "inputType": "text",
+                            "required": true
                         }
                     }
                 },
@@ -2820,8 +2895,12 @@
                         "opName": null,
                         "source": null,
                         "toolNo": null,
-                        "palnQtyPerHr": null
-                    }]
+                        "machineNo": null,
+                        "palnQtyPerHr": null,
+                        "costAnalysis": null,
+                        "otherCost": null
+                    }],
+                    "totalCost": null
                 },
                 "form": {
                     "name": "flowMaster",
@@ -2844,6 +2923,12 @@
                             "name": "Part Name",
                             "id": "partName",
                             "type": "span"
+                        },
+                        "totalCost": {
+                            "name": "Total Cost",
+                            "id": "totalCost",
+                            "type": "span",
+                            "afterMapping": true
                         }
                     },
                     "mapping": {
@@ -2876,14 +2961,38 @@
                                 "type": "select",
                                 "options": {},
                                 "dataFrom": "production.toolMaster",
-                                "replaceName": "toolName"
+                                "replaceName": "toolName",
+                                "required": true
+                            },
+                            "machineNo": {
+                                "name": "M/C No",
+                                "id": "machineNo",
+                                "type": "select",
+                                "options": {},
+                                "dataFrom": "production.machineMaster",
+                                "replaceName": "machineName",
+                                "action": "updateCostAnalysis",
+                                "required": true
                             },
                             "palnQtyPerHr": {
                                 "name": "Paln Qty Per Hr",
                                 "id": "palnQtyPerHr",
                                 "type": "input",
                                 "inputType": "number",
+                                "action": "updateCostAnalysis",
                                 "required": true
+                            },
+                            "costAnalysis": {
+                                "name": "Cost Analysis",
+                                "id": "costAnalysis",
+                                "type": "span"
+                            },
+                            "otherCost": {
+                                "name": "Other Cost",
+                                "id": "otherCost",
+                                "type": "input",
+                                "inputType": "number",
+                                "action": "updateTotalCost"
                             }
                         }
                     }
@@ -3415,9 +3524,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "rmStockCtrl",
-                    "actions": {
-                        "downloadExcel": true
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -3515,9 +3623,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "partStockCtrl",
-                    "actions": {
-                        "downloadExcel": true
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -3634,9 +3741,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "subContractorStockCtrl",
-                    "actions": {
-                        "downloadExcel": true
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -3716,13 +3822,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "salesAnalysisInvoiceCtrl",
-                    "actions": {
-                        "downloadExcel": true,
-                        "add": false,
-                        "edit": false,
-                        "delete": false,
-                        "printView": false
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -3741,17 +3842,109 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "salesAnalysisInvoiceCtrl",
-                    "actions": {
-                        "downloadExcel": true,
-                        "add": false,
-                        "edit": false,
-                        "delete": false,
-                        "printView": false
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
                         "url": "api/cashBill/data/{{YEAR}}",
+                        "method": "GET"
+                    }
+                }
+            },
+            "costAnalysis": {
+                "id": "costAnalysisInvoice",
+                "title": "Cost Analysis",
+                "filterView": {
+                    "title": "Filter",
+                    "data": {
+                        "partNo": null,
+                        "frmDate": null,
+                        "toDate": null
+                    },
+                    "fields": [{
+                        "title": "Part No",
+                        "id": "partNo",
+                        "type": "select",
+                        "dataFrom": "marketing.partMaster",
+                        "replaceName": "partNo"
+                    }]
+                },
+                "listView": [{
+                        "title": "Part No",
+                        "id": "partNo",
+                        "dataFrom": "marketing.partMaster",
+                        "replaceName": "partNo",
+                        "type": "select"
+                    },
+                    {
+                        "title": "Input Weight",
+                        "id": "inputWeight"
+                    },
+                    {
+                        "title": "Finished Weight",
+                        "id": "finishedWeight"
+                    },
+                    {
+                        "title": "Material Cost",
+                        "id": "materialCost"
+                    },
+                    {
+                        "title": "Conversion Cost",
+                        "id": "conversionCost"
+                    },
+                    {
+                        "title": "Sub Total",
+                        "id": "subTotal"
+                    },
+                    {
+                        "title": "Rej Cost",
+                        "id": "rejCost"
+                    },
+                    {
+                        "title": "ICC cost",
+                        "id": "iccCost"
+                    },
+                    {
+                        "title": "Tool Maint cost",
+                        "id": "toolMaintCost"
+                    },
+                    {
+                        "title": "Trans Cost",
+                        "id": "transCost"
+                    },
+                    {
+                        "title": "Profit Cost",
+                        "id": "profitCost"
+                    },
+                    {
+                        "title": "Total",
+                        "id": "total"
+                    },
+                    {
+                        "title": "Sales Rate",
+                        "id": "salesRate"
+                    },
+                    {
+                        "title": "Difference in cost",
+                        "id": "differenceInCost"
+                    },
+                    {
+                        "title": "% of Gain or Loss",
+                        "id": "gainOrLoss"
+                    }
+                ],
+                "page": {
+                    "link": "report/costAnalysis/list",
+                    "name": "list",
+                    "templateUrl": "template/defaultView.html",
+                    "controller": "costAnalysisCtrl",
+                    "downloadExcel": true,
+                    "actions": false
+                },
+                "services": {
+                    "list": {
+                        "url": "api/partMaster/data",
                         "method": "GET"
                     }
                 }
@@ -3849,13 +4042,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "productionEntryReportCtrl",
-                    "actions": {
-                        "downloadExcel": true,
-                        "add": false,
-                        "edit": false,
-                        "delete": false,
-                        "printView": false
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -3944,13 +4132,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "productionEntryReportCtrl",
-                    "actions": {
-                        "downloadExcel": true,
-                        "add": false,
-                        "edit": false,
-                        "delete": false,
-                        "printView": false
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -4032,13 +4215,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "productionEntryReportCtrl",
-                    "actions": {
-                        "downloadExcel": true,
-                        "add": false,
-                        "edit": false,
-                        "delete": false,
-                        "printView": false
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -4135,13 +4313,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "productionEntryReportCtrl",
-                    "actions": {
-                        "downloadExcel": true,
-                        "add": false,
-                        "edit": false,
-                        "delete": false,
-                        "printView": false
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -4275,9 +4448,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "customerPaymentInvoiceCtrl",
-                    "actions": {
-                        "downloadExcel": true
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -4323,9 +4495,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "customerPaymentInvoiceCtrl",
-                    "actions": {
-                        "downloadExcel": true
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -4476,9 +4647,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "suppilerPaymentCtrl",
-                    "actions": {
-                        "downloadExcel": true
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -4628,9 +4798,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "subContractorPaymentCtrl",
-                    "actions": {
-                        "downloadExcel": true
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {
@@ -4804,9 +4973,8 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "empPaymentCtrl",
-                    "actions": {
-                        "downloadExcel": true
-                    }
+                    "downloadExcel": true,
+                    "actions": false
                 },
                 "services": {
                     "list": {

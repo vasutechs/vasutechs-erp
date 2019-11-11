@@ -132,6 +132,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.filterBy = {};
             context.listViewData = [];
             context.orderByProperty = 'updated';
+            context.actions.pageActionsAccess(context);
             return serviceApi.callServiceApi(serviceconf).then(function(res) {
                 var listViewData = res.data;
                 for (var x in listViewData) {
@@ -492,17 +493,20 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var serviceconf = this.getServiceConfig('production.flowMaster');
             context.flowMasterData = {};
             context.flowMasterByPart = {};
+            context.flowMasterByPartOpr = {};
 
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
+            return serviceApi.callServiceApi(serviceconf).then(function(res) {
                 var flowMasterData = res.data,
                     prevOpp;
 
                 context.flowMasterData = flowMasterData;
                 for (var i in flowMasterData) {
+                    context.flowMasterByPart[flowMasterData[i].partNo] = flowMasterData[i];
                     for (var j in flowMasterData[i].mapping) {
-                        context.flowMasterByPart[flowMasterData[i].partNo + '-' + flowMasterData[i].mapping[j].id] = flowMasterData[i].mapping[j];
+                        context.flowMasterByPartOpr[flowMasterData[i].partNo + '-' + flowMasterData[i].mapping[j].id] = flowMasterData[i].mapping[j];
                     }
                 }
+                return context;
             });
 
         },
@@ -608,7 +612,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     if (!userType || (userType && map.restrictUser !== userType)) {
                         module.disable = map.restrictUser && true;
                     }
-                    if (module.page) {
+                    if (module.page && (module.page.actions || module.page.actions === undefined)) {
                         module.page.actions = {
                             print: true
                         };
@@ -618,6 +622,21 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     }
                 }
             }
+        },
+        pageActionsAccess: function(context) {
+            var actions = {
+                add: false,
+                edit: false,
+                delete: false,
+                print: false
+            };
+            if (context.page && (context.page.actions === undefined || context.page.actions)) {
+                actions.add = context.page.actions === undefined ? true : context.page.actions.add;
+                actions.edit = context.page.actions === undefined ? true : context.page.actions.edit;
+                actions.delete = context.page.actions === undefined ? true : context.page.actions.delete;
+                actions.print = context.page.actions === undefined ? true : context.page.actions.print;
+            }
+            context.page.actions = actions;
         },
         isActionAccess: function(module, action) {
             var erpAppConfig = getErpAppConfig();

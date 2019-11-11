@@ -84,7 +84,7 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
                                 (!context.partStock[i].operationFrom ||
                                     (context.prQty[prQtyPrevMap] && context.prQty[prQtyPrevMap].prQty > 0))) ||
                             (context.prQty[prQtyFrmMap] && context.prQty[prQtyFrmMap].prQty < jobCardQty) ||
-                            (context.flowMasterByPart[flwMap] && context.flowMasterByPart[flwMap].source === "Sub-Contractor" && context.prQty[prQtyToMap])) {
+                            (context.flowMasterByPartOpr[flwMap] && context.flowMasterByPartOpr[flwMap].source === "Sub-Contractor" && context.prQty[prQtyToMap])) {
                             operation.push(context.partStock[i].operationTo);
                         }
                     }
@@ -122,13 +122,13 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             }
         },
         updateToolNo: function(context, mappingData) {
-            mappingData.toolNo = context.data.partNo && mappingData.operationTo && context.flowMasterByPart[context.data.partNo + '-' + mappingData.operationTo].toolNo || null;
+            mappingData.toolNo = context.data.partNo && mappingData.operationTo && context.flowMasterByPartOpr[context.data.partNo + '-' + mappingData.operationTo].toolNo || null;
         },
         calculatePlanQty: function(context, mappingData) {
             var startDate = mappingData.startTime;
             var endDate = mappingData.endTime;
             var timeDiff = endDate - startDate;
-            var palnQtyPerHr = context.data.partNo && mappingData.operationTo && context.flowMasterByPart[context.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
+            var palnQtyPerHr = context.data.partNo && mappingData.operationTo && context.flowMasterByPartOpr[context.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
             mappingData.planQty = timeDiff * palnQtyPerHr;
         },
         updateMaterialIssue: function(context, replaceData, key) {
