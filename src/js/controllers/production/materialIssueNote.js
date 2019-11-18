@@ -39,10 +39,9 @@ erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi'
                 };
                 if (context.data.rmCode && context.data.partNo) {
                     context.data.partNorms = null;
-                    var serviceconf = context.actions.getServiceConfig('production.bom');
                     context.data.qtyCanMake = null;
                     context.data.issueQty = null;
-                    serviceApi.callServiceApi(serviceconf).then(function(res) {
+                    context.actions.getData('production.bom').then(function(res) {
                         var bomData = res.data;
                         for (var i in bomData) {
                             if (bomData[i].partNo === context.data.partNo && bomData[i].rmCode === context.data.rmCode) {
@@ -97,13 +96,12 @@ erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi'
                             rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
                         }
                         var data = {
-                                id: existingStock.id,
-                                rmCode: rmCode,
-                                rmStockQty: rmStockQty,
-                                uomCode: existingStock.uomCode
-                            },
-                            serviceconf = context.actions.getServiceConfig('report.rmStock', 'POST');
-                        serviceApi.callServiceApi(serviceconf, data);
+                            id: existingStock.id,
+                            rmCode: rmCode,
+                            rmStockQty: rmStockQty,
+                            uomCode: existingStock.uomCode
+                        };
+                        context.actions.updateData('report.rmStock', data);
                     }
 
                 })

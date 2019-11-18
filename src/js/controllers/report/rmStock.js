@@ -8,6 +8,16 @@ erpApp.controller('rmStockCtrl', ['$scope', 'commonFact', '$location', function(
                 });
                 context.listViewData = newList
             }
+            context.actions.getData('purchase.rmMaster').then(function(res) {
+                var listViewData = angular.copy(context.listViewDataMaster);
+                for (var i in listViewData) {
+                    var stockData = context.listViewData[i];
+                    var rmCode = stockData.rmCode;
+                    var rmDetails = rmCode && res.data[rmCode];
+                    stockData.rate = rmDetails && rmDetails.rate;
+                    stockData.totalAmount = stockData.rate && (stockData.rate * stockData.rmStockQty);
+                }
+            });
         },
         submit: function(context) {
             var stockData;

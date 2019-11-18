@@ -19,7 +19,7 @@
         "adm-zip": "0.4.13",
         "angular": "1.7.8",
         "angular-route": "1.7.8",
-        "bootstrap": "4.1.2",
+        "bootstrap": "4.3.1",
         "connect": "3.6.6",
         "del": "3.0.0",
         "font-awesome": "4.7.0",
@@ -31,9 +31,9 @@
         "gulp-replace": "1.0.0",
         "gulp-uglify": "3.0.0",
         "http": "0.0.0",
-        "jquery": "3.3.1",
+        "jquery": "3.4.0",
         "node-json-db": "0.7.5",
-        "open": "0.0.5",
+        "open": "6.0.0",
         "serve-static": "1.13.2"
     }
 }

@@ -41,6 +41,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 defaultActions.goToPage(appConfig.modules.dashboard.page.link);
                 return;
             }
+            context.module = module;
             context.appConfig = appConfig;
             context.actions = angular.extend(angular.copy(defaultActions), actions || {});
             formPromise = context.form && context.actions.updateFields(context, context.form.fields);
@@ -84,12 +85,11 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             return true;
         },
         edit: function(context, key, printView) {
-            var serviceconf = this.getServiceConfig(context.services.list, 'GET', key);
             context.page.name = 'edit';
             context.page.printView = printView;
             context.page.editKey = key;
 
-            return serviceApi.callServiceApi(serviceconf).then(function(res) {
+            return context.actions.getData(context.module, key).then(function(res) {
                 context.data = res.data;
                 context.printData = angular.copy(context.data);
                 if (context.data['date']) {
@@ -110,22 +110,19 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             this.edit(context, key, printView);
         },
         disable: function(context, id, item) {
-            var serviceconf = this.getServiceConfig(context.services.list, 'POST');
             context.actions.callBeforeDelete && context.actions.callBeforeDelete(context, item);
             context.listViewDataMaster[id]['disabled'] = true;
-            serviceApi.callServiceApi(serviceconf, context.listViewData[id]);
+            context.actions.updateData(context.module, context.listViewData[id]);
             context.actions.list(context);
             context.actions.callBackDelete && context.actions.callBackDelete(context, id, item);
         },
         delete: function(context, id, item) {
-            var serviceconf = this.getServiceConfig(context.services.list, 'POST');
             context.actions.callBeforeDelete && context.actions.callBeforeDelete(context, id, item);
-            serviceApi.callServiceApi(serviceconf, { key: id, delete: 'yes' });
+            context.actions.updateData(context.module, { key: id, delete: 'yes' });
             context.actions.list(context);
             context.actions.callBackDelete && context.actions.callBackDelete(context, id, item);
         },
         list: function(context) {
-            var serviceconf = this.getServiceConfig(context.services.list);
             context.page.name = 'list';
             context.currentPage = 0;
             context.pageSize = 10;
@@ -133,7 +130,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.listViewData = [];
             context.orderByProperty = 'updated';
             context.actions.pageActionsAccess(context);
-            return serviceApi.callServiceApi(serviceconf).then(function(res) {
+            return context.actions.getData(context.module).then(function(res) {
                 var listViewData = res.data;
                 for (var x in listViewData) {
                     listViewData.hasOwnProperty(x) && !listViewData[x].disabled && context.listViewData.push(listViewData[x])
@@ -151,9 +148,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             return Math.ceil(context.actions.getPageData(context).length / context.pageSize);
         },
         submit: function(context) {
-            var serviceconf = this.getServiceConfig(context.services.list, 'POST');
-
-            return serviceApi.callServiceApi(serviceconf, context.data).then(function() {
+            return context.actions.updateData(context.module, context.data).then(function() {
                 context.actions.list(context);
                 context.actions.callBackSubmit && context.actions.callBackSubmit(context);
                 return context;
@@ -172,6 +167,8 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         updateData: function(module, data, id) {
             var list,
                 serviceConf = this.getServiceConfig(module, 'POST', id);
+            var userDetails = authFact.getUserDetail();
+            data.updatedUserId = userDetails.id;
             //Get Part master data
             return serviceApi.callServiceApi(serviceConf, data);
         },
@@ -338,9 +335,8 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         },
         updatePartStock: function(context) {
             var self = this;
-            var serviceconf = self.getServiceConfig('report.partStock');
             var returnPromise = [];
-            var partStockPromise = serviceApi.callServiceApi(serviceconf).then(function(res) {
+            var partStockPromise = context.actions.getData('report.partStock').then(function(res) {
                 var partStockData = res.data,
                     partStock = {};
                 for (var i in partStockData) {
@@ -357,8 +353,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                         operationFrom: context.data.operationFrom,
                         operationTo: context.data.operationTo
                     }
-                    serviceconf = serviceconf = existingStock && self.getServiceConfig('report.partStock', 'POST') || self.getServiceConfig('report.partStock', 'POST');
-                    returnPromise.push(serviceApi.callServiceApi(serviceconf, data).then(function() {
+                    returnPromise.push(context.actions.updateData('report.partStock', data).then(function() {
                         context.actions.getPartStock(context);
                     }));
                 }
@@ -376,8 +371,8 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                         operationFrom: existingPrevStock.operationFrom,
                         operationTo: existingPrevStock.operationTo
                     }
-                    serviceconf = self.getServiceConfig('report.partStock', 'POST');
-                    returnPromise.push(serviceApi.callServiceApi(serviceconf, data).then(function() {
+
+                    returnPromise.push(context.actions.updateData('report.partStock', data).then(function() {
                         context.actions.getPartStock(context);
                     }));
                 }
@@ -388,9 +383,8 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         },
         updateSCStock: function(context) {
             var self = this;
-            var serviceconf = self.getServiceConfig('report.subContractorStock');
             var returnPromise = [];
-            var partStockPromise = serviceApi.callServiceApi(serviceconf).then(function(res) {
+            var partStockPromise = context.actions.getData('report.subContractorStock').then(function(res) {
                 var scStockData = res.data,
                     scStock = {};
                 for (var i in scStockData) {
@@ -407,8 +401,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     operationFrom: context.data.operationFrom,
                     operationTo: context.data.operationTo
                 }
-                serviceconf = self.getServiceConfig('report.subContractorStock', 'POST');
-                returnPromise.push(serviceApi.callServiceApi(serviceconf, data));
+                returnPromise.push(context.actions.updateData('report.subContractorStock', data));
             });
 
             returnPromise.push(partStockPromise);
@@ -444,8 +437,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             return serviceConfig;
         },
         getPartStock: function(context) {
-            var serviceconf = context.actions.getServiceConfig('report.partStock');
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
+            context.actions.getData('report.partStock').then(function(res) {
                 var partStockData = res.data,
                     partStock = {};
                 for (var i in partStockData) {
@@ -455,8 +447,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             });
         },
         getSCStock: function(context) {
-            var serviceconf = context.actions.getServiceConfig('report.subContractorStock');
-            return serviceApi.callServiceApi(serviceconf).then(function(res) {
+            return context.actions.getData('report.subContractorStock').then(function(res) {
                 var scStockData = res.data,
                     scStock = {};
                 for (var i in scStockData) {
@@ -490,12 +481,11 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
         },
         getFlowMaster: function(context) {
-            var serviceconf = this.getServiceConfig('production.flowMaster');
             context.flowMasterData = {};
             context.flowMasterByPart = {};
             context.flowMasterByPartOpr = {};
 
-            return serviceApi.callServiceApi(serviceconf).then(function(res) {
+            return context.actions.getData('production.flowMaster').then(function(res) {
                 var flowMasterData = res.data,
                     prevOpp;
 
@@ -525,10 +515,9 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             return optionsPromise;
         },
         getOperations: function(context) {
-            var serviceconf = this.getServiceConfig('production.operationMaster');
             context.operationsData = {};
 
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
+            context.actions.getData('production.operationMaster').then(function(res) {
                 context.operationsData = res.data;
             });
 

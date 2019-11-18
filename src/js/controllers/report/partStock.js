@@ -8,12 +8,23 @@ erpApp.controller('partStockCtrl', ['$scope', 'commonFact', '$location', 'servic
                 });
                 context.listViewData = newList
             }
+
+            context.actions.getData('marketing.partMaster').then(function(res) {
+                var listViewData = angular.copy(context.listViewDataMaster);
+                for (var i in listViewData) {
+                    var stockData = context.listViewData[i];
+                    var partNo = stockData.partNo;
+                    var partDetails = partNo && res.data[partNo];
+                    stockData.rate = partDetails && partDetails.rate;
+                    stockData.totalAmount = stockData.rate && (stockData.rate * stockData.partStockQty);
+                }
+            });
         },
         updateOperationFrom: function(context, data, key, field) {
             if (context.data.partNo) {
                 var restriction = {
-                        partNo: context.data.partNo
-                    };
+                    partNo: context.data.partNo
+                };
                 context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
             }
         },
@@ -36,16 +47,15 @@ erpApp.controller('partStockCtrl', ['$scope', 'commonFact', '$location', 'servic
         },
         submit: function(context) {
             var submitService;
-            var serviceconf = this.getServiceConfig(context.services.list, 'POST');
             if (context.data.id) {
-                submitService = serviceApi.callServiceApi(serviceconf, context.data)
+                submitService = context.actions.updateData(context.module, context.data)
             } else {
                 context.updatePrevStock = false;
                 context.data.acceptedQty = context.data.partStockQty;
                 submitService = context.actions.updatePartStock(context);
             }
 
-            submitService.then(function(){
+            submitService.then(function() {
                 context.page.name = 'list';
                 context.actions.list(context);
             });

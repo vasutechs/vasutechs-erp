@@ -1,9 +1,8 @@
 erpApp.controller('subContractorMasterCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
     var actions = {
         callBackList: function(context) {
-            var serviceconf = this.getServiceConfig('production.flowMaster'),
-                partNos = [];
-            serviceApi.callServiceApi(serviceconf).then(function(res) {
+            var partNos = [];
+            context.actions.getData(context.module).then(function(res) {
                 var flowMasterData = res.data;
                 for (var i in flowMasterData) {
                     for (var j in flowMasterData[i].mapping) {

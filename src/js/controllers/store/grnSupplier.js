@@ -31,8 +31,7 @@ erpApp.controller('grnSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', func
                 context.data['supplierInvoiceDate'] = new Date(context.data['supplierInvoiceDate']);
             },
             updateRMStockQty: function(context) {
-                var serviceconf = context.actions.getServiceConfig('report.rmStock');
-                serviceApi.callServiceApi(serviceconf).then(function(res) {
+                context.actions.getData('report.rmStock').then(function(res) {
                     var rmStockData = res.data,
                         rmStock = {};
                     var existingStock;
@@ -58,8 +57,7 @@ erpApp.controller('grnSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', func
                             rmStockQty: rmStockQty,
                             uomCode: context.data.mapping[i].uomCode
                         }
-                        serviceconf = existingStock && context.actions.getServiceConfig('report.rmStock', 'POST') || context.actions.getServiceConfig('report.rmStock', 'POST');
-                        serviceApi.callServiceApi(serviceconf, data);
+                        context.actions.updateData('report.rmStock', data);
                     }
                 });
             },

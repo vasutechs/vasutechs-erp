@@ -7,6 +7,7 @@ erpApp.factory('authFact', ['serviceApi', '$window', function(serviceApi, $windo
             for (var i in data) {
                 if (data[i].userName === context.data.userName && data[i].password === context.data.password) {
                     userDetail = {
+                        id: data[i].id,
                         userName: data[i].userName,
                         userType: data[i].userType
                     };

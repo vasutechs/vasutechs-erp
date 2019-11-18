@@ -237,7 +237,7 @@
                 },
                 "listView": [{
                         "title": "PartNo",
-                        "id": "partNo",
+                        "id": "id",
                         "dataFrom": "marketing.partMaster",
                         "replaceName": "partNo",
                         "type": "select",
@@ -356,8 +356,13 @@
                         "valuePrefix": "VT-CUS-"
                     },
                     {
-                        "title": "Customer Name",
-                        "id": "customerName"
+                        "title": "Customer",
+                        "id": "customerCode",
+                        "dataFrom": "marketing.customerMaster",
+                        "replaceName": "customerName",
+                        "isFilterBy": true,
+                        "type": "select",
+                        "options": {}
                     }
                 ],
                 "page": {
@@ -948,8 +953,14 @@
                         "valuePrefix": "RM-"
                     },
                     {
-                        "title": "RM Name",
-                        "id": "rmName"
+                        "title": "Raw Material Name",
+                        "id": "rmCode",
+                        "dataFrom": "purchase.rmMaster",
+                        "replaceName": "rmName",
+                        "valuePrefixData": "grade",
+                        "isFilterBy": true,
+                        "type": "select",
+                        "options": {}
                     }
                 ],
                 "page": {
@@ -1059,7 +1070,11 @@
                     },
                     {
                         "title": "Supplier Name",
-                        "id": "supplierName"
+                        "id": "supplierCode",
+                        "dataFrom": "purchase.supplierMaster",
+                        "replaceName": "supplierName",
+                        "type": "select",
+                        "isFilterBy": true
                     }
                 ],
                 "page": {
@@ -1344,7 +1359,11 @@
                     },
                     {
                         "title": "General Supplier Name",
-                        "id": "generalSupplierName"
+                        "id": "generalSupplierCode",
+                        "dataFrom": "purchase.generalSupplierMaster",
+                        "replaceName": "generalSupplierName",
+                        "type": "select",
+                        "isFilterBy": true
                     }
                 ],
                 "page": {
@@ -1636,7 +1655,11 @@
                     },
                     {
                         "title": "Sub Contractor Name",
-                        "id": "subContractorName"
+                        "id": "subContractorCode",
+                        "dataFrom": "purchase.subContractorMaster",
+                        "replaceName": "subContractorName",
+                        "type": "select",
+                        "isFilterBy": true
                     }
                 ],
                 "page": {
@@ -2014,7 +2037,9 @@
                         "title": "Supplier",
                         "id": "supplierCode",
                         "dataFrom": "purchase.supplierMaster",
-                        "replaceName": "supplierName"
+                        "replaceName": "supplierName",
+                        "type": "select",
+                        "isFilterBy": true
                     }
                 ],
                 "page": {
@@ -2220,7 +2245,9 @@
                         "title": "General General Supplier",
                         "id": "generalSupplierCode",
                         "dataFrom": "purchase.generalSupplierMaster",
-                        "replaceName": "generalSupplierName"
+                        "replaceName": "generalSupplierName",
+                        "type": "select",
+                        "isFilterBy": true
                     }
                 ],
                 "page": {
@@ -2387,7 +2414,9 @@
                         "title": "Sub Contractor Code",
                         "id": "subContractorCode",
                         "dataFrom": "purchase.subContractorMaster",
-                        "replaceName": "subContractorName"
+                        "replaceName": "subContractorName",
+                        "type": "select",
+                        "isFilterBy": true
                     },
                     {
                         "title": "Stutus",
@@ -2606,7 +2635,9 @@
                         "title": "Sub Contractor Code",
                         "id": "subContractorCode",
                         "dataFrom": "purchase.subContractorMaster",
-                        "replaceName": "subContractorName"
+                        "replaceName": "subContractorName",
+                        "type": "select",
+                        "isFilterBy": true
                     }
                 ],
                 "page": {
@@ -2684,7 +2715,11 @@
                     },
                     {
                         "title": "Operation Name",
-                        "id": "opName"
+                        "id": "id",
+                        "dataFrom": "production.operationMaster",
+                        "replaceName": "opName",
+                        "type": "select",
+                        "isFilterBy": true
                     }
                 ],
                 "page": {
@@ -2753,14 +2788,18 @@
                         "title": "Part No",
                         "id": "partNo",
                         "dataFrom": "marketing.partMaster",
-                        "replaceName": "partNo"
+                        "replaceName": "partNo",
+                        "type": "select",
+                        "isFilterBy": true
                     },
                     {
                         "title": "RM Name",
                         "id": "rmCode",
                         "dataFrom": "purchase.rmMaster",
                         "replaceName": "rmName",
-                        "valuePrefixData": "grade"
+                        "valuePrefixData": "grade",
+                        "type": "select",
+                        "isFilterBy": true
                     }
                 ],
                 "page": {
@@ -2868,7 +2907,11 @@
                     },
                     {
                         "title": "Machine Name",
-                        "id": "machineName"
+                        "id": "machineNo",
+                        "dataFrom": "production.machineMaster",
+                        "replaceName": "machineName",
+                        "type": "select",
+                        "isFilterBy": true
                     }
                 ],
                 "page": {
@@ -3093,7 +3136,11 @@
                     },
                     {
                         "title": "Tool Name",
-                        "id": "toolName"
+                        "id": "toolNo",
+                        "dataFrom": "production.toolMaster",
+                        "replaceName": "toolName",
+                        "type": "select",
+                        "isFilterBy": true
                     }
                 ],
                 "page": {
@@ -3513,6 +3560,14 @@
                         "replaceName": "uomName"
                     },
                     {
+                        "title": "Rate",
+                        "id": "rate"
+                    },
+                    {
+                        "title": "Total Amount",
+                        "id": "totalAmount"
+                    },
+                    {
                         "title": "Updated",
                         "id": "updated",
                         "type": "input",
@@ -3525,7 +3580,12 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "rmStockCtrl",
                     "downloadExcel": true,
-                    "actions": false
+                    "actions": {
+                        "add": true,
+                        "edit": true,
+                        "print": true,
+                        "delete": false
+                    }
                 },
                 "services": {
                     "list": {
@@ -3612,6 +3672,14 @@
                         "type": "select"
                     },
                     {
+                        "title": "Rate",
+                        "id": "rate"
+                    },
+                    {
+                        "title": "Total Amount",
+                        "id": "totalAmount"
+                    },
+                    {
                         "title": "Updated",
                         "id": "updated",
                         "type": "input",
@@ -3624,7 +3692,12 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "partStockCtrl",
                     "downloadExcel": true,
-                    "actions": false
+                    "actions": {
+                        "add": true,
+                        "edit": true,
+                        "print": true,
+                        "delete": false
+                    }
                 },
                 "services": {
                     "list": {
@@ -3730,6 +3803,14 @@
                         "isFilterBy": true
                     },
                     {
+                        "title": "Rate",
+                        "id": "rate"
+                    },
+                    {
+                        "title": "Total Amount",
+                        "id": "totalAmount"
+                    },
+                    {
                         "title": "Updated",
                         "id": "updated",
                         "type": "input",
@@ -3742,7 +3823,12 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "subContractorStockCtrl",
                     "downloadExcel": true,
-                    "actions": false
+                    "actions": {
+                        "add": true,
+                        "edit": true,
+                        "print": true,
+                        "delete": false
+                    }
                 },
                 "services": {
                     "list": {
@@ -3855,27 +3941,13 @@
             "costAnalysis": {
                 "id": "costAnalysisInvoice",
                 "title": "Cost Analysis",
-                "filterView": {
-                    "title": "Filter",
-                    "data": {
-                        "partNo": null,
-                        "frmDate": null,
-                        "toDate": null
-                    },
-                    "fields": [{
-                        "title": "Part No",
-                        "id": "partNo",
-                        "type": "select",
-                        "dataFrom": "marketing.partMaster",
-                        "replaceName": "partNo"
-                    }]
-                },
                 "listView": [{
-                        "title": "Part No",
-                        "id": "partNo",
+                        "title": "PartNo",
+                        "id": "id",
                         "dataFrom": "marketing.partMaster",
                         "replaceName": "partNo",
-                        "type": "select"
+                        "type": "select",
+                        "isFilterBy": true
                     },
                     {
                         "title": "Input Weight",
@@ -3884,6 +3956,14 @@
                     {
                         "title": "Finished Weight",
                         "id": "finishedWeight"
+                    },
+                    {
+                        "title": "RM Rate",
+                        "id": "rmRate"
+                    },
+                    {
+                        "title": "Scrap Rate",
+                        "id": "scrapRate"
                     },
                     {
                         "title": "Material Cost",
@@ -4448,8 +4528,7 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "customerPaymentInvoiceCtrl",
-                    "downloadExcel": true,
-                    "actions": false
+                    "downloadExcel": true
                 },
                 "services": {
                     "list": {
@@ -4495,8 +4574,7 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "customerPaymentInvoiceCtrl",
-                    "downloadExcel": true,
-                    "actions": false
+                    "downloadExcel": true
                 },
                 "services": {
                     "list": {
@@ -4647,8 +4725,7 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "suppilerPaymentCtrl",
-                    "downloadExcel": true,
-                    "actions": false
+                    "downloadExcel": true
                 },
                 "services": {
                     "list": {
@@ -4798,8 +4875,7 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "subContractorPaymentCtrl",
-                    "downloadExcel": true,
-                    "actions": false
+                    "downloadExcel": true
                 },
                 "services": {
                     "list": {
@@ -4973,8 +5049,7 @@
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
                     "controller": "empPaymentCtrl",
-                    "downloadExcel": true,
-                    "actions": false
+                    "downloadExcel": true
                 },
                 "services": {
                     "list": {

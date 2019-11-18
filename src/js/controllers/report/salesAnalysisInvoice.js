@@ -10,7 +10,10 @@ erpApp.controller('salesAnalysisInvoiceCtrl', ['$scope', 'commonFact', 'serviceA
                     var filterCustomerCode = context.filterView.data['customerCode'];
                     var customerCode = listViewData[i]['customerCode'];
                     var date = new Date(listViewData[i]['date']);
-                    if ((!filterCustomerCode || (customerCode === filterCustomerCode)) && (!frmDate || (frmDate && new Date(frmDate) <= date)) && (!toDate || toDate && new Date(toDate) >= date)) {
+                    frmDate = frmDate && new Date(frmDate) || false;
+                    toDate = toDate && new Date(toDate) || false;
+                    toDate = toDate && new Date(toDate.setDate(toDate.getDate() + 1)) || false;
+                    if ((!filterCustomerCode || (customerCode === filterCustomerCode)) && (!frmDate || (frmDate && frmDate <= date)) && (!toDate || toDate && toDate >= date)) {
                         for (var j in listViewData[i].mapping) {
                             var partDetail = {
                                 partNo: listViewData[i].mapping[j].id,
@@ -31,7 +34,7 @@ erpApp.controller('salesAnalysisInvoiceCtrl', ['$scope', 'commonFact', 'serviceA
                                 isPartExist.amount = parseFloat(isPartExist.amount) + parseFloat(partDetail.amount);
                                 isPartExist.unit = parseFloat(isPartExist.unit) + parseFloat(partDetail.unit);
                                 isPartExist.dates = isPartExist.dates + ', ' + partDetail.dates;
-                                isPartExist.invoiceNos = isPartExist.invoiceNos + ', ' + partDetail.invoiceNos; 
+                                isPartExist.invoiceNos = isPartExist.invoiceNos + ', ' + partDetail.invoiceNos;
 
                             } else {
                                 partDetailList.push(partDetail);

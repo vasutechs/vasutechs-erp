@@ -8,6 +8,16 @@ erpApp.controller('subContractorStockCtrl', ['$scope', 'commonFact', '$location'
                 });
                 context.listViewData = newList
             }
+            context.actions.getData('marketing.partMaster').then(function(res) {
+                var listViewData = angular.copy(context.listViewDataMaster);
+                for (var i in listViewData) {
+                    var stockData = context.listViewData[i];
+                    var partNo = stockData.partNo;
+                    var partDetails = partNo && res.data[partNo];
+                    stockData.rate = partDetails && partDetails.rate;
+                    stockData.totalAmount = stockData.rate && (stockData.rate * stockData.partStockQty);
+                }
+            });
             context.actions.getFlowMaster(context);
         },
         callBackEdit: function(context) {
@@ -73,9 +83,8 @@ erpApp.controller('subContractorStockCtrl', ['$scope', 'commonFact', '$location'
         },
         submit: function(context) {
             var submitService;
-            var serviceconf = this.getServiceConfig(context.services.list, 'POST');
             if (context.data.id) {
-                submitService = serviceApi.callServiceApi(serviceconf, context.data)
+                submitService = context.actions.updateData(context.module, context.data)
             } else {
                 context.data.acceptedQty = context.data.partStockQty;
                 submitService = context.actions.updateSCStock(context);

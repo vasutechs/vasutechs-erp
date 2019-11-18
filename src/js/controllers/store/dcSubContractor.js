@@ -28,10 +28,9 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
                 context.actions.getDCQty(context);
             },
             checkAcceptedQty: function(context) {
-                var serviceconf = this.getServiceConfig('production.flowMaster'),
-                    partNo,
+                var partNo,
                     operationFrom;
-                serviceApi.callServiceApi(serviceconf).then(function(res) {
+                context.actions.getData(context.module).then(function(res) {
                     var flowMasterData = res.data,
                         prevOpp,
                         qty;
