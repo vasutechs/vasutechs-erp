@@ -6,7 +6,6 @@ erpApp.directive('header', ['commonFact', '$location', 'authFact', function(comm
         headerContext.appName = appConfig.appName;
         headerContext.appNavMenus = appConfig.appNavMenus;
         headerContext.modules = appConfig.modules;
-        headerContext.dataDownloadUrl = appConfig.dataDownloadUrl;
         headerContext.calendarYear = appConfig.calendarYear;
         headerContext.calendarYearList = [];
         headerContext.isLogin = authFact.isLogin();
@@ -22,6 +21,7 @@ erpApp.directive('header', ['commonFact', '$location', 'authFact', function(comm
             showSubModule: commonFact.defaultActions.showSubModule,
             changeCalendarYear: function(context) {
                 appConfig.calendarYear = context.calendarYear;
+                commonFact.defaultActions.getData('calendarYear');
                 commonFact.defaultActions.goToPage(appConfig.modules.dashboard.page.link);
             }
         };

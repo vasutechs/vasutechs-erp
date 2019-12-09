@@ -1,7 +1,6 @@
 {
     "appName": "VASUTECHS",
     "appBaseUrl": "/dashboard",
-    "dataDownloadUrl": "/api/download",
     "calendarYear": "",
     "finalStageOpp": 9,
     "httpCache": true,
@@ -45,6 +44,12 @@
             "page": {
                 "link": "calendarYear",
                 "name": "calendarYear"
+            },
+            "services": {
+                "list": {
+                    "url": "YEAR-{{YEAR}}/api/calendarYear",
+                    "method": "GET"
+                }
             }
         },
         "dashboard": {
@@ -256,7 +261,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/partMaster/data",
+                        "url": "api/partMaster",
                         "method": "GET"
                     }
                 }
@@ -373,7 +378,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/customerMaster/data",
+                        "url": "api/customerMaster",
                         "method": "GET"
                     }
                 }
@@ -547,7 +552,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/empMaster/data",
+                        "url": "api/empMaster",
                         "method": "GET"
                     }
                 }
@@ -598,7 +603,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/uomMaster/data",
+                        "url": "api/uomMaster",
                         "method": "GET"
                     }
                 }
@@ -784,7 +789,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/invoice/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/invoice",
                         "method": "GET"
                     }
                 }
@@ -826,7 +831,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/cashBill/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/cashBill",
                         "method": "GET"
                     }
                 }
@@ -971,7 +976,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/rmMaster/data",
+                        "url": "api/rmMaster",
                         "method": "GET"
                     }
                 }
@@ -1085,7 +1090,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/supplierMaster/data",
+                        "url": "api/supplierMaster",
                         "method": "GET"
                     }
                 }
@@ -1258,7 +1263,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/poSupplier/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/poSupplier",
                         "method": "GET"
                     }
                 }
@@ -1374,7 +1379,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/generalSupplierMaster/data",
+                        "url": "api/generalSupplierMaster",
                         "method": "GET"
                     }
                 }
@@ -1546,7 +1551,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/poGeneralSupplier/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/poGeneralSupplier",
                         "method": "GET"
                     }
                 }
@@ -1670,7 +1675,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/subContractorMaster/data",
+                        "url": "api/subContractorMaster",
                         "method": "GET"
                     }
                 }
@@ -1836,7 +1841,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/poSubContractor/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/poSubContractor",
                         "method": "GET"
                     }
                 }
@@ -2050,7 +2055,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/grnSupplier/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/grnSupplier",
                         "method": "GET"
                     }
                 }
@@ -2258,7 +2263,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/grnGeneralSupplier/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/grnGeneralSupplier",
                         "method": "GET"
                     }
                 }
@@ -2431,7 +2436,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/dcSubContractor/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/dcSubContractor",
                         "method": "GET"
                     }
                 }
@@ -2648,7 +2653,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/grnSubContractor/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/grnSubContractor",
                         "method": "GET"
                     }
                 }
@@ -2730,7 +2735,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/operationMaster/data",
+                        "url": "api/operationMaster",
                         "method": "GET"
                     }
                 }
@@ -2810,7 +2815,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/bom/data",
+                        "url": "api/bom",
                         "method": "GET"
                     }
                 }
@@ -2922,7 +2927,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/machineMaster/data",
+                        "url": "api/machineMaster",
                         "method": "GET"
                     }
                 }
@@ -3056,7 +3061,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/flowMaster/data",
+                        "url": "api/flowMaster",
                         "method": "GET"
                     }
                 }
@@ -3151,7 +3156,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/toolMaster/data",
+                        "url": "api/toolMaster",
                         "method": "GET"
                     }
                 }
@@ -3285,7 +3290,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/materialIssueNote/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/materialIssueNote",
                         "method": "GET"
                     }
                 }
@@ -3486,7 +3491,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/productionEntry/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/productionEntry",
                         "method": "GET"
                     }
                 }
@@ -3589,7 +3594,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/rmStock/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/rmStock",
                         "method": "GET"
                     }
                 }
@@ -3701,7 +3706,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/partStock/data/{{YEAR}}",
+                        "url": "api/partStock",
                         "method": "GET"
                     }
                 }
@@ -3832,7 +3837,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/subContractorStock/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/subContractorStock",
                         "method": "GET"
                     }
                 }
@@ -3913,7 +3918,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/invoice/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/invoice",
                         "method": "GET"
                     }
                 }
@@ -3933,7 +3938,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/cashBill/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/cashBill",
                         "method": "GET"
                     }
                 }
@@ -4024,7 +4029,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/partMaster/data",
+                        "url": "api/partMaster",
                         "method": "GET"
                     }
                 }
@@ -4127,7 +4132,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/productionEntry/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/productionEntry",
                         "method": "GET"
                     }
                 }
@@ -4217,7 +4222,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/productionEntry/data",
+                        "url": "api/productionEntry",
                         "method": "GET"
                     }
                 }
@@ -4300,7 +4305,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/productionEntry/data",
+                        "url": "api/productionEntry",
                         "method": "GET"
                     }
                 }
@@ -4398,7 +4403,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/productionEntry/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/productionEntry",
                         "method": "GET"
                     }
                 }
@@ -4532,7 +4537,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/customerPaymentInvoice/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/customerPaymentInvoice",
                         "method": "GET"
                     }
                 }
@@ -4578,7 +4583,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/customerPaymentCashBill/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/customerPaymentCashBill",
                         "method": "GET"
                     }
                 }
@@ -4729,7 +4734,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/suppilerPayment/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/suppilerPayment",
                         "method": "GET"
                     }
                 }
@@ -4879,7 +4884,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/subContractorPayment/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/subContractorPayment",
                         "method": "GET"
                     }
                 }
@@ -5053,7 +5058,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/empPayment/data/{{YEAR}}",
+                        "url": "YEAR-{{YEAR}}/api/empPayment",
                         "method": "GET"
                     }
                 }
@@ -5202,7 +5207,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/settings/data",
+                        "url": "api/settings",
                         "method": "GET"
                     }
                 }
@@ -5256,7 +5261,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/users/data",
+                        "url": "api/users",
                         "method": "GET"
                     }
                 }
@@ -5300,7 +5305,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/userTypes/data",
+                        "url": "api/userTypes",
                         "method": "GET"
                     }
                 }

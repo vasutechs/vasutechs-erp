@@ -4,7 +4,7 @@
         <li class="breadcrumb-item">
             <a href="#/">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">My Dashboard</li>
+        <li class="breadcrumb-item active">Upload</li>
     </ol>
     <!-- Example DataTables Card-->
     <div class="mb-3">
@@ -13,10 +13,10 @@
             <div class="card">
                 <div class="card-body">
                     <div ng-if="context.alertMessage!==undefined" class="alert alert-danger" role="alert">
-                      {{context.alertMessage}}
+                        {{context.alertMessage}}
                     </div>
                     <div ng-if="context.message!==undefined" class="alert alert-success" role="alert">
-                      {{context.message}}
+                        {{context.message}}
                     </div>
                     <h5 style="color:green;">{{context.data.uploadSuccess}}</h5>
                     <form name="customForm">

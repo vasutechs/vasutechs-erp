@@ -1,7 +1,9 @@
 module.exports = function(config, task, gulp) {
     var JsonDB = require('node-json-db');
     var url = require('url');
-    var db = new JsonDB("data/database", true, true);
+    var masterDb = new JsonDB("data/database", true, true);
+    var db;
+    var currentYearDb = new JsonDB("data/" + new Date().getFullYear() + "/database", true, true);
     var getTableData = function(dataPath, inputData) {
         var data;
         try {
@@ -60,22 +62,28 @@ module.exports = function(config, task, gulp) {
         httpMiddleWare.use(function(req, res) {
             var apiUrl = url.parse(req.url, true).pathname,
                 apiPath = apiUrl.split('/api'),
-                data,
+                year = apiUrl.match(new RegExp("YEAR-(.*)/api")),
                 inputData = '';
+            if (year && year[1]) {
+                db = currentYearDb;
+            } else {
+                db = masterDb;
+            }
             if (apiUrl.indexOf('/api') > -1) {
                 req.on('data', function(resData) {
                     inputData += resData;
                 });
-
                 req.on('end', function(data) {
                     if (apiPath[1] === '/download') {
                         data = db.getData('/');
                     } else if (apiPath[1] === '/upload') {
                         data = uploadDb(inputData);
+                    } else if (apiPath[1] === '/calendarYear') {
+                        db = currentYearDb = new JsonDB("data/" + year[1] + "/database", true, true)
                     } else if (req.method === 'POST') {
                         data = setTableData(apiPath[1], inputData);
                     } else {
-                        data = getTableData(apiPath[1])
+                        data = getTableData(apiPath[1]);
                     }
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify(data));
