@@ -31,7 +31,7 @@ erpApp.directive('alertRol', ['commonFact', 'authFact', function(commonFact, aut
 
                     }
                     if (($scope.alertRolContext.partRolRed.length > 0 || $scope.alertRolContext.partRolYellow.length > 0) && showROL) {
-                        angular.element('#myModal').modal('show');
+                        angular.element('#RolModal').modal('show');
                     }
                 });
             });

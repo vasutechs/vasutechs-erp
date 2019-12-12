@@ -30,13 +30,14 @@
                 </li>
                 <li ng-if="!headerContext.modules['databaseUpload'].disable" class="nav-item">
                     <a class="nav-link" title="Import data" href="#!{{headerContext.modules['databaseUpload'].page.link}}">
-                        <i class="fa fa-fw fa-upload"></i> 
+                        <i class="fa fa-fw fa-upload"></i>
                     </a>
                 </li>
                 <li ng-if="!headerContext.modules['databaseDownload'].disable" class="nav-item">
-                    <a class="nav-link" title="Download data" href="{{headerContext.modules['databaseDownload'].page.link}}" download="database.json">
-                        <i class="fa fa-fw fa-download"></i> 
+                    <a class="nav-link" title="Download data" href="#" ng-click="headerContext.actions.downloadData(headerContext)">
+                        <i class="fa fa-fw fa-download"></i>
                     </a>
+
                 </li>
                 <li class="nav-item">
                     <a ng-if="headerContext.isLogin" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}?type=logout">
@@ -49,4 +50,21 @@
             </ul>
         </div>
     </nav>
+
+    <div>
+        <div class="modal fade" id="downloadModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Download Database</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body modal-Scroll">
+                        <a href="{{headerContext.modules['databaseDownload'].page.link}}" download="master_database.json"> Master database</a> ||
+                        <a href="YEAR-{{headerContext.calendarYear}}/{{headerContext.modules['databaseDownload'].page.link}}" download="database_{{headerContext.calendarYear}}.json"> Current Year database</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

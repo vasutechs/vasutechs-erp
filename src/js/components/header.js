@@ -23,6 +23,9 @@ erpApp.directive('header', ['commonFact', '$location', 'authFact', function(comm
                 appConfig.calendarYear = context.calendarYear;
                 commonFact.defaultActions.getData('calendarYear');
                 commonFact.defaultActions.goToPage(appConfig.modules.dashboard.page.link);
+            },
+            downloadData: function(context) {
+                angular.element('#downloadModal').modal('show');
             }
         };
         $scope.headerContext = headerContext;

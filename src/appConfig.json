@@ -3706,7 +3706,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/partStock",
+                        "url": "YEAR-{{YEAR}}/api/partStock",
                         "method": "GET"
                     }
                 }

@@ -3,6 +3,7 @@ module.exports = function(config, task, gulp) {
     var url = require('url');
     var masterDb = new JsonDB("data/database", true, true);
     var db;
+    var databaseType;
     var currentYearDb = new JsonDB("data/" + new Date().getFullYear() + "/database", true, true);
     var getTableData = function(dataPath, inputData) {
         var data;
@@ -32,6 +33,8 @@ module.exports = function(config, task, gulp) {
             inputData['added'] = new Date();
         }
         try {
+            db.push('/type', databaseType, true);
+            db.push('/updated', new Date(), true);
             if (inputData.delete) {
                 db.delete('/tables' + dataPath + '/' + inputData.key);
                 data = db.getData('/tables' + dataPath);
@@ -49,8 +52,17 @@ module.exports = function(config, task, gulp) {
     };
 
     var uploadDb = function(inputData) {
+        var inputVal = JSON.parse(inputData);
+        var type = inputVal.type || null;
+        var year = type && type.split('yearly-');
+        if (!type) {
+            return {};
+        }
+        if (type !== 'master') {
+            db = currentYearDb = new JsonDB("data/" + year[1] + "/database", true, true);
+        }
         db.delete('/tables');
-        db.push('/tables', JSON.parse(inputData), true);
+        db.push('/tables', inputVal.tables, true);
         db.push('/updated', new Date(), true);
         data = db.getData('/tables');
         return data;
@@ -66,8 +78,10 @@ module.exports = function(config, task, gulp) {
                 inputData = '';
             if (year && year[1]) {
                 db = currentYearDb;
+                databaseType = "yearly-" + year[1];
             } else {
                 db = masterDb;
+                databaseType = "master";
             }
             if (apiUrl.indexOf('/api') > -1) {
                 req.on('data', function(resData) {
@@ -79,7 +93,7 @@ module.exports = function(config, task, gulp) {
                     } else if (apiPath[1] === '/upload') {
                         data = uploadDb(inputData);
                     } else if (apiPath[1] === '/calendarYear') {
-                        db = currentYearDb = new JsonDB("data/" + year[1] + "/database", true, true)
+                        db = currentYearDb = new JsonDB("data/" + year[1] + "/database", true, true);
                     } else if (req.method === 'POST') {
                         data = setTableData(apiPath[1], inputData);
                     } else {
