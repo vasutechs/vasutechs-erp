@@ -61,8 +61,8 @@ module.exports = function(config, task, gulp) {
         if (type !== 'master') {
             db = currentYearDb = new JsonDB("data/" + year[1] + "/database", true, true);
         }
-        db.delete('/tables');
-        db.push('/tables', inputVal.tables, true);
+        db.delete('/');
+        db.push('/', inputVal, true);
         db.push('/updated', new Date(), true);
         data = db.getData('/tables');
         return data;
