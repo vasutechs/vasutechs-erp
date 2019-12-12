@@ -168,7 +168,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var list,
                 serviceConf = this.getServiceConfig(module, 'POST', id);
             var userDetails = authFact.getUserDetail();
-            data.updatedUserId = userDetails.id;
+            data.updatedUserId = userDetails && userDetails.id;
             //Get Part master data
             return serviceApi.callServiceApi(serviceConf, data);
         },
