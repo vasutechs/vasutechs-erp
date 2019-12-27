@@ -136,11 +136,11 @@ erpApp.controller('grnSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi',
                     }
                     context.actions.updatePartStock(newContext);
                     var scData = angular.copy(data);
+                    var newScContext = angular.copy(context);
                     scData.subContractorCode = context.data.subContractorCode;
                     scData.acceptedQty = 0 - scData.acceptedQty;
-                    context.actions.updateSCStock({
-                        data: scData
-                    });
+                    newScContext.data = scData;
+                    context.actions.updateSCStock(newScContext);
                 }
                 context.actions.updateDCSubContractor(context);
             }
