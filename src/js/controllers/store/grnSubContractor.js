@@ -81,6 +81,7 @@ erpApp.controller('grnSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi',
                 if (dcQty < qty) {
                     data.acceptedQty = null;
                 }
+                context.actions.updatePOTotalAmount(context);
             },
             getDCQty: function(context, data) {
                 var dcSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];

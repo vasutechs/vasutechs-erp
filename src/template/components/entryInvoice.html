@@ -70,17 +70,24 @@
                         />
                         <span ng-if="context.page.printView" id="{{context.form.fields.preBalance.id}}">{{context.data[context.form.fields.preBalance.id]}}</span></td>
                 </tr>
-                <tr ng-if="!context.cashBill">
+                <tr ng-if="!context.cashBill && !context.data.igst">
                     <td rowspan="2" align="right"><b>{{context.form.fields.taxRate.name}}</b></td>
                     <td rowspan="2"><span id="{{context.form.fields.taxRate.id}}" ng-bind="context.data[context.form.fields.taxRate.id]"></span>%</td>
                     <td align="right"><b>{{context.form.fields.cgst.name}}</b></td>
                     <td><span id="{{context.form.fields.cgst.id}}" ng-bind="context.data[context.form.fields.cgst.id]"></span>%</td>
                     <td colspan="2"><span id="{{context.form.fields.cgstTotal.id}}" ng-bind="context.data[context.form.fields.cgstTotal.id]"></span></td>
                 </tr>
-                <tr ng-if="!context.cashBill">
+                <tr ng-if="!context.cashBill && !context.data.igst">
                     <td align="right"><b>{{context.form.fields.sgst.name}}</b></td>
                     <td><span id="{{context.form.fields.sgst.id}}" ng-bind="context.data[context.form.fields.sgst.id]"></span>%</td>
                     <td colspan="2"><span id="{{context.form.fields.sgstTotal.id}}" ng-bind="context.data[context.form.fields.sgstTotal.id]"></span></td>
+                </tr>
+                <tr ng-if="!context.cashBill && !context.data.gst && context.data.igst">
+                    <td align="right"><b>{{context.form.fields.taxRate.name}}</b></td>
+                    <td><span id="{{context.form.fields.taxRate.id}}" ng-bind="context.data[context.form.fields.taxRate.id]"></span>%</td>
+                    <td align="right"><b>{{context.form.fields.igst.name}}</b></td>
+                    <td><span id="{{context.form.fields.igst.id}}" ng-bind="context.data[context.form.fields.igst.id]"></span>%</td>
+                    <td colspan="2"><span id="{{context.form.fields.igstTotal.id}}" ng-bind="context.data[context.form.fields.igstTotal.id]"></span></td>
                 </tr>
                 <tr>
                     <td colspan="4" align="right"><b>{{context.form.fields.total.name}}:</b></td>

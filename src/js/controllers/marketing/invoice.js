@@ -43,9 +43,6 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
             },
             updateTotal: function(context, data, updateValue, field, fieldKey) {
                 var partDetail = context.form.mapping.fields['id'].options[data.id],
-                    taxRate = 0,
-                    cgst = 0,
-                    sgst = 0,
                     totalBeforTax = 0,
                     partStock = 0;
 
@@ -60,42 +57,37 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 totalBeforTax = data.unit * data.rate;
 
                 data.amount = parseFloat(totalBeforTax).toFixed(2);
-                data.cgst = partDetail.cgst;
-                data.sgst = partDetail.sgst;
-                data.taxRate = partDetail.gst;
-
                 context.actions.updateTotalAmount(context);
 
             },
             updateTotalAmount: function(context) {
                 var taxRate = 0,
-                    cgst = 0,
-                    sgst = 0,
                     taxRateTotal = 0,
                     cgstTotal = 0,
                     sgstTotal = 0,
+                    igstTotal = 0,
                     total = 0,
                     subTotal = 0,
                     mapping = context.data.mapping;
 
                 for (var i in mapping) {
-                    cgst += mapping[i].cgst;
-                    sgst += mapping[i].sgst;
-                    taxRate += mapping[i].taxRate;
-
-                    cgstTotal += (parseFloat(mapping[i].amount) * parseFloat(mapping[i].cgst / 100));
-                    sgstTotal += (parseFloat(mapping[i].amount) * parseFloat(mapping[i].sgst / 100));
-                    taxRateTotal += (parseFloat(mapping[i].amount) * parseFloat(mapping[i].taxRate / 100));
                     subTotal += parseFloat(mapping[i].amount);
                 }
 
                 if (context.cashBill === false) {
-                    total = subTotal + cgstTotal + sgstTotal;
-                    context.data.taxRate = parseInt(taxRate) / mapping.length;
-                    context.data.cgst = parseInt(cgst) / mapping.length;
-                    context.data.sgst = parseInt(sgst) / mapping.length;
+
+                    taxRate = context.data.gst || context.data.igst;
+
+                    cgstTotal += context.data.cgst && (parseFloat(mapping[i].amount) * parseFloat(context.data.cgst / 100));
+                    sgstTotal += context.data.sgst && (parseFloat(mapping[i].amount) * parseFloat(context.data.sgst / 100));
+                    igstTotal += context.data.igst && (parseFloat(mapping[i].amount) * parseFloat(context.data.igst / 100));
+                    taxRateTotal += (parseFloat(mapping[i].amount) * parseFloat(taxRate / 100));
+
+                    total = subTotal + taxRateTotal;
+                    context.data.taxRate = taxRate;
                     context.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
                     context.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
+                    context.data.igstTotal = parseFloat(igstTotal).toFixed(2);
                 } else {
                     total = subTotal;
                 }

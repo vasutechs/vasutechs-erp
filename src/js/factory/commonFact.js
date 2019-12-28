@@ -323,6 +323,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                                         field.options[' ' + flowMasterVal.id] = localOptions[flowMasterVal.id];
                                     }
                                 }
+                                return;
                             });
                             returnPromise.push(flowMapPromise);
                         }
@@ -421,8 +422,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 data[field.id] = qty = null;
             }
             totalBeforTax = qty * data.rate;
-            total = totalBeforTax + (totalBeforTax * (data.gst / 100));
-            data.total = parseFloat(total).toFixed(2);
+            data.total = parseFloat(totalBeforTax).toFixed(2);
             context.actions.callBackUpdatePartTotal && context.actions.callBackUpdatePartTotal(context, data, newValue, field, fieldMapKey);
 
         },
@@ -557,21 +557,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             context.actions.updatePartTotal(context, data, data[acceptedQtyField.id], acceptedQtyField, fieldMapKey);
         },
-        updateGstRM: function(context, data, newValue, field, fieldMapKey) {
-            var acceptedQtyField = context.form.mapping.fields['acceptedQty'];
-            var cgstField = context.form.mapping.fields['gst'];
-            var sgstField = context.form.mapping.fields['sgst'];
-            if (cgstField && sgstField) {
-                if (newValue > 0) {
-                    data[cgstField.id] = parseInt(newValue) / 2;
-                    data[sgstField.id] = parseInt(newValue) / 2;
-                } else {
-                    data[cgstField.id] = 0;
-                    data[sgstField.id] = 0;
-                }
-            }
-            context.actions.updateRmTotal(context, data, data[acceptedQtyField.id], acceptedQtyField, fieldMapKey);
-        },
         updateFields: function(context, fields) {
             var fields = fields;
             var returnPromise = [];
@@ -658,14 +643,16 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         },
         updatePORmTotal: function(context, data) {
             var total = 0;
-            var qty = data['qty'] || 0;
+            var qty = data['qty'] || data['acceptedQty'] || 0;
             total = qty * data.rate;
             data.total = parseFloat(total).toFixed(2);
             context.actions.updatePOTotalAmount(context);
 
         },
         updatePOTotalAmount: function(context) {
-            var gst = 0,
+            var gst = context.data.gst,
+                igst = context.data.igst,
+                tax = context.data.tax || gst || igst,
                 gstTotal = 0,
                 total = 0,
                 subTotal = 0,
@@ -673,14 +660,12 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 extraAmount = context.data.extraAmount || 0;
 
             for (var i in mapping) {
-                gst += parseFloat(mapping[i].gst / 100);
-                gstTotal += (parseFloat(mapping[i].total) * parseFloat(mapping[i].gst / 100));
                 subTotal += parseFloat(mapping[i].total);
             }
-            gstTotal += (parseFloat(extraAmount * parseFloat(gst / mapping.length)));
+            gstTotal = ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(tax / 100));
             total = subTotal + gstTotal + extraAmount;
+            context.data.tax = tax;
             context.data.gstTotal = parseFloat(gstTotal).toFixed(2);
-
             context.data.subTotal = parseFloat(subTotal).toFixed(2);
             context.data.total = parseInt(total);
         },

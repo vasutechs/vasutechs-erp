@@ -30,7 +30,7 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
             checkAcceptedQty: function(context) {
                 var partNo,
                     operationFrom;
-                context.actions.getData(context.module).then(function(res) {
+                context.actions.getData('production.flowMaster').then(function(res) {
                     var flowMasterData = res.data,
                         prevOpp,
                         qty;
@@ -64,6 +64,7 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
                 if (poQty < qty) {
                     data.acceptedQty = null;
                 }
+                context.actions.updatePOTotalAmount(context);
             },
             getPOQty: function(context, data) {
                 var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
