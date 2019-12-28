@@ -1328,6 +1328,7 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
             callBackChangeMapping: function(context, data, key, field) {
                 context.actions.getPartStockDetail(context, data, key, field);
                 orgItemVal.mapping = angular.copy(context.data.mapping);
+                context.actions.updateTotalAmount(context);
             },
             callBackRemoveMapping: function(context, data, key) {
                 if (context.page.name === 'edit') {
@@ -1375,8 +1376,7 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
 
             },
             updateTotalAmount: function(context) {
-                var taxRate = 0,
-                    taxRateTotal = 0,
+                var taxRateTotal = 0,
                     cgstTotal = 0,
                     sgstTotal = 0,
                     igstTotal = 0,
@@ -1385,20 +1385,18 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                     mapping = context.data.mapping;
 
                 for (var i in mapping) {
-                    subTotal += parseFloat(mapping[i].amount);
+                    subTotal += mapping[i].amount && parseFloat(mapping[i].amount) || 0;
                 }
 
                 if (context.cashBill === false) {
 
-                    taxRate = context.data.gst || context.data.igst;
-
-                    cgstTotal += context.data.cgst && (parseFloat(mapping[i].amount) * parseFloat(context.data.cgst / 100));
-                    sgstTotal += context.data.sgst && (parseFloat(mapping[i].amount) * parseFloat(context.data.sgst / 100));
-                    igstTotal += context.data.igst && (parseFloat(mapping[i].amount) * parseFloat(context.data.igst / 100));
-                    taxRateTotal += (parseFloat(mapping[i].amount) * parseFloat(taxRate / 100));
+                    cgstTotal = context.data.cgst && (parseFloat(subTotal) * parseFloat(context.data.cgst / 100));
+                    sgstTotal = context.data.sgst && (parseFloat(subTotal) * parseFloat(context.data.sgst / 100));
+                    igstTotal = context.data.igst && (parseFloat(subTotal) * parseFloat(context.data.igst / 100));
+                    taxRateTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
 
                     total = subTotal + taxRateTotal;
-                    context.data.taxRate = taxRate;
+                    context.data.taxRate = context.data.gst;
                     context.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
                     context.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
                     context.data.igstTotal = parseFloat(igstTotal).toFixed(2);
@@ -3110,21 +3108,19 @@ module.run(['$templateCache', function($templateCache) {
     '                        />\n' +
     '                        <span ng-if="context.page.printView" id="{{context.form.fields.preBalance.id}}">{{context.data[context.form.fields.preBalance.id]}}</span></td>\n' +
     '                </tr>\n' +
-    '                <tr ng-if="!context.cashBill && !context.data.igst">\n' +
-    '                    <td rowspan="2" align="right"><b>{{context.form.fields.taxRate.name}}</b></td>\n' +
-    '                    <td rowspan="2"><span id="{{context.form.fields.taxRate.id}}" ng-bind="context.data[context.form.fields.taxRate.id]"></span>%</td>\n' +
+    '                <tr ng-if="!context.cashBill">\n' +
+    '                    <td rowspan="3" align="right"><b>{{context.form.fields.taxRate.name}}</b></td>\n' +
+    '                    <td rowspan="3"><span id="{{context.form.fields.taxRate.id}}" ng-bind="context.data[context.form.fields.taxRate.id]"></span>%</td>\n' +
     '                    <td align="right"><b>{{context.form.fields.cgst.name}}</b></td>\n' +
     '                    <td><span id="{{context.form.fields.cgst.id}}" ng-bind="context.data[context.form.fields.cgst.id]"></span>%</td>\n' +
     '                    <td colspan="2"><span id="{{context.form.fields.cgstTotal.id}}" ng-bind="context.data[context.form.fields.cgstTotal.id]"></span></td>\n' +
     '                </tr>\n' +
-    '                <tr ng-if="!context.cashBill && !context.data.igst">\n' +
+    '                <tr ng-if="!context.cashBill">\n' +
     '                    <td align="right"><b>{{context.form.fields.sgst.name}}</b></td>\n' +
     '                    <td><span id="{{context.form.fields.sgst.id}}" ng-bind="context.data[context.form.fields.sgst.id]"></span>%</td>\n' +
     '                    <td colspan="2"><span id="{{context.form.fields.sgstTotal.id}}" ng-bind="context.data[context.form.fields.sgstTotal.id]"></span></td>\n' +
     '                </tr>\n' +
-    '                <tr ng-if="!context.cashBill && !context.data.gst && context.data.igst">\n' +
-    '                    <td align="right"><b>{{context.form.fields.taxRate.name}}</b></td>\n' +
-    '                    <td><span id="{{context.form.fields.taxRate.id}}" ng-bind="context.data[context.form.fields.taxRate.id]"></span>%</td>\n' +
+    '                <tr ng-if="!context.cashBill">\n' +
     '                    <td align="right"><b>{{context.form.fields.igst.name}}</b></td>\n' +
     '                    <td><span id="{{context.form.fields.igst.id}}" ng-bind="context.data[context.form.fields.igst.id]"></span>%</td>\n' +
     '                    <td colspan="2"><span id="{{context.form.fields.igstTotal.id}}" ng-bind="context.data[context.form.fields.igstTotal.id]"></span></td>\n' +
