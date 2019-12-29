@@ -1109,10 +1109,11 @@
                     "status": 0,
                     "subTotal": null,
                     "extraAmount": null,
-                    "tax": null,
                     "gstTotal": null,
                     "total": null,
                     "gst": null,
+                    "sgst": null,
+                    "cgst": null,
                     "igst": null,
                     "mapping": [{
                         "id": null,
@@ -1147,7 +1148,7 @@
                             "options": {},
                             "action": "changeMapping",
                             "updateMapping": true,
-                            "updateData": ["gstin", "gst", "igst", "mapping"],
+                            "updateData": ["gstin", "gst", "sgst", "cgst", "igst", "mapping"],
                             "dataFrom": "purchase.supplierMaster",
                             "replaceName": "supplierName",
                             "isSingle": true
@@ -1169,12 +1170,6 @@
                             "type": "input",
                             "inputType": "number",
                             "action": "updatePOTotalAmount",
-                            "afterMapping": true
-                        },
-                        "tax": {
-                            "name": "Tax %",
-                            "id": "tax",
-                            "type": "span",
                             "afterMapping": true
                         },
                         "gstTotal": {
@@ -1421,8 +1416,9 @@
                     "status": 0,
                     "subTotal": null,
                     "extraAmount": null,
-                    "tax": null,
                     "gst": null,
+                    "sgst": null,
+                    "cgst": null,
                     "igst": null,
                     "gstTotal": null,
                     "total": null,
@@ -1459,7 +1455,7 @@
                             "options": {},
                             "action": "changeMapping",
                             "updateMapping": true,
-                            "updateData": ["gstin", "gst", "igst", "mapping"],
+                            "updateData": ["gstin", "gst", "sgst", "cgst", "igst", "mapping"],
                             "dataFrom": "purchase.generalSupplierMaster",
                             "replaceName": "generalSupplierName",
                             "isSingle": true
@@ -1481,12 +1477,6 @@
                             "type": "input",
                             "inputType": "number",
                             "action": "updatePOTotalAmount",
-                            "afterMapping": true
-                        },
-                        "tax": {
-                            "name": "Tax %",
-                            "id": "tax",
-                            "type": "span",
                             "afterMapping": true
                         },
                         "gstTotal": {
@@ -1659,6 +1649,12 @@
                             "id": "cgst",
                             "type": "input",
                             "inputType": "number"
+                        },
+                        "igst": {
+                            "name": "IGST %",
+                            "id": "igst",
+                            "type": "input",
+                            "inputType": "number"
                         }
                     },
                     "mapping": {
@@ -1732,8 +1728,9 @@
                     "subContractorCode": null,
                     "gstin": null,
                     "status": 0,
-                    "tax": null,
                     "gst": null,
+                    "sgst": null,
+                    "cgst": null,
                     "igst": null,
                     "gstTotal": null,
                     "total": null,
@@ -1771,7 +1768,7 @@
                             "options": {},
                             "action": "changeMapping",
                             "updateMapping": true,
-                            "updateData": ["gstin", "gst", "igst", "mapping"],
+                            "updateData": ["gstin", "gst", "sgst", "cgst", "igst", "mapping"],
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
                             "isSingle": true,
@@ -1783,12 +1780,6 @@
                             "type": "input",
                             "inputType": "number",
                             "action": "updatePOTotalAmount",
-                            "afterMapping": true
-                        },
-                        "tax": {
-                            "name": "Tax %",
-                            "id": "tax",
-                            "type": "span",
                             "afterMapping": true
                         },
                         "gstTotal": {
@@ -1913,7 +1904,10 @@
                     "status": 0,
                     "subTotal": null,
                     "extraAmount": null,
-                    "tax": null,
+                    "gst": null,
+                    "sgst": null,
+                    "cgst": null,
+                    "igst": null,
                     "gstTotal": null,
                     "total": null,
                     "mapping": [{
@@ -1963,7 +1957,7 @@
                             "options": {},
                             "action": "changeMapping",
                             "updateMapping": true,
-                            "updateData": ["mapping", "subTotal", "extraAmount", "tax", "gstTotal", "total"],
+                            "updateData": ["mapping", "subTotal", "extraAmount", "gst", "sgst", "cgst", "igst", "gstTotal", "total"],
                             "dataFrom": "purchase.poSupplier",
                             "replaceName": "poNo",
                             "valuePrefix": "VT-SP-PO-",
@@ -2001,16 +1995,8 @@
                             "action": "updatePOTotalAmount",
                             "afterMapping": true
                         },
-                        "tax": {
-                            "name": "GST/IGST %",
-                            "id": "tax",
-                            "type": "input",
-                            "inputType": "number",
-                            "action": "updatePOTotalAmount",
-                            "afterMapping": true
-                        },
                         "gstTotal": {
-                            "name": "GST/IGST Total",
+                            "name": "Tax Total",
                             "id": "gstTotal",
                             "type": "span",
                             "afterMapping": true
@@ -2121,7 +2107,10 @@
                     "status": 0,
                     "subTotal": null,
                     "extraAmount": null,
-                    "tax": null,
+                    "gst": null,
+                    "sgst": null,
+                    "cgst": null,
+                    "igst": null,
                     "gstTotal": null,
                     "total": null,
                     "mapping": [{
@@ -2172,7 +2161,7 @@
                             "options": {},
                             "action": "changeMapping",
                             "updateMapping": true,
-                            "updateData": ["mapping", "subTotal", "extraAmount", "tax", "gstTotal", "total"],
+                            "updateData": ["mapping", "subTotal", "extraAmount", "gst", "sgst", "cgst", "igst", "gstTotal", "total"],
                             "dataFrom": "purchase.poGeneralSupplier",
                             "replaceName": "poNo",
                             "valuePrefix": "VT-GSP-PO-",
@@ -2210,16 +2199,8 @@
                             "action": "updatePOTotalAmount",
                             "afterMapping": true
                         },
-                        "tax": {
-                            "name": "GST/IGST %",
-                            "id": "tax",
-                            "type": "input",
-                            "inputType": "number",
-                            "action": "updatePOTotalAmount",
-                            "afterMapping": true
-                        },
                         "gstTotal": {
-                            "name": "GST/IGST Total",
+                            "name": "Tax Total",
                             "id": "gstTotal",
                             "type": "span",
                             "afterMapping": true
@@ -2326,7 +2307,10 @@
                     "poNo": null,
                     "status": 0,
                     "extraAmount": null,
-                    "tax": null,
+                    "gst": null,
+                    "sgst": null,
+                    "cgst": null,
+                    "igst": null,
                     "gstTotal": null,
                     "total": null,
                     "mapping": [{
@@ -2379,7 +2363,7 @@
                             "replaceName": "poNo",
                             "valuePrefix": "VT-SC-PO-",
                             "updateMapping": true,
-                            "updateData": ["mapping", "subTotal", "extraAmount", "tax", "gstTotal", "total"],
+                            "updateData": ["mapping", "subTotal", "extraAmount", "gst", "sgst", "cgst", "igst", "gstTotal", "total"],
                             "filter": {
                                 "status": 0
                             },
@@ -2389,14 +2373,6 @@
                         "extraAmount": {
                             "name": "Extra Amount",
                             "id": "extraAmount",
-                            "type": "input",
-                            "inputType": "number",
-                            "action": "updatePOTotalAmount",
-                            "afterMapping": true
-                        },
-                        "tax": {
-                            "name": "GST/IGST %",
-                            "id": "tax",
                             "type": "input",
                             "inputType": "number",
                             "action": "updatePOTotalAmount",
@@ -2525,7 +2501,10 @@
                     "dcNo": null,
                     "status": 0,
                     "extraAmount": null,
-                    "tax": null,
+                    "gst": null,
+                    "sgst": null,
+                    "cgst": null,
+                    "igst": null,
                     "gstTotal": null,
                     "total": null,
                     "mapping": [{
@@ -2595,7 +2574,7 @@
                             "replaceName": "dcNo",
                             "valuePrefix": "VT-DC-",
                             "updateMapping": true,
-                            "updateData": ["mapping", "subTotal", "extraAmount", "tax", "gstTotal", "total"],
+                            "updateData": ["mapping", "subTotal", "extraAmount", "gst", "sgst", "cgst", "igst", "gstTotal", "total"],
                             "filter": {
                                 "status": 0
                             },
@@ -2620,14 +2599,6 @@
                         "extraAmount": {
                             "name": "Extra Amount",
                             "id": "extraAmount",
-                            "type": "input",
-                            "inputType": "number",
-                            "action": "updatePOTotalAmount",
-                            "afterMapping": true
-                        },
-                        "tax": {
-                            "name": "GST/IGST %",
-                            "id": "tax",
                             "type": "input",
                             "inputType": "number",
                             "action": "updatePOTotalAmount",

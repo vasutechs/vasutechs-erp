@@ -76,9 +76,9 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
 
                 if (context.cashBill === false) {
 
-                    cgstTotal = context.data.cgst && (parseFloat(subTotal) * parseFloat(context.data.cgst / 100));
-                    sgstTotal = context.data.sgst && (parseFloat(subTotal) * parseFloat(context.data.sgst / 100));
-                    igstTotal = context.data.igst && (parseFloat(subTotal) * parseFloat(context.data.igst / 100));
+                    cgstTotal = context.data.cgst && (parseFloat(subTotal) * parseFloat(context.data.cgst / 100)) || 0;
+                    sgstTotal = context.data.sgst && (parseFloat(subTotal) * parseFloat(context.data.sgst / 100)) || 0;
+                    igstTotal = context.data.igst && (parseFloat(subTotal) * parseFloat(context.data.igst / 100)) || 0;
                     taxRateTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
 
                     total = subTotal + taxRateTotal;

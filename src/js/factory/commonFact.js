@@ -652,7 +652,11 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         updatePOTotalAmount: function(context) {
             var gst = context.data.gst,
                 igst = context.data.igst,
-                tax = context.data.tax || gst || igst,
+                cgst = context.data.cgst,
+                sgst = context.data.sgst,
+                igstTotal = 0,
+                cgstTotal = 0,
+                sgstTotal = 0,
                 gstTotal = 0,
                 total = 0,
                 subTotal = 0,
@@ -660,11 +664,14 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 extraAmount = context.data.extraAmount || 0;
 
             for (var i in mapping) {
-                subTotal += parseFloat(mapping[i].total);
+                subTotal += mapping[i].total && parseFloat(mapping[i].total) || 0;
             }
-            gstTotal = ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(tax / 100));
+            cgstTotal = context.data.cgst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.cgst / 100)) || 0;
+            sgstTotal = context.data.sgst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.sgst / 100)) || 0;
+            igstTotal = context.data.igst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.igst / 100)) || 0;
+
+            gstTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
             total = subTotal + gstTotal + extraAmount;
-            context.data.tax = tax;
             context.data.gstTotal = parseFloat(gstTotal).toFixed(2);
             context.data.subTotal = parseFloat(subTotal).toFixed(2);
             context.data.total = parseInt(total);
