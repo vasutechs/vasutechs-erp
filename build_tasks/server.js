@@ -4,7 +4,8 @@ module.exports = function(config, task, gulp) {
     var masterDb = new JsonDB("data/database", true, true);
     var db;
     var databaseType;
-    var currentYearDb = new JsonDB("data/" + new Date().getFullYear() + "/database", true, true);
+    var calendarYear = new Date().getMonth() >= 3 ? new Date().getFullYear() : new Date().getFullYear() - 1;
+    var currentYearDb = new JsonDB("data/" + calendarYear + "/database", true, true);
     var getTableData = function(dataPath, inputData) {
         var data;
         try {
