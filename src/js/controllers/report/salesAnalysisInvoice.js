@@ -19,7 +19,7 @@ erpApp.controller('salesAnalysisInvoiceCtrl', ['$scope', 'commonFact', 'serviceA
                                 partNo: listViewData[i].mapping[j].id,
                                 amount: listViewData[i].mapping[j].amount,
                                 rate: listViewData[i].mapping[j].rate,
-                                taxRate: listViewData[i].mapping[j].taxRate,
+                                taxRate: listViewData[i].taxRate || listViewData[i].igst,
                                 unit: listViewData[i].mapping[j].unit,
                                 customerCode: listViewData[i]['customerCode'],
                                 dates: context.actions.dateFormatChange(date),

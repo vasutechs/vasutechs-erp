@@ -41,7 +41,7 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             prFrmToQtyMap = context.data.jobCardNo + '-' + context.data.partNo + '-' + mappingData.operationFrom + '-to';
 
             if (context.data.partNo && mappingData.operationFrom) {
-                if (context.operationsData[mappingData.operationFrom].source === 'Supplier') {
+                if (context.operationsData[mappingData.operationFrom].source === 'Supplier' || context.form.fields['jobCardNo'].options[context.data.jobCardNo].isAssemblePart === 1) {
                     qtyCanMake = context.form.fields['jobCardNo'].options[context.data.jobCardNo].qtyCanMake;
                 } else if (context.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
                     qtyCanMake = context.prQty[context.data.jobCardNo + '-' + context.data.partNo + '-' + context.partStock[context.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to'].prAcpQty || 0;

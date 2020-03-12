@@ -103,7 +103,7 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 }
                 context.data.total = Math.round(total);
             },
-            updateInvocePartStock: function(context) {
+            updateInvoicePartStock: function(context) {
                 var mapStockUpdate = function(map, key, del) {
                     var data = angular.copy(map);
                     var newContext = angular.copy(context);
@@ -130,11 +130,11 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
 
             },
             callBackSubmit: function(context) {
-                context.actions.updateInvocePartStock(context);
+                context.actions.updateInvoicePartStock(context);
             },
             callBeforeDelete: function(context, id, item) {
                 context.data = item;
-                context.actions.updateInvocePartStock(context);
+                context.actions.updateInvoicePartStock(context);
             }
         };
     if ($location.search() && $location.search()['type'] === 'cashBill') {

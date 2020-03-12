@@ -107,12 +107,16 @@ module.exports = function(config, task, gulp) {
             } else if (apiUrl.indexOf('/releaseProject') > -1) {
                 task.buildProject();
                 res.end();
+            } else if (apiUrl.indexOf('/syncDB') > -1) {
+                task.gdConnect();
+                res.end();
             } else {
                 res.writeHead(401, { 'Content-Type': 'application/json' });
                 res.end();
             }
         });
     };
+
 
     gulp.task('server', task.server = function() {
         var connect = require('connect');
@@ -129,4 +133,5 @@ module.exports = function(config, task, gulp) {
         });
 
     });
+
 };

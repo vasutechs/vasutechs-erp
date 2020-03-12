@@ -6,21 +6,40 @@ erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi'
                 orgItemVal = angular.copy(context.data);
             },
             callBackAdd: function(context) {
+                var rmStock = [];
                 orgItemVal = null;
-                context.actions.getData('report.rmStock').then(function(res) {
-                    var rmStockData = res.data,
-                        rmStock = [];
-                    for (var i in rmStockData) {
-                        rmStock.push(rmStockData[i] && rmStockData[i].rmCode || undefined);
-                    }
-                    context.form.fields['rmCode'] = angular.extend(context.form.fields['rmCode'], {
-                        filter: {
-                            id: rmStock
-                        }
-                    });
-                    context.actions.makeOptionsFields(context, context.form.fields['rmCode']);
-                });
 
+                for (var i in context.rmStock) {
+                    if (context.rmStock[i] && context.rmStock[i].rmStockQty > 0) {
+                        rmStock.push(context.rmStock[i].rmCode);
+                    }
+
+                }
+                context.form.fields['rmCode'] = angular.extend(context.form.fields['rmCode'], {
+                    filter: {
+                        id: rmStock
+                    }
+                });
+                context.actions.makeOptionsFields(context, context.form.fields['rmCode']);
+
+
+            },
+            callBackList: function(context) {
+                context.actions.getRMStock(context);
+                context.listView[1].filter = {
+                    isAssemblePart: undefined
+                };
+                context.actions.makeOptionsFields(context, context.listView[1]);
+
+                var listViewData = angular.copy(context.listViewDataMaster);
+                var partDetailList = [];
+                for (var i in listViewData) {
+                    if (listViewData[i].isAssemblePart === undefined) {
+                        partDetailList.push(listViewData[i]);
+                    }
+
+                }
+                context.listViewData = partDetailList;
             },
             getPartNo: function(context) {
                 if (context.data.rmCode) {
@@ -54,57 +73,45 @@ erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi'
             },
             updateQtyMake: function(context) {
                 if (context.data.rmCode) {
-                    context.actions.getData('report.rmStock').then(function(res) {
-                        var rmStockData = res.data,
-                            rmStock = {};
-                        for (var i in rmStockData) {
-                            rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
-                        }
-                        if (orgItemVal && orgItemVal.issueQty) {
-                            context.form.fields['issueQty'].max = parseInt(orgItemVal.issueQty) + parseInt(rmStock[context.data.rmCode].rmStockQty);
-                        } else {
-                            context.form.fields['issueQty'].max = rmStock[context.data.rmCode].rmStockQty;
-                        }
 
-                        if (context.data.partNorms && context.data.issueQty && context.form.fields['issueQty'].max >= context.data.issueQty) {
-                            context.data.qtyCanMake = context.data.issueQty / context.data.partNorms;
-                        } else {
-                            context.data.qtyCanMake = null;
-                        }
-                    });
+                    if (orgItemVal && orgItemVal.issueQty) {
+                        context.form.fields['issueQty'].max = parseInt(orgItemVal.issueQty) + parseInt(context.rmStock[context.data.rmCode].rmStockQty);
+                    } else {
+                        context.form.fields['issueQty'].max = context.rmStock[context.data.rmCode].rmStockQty;
+                    }
+
+                    if (context.data.partNorms && context.data.issueQty && context.form.fields['issueQty'].max >= context.data.issueQty) {
+                        context.data.qtyCanMake = context.data.issueQty / context.data.partNorms;
+                    } else {
+                        context.data.qtyCanMake = null;
+                    }
+
                 }
             },
             removeRMStockQty: function(context, del) {
-                context.actions.getData('report.rmStock').then(function(res) {
-                    var rmStockData = res.data,
-                        rmStock = {},
-                        rmCode = context.data.rmCode,
-                        existingStock = null,
-                        removeQty = context.data.issueQty;
-                    for (var i in rmStockData) {
-                        rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
-                    }
-                    existingStock = rmStock[rmCode];
-                    if (existingStock) {
-                        var rmStockQty;
-                        if (!del && orgItemVal && orgItemVal.issueQty) {
-                            removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
-                            rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
-                        } else if (del) {
-                            rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
-                        } else {
-                            rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
-                        }
-                        var data = {
-                            id: existingStock.id,
-                            rmCode: rmCode,
-                            rmStockQty: rmStockQty,
-                            uomCode: existingStock.uomCode
-                        };
-                        context.actions.updateData('report.rmStock', data);
-                    }
+                var rmCode = context.data.rmCode,
+                    existingStock = null,
+                    removeQty = context.data.issueQty;
 
-                })
+                existingStock = context.rmStock[rmCode];
+                if (existingStock) {
+                    var rmStockQty;
+                    if (!del && orgItemVal && orgItemVal.issueQty) {
+                        removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
+                        rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
+                    } else if (del) {
+                        rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
+                    } else {
+                        rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
+                    }
+                    var data = {
+                        id: existingStock.id,
+                        rmCode: rmCode,
+                        rmStockQty: rmStockQty,
+                        uomCode: existingStock.uomCode
+                    };
+                    context.actions.updateData('report.rmStock', data);
+                }
             },
             callBackSubmit: function(context) {
                 var qtyCanMake;

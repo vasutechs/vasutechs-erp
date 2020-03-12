@@ -213,6 +213,12 @@
                             "type": "input",
                             "inputType": "number",
                             "required": true
+                        },
+                        "isAssemblePart": {
+                            "name": "Is Assemble Part",
+                            "id": "isAssemblePart",
+                            "type": "input",
+                            "inputType": "checkbox"
                         }
                     }
                 },
@@ -2879,6 +2885,98 @@
                     }
                 }
             },
+            "bomAssemblePart": {
+                "id": "bomAssemblePart",
+                "title": "BOM Assemble Part",
+                "masterData": {
+                    "partNo": null,
+                    "partName": null,
+                    "mapping": [{
+                        "id": null,
+                        "partName": null,
+                        "partNorms": null
+                    }]
+                },
+                "form": {
+                    "name": "bomAssemblePart",
+                    "id": "bomAssemblePart",
+                    "fields": {
+                        "partNo": {
+                            "name": "Part No",
+                            "id": "partNo",
+                            "type": "select",
+                            "options": {},
+                            "dataFrom": "marketing.partMaster",
+                            "replaceName": "partNo",
+                            "updateData": ["partName"],
+                            "action": "changeMapping",
+                            "existingCheck": true,
+                            "isSingle": true,
+                            "filter": {
+                                "isAssemblePart": 1
+                            }
+                        },
+                        "partName": {
+                            "name": "Part Name",
+                            "id": "partName",
+                            "type": "span"
+                        }
+                    },
+                    "mapping": {
+                        "name": "Sub Part Mapping",
+                        "enabled": false,
+                        "fields": {
+                            "id": {
+                                "name": "Sub Part No",
+                                "id": "id",
+                                "type": "select",
+                                "options": {},
+                                "dataFrom": "marketing.partMaster",
+                                "replaceName": "partNo",
+                                "action": "changeMapping",
+                                "updateData": ["partName"],
+                                "existingCheck": true,
+                                "isSingle": true
+                            },
+                            "partName": {
+                                "name": "Part Name",
+                                "id": "partName",
+                                "type": "span"
+                            },
+                            "partNorms": {
+                                "name": "Part Norms",
+                                "id": "partNorms",
+                                "type": "input",
+                                "inputType": "text",
+                                "required": true
+                            }
+                        }
+                    }
+                },
+                "listView": [{
+                    "title": "Part No",
+                    "id": "partNo",
+                    "dataFrom": "marketing.partMaster",
+                    "replaceName": "partNo",
+                    "type": "select",
+                    "isFilterBy": true,
+                    "filter": {
+                        "isAssemblePart": 1
+                    }
+                }],
+                "page": {
+                    "link": "production/bomAssemblePart/list",
+                    "name": "list",
+                    "templateUrl": "template/defaultView.html",
+                    "controller": "bomAssemblePartCtrl"
+                },
+                "services": {
+                    "list": {
+                        "url": "api/bomAssemblePart",
+                        "method": "GET"
+                    }
+                }
+            },
             "machineMaster": {
                 "id": "machineMaster",
                 "title": "Machine Master",
@@ -3351,6 +3449,174 @@
                     "list": {
                         "url": "YEAR-{{YEAR}}/api/materialIssueNote",
                         "method": "GET"
+                    }
+                }
+            },
+            "assembleMaterialIssueNote": {
+                "id": "assembleMaterialIssueNote",
+                "title": "Assemble Material Issue Note",
+                "masterData": {
+                    "jobCardNo": null,
+                    "date": null,
+                    "partNo": null,
+                    "status": 0,
+                    "operationTo": null,
+                    "qtyCanMake": null,
+                    "isAssemblePart": 1,
+                    "mapping": [{
+                        "id": null,
+                        "partName": null,
+                        "partNorms": null,
+                        "issueQty": null,
+                        "qtyCanMake": null,
+                        "operationTo": null
+                    }]
+                },
+                "form": {
+                    "name": "assembleMaterialIssueNote",
+                    "id": "assembleMaterialIssueNote",
+                    "autoGenKey": "jobCardNo",
+                    "disableByField": "id",
+                    "fields": {
+                        "jobCardNo": {
+                            "name": "Job Card No",
+                            "id": "jobCardNo",
+                            "type": "span",
+                            "valuePrefix": "VT-"
+                        },
+                        "date": {
+                            "name": "Job Card Date",
+                            "id": "date",
+                            "type": "input",
+                            "inputType": "date",
+                            "required": true
+                        },
+                        "partNo": {
+                            "name": "Part No",
+                            "id": "partNo",
+                            "type": "select",
+                            "options": {},
+                            "dataFrom": "marketing.partMaster",
+                            "replaceName": "partNo",
+                            "action": "getSubParts",
+                            "isSingle": true,
+                            "filter": {
+                                "isAssemblePart": 1
+                            }
+                        },
+                        "operationTo": {
+                            "name": "Issue Stage",
+                            "id": "operationTo",
+                            "type": "select",
+                            "options": {},
+                            "required": true,
+                            "dataFrom": "production.operationMaster",
+                            "replaceName": "opName",
+                            "valuePrefixData": "opCode",
+                            "isEditDisable": true,
+                            "filter": {
+                                "opCode": ["105"]
+                            },
+                            "isSingle": true
+                        },
+                        "qtyCanMake": {
+                            "name": "Total Qty Can Make",
+                            "id": "qtyCanMake",
+                            "type": "input",
+                            "inputType": "text",
+                            "isDisable": true,
+                            "required": true,
+                            "afterMapping": true
+                        }
+                    },
+                    "mapping": {
+                        "name": "Sub Part Mapping",
+                        "enabled": false,
+                        "fields": {
+                            "id": {
+                                "name": "Sub Part No",
+                                "id": "id",
+                                "type": "select",
+                                "options": {},
+                                "dataFrom": "marketing.partMaster",
+                                "replaceName": "partNo",
+                                "isSingle": true
+                            },
+                            "partName": {
+                                "name": "Part Name",
+                                "id": "partName",
+                                "type": "span"
+                            },
+                            "partNorms": {
+                                "name": "Part Norms",
+                                "id": "partNorms",
+                                "type": "span"
+                            },
+                            "issueQty": {
+                                "name": "Issue Qty",
+                                "id": "issueQty",
+                                "type": "input",
+                                "inputType": "text",
+                                "required": true,
+                                "action": "updateQtyMake"
+                            },
+                            "qtyCanMake": {
+                                "name": "Qty Can Make",
+                                "id": "qtyCanMake",
+                                "type": "input",
+                                "inputType": "text",
+                                "isDisable": true,
+                                "required": true
+                            }
+                        },
+                        "actions": {
+                            "add": false
+                        }
+                    }
+                },
+                "listView": [{
+                        "title": "Job Card No",
+                        "id": "jobCardNo",
+                        "valuePrefix": "VT-"
+                    },
+                    {
+                        "title": "PartNo",
+                        "id": "partNo",
+                        "dataFrom": "marketing.partMaster",
+                        "replaceName": "partNo",
+                        "type": "select",
+                        "isFilterBy": true,
+                        "filter": {
+                            "isAssemblePart": 1
+                        }
+                    },
+                    {
+                        "title": "Qty Can Make",
+                        "id": "qtyCanMake"
+                    },
+                    {
+                        "title": "Date",
+                        "id": "date",
+                        "type": "date"
+                    },
+                    {
+                        "title": "Status",
+                        "id": "status"
+                    }
+                ],
+                "page": {
+                    "link": "production/assembleMaterialIssueNote/list",
+                    "name": "list",
+                    "templateUrl": "template/defaultView.html",
+                    "controller": "assembleMaterialIssueNoteCtrl"
+                },
+                "services": {
+                    "list": {
+                        "url": "YEAR-{{YEAR}}/api/materialIssueNote",
+                        "method": "GET",
+                        "filter": {
+                            "isAssemblePart": 1
+                        }
                     }
                 }
             },

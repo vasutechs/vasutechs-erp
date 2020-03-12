@@ -117,8 +117,11 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.actions.callBackDelete && context.actions.callBackDelete(context, id, item);
         },
         delete: function(context, id, item) {
+            context.showLoader = true;
             context.actions.callBeforeDelete && context.actions.callBeforeDelete(context, id, item);
-            context.actions.updateData(context.module, { key: id, delete: 'yes' });
+            context.actions.updateData(context.module, { key: id, delete: 'yes' }).then(function() {
+                context.showLoader = false;
+            });
             context.actions.list(context);
             context.actions.callBackDelete && context.actions.callBackDelete(context, id, item);
         },
@@ -126,10 +129,11 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.page.name = 'list';
             context.currentPage = 0;
             context.pageSize = 10;
-            context.filterBy = {};
+            context.filterBy = context.services.list.filter || {};
             context.listViewData = [];
             context.orderByProperty = 'updated';
             context.actions.pageActionsAccess(context);
+            context.showLoader = true;
             return context.actions.getData(context.module).then(function(res) {
                 var listViewData = res.data;
                 for (var x in listViewData) {
@@ -138,6 +142,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.listViewDataMaster = angular.copy(context.listViewData);
                 context.lastData = angular.copy(context.listViewData[context.listViewData.length - 1]);
                 context.actions.callBackList && context.actions.callBackList(context);
+                context.showLoader = false;
                 return context;
             });
         },
@@ -148,9 +153,11 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             return Math.ceil(context.actions.getPageData(context).length / context.pageSize);
         },
         submit: function(context) {
+            context.showLoader = true;
             return context.actions.updateData(context.module, context.data).then(function() {
                 context.actions.list(context);
                 context.actions.callBackSubmit && context.actions.callBackSubmit(context);
+                context.showLoader = false;
                 return context;
             });
 
@@ -323,11 +330,12 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                                         field.options[' ' + flowMasterVal.id] = localOptions[flowMasterVal.id];
                                     }
                                 }
-                                return;
+                                return field;
                             });
                             returnPromise.push(flowMapPromise);
                         }
                     }
+                    return field;
                 });
             }
             returnPromise.push(partStockPromise);
@@ -455,6 +463,16 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 }
                 context.partStock = scStock;
                 return scStock;
+            });
+        },
+        getRMStock: function(context) {
+            context.actions.getData('report.rmStock').then(function(res) {
+                var rmStockData = res.data,
+                    rmStock = {};
+                for (var i in rmStockData) {
+                    rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
+                }
+                context.rmStock = rmStock;
             });
         },
         objectSort: function(obj, sortBy) {
