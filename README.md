@@ -1,7 +1,7 @@
 # vasutechs-erp
 vasutechs-erp
 
-Client ID: 526735134398-an0os51ce5nb6fg1npknr0clu1dp12n4.apps.googleusercontent.com
-
-
-Client Secret: RC-Sb2qku3wYrWJwnBfWh30P
+Steps to run
+1) Install nodejs software if its not installed (Note: first time only this step)
+2) Rename 'start' file to 'start.bat'
+3) Open 'start.bat' file

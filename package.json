@@ -11,15 +11,14 @@
         "app-start": "npm run app-update && node_modules\\.bin\\gulp build && node_modules\\.bin\\gulp server",
         "app-build": "node_modules\\.bin\\gulp build",
         "app-qa": "node_modules\\.bin\\gulp build-minify",
-        "app-server": "node_modules\\.bin\\gulp server",
-        "gdConnect": "node_modules\\.bin\\gulp gdConnect"
+        "app-server": "node_modules\\.bin\\gulp server"
     },
     "author": "",
     "license": "ISC",
     "devDependencies": {
         "adm-zip": "0.4.13",
-        "angular": "1.7.8",
-        "angular-route": "1.7.8",
+        "angular": "1.7.9",
+        "angular-route": "1.7.9",
         "bootstrap": "4.3.1",
         "connect": "3.6.6",
         "del": "3.0.0",
