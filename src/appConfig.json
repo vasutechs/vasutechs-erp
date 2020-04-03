@@ -3,6 +3,7 @@
     "appBaseUrl": "/dashboard",
     "calendarYear": "",
     "finalStageOpp": 9,
+    "yearChangeMonth": 3,
     "httpCache": true,
     "modules": {
         "databaseUpload": {
@@ -650,7 +651,7 @@
                             "name": "Invoice No",
                             "id": "invoiceNo",
                             "type": "span",
-                            "valuePrefix": "H-",
+                            "valuePrefix": "VT-",
                             "required": true
                         },
                         "date": {
@@ -3812,7 +3813,8 @@
                     "link": "production/productionEntry/list",
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
-                    "controller": "productionEntryCtrl"
+                    "controller": "productionEntryCtrl",
+                    "downloadTableData": "prodEntryDownload"
                 },
                 "services": {
                     "list": {
@@ -3910,6 +3912,7 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "rmStockCtrl",
                     "downloadExcel": true,
+                    "downloadTableData": true,
                     "actions": {
                         "add": true,
                         "edit": true,
@@ -4022,6 +4025,7 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "partStockCtrl",
                     "downloadExcel": true,
+                    "downloadTableData": true,
                     "actions": {
                         "add": true,
                         "edit": true,
@@ -4153,6 +4157,7 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "subContractorStockCtrl",
                     "downloadExcel": true,
+                    "downloadTableData": true,
                     "actions": {
                         "add": true,
                         "edit": true,

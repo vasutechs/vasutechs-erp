@@ -2,6 +2,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th ng-if="context.page.downloadTableData"></th>
                 <th ng-repeat="(key, list) in context.listView">
                     <div ng-if="!list.action && list.isFilterBy===undefined">{{list.title}}</div>
                     <div ng-if="list.isFilterBy">
@@ -18,6 +19,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="(dataKey, dataList) in context.listViewData | orderBy:context.orderByProperty: true  | filter:context.filterBy:true | startFrom:context.currentPage*context.pageSize | limitTo:context.pageSize">
+                <td ng-if="context.page.downloadTableData"><input type="checkbox" ng-model="dataList.isExported" ng-change="context.actions.selectListData(context, dataList)"></td>
                 <td ng-repeat="(key, list) in context.listView">
                     <div ng-if="!list.actions" ng-bind="context.actions.replaceFieldVal(dataList[list.id], list)"></div>
                 </td>
@@ -47,8 +49,8 @@
                 </td>
             </tr>
             <tr ng-if="!context.listViewData || context.listViewData.length===0">
-                <td colspan="{{context.listView.length}}">No recodes...</td>
-                <td></td>
+                <td colspan="{{context.listView.length + 2}}">No recodes...</td>
+
             </tr>
         </tbody>
     </table>

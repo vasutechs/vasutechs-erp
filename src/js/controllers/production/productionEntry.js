@@ -177,6 +177,23 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             newContext.data = data;
             context.actions.updatePartStock(newContext);
             context.actions.updateMaterialIssue(context);
+        },
+        prodEntryDownload: function(context) {
+            var prodData = context.selectedTableData[context.id];
+            console.log(context.selectedTableData);
+            context.actions.getData('production.materialIssueNote').then(function(res) {
+                var materData = res.data;
+                var jobCardNo = 1;
+                context.selectedTableData['materialIssueNote'] = {};
+                for (var i in prodData) {
+                    context.selectedTableData['materialIssueNote'][jobCardNo] = materData[prodData[i].jobCardNo];
+                    context.selectedTableData['materialIssueNote'][jobCardNo].id = jobCardNo;
+                    context.selectedTableData['materialIssueNote'][jobCardNo].jobCardNo = jobCardNo;
+                    prodData[i].jobCardNo = jobCardNo;
+                    jobCardNo++;
+                }
+                context.actions.downloadFile(context.selectedTableData, context.id + '.json');
+            });
         }
     };
 

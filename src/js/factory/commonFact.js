@@ -1,4 +1,4 @@
-erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', function(staticConfig, serviceApi, $filter, $location, authFact, $injector) {
+erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', '$window', function(staticConfig, serviceApi, $filter, $location, authFact, $injector, $window) {
     var erpAppConfig = staticConfig;
     var erpLoadPrsRes;
     var erpLoadPrs = new Promise(function(resolve, reject) {
@@ -436,7 +436,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         },
         getServiceConfig: function(module, replaceMethod, appendValue) {
             var appConfig = getErpAppConfig();
-            var currentYear = new Date().getMonth() >= 3 ? new Date().getFullYear() : new Date().getFullYear() - 1;
+            var currentYear = new Date().getMonth() >= appConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
             var serviceConfig = angular.copy(typeof(module) !== 'object' ? eval('appConfig.modules.' + module + '.services.list') : module);
             serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', appConfig.calendarYear || currentYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
@@ -699,6 +699,53 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             if (isReload) {
                 setTimeout(function() { window.location.reload() }, 500);
             }
+        },
+        setSessionStore: function(key, data) {
+            $window.sessionStorage.setItem(key, data);
+        },
+        getSessionStore: function(key) {
+            var data = $window.sessionStorage.getItem(key);
+
+            return data;
+        },
+        selectListData: function(context, data) {
+            if (!context.selectedTableData) {
+                context.selectedTableData = {};
+                context.selectedTableData[context.id] = {};
+            }
+            context.selectedTableData[context.id][data.id] = angular.copy(data);
+            delete context.selectedTableData[context.id][data.id].id;
+            delete context.selectedTableData[context.id][data.id].isExported;
+        },
+        downloadTableData: function(context) {
+            context.actions.downloadFile(context.selectedTableData, context.id + '.json');
+        },
+        downloadFile: function(data, name, type) {
+            var json = JSON.stringify(data);
+
+            //Convert JSON string to BLOB.
+            json = [json];
+            var blob1 = new Blob(json, { type: 'application/octet-stream' });
+
+            //Check the Browser.
+            var isIE = false || !!document.documentMode;
+            if (isIE) {
+                window.navigator.msSaveBlob(blob1, name);
+            } else {
+                var url = window.URL || window.webkitURL;
+                var hrefData = url.createObjectURL(blob1);
+
+                var downloadLink = document.createElement("a");
+
+                downloadLink.href = hrefData;
+                downloadLink.download = name;
+
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            }
+
+
         }
     };
     return {

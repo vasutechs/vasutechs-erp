@@ -1,5 +1,8 @@
 <div>
     <h3>{{context.filterView.title}}
+        <div ng-if="context.page.downloadTableData" class="pull-right">
+            <a href="javascript: void(0);" ng-click="context.page.downloadTableData === true && context.actions.downloadTableData(context) || context.actions[context.page.downloadTableData](context)" title="Download Table Data" class="fa fa-fw fa-download"></a>
+        </div>
         <div ng-if="context.page.downloadExcel" class="pull-right">
             <a href="javascript: void(0);" ng-click="context.actions.downloadExcel(context, 'listView')" title="Download Excel" class="fa fa-fw fa-file-excel-o"></a>
         </div>

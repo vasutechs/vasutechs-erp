@@ -2,11 +2,12 @@ erpApp.directive('header', ['commonFact', '$location', 'authFact', function(comm
     var headerComp = function($scope, element, attrs) {
         var appConfig = commonFact.getErpAppConfig();
         var headerContext = {};
-        appConfig.calendarYear = new Date().getMonth() >= 3 ? new Date().getFullYear() : new Date().getFullYear() - 1;
+        appConfig.calendarYear = new Date().getMonth() >= appConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
         headerContext.appName = appConfig.appName;
         headerContext.appNavMenus = appConfig.appNavMenus;
         headerContext.modules = appConfig.modules;
         headerContext.calendarYear = appConfig.calendarYear;
+        headerContext.downloadDbName = headerContext.calendarYear + '-' + ('' + parseInt(headerContext.calendarYear + 1)).substring(2);
         headerContext.calendarYearList = [];
         headerContext.isLogin = authFact.isLogin();
         for (var i = 10; i >= 0; i--) {

@@ -52,21 +52,38 @@ module.exports = function(config, task, gulp) {
         return data;
     };
 
+    var uploadTableData = function(inputData) {
+        var inputVal = JSON.parse(inputData);
+        db = currentYearDb;
+        databaseType = "yearly-" + new Date().getFullYear();
+        for (var table in inputVal) {
+            for (var data in inputVal[table]) {
+                setTableData('/' + table, JSON.stringify(inputVal[table][data]));
+            }
+        }
+        return db.getData('/tables');
+    };
+
     var uploadDb = function(inputData) {
         var inputVal = JSON.parse(inputData);
         var type = inputVal.type || null;
         var year = type && type.split('yearly-');
-        if (!type) {
-            return {};
+        var uploadThisDb;
+        if (!inputVal.tables) {
+            return uploadTableData(inputData);
+        } else {
+            if (!type) {
+                return {};
+            }
+            if (type !== 'master') {
+                uploadThisDb = new JsonDB("data/" + year[1] + "/database", true, true);
+            }
+            uploadThisDb.delete('/');
+            uploadThisDb.push('/', inputVal, true);
+            uploadThisDb.push('/updated', new Date(), true);
+            return uploadThisDb.getData('/tables');
         }
-        if (type !== 'master') {
-            db = currentYearDb = new JsonDB("data/" + year[1] + "/database", true, true);
-        }
-        db.delete('/');
-        db.push('/', inputVal, true);
-        db.push('/updated', new Date(), true);
-        data = db.getData('/tables');
-        return data;
+
     };
     task.apiConnect = function() {
 
@@ -106,9 +123,6 @@ module.exports = function(config, task, gulp) {
 
             } else if (apiUrl.indexOf('/releaseProject') > -1) {
                 task.buildProject();
-                res.end();
-            } else if (apiUrl.indexOf('/syncDB') > -1) {
-                task.gdConnect();
                 res.end();
             } else {
                 res.writeHead(401, { 'Content-Type': 'application/json' });
