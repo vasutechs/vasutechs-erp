@@ -180,7 +180,6 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
         },
         prodEntryDownload: function(context) {
             var prodData = context.selectedTableData[context.id];
-            console.log(context.selectedTableData);
             context.actions.getData('production.materialIssueNote').then(function(res) {
                 var materData = res.data;
                 var jobCardNo = 1;

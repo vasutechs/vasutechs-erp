@@ -1,6 +1,7 @@
 erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', '$window', function(staticConfig, serviceApi, $filter, $location, authFact, $injector, $window) {
     var erpAppConfig = staticConfig;
     var erpLoadPrsRes;
+    var pageContext;
     var erpLoadPrs = new Promise(function(resolve, reject) {
         erpLoadPrsRes = resolve;
     });
@@ -29,6 +30,8 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var mappingPromise;
             var listViewPromise;
             var formPromise;
+            pageContext = context;
+            context.showLoader = true;
             if (context.parentModule) {
                 parentModule = angular.copy(eval('appConfig.modules.' + context.parentModule));
                 context = angular.merge({}, angular.copy(parentModule), context);
@@ -59,8 +62,10 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
             }
             scope.$broadcast('showAlertRol');
+            scope.$watch(function() { console.log(1) }, function() { console.log(2) });
             return Promise.all(returnPromise).then(function() {
                 returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
+                context.showLoader = false;
                 scope.context = context;
                 return returnPage;
             });
@@ -117,11 +122,8 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.actions.callBackDelete && context.actions.callBackDelete(context, id, item);
         },
         delete: function(context, id, item) {
-            context.showLoader = true;
             context.actions.callBeforeDelete && context.actions.callBeforeDelete(context, id, item);
-            context.actions.updateData(context.module, { key: id, delete: 'yes' }).then(function() {
-                context.showLoader = false;
-            });
+            context.actions.updateData(context.module, { key: id, delete: 'yes' });
             context.actions.list(context);
             context.actions.callBackDelete && context.actions.callBackDelete(context, id, item);
         },
@@ -133,7 +135,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.listViewData = [];
             context.orderByProperty = 'updated';
             context.actions.pageActionsAccess(context);
-            context.showLoader = true;
             return context.actions.getData(context.module).then(function(res) {
                 var listViewData = res.data;
                 for (var x in listViewData) {
@@ -142,7 +143,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.listViewDataMaster = angular.copy(context.listViewData);
                 context.lastData = angular.copy(context.listViewData[context.listViewData.length - 1]);
                 context.actions.callBackList && context.actions.callBackList(context);
-                context.showLoader = false;
                 return context;
             });
         },
@@ -153,11 +153,9 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             return Math.ceil(context.actions.getPageData(context).length / context.pageSize);
         },
         submit: function(context) {
-            context.showLoader = true;
             return context.actions.updateData(context.module, context.data).then(function() {
                 context.actions.list(context);
                 context.actions.callBackSubmit && context.actions.callBackSubmit(context);
-                context.showLoader = false;
                 return context;
             });
 
@@ -168,16 +166,24 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         getData: function(module, id) {
             var list,
                 serviceConf = this.getServiceConfig(module, 'GET', id);
+            pageContext.showLoader = true;
             //Get Part master data
-            return serviceApi.callServiceApi(serviceConf);
+            return serviceApi.callServiceApi(serviceConf).then(function(res) {
+                pageContext.showLoader = false;
+                return res;
+            });
         },
         updateData: function(module, data, id) {
             var list,
                 serviceConf = this.getServiceConfig(module, 'POST', id);
             var userDetails = authFact.getUserDetail();
             data.updatedUserId = userDetails && userDetails.id;
+            pageContext.showLoader = true;
             //Get Part master data
-            return serviceApi.callServiceApi(serviceConf, data);
+            return serviceApi.callServiceApi(serviceConf, data).then(function(res) {
+                pageContext.showLoader = false;
+                return res;
+            });
         },
         replaceFieldVal: function(viewData, field) {
             var list,

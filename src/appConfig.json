@@ -4552,7 +4552,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/productionEntry",
+                        "url": "YEAR-{{YEAR}}/api/productionEntry",
                         "method": "GET"
                     }
                 }
@@ -4635,7 +4635,7 @@
                 },
                 "services": {
                     "list": {
-                        "url": "api/productionEntry",
+                        "url": "YEAR-{{YEAR}}/api/productionEntry",
                         "method": "GET"
                     }
                 }

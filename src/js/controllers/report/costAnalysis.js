@@ -23,7 +23,6 @@ erpApp.controller('costAnalysisCtrl', ['$scope', 'commonFact', 'serviceApi', '$l
                             var differenceInCost;
                             var gainOrLoss;
                             if (rmDetails) {
-                                console.log(partDetails, rmDetails);
                                 partDetails.rmRate = rmDetails.rate;
                                 partDetails.scrapRate = rmDetails.scrapRate;
                                 partDetails.materialCost = rmDetails && ((parseFloat(partDetails.inputWeight) * parseFloat(rmDetails.rate)) - (((parseFloat(partDetails.inputWeight) - parseFloat(partDetails.finishedWeight)) * parseFloat(rmDetails.scrapRate))));

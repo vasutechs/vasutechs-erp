@@ -10,6 +10,15 @@ erpApp.controller('assembleMaterialIssueNoteCtrl', ['$scope', 'commonFact', 'ser
             callBackList: function(context) {
                 context.actions.getPartStock(context);
                 orgItemVal = null;
+                var listViewData = angular.copy(context.listViewDataMaster);
+                var partDetailList = [];
+                for (var i in listViewData) {
+                    if (listViewData[i].isAssemblePart === 1) {
+                        partDetailList.push(listViewData[i]);
+                    }
+
+                }
+                context.listViewData = partDetailList;
             },
             getSubParts: function(context) {
                 context.actions.getData('production.bomAssemblePart').then(function(res) {

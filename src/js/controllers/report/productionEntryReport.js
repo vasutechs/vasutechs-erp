@@ -9,72 +9,73 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
         },
         toolHistoryCard: function(context) {
             var list = [];
-            var listViewYearData = angular.copy(context.listViewDataMaster);
-            for(var x in listViewYearData){
-                var listViewData = listViewYearData[x];
-                for (var i in listViewData) {
-                    var frmDate = context.filterView.data['frmDate'];
-                    var toDate = context.filterView.data['toDate'];
-                    var filterToolNo = context.filterView.data['toolNo'];
-                    var filterPartNo = context.filterView.data['partNo'];
-                    var partNo = listViewData[i]['partNo'];
+            context.actions.getAllYearData(context).then(function(listViewYearData) {
+                for (var x in listViewYearData) {
+                    var listViewData = listViewYearData[x];
+                    for (var i in listViewData) {
+                        var frmDate = context.filterView.data['frmDate'];
+                        var toDate = context.filterView.data['toDate'];
+                        var filterToolNo = context.filterView.data['toolNo'];
+                        var filterPartNo = context.filterView.data['partNo'];
+                        var partNo = listViewData[i]['partNo'];
 
-                    for (var j in listViewData[i].mapping) {
-                        var toolNo = listViewData[i].mapping[j].toolNo;
-                        var date = new Date(listViewData[i].mapping[j].date);
-                        if ((!filterToolNo || (toolNo === filterToolNo)) && (!filterPartNo || (partNo === filterPartNo)) && (!frmDate || (frmDate && new Date(frmDate) <= date)) && (!toDate || toDate && new Date(toDate) >= date)) {
-                            var details = {
-                                partNo: partNo,
-                                toolNo: toolNo,
-                                qty: listViewData[i].mapping[j].acceptedQty,
-                                activity: listViewData[i].mapping[j].operationTo,
-                                date: listViewData[i].mapping[j].date,
-                                cummulativeQty: parseInt(listViewData[i].mapping[j].acceptedQty)
-                            };
+                        for (var j in listViewData[i].mapping) {
+                            var toolNo = listViewData[i].mapping[j].toolNo;
+                            var date = new Date(listViewData[i].mapping[j].date);
+                            if ((!filterToolNo || (toolNo === filterToolNo)) && (!filterPartNo || (partNo === filterPartNo)) && (!frmDate || (frmDate && new Date(frmDate) <= date)) && (!toDate || toDate && new Date(toDate) >= date)) {
+                                var details = {
+                                    partNo: partNo,
+                                    toolNo: toolNo,
+                                    qty: listViewData[i].mapping[j].acceptedQty,
+                                    activity: listViewData[i].mapping[j].operationTo,
+                                    date: listViewData[i].mapping[j].date,
+                                    cummulativeQty: parseInt(listViewData[i].mapping[j].acceptedQty)
+                                };
 
-                            var isPartExist = context.actions.findObjectByKey(list, { toolNo: details.toolNo, partNo: details.partNo });
-                            if (isPartExist) {
-                                details.cummulativeQty += parseInt(isPartExist.cummulativeQty);
+                                var isPartExist = context.actions.findObjectByKey(list, { toolNo: details.toolNo, partNo: details.partNo });
+                                if (isPartExist) {
+                                    details.cummulativeQty += parseInt(isPartExist.cummulativeQty);
+                                }
+                                list.push(details);
                             }
-                            list.push(details);
                         }
                     }
                 }
-            }
-            
+            });
             context.listViewData = list;
         },
         machineRunningTime: function(context) {
             var list = [];
-            var listViewYearData = angular.copy(context.listViewDataMaster);
-            for(var x in listViewYearData){
-                var listViewData = listViewYearData[x];
-                for (var i in listViewData) {
-                    var frmDate = context.filterView.data['frmDate'];
-                    var toDate = context.filterView.data['toDate'];
-                    var filterMachineNo = context.filterView.data['machineNo'];
+            context.actions.getAllYearData(context).then(function(listViewYearData) {
+                for (var x in listViewYearData) {
+                    var listViewData = listViewYearData[x];
+                    for (var i in listViewData) {
+                        var frmDate = context.filterView.data['frmDate'];
+                        var toDate = context.filterView.data['toDate'];
+                        var filterMachineNo = context.filterView.data['machineNo'];
 
-                    for (var j in listViewData[i].mapping) {
-                        var date = new Date(listViewData[i].mapping[j].date);
-                        var machineNo = listViewData[i].mapping[j]['machineNo'];
-                        if ((!filterMachineNo || (machineNo === filterMachineNo)) && (!frmDate || (frmDate && new Date(frmDate) <= date)) && (!toDate || toDate && new Date(toDate) >= date)) {
-                            var details = {
-                                machineNo: machineNo,
-                                date: listViewData[i].mapping[j].date,
-                                startTime: listViewData[i].mapping[j].startTime,
-                                endTime: listViewData[i].mapping[j].endTime
-                            };
+                        for (var j in listViewData[i].mapping) {
+                            var date = new Date(listViewData[i].mapping[j].date);
+                            var machineNo = listViewData[i].mapping[j]['machineNo'];
+                            if ((!filterMachineNo || (machineNo === filterMachineNo)) && (!frmDate || (frmDate && new Date(frmDate) <= date)) && (!toDate || toDate && new Date(toDate) >= date)) {
+                                var details = {
+                                    machineNo: machineNo,
+                                    date: listViewData[i].mapping[j].date,
+                                    startTime: listViewData[i].mapping[j].startTime,
+                                    endTime: listViewData[i].mapping[j].endTime
+                                };
 
-                            details.runningTime = details.cumRunningTime = parseFloat(details.endTime) - parseFloat(details.startTime);
-                            var isExist = context.actions.findObjectByKey(list, { machineNo: details.machineNo});
-                            if (isExist) {
-                                details.cumRunningTime += parseFloat(isExist.cumRunningTime);
+                                details.runningTime = details.cumRunningTime = parseFloat(details.endTime) - parseFloat(details.startTime);
+                                var isExist = context.actions.findObjectByKey(list, { machineNo: details.machineNo });
+                                if (isExist) {
+                                    details.cumRunningTime += parseFloat(isExist.cumRunningTime);
+                                }
+                                list.push(details);
                             }
-                            list.push(details);
                         }
                     }
                 }
-            }
+            });
             context.listViewData = list;
         },
         empPerformanceReport: function(context) {
@@ -110,6 +111,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
         productionEntryReport: function(context) {
             var list = [];
             var listViewData = angular.copy(context.listViewDataMaster);
+
             for (var i in listViewData) {
                 var frmDate = context.filterView.data['frmDate'];
                 var toDate = context.filterView.data['toDate'];
@@ -138,6 +140,28 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                 }
             }
             context.listViewData = list;
+        },
+        getAllYearData: function(context) {
+            var listOfDbsConfig = {
+                url: 'api/getDatabases',
+                method: 'GET'
+            };
+            var prodTabConfig = context.appConfig.modules.report.productionEntryReport.services.list;
+            var dataList = [];
+            return context.actions.getData(listOfDbsConfig).then(function(res) {
+                var listOfDbs = res.data.list;
+                var listOfDbsProm = [];
+                for (var i in listOfDbs) {
+                    var serConf = angular.copy(prodTabConfig);
+                    serConf.url = prodTabConfig.url.replace('{{YEAR}}', listOfDbs[i]);
+                    listOfDbsProm.push(context.actions.getData(serConf).then(function(prodRes) {
+                        dataList.push(prodRes.data);
+                    }));
+                }
+                return Promise.all(listOfDbsProm).then(function() {
+                    return dataList;
+                });
+            });
         }
     };
     if ($location.search() && $location.search()['type']) {

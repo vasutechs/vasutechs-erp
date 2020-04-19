@@ -1,6 +1,8 @@
 module.exports = function(config, task, gulp) {
     var JsonDB = require('node-json-db');
     var url = require('url');
+    var fs = require('fs');
+    var path = require('path');
     var masterDb = new JsonDB("data/database", true, true);
     var db;
     var databaseType;
@@ -85,6 +87,19 @@ module.exports = function(config, task, gulp) {
         }
 
     };
+
+    var getListDb = function() {
+        var dir = './data';
+        var files = fs.readdirSync(dir);
+        var listDbYears = [];
+        for (var i in files) {
+            var name = dir + '/' + files[i];
+            if (fs.statSync(name).isDirectory()) {
+                listDbYears.push(files[i]);
+            }
+        }
+        return listDbYears;
+    };
     task.apiConnect = function() {
 
         var httpMiddleWare = config.httpMiddleWare;
@@ -95,12 +110,13 @@ module.exports = function(config, task, gulp) {
                 year = apiUrl.match(new RegExp("YEAR-(.*)/api")),
                 inputData = '';
             if (year && year[1]) {
-                db = currentYearDb;
+                db = calendarYear === year[1] && currentYearDb || new JsonDB("data/" + year[1] + "/database", true, true);
                 databaseType = "yearly-" + year[1];
             } else {
                 db = masterDb;
                 databaseType = "master";
             }
+
             if (apiUrl.indexOf('/api') > -1) {
                 req.on('data', function(resData) {
                     inputData += resData;
@@ -108,6 +124,8 @@ module.exports = function(config, task, gulp) {
                 req.on('end', function(data) {
                     if (apiPath[1] === '/download') {
                         data = db.getData('/');
+                    } else if (apiPath[1] === '/getDatabases') {
+                        data = { list: getListDb() };
                     } else if (apiPath[1] === '/upload') {
                         data = uploadDb(inputData);
                     } else if (apiPath[1] === '/calendarYear') {
