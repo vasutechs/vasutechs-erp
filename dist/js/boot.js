@@ -192,6 +192,34 @@ erpApp.filter('startFrom', function() {
         return input.slice(start);
     }
 });
+erpApp.directive('loading', ['$http', function($http) {
+    return {
+        restrict: 'E',
+        templateUrl: 'template/components/loading.html',
+        link: function(scope, elm, attrs) {
+            var showLoader = function(v) {
+                if (v) {
+                    elm.hide();
+                } else {
+                    elm.show();
+                }
+            };
+            scope.isLoading = function() {
+                return $http.pendingRequests.length <= 0;
+            };
+
+            scope.$watch(scope.isLoading, showLoader);
+            // scope.$watch('context.listViewData', function(newVal, oldVal) {
+            //     console.log(scope, newVal, oldVal);
+            //     //showLoader(v);
+            //     // if (v) {
+            //     //     scope.$watch(scope.context.listViewData, showLoader);
+            //     // }
+            // });
+
+        }
+    };
+}])
 erpApp.directive('mappingForm', [function() {
     return {
         restrict: 'E',
@@ -243,7 +271,7 @@ erpApp.factory('authFact', ['serviceApi', '$window', function(serviceApi, $windo
         isLogin: isLogin
     };
 }]);
-erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', '$window', function(staticConfig, serviceApi, $filter, $location, authFact, $injector, $window) {
+erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', '$window', '$http', function(staticConfig, serviceApi, $filter, $location, authFact, $injector, $window, $http) {
     var erpAppConfig = staticConfig;
     var erpLoadPrsRes;
     var pageContext;
@@ -276,7 +304,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var listViewPromise;
             var formPromise;
             pageContext = context;
-            context.showLoader = true;
             if (context.parentModule) {
                 parentModule = angular.copy(eval('appConfig.modules.' + context.parentModule));
                 context = angular.merge({}, angular.copy(parentModule), context);
@@ -307,11 +334,10 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
             }
             scope.$broadcast('showAlertRol');
-            scope.$watch(function() { console.log(1) }, function() { console.log(2) });
             return Promise.all(returnPromise).then(function() {
                 returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
-                context.showLoader = false;
                 scope.context = context;
+                context.actions.showLoadingHttp(scope);
                 return returnPage;
             });
         });
@@ -409,26 +435,16 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.actions.list(context);
         },
         getData: function(module, id) {
-            var list,
-                serviceConf = this.getServiceConfig(module, 'GET', id);
-            pageContext.showLoader = true;
+            var serviceConf = this.getServiceConfig(module, 'GET', id);
             //Get Part master data
-            return serviceApi.callServiceApi(serviceConf).then(function(res) {
-                pageContext.showLoader = false;
-                return res;
-            });
+            return serviceApi.callServiceApi(serviceConf);
         },
         updateData: function(module, data, id) {
-            var list,
-                serviceConf = this.getServiceConfig(module, 'POST', id);
+            var serviceConf = this.getServiceConfig(module, 'POST', id);
             var userDetails = authFact.getUserDetail();
             data.updatedUserId = userDetails && userDetails.id;
-            pageContext.showLoader = true;
             //Get Part master data
-            return serviceApi.callServiceApi(serviceConf, data).then(function(res) {
-                pageContext.showLoader = false;
-                return res;
-            });
+            return serviceApi.callServiceApi(serviceConf, data);
         },
         replaceFieldVal: function(viewData, field) {
             var list,
@@ -995,8 +1011,20 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
             }
+        },
+        showLoadingHttp: function(scope) {
+            var showLoader = function(v) {
+                if (v) {
+                    scope.context.showLoading = false;
+                } else {
+                    scope.context.showLoading = true;
+                }
+            };
+            scope.isLoading = function() {
+                return $http.pendingRequests.length <= 0;
+            };
 
-
+            scope.$watch(scope.isLoading, showLoader);
         }
     };
     return {
@@ -1005,61 +1033,16 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         getErpAppConfig: getErpAppConfig
     };
 }]);
-erpApp.factory('loadingService', function() {
-    var service = {
-        requestCount: 0,
-        isLoading: function() {
-            return service.requestCount > 0;
-        }
-    };
-    return service;
-});
-
-erpApp.factory('onStartInterceptor', function(loadingService) {
-    return function(data, headersGetter) {
-        loadingService.requestCount++;
-        return data;
-    };
-});
-
-// This is just a delay service for effect!
-erpApp.factory('delayedPromise', function($q, $timeout) {
-    return function(promise, delay) {
-        var deferred = $q.defer();
-        var delayedHandler = function() {
-            $timeout(function() { deferred.resolve(promise); }, delay);
-        };
-        promise.then(delayedHandler, delayedHandler);
-        return deferred.promise;
-    };
-});
-
-erpApp.factory('onCompleteInterceptor', function(loadingService, delayedPromise) {
-    return function(promise) {
-        var decrementRequestCount = function(response) {
-            loadingService.requestCount--;
-            return response;
-        };
-        // Normally we would just chain on to the promise but ...
-        //return promise.then(decrementRequestCount, decrementRequestCount);
-        // ... we are delaying the response by 2 secs to allow the loading to be seen.
-        return delayedPromise(promise, 2000).then(decrementRequestCount, decrementRequestCount);
-    };
-});
-
-erpApp.controller('LoadingCtrl', function($scope, loadingService) {
-    $scope.$watch(function() { return loadingService.isLoading(); }, function(value) { $scope.loading = value; });
-});
 erpApp.service('serviceApi', ['$http', '$cacheFactory', function($http, $cacheFactory) {
     this.callServiceApi = function(serviceConf, inputData) {
         var servicePromise,
-        httpCache = $cacheFactory.get('$http');
-        if(inputData){
-        	serviceConf['data'] = inputData;
+            httpCache = $cacheFactory.get('$http');
+        if (inputData) {
+            serviceConf['data'] = inputData;
         }
-        if(serviceConf.method==='POST'){
+        if (serviceConf.method === 'POST') {
             httpCache.remove(serviceConf.url);
-            if(inputData.id!==undefined){
+            if (inputData.id !== undefined) {
                 httpCache.remove(serviceConf.url + '/' + inputData.id);
             }
         }
@@ -2358,13 +2341,14 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                                 if (isPartExist) {
                                     details.cummulativeQty += parseInt(isPartExist.cummulativeQty);
                                 }
-                                context.listViewData.push(details);
+                                list.push(details);
                             }
                         }
                     }
                 }
+                context.listViewData = list;
             });
-            //context.listViewData = list;
+
         },
         machineRunningTime: function(context) {
             var list = [];
@@ -2397,8 +2381,9 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                         }
                     }
                 }
+                context.listViewData = list;
             });
-            context.listViewData = list;
+
         },
         empPerformanceReport: function(context) {
             var list = [];
@@ -3170,7 +3155,6 @@ module.run(['$templateCache', function($templateCache) {
     '    <alert-rol></alert-rol>\n' +
     '    <div class="mb-3">\n' +
     '        <h3>{{context.title}}</h3>\n' +
-    '        <div ng-controller="LoadingCtrl"><span ng-show="loading">Loading</span></div>\n' +
     '        <div ng-if="context.page.name==\'add\' || context.page.name==\'edit\'">\n' +
     '            <div class="card">\n' +
     '                <div class="card-header hide-print">\n' +
@@ -3190,7 +3174,7 @@ module.run(['$templateCache', function($templateCache) {
     '            <list-view></list-view>\n' +
     '        </div>\n' +
     '    </div>\n' +
-    '    <div ng-if="context.showLoader" id="overlay-loader" class="d-flex justify-content-center">\n' +
+    '    <div ng-if="context.showLoading" id="overlay-loader" class="d-flex justify-content-center">\n' +
     '        <div class="spinner-border text-primary" role="status">\n' +
     '            <span class="sr-only">Loading...</span>\n' +
     '        </div>\n' +
@@ -3646,6 +3630,22 @@ module.run(['$templateCache', function($templateCache) {
     '            </tr>\n' +
     '        </tbody>\n' +
     '    </table>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('erpApp');
+} catch (e) {
+  module = angular.module('erpApp', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('template/components/loading.html',
+    '<div id="overlay-loader" class="d-flex justify-content-center">\n' +
+    '    <div class="spinner-border text-primary" role="status">\n' +
+    '        <span class="sr-only">Loading...</span>\n' +
+    '    </div>\n' +
     '</div>');
 }]);
 })();

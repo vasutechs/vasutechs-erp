@@ -41,8 +41,9 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                         }
                     }
                 }
+                context.listViewData = list;
             });
-            context.listViewData = list;
+
         },
         machineRunningTime: function(context) {
             var list = [];
@@ -75,8 +76,9 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                         }
                     }
                 }
+                context.listViewData = list;
             });
-            context.listViewData = list;
+
         },
         empPerformanceReport: function(context) {
             var list = [];

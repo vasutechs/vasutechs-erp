@@ -1,4 +1,4 @@
-erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', '$window', function(staticConfig, serviceApi, $filter, $location, authFact, $injector, $window) {
+erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', '$window', '$http', function(staticConfig, serviceApi, $filter, $location, authFact, $injector, $window, $http) {
     var erpAppConfig = staticConfig;
     var erpLoadPrsRes;
     var pageContext;
@@ -31,7 +31,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var listViewPromise;
             var formPromise;
             pageContext = context;
-            context.showLoader = true;
             if (context.parentModule) {
                 parentModule = angular.copy(eval('appConfig.modules.' + context.parentModule));
                 context = angular.merge({}, angular.copy(parentModule), context);
@@ -62,11 +61,10 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
             }
             scope.$broadcast('showAlertRol');
-            scope.$watch(function() { console.log(1) }, function() { console.log(2) });
             return Promise.all(returnPromise).then(function() {
                 returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
-                context.showLoader = false;
                 scope.context = context;
+                context.actions.showLoadingHttp(scope);
                 return returnPage;
             });
         });
@@ -164,26 +162,16 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.actions.list(context);
         },
         getData: function(module, id) {
-            var list,
-                serviceConf = this.getServiceConfig(module, 'GET', id);
-            pageContext.showLoader = true;
+            var serviceConf = this.getServiceConfig(module, 'GET', id);
             //Get Part master data
-            return serviceApi.callServiceApi(serviceConf).then(function(res) {
-                pageContext.showLoader = false;
-                return res;
-            });
+            return serviceApi.callServiceApi(serviceConf);
         },
         updateData: function(module, data, id) {
-            var list,
-                serviceConf = this.getServiceConfig(module, 'POST', id);
+            var serviceConf = this.getServiceConfig(module, 'POST', id);
             var userDetails = authFact.getUserDetail();
             data.updatedUserId = userDetails && userDetails.id;
-            pageContext.showLoader = true;
             //Get Part master data
-            return serviceApi.callServiceApi(serviceConf, data).then(function(res) {
-                pageContext.showLoader = false;
-                return res;
-            });
+            return serviceApi.callServiceApi(serviceConf, data);
         },
         replaceFieldVal: function(viewData, field) {
             var list,
@@ -750,8 +738,20 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
             }
+        },
+        showLoadingHttp: function(scope) {
+            var showLoader = function(v) {
+                if (v) {
+                    scope.context.showLoading = false;
+                } else {
+                    scope.context.showLoading = true;
+                }
+            };
+            scope.isLoading = function() {
+                return $http.pendingRequests.length <= 0;
+            };
 
-
+            scope.$watch(scope.isLoading, showLoader);
         }
     };
     return {
