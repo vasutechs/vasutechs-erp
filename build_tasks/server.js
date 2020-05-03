@@ -140,8 +140,20 @@ module.exports = function(config, task, gulp) {
                 });
 
             } else if (apiUrl.indexOf('/releaseProject') > -1) {
+                var projectName = config.release.namePefix + '.zip';
+                config.dist.path = config.release.dist;
+                config.release.status = true;
                 task.buildProject();
-                res.end();
+                config.buildPromise.then(function(resData) {
+                    res.writeHead(200, {
+                        'Content-Type': 'application/octet-stream',
+                        'Content-Disposition': 'attachment; filename=' + projectName,
+                        'Content-Length': resData.length
+                    });
+
+                    res.end(resData);
+                });
+
             } else {
                 res.writeHead(401, { 'Content-Type': 'application/json' });
                 res.end();

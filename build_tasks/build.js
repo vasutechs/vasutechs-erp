@@ -6,29 +6,52 @@ module.exports = function(config, task, gulp) {
         ngHtml2Js = require("gulp-ng-html2js"),
         del = require('del'),
         fs = require('fs'),
+        AdmZip = require('adm-zip'),
         applyAppConfig = function() {
             appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
             return JSON.stringify(appConfig);
+        },
+        getDefaultSrcFiles = function() {
+            var defaultSrcJsFiles = config.src.defaultSrcJsFiles;
+            defaultSrcJsFiles.push('./src/js/controllers/**');
+            defaultSrcJsFiles.push(config.dist.path + '/js/template.js');
+            return defaultSrcJsFiles;
+        },
+        buildConfig = {
+            src: {
+                js: './src/js',
+                template: './src/template',
+                defaultSrcJsFiles: ['./src/js/boot.js', './src/js/components/**.**', './src/js/factory/**.**', './src/js/services/**.**', './src/js/controllers/admin/**'],
+                defaultModules: ['databaseUpload', 'databaseDownload', 'calendarYear', 'dashboard', 'admin'],
+                assets: './src/assets'
+            },
+            dist: {
+                path: './dist'
+            },
+            release: {
+                path: './release',
+                dist: './release/dist',
+                namePefix: 'VasuTechsERP-',
+                defaultFiles: [
+                    'index.html',
+                    'build_tasks/server.js',
+                    'package.json',
+                    'start',
+                    'gulpfile.js'
+                ]
+            }
         };
-
+    config = Object.assign(config, buildConfig);
     gulp.task('clean', task.clean = () => {
-        return del(['./dist']);
+        return del([config.dist.path]);
     });
 
     gulp.task('clean-template', task.clean = () => {
-        return del(['./dist/js/template.js']);
-    });
-
-    gulp.task('build-index', task.buildIndex = () => {
-        return gulp.src('./src/index.html').pipe(gulp.dest('./dist'));
-    });
-
-    gulp.task('build-lib', task.buildLib = () => {
-        return gulp.src(config.src.lib, { base: './node_modules' }).pipe(gulp.dest(config.dist.lib));
+        return del([config.dist.path + '/js/template.js']);
     });
 
     gulp.task('build-assets', task.buildAssets = () => {
-        return gulp.src(config.src.assets + '/**/**.**').pipe(gulp.dest(config.dist.assets));
+        return gulp.src(config.src.assets + '/**/**.**').pipe(gulp.dest(config.dist.path + '/assets'));
     });
 
     gulp.task('build-template', task.buildTemplate = () => {
@@ -38,58 +61,40 @@ module.exports = function(config, task, gulp) {
                 prefix: "template/"
             }))
             .pipe(gp_concat('template.js'))
-            .pipe(gulp.dest(config.dist.js));
+            .pipe(gulp.dest(config.dist.path + '/js'));
     });
 
     gulp.task('build-js', task.buildJs = () => {
-        return gulp.src(config.src.defaultSrcJsFiles)
+        return gulp.src(getDefaultSrcFiles())
             .pipe(gp_concat('boot.js'))
             .pipe(replace('STATIC_CONFIG', applyAppConfig))
-            .pipe(gulp.dest(config.dist.js));
+            .pipe(gulp.dest(config.dist.path + '/js'));
     });
 
     gulp.task('build-js-minify', task.buildJsMinify = () => {
-        return gulp.src(config.src.defaultSrcJsFiles)
+        return gulp.src(getDefaultSrcFiles())
             .pipe(gp_concat('boot.js'))
             .pipe(replace('STATIC_CONFIG', applyAppConfig))
             .pipe(gp_uglify())
-            .pipe(gulp.dest(config.dist.js));
+            .pipe(gulp.dest(config.dist.path + '/js'));
     });
 
-    gulp.task('build', gulp.series('clean', 'build-index', 'build-template', 'build-lib', 'build-assets', 'build-js', 'clean-template'));
+    gulp.task('build', task.build = gulp.series('clean', 'build-template', 'build-assets', 'build-js', 'clean-template'));
 
-    gulp.task('build-minify', gulp.series('clean', 'build-index', 'build-template', 'build-lib', 'build-assets', 'build-js-minify', 'clean-template'));
+    gulp.task('build-minify', task.buildMinify = gulp.series('clean', 'build-template', 'build-assets', 'build-js-minify', 'clean-template'));
 
-    gulp.task('build-project', task.buildProject = () => {
-        const stat = require('fs').statSync;
-        const AdmZip = require('adm-zip');
-
-        del(['./release']);
-
-        gulp.src('./dist/**')
-            .pipe(gulp.dest(config.releaseProject.path));
-
-        gulp.src(config.src.defaultSrcJsFiles)
-            .pipe(gp_concat('boot.js'))
-            .pipe(replace('STATIC_CONFIG', applyAppConfig))
-            .pipe(gulp.dest(config.releaseProject.js));
-
-        newArchive(config.releaseProject.namePefix + 'Project.zip', config.releaseProject.defaultFiles);
-
-        function newArchive(zipFileName, pathNames) {
-
-            const zip = new AdmZip();
-
-            pathNames.forEach(path => {
-                const p = stat(path, path);
-                if (p.isFile()) {
-                    zip.addLocalFile(path);
-                } else if (p.isDirectory()) {
-                    zip.addLocalFolder(path, path);
-                }
-            });
-
-            zip.writeZip(zipFileName);
-        }
+    gulp.task('build-release-files', buildReleaseFiles = () => {
+        return gulp.src(config.release.defaultFiles, { base: "." })
+            .pipe(gulp.dest(config.release.path));
     });
+
+    gulp.task('build-project-zip', buildProjectZip = (done) => {
+        const zip = new AdmZip();
+        zip.addLocalFolder(config.release.path);
+        const data = zip.toBuffer();
+        del([config.release.path]);
+        config.buildProRes(data);
+        done();
+    });
+    gulp.task('build-project', task.buildProject = gulp.series('build-minify', 'build-release-files', 'build-project-zip'));
 };

@@ -192,34 +192,6 @@ erpApp.filter('startFrom', function() {
         return input.slice(start);
     }
 });
-erpApp.directive('loading', ['$http', function($http) {
-    return {
-        restrict: 'E',
-        templateUrl: 'template/components/loading.html',
-        link: function(scope, elm, attrs) {
-            var showLoader = function(v) {
-                if (v) {
-                    elm.hide();
-                } else {
-                    elm.show();
-                }
-            };
-            scope.isLoading = function() {
-                return $http.pendingRequests.length <= 0;
-            };
-
-            scope.$watch(scope.isLoading, showLoader);
-            // scope.$watch('context.listViewData', function(newVal, oldVal) {
-            //     console.log(scope, newVal, oldVal);
-            //     //showLoader(v);
-            //     // if (v) {
-            //     //     scope.$watch(scope.context.listViewData, showLoader);
-            //     // }
-            // });
-
-        }
-    };
-}])
 erpApp.directive('mappingForm', [function() {
     return {
         restrict: 'E',
@@ -1049,27 +1021,6 @@ erpApp.service('serviceApi', ['$http', '$cacheFactory', function($http, $cacheFa
         servicePromise = $http(serviceConf);
         return servicePromise;
     };
-}]);
-erpApp.controller('dashboardCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    commonFact.initCtrl($scope, 'dashboard');
-}]);
-erpApp.controller('databaseUploadCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
-        uploadDatabase: function(context) {
-            if (context.data && context.data.databaseUpload && context.data.databaseUpload) {
-                context.actions.updateData(context.module, context.data.databaseUpload).then(function() {
-                    context.message = 'Successfully uploded...';
-                    context.alertMessage = undefined;
-                    context.actions.goToPage(context.appConfig.modules.dashboard.page.link, true);
-                });
-            } else {
-                context.alertMessage = 'Failed uploded...';
-                context.message = undefined;
-            }
-
-        }
-    };
-    commonFact.initCtrl($scope, 'databaseUpload', actions);
 }]);
 erpApp.controller('loginCtrl', ['$scope', 'commonFact', 'authFact', '$location', function($scope, commonFact, authFact, location) {
     var actions = {
@@ -3112,6 +3063,27 @@ erpApp.controller('grnSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', func
     commonFact.initCtrl($scope, 'store.grnSupplier', actions);
 
 }]);
+erpApp.controller('dashboardCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
+    commonFact.initCtrl($scope, 'dashboard');
+}]);
+erpApp.controller('databaseUploadCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
+    var actions = {
+        uploadDatabase: function(context) {
+            if (context.data && context.data.databaseUpload && context.data.databaseUpload) {
+                context.actions.updateData(context.module, context.data.databaseUpload).then(function() {
+                    context.message = 'Successfully uploded...';
+                    context.alertMessage = undefined;
+                    context.actions.goToPage(context.appConfig.modules.dashboard.page.link, true);
+                });
+            } else {
+                context.alertMessage = 'Failed uploded...';
+                context.message = undefined;
+            }
+
+        }
+    };
+    commonFact.initCtrl($scope, 'databaseUpload', actions);
+}]);
 (function(module) {
 try {
   module = angular.module('erpApp');
@@ -3630,22 +3602,6 @@ module.run(['$templateCache', function($templateCache) {
     '            </tr>\n' +
     '        </tbody>\n' +
     '    </table>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('erpApp');
-} catch (e) {
-  module = angular.module('erpApp', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('template/components/loading.html',
-    '<div id="overlay-loader" class="d-flex justify-content-center">\n' +
-    '    <div class="spinner-border text-primary" role="status">\n' +
-    '        <span class="sr-only">Loading...</span>\n' +
-    '    </div>\n' +
     '</div>');
 }]);
 })();
