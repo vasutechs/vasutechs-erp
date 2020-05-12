@@ -179,6 +179,9 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             context.actions.updateMaterialIssue(context);
         },
         prodEntryDownload: function(context) {
+            if (!context.selectedTableData) {
+                return;
+            }
             var prodData = context.selectedTableData[context.id];
             context.actions.getData('production.materialIssueNote').then(function(res) {
                 var materData = res.data;

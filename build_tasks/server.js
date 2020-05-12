@@ -45,7 +45,7 @@ module.exports = function(config, task, gulp) {
                 id = '/' + inputData.id;
                 inputData['updated'] = new Date();
                 db.push('/tables' + dataPath + id, inputData, true);
-                data = db.getData('/tables' + dataPath);
+                data = db.getData('/tables' + dataPath + id);
             }
 
         } catch (error) {
@@ -116,11 +116,11 @@ module.exports = function(config, task, gulp) {
                 db = masterDb;
                 databaseType = "master";
             }
-
+            req.on('data', function(resData) {
+                inputData += resData;
+            });
             if (apiUrl.indexOf('/api') > -1) {
-                req.on('data', function(resData) {
-                    inputData += resData;
-                });
+
                 req.on('end', function(data) {
                     if (apiPath[1] === '/download') {
                         data = db.getData('/');
@@ -140,7 +140,8 @@ module.exports = function(config, task, gulp) {
                 });
 
             } else if (apiUrl.indexOf('/releaseProject') > -1) {
-                var projectName = config.release.namePefix + '.zip';
+                var releaseProjectData = getTableData(apiUrl);
+                var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
                 config.dist.path = config.release.dist;
                 config.release.status = true;
                 task.buildProject();

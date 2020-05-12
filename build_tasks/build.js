@@ -21,7 +21,7 @@ module.exports = function(config, task, gulp) {
             src: {
                 js: './src/js',
                 template: './src/template',
-                defaultSrcJsFiles: ['./src/js/boot.js', './src/js/components/**.**', './src/js/factory/**.**', './src/js/services/**.**', './src/js/controllers/admin/**'],
+                defaultSrcJsFiles: ['./src/js/boot.js', './src/js/components/**.**', './src/js/factory/**.**', './src/js/services/**.**', './src/js/controllers/admin/**', './src/js/controllers/dashboard.js', './src/js/controllers/databaseUpload.js'],
                 defaultModules: ['databaseUpload', 'databaseDownload', 'calendarYear', 'dashboard', 'admin'],
                 assets: './src/assets'
             },
@@ -42,6 +42,7 @@ module.exports = function(config, task, gulp) {
             }
         };
     config = Object.assign(config, buildConfig);
+
     gulp.task('clean', task.clean = () => {
         return del([config.dist.path]);
     });
@@ -84,6 +85,7 @@ module.exports = function(config, task, gulp) {
     gulp.task('build-minify', task.buildMinify = gulp.series('clean', 'build-template', 'build-assets', 'build-js-minify', 'clean-template'));
 
     gulp.task('build-release-files', buildReleaseFiles = () => {
+        console.log(config.release.defaultFiles);
         return gulp.src(config.release.defaultFiles, { base: "." })
             .pipe(gulp.dest(config.release.path));
     });

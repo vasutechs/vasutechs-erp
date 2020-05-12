@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var glob = require('glob');
+var arg = require('minimist')(process.argv.slice(3));
 var config = {
     webServer: {
         distPath: './',
@@ -13,6 +14,7 @@ config.buildProRes = null;
 config.buildPromise = new Promise(function(res) {
     config.buildProRes = res;
 });
+config.arg = arg;
 
 
 var task = {};

@@ -28,6 +28,11 @@
                         <option value="">--Select--</option>
                     </select>
                 </li>
+                <li ng-if="headerContext.modules['releaseProject']" class="nav-item">
+                    <a class="nav-link" title="Release Project" href="#!{{headerContext.modules['releaseProject'].page.link}}">
+                        <i class="fa fa-fw fa-rocket"></i>
+                    </a>
+                </li>
                 <li ng-if="!headerContext.modules['databaseUpload'].disable" class="nav-item">
                     <a class="nav-link" title="Import data" href="#!{{headerContext.modules['databaseUpload'].page.link}}">
                         <i class="fa fa-fw fa-upload"></i>
@@ -40,11 +45,11 @@
 
                 </li>
                 <li class="nav-item">
-                    <a ng-if="headerContext.isLogin" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}?type=logout">
-                        Logout 
+                    <a ng-if="headerContext.isLogin" title="Logout" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}?type=logout">
+                        <i class="fa fa-fw fa-sign-out"></i>
                     </a>
-                    <a ng-if="!headerContext.isLogin" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}">
-                        Login 
+                    <a ng-if="!headerContext.isLogin" title="Login" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}">
+                        <i class="fa fa-fw fa-sign-in"></i>
                     </a>
                 </li>
             </ul>

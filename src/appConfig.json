@@ -11,6 +11,7 @@
             "name": "Database Upload",
             "title": "Database Upload",
             "disableMenu": true,
+            "defaultRelease": true,
             "masterData": {
                 "databaseUpload": null
             },
@@ -32,6 +33,7 @@
             "name": "Database Download",
             "title": "Database Download",
             "disableMenu": true,
+            "defaultRelease": true,
             "page": {
                 "link": "/api/download",
                 "name": "databaseUpload"
@@ -42,6 +44,7 @@
             "name": "Calendar Year",
             "title": "Calendar Year",
             "disableMenu": true,
+            "defaultRelease": true,
             "page": {
                 "link": "calendarYear",
                 "name": "calendarYear"
@@ -59,6 +62,7 @@
             "title": "Dashboard",
             "icon": "dashboard",
             "disableMenu": true,
+            "defaultRelease": true,
             "page": {
                 "link": "dashboard",
                 "name": "dashboard",
@@ -5399,6 +5403,7 @@
             "name": "Admin",
             "title": "Admin",
             "icon": "cog",
+            "defaultRelease": true,
             "settings": {
                 "id": "settings",
                 "title": "Settings",
@@ -5678,6 +5683,63 @@
                     "templateUrl": "template/defaultView.html",
                     "controller": "loginCtrl",
                     "actions": false
+                }
+            }
+        },
+        "releaseProject": {
+            "name": "Release Project",
+            "id": "releaseProject",
+            "title": "Release Project",
+            "defaultRelease": false,
+            "disableMenu": true,
+            "masterData": {
+                "companyName": null,
+                "mapping": [{
+                    "module": null
+                }]
+            },
+            "form": {
+                "name": "Release Project",
+                "id": "releaseProject",
+                "fields": {
+                    "companyName": {
+                        "name": "Company Name",
+                        "id": "companyName",
+                        "type": "input",
+                        "inputType": "text",
+                        "required": true
+                    }
+                },
+                "mapping": {
+                    "name": "Module Mapping",
+                    "fields": {
+                        "module": {
+                            "name": "Page name",
+                            "id": "module",
+                            "type": "select",
+                            "options": {},
+                            "makeFieldOptions": false
+                        }
+                    }
+                },
+                "actions": {
+                    "customSubmit": "releaseSubmit"
+                }
+            },
+            "listView": [{
+                "title": "Company Name",
+                "id": "companyName"
+            }],
+            "page": {
+                "link": "releaseProject/list",
+                "name": "list",
+                "templateUrl": "template/defaultView.html",
+                "controller": "releaseProjectCtrl"
+            },
+            "services": {
+                "list": {
+                    "url": "api/releaseProject",
+                    "method": "GET"
                 }
             }
         }

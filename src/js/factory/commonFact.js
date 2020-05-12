@@ -151,9 +151,9 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             return Math.ceil(context.actions.getPageData(context).length / context.pageSize);
         },
         submit: function(context) {
-            return context.actions.updateData(context.module, context.data).then(function() {
+            return context.actions.updateData(context.module, context.data).then(function(res) {
                 context.actions.list(context);
-                context.actions.callBackSubmit && context.actions.callBackSubmit(context);
+                context.actions.callBackSubmit && context.actions.callBackSubmit(context, res.data);
                 return context;
             });
 
@@ -583,7 +583,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var subModules = {};
 
             for (var i in module) {
-                if (i !== 'name' && i !== 'title' && i !== 'icon' && i !== 'page' && i !== 'id') {
+                if (i !== 'name' && i !== 'title' && i !== 'icon' && i !== 'page' && i !== 'id' && i !== 'defaultRelease') {
                     subModules[i] = module[i];
                 }
             }
@@ -715,11 +715,14 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.actions.downloadFile(context.selectedTableData, context.id + '.json');
         },
         downloadFile: function(data, name, type) {
-            var json = JSON.stringify(data);
 
+            if (!type || type === 'json') {
+                data = JSON.stringify(data);
+            }
             //Convert JSON string to BLOB.
-            json = [json];
-            var blob1 = new Blob(json, { type: 'application/octet-stream' });
+            data = [data];
+
+            var blob1 = new Blob(data, { type: 'application/octet-stream' });
 
             //Check the Browser.
             var isIE = false || !!document.documentMode;

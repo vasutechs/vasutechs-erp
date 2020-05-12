@@ -15,18 +15,16 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
         },
         makeModuleOptions: function(context, modules, field, parentModule) {
             for (var i in modules) {
-                var optionVal = angular.copy(modules[i]);
-                var optionIdVal = parentModule && parentModule.id + '.' + optionVal.id || optionVal.id;
-                var optionNameVal = parentModule && '-- ' + optionVal.title || optionVal.title;
-                if (i !== 'disable') {
-                    field.allOptions[optionIdVal] = optionVal;
-                    field.allOptions[optionIdVal]['optionName'] = optionNameVal;
-                    field.allOptions[optionIdVal]['optionId'] = optionIdVal;
-                    field.options[optionIdVal] = field.allOptions[optionIdVal];
+                var module = angular.copy(modules[i]);
+                var optionIdVal = parentModule && parentModule.id + '.' + module.id || module.id;
+                var optionNameVal = parentModule && '-- ' + module.title || module.title;
+                field.allOptions[optionIdVal] = module;
+                field.allOptions[optionIdVal]['optionName'] = optionNameVal;
+                field.allOptions[optionIdVal]['optionId'] = optionIdVal;
+                field.options[optionIdVal] = field.allOptions[optionIdVal];
 
-                    if (!optionVal.page) {
-                        context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
-                    }
+                if (!module.page) {
+                    context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
                 }
             }
         }

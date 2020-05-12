@@ -66,7 +66,7 @@
             <div class="col-2">
             </div>
             <div class="col-10">
-                <button ng-if="context.form.actions.submit === undefined || context.form.actions.submit" type="button" class="btn btn-primary" id="submit" ng-click="context.form.action.customSubmit && context.form.actions.customSubmit() || context.actions.submit(context)"
+                <button ng-if="context.form.actions.submit === undefined || context.form.actions.submit" type="button" class="btn btn-primary" id="submit" ng-click="context.form.actions.customSubmit && context.actions[context.form.actions.customSubmit](context) || context.actions.submit(context)"
                     ng-disabled="customForm.$invalid">Submit</button>
                 <button ng-if="context.form.actions.cancel === undefined || context.form.actions.cancel" type="button" class="btn btn-primary" id="cancel" ng-click="context.actions.cancel(context)">Cancel</button>
             </div>
