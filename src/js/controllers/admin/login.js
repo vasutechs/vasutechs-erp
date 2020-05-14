@@ -12,7 +12,7 @@ erpApp.controller('loginCtrl', ['$scope', 'commonFact', 'authFact', '$location',
     };
 
     var appConfig = commonFact.getErpAppConfig();
-    var context = angular.copy(eval('appConfig.modules.admin.login'));
+    var context = angular.copy(appConfig.modules.admin.login);
 
     if (location.search() && location.search()['type'] === 'logout') {
         authFact.setUserDetail(undefined);

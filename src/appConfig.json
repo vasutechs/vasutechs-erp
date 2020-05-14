@@ -782,7 +782,7 @@
                 "listView": [{
                         "title": "Invoice No",
                         "id": "invoiceNo",
-                        "valuePrefix": "H-"
+                        "valuePrefix": "VT-"
                     },
                     {
                         "title": "Customer",
@@ -4776,7 +4776,7 @@
                             "updateData": ["customerCode", "total", "date"],
                             "dataFrom": "marketing.invoice",
                             "replaceName": "invoiceNo",
-                            "valuePrefix": "H-",
+                            "valuePrefix": "VT-",
                             "required": true,
                             "existingCheck": true,
                             "isSingle": true
@@ -4838,7 +4838,7 @@
                         "title": "Invoice No",
                         "id": "invoiceNo",
                         "dataFrom": "marketing.invoice",
-                        "valuePrefix": "H-",
+                        "valuePrefix": "VT-",
                         "replaceName": "invoiceNo",
                         "isFilterBy": true,
                         "type": "select",

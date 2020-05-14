@@ -20,7 +20,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
     var initCtrl = function(scope, module, actions) {
         return erpLoadPrs.then(function() {
             var appConfig = getErpAppConfig();
-            var context = angular.copy(eval('appConfig.modules.' + module));
+            var context = angular.copy(defaultActions.getDeepProp(appConfig.modules, module));
             var parentModule;
             var returnPage;
             var returnPromise = [];
@@ -32,7 +32,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var formPromise;
             pageContext = context;
             if (context.parentModule) {
-                parentModule = angular.copy(eval('appConfig.modules.' + context.parentModule));
+                parentModule = angular.copy(defaultActions.getDeepProp(appConfig.modules, context.parentModule));
                 context = angular.merge({}, angular.copy(parentModule), context);
             }
             if (!userType && appConfig.forceLoginSite) {
@@ -431,7 +431,10 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         getServiceConfig: function(module, replaceMethod, appendValue) {
             var appConfig = getErpAppConfig();
             var currentYear = new Date().getMonth() >= appConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
-            var serviceConfig = angular.copy(typeof(module) !== 'object' ? eval('appConfig.modules.' + module + '.services.list') : module);
+            var serviceConfig = angular.copy(typeof(module) !== 'object' ? defaultActions.getDeepProp(appConfig.modules, module + '.services.list') : module);
+            if (!serviceConfig) {
+                return false;
+            }
             serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', appConfig.calendarYear || currentYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
@@ -570,11 +573,13 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.actions.updatePartTotal(context, data, data[acceptedQtyField.id], acceptedQtyField, fieldMapKey);
         },
         updateFields: function(context, fields) {
-            var fields = fields;
             var returnPromise = [];
             for (var i in fields) {
-                if (fields[i].dataFrom && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
+                if (fields[i].dataFrom && defaultActions.getDeepProp(erpAppConfig.modules, fields[i].dataFrom) && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
                     returnPromise.push(context.actions.makeOptionsFields(context, fields[i]));
+                }
+                if (fields[i].dataFrom && !defaultActions.getDeepProp(erpAppConfig.modules, fields[i].dataFrom)) {
+                    delete fields[i];
                 }
             }
             return Promise.all(returnPromise);
@@ -583,7 +588,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var subModules = {};
 
             for (var i in module) {
-                if (i !== 'name' && i !== 'title' && i !== 'icon' && i !== 'page' && i !== 'id' && i !== 'defaultRelease') {
+                if (typeof(module[i]) === 'object') {
                     subModules[i] = module[i];
                 }
             }
@@ -594,7 +599,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             if (userType !== 'ADMIN') {
                 for (var i in erpAppConfig.mapping) {
                     var map = erpAppConfig.mapping[i];
-                    var module = eval('erpAppConfig.modules.' + map.module) || {};
+                    var module = defaultActions.getDeepProp(erpAppConfig.modules, map.module) || {};
                     if (!userType || (userType && map.restrictUser !== userType)) {
                         module.disable = map.restrictUser && true;
                     }
@@ -755,6 +760,11 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             };
 
             scope.$watch(scope.isLoading, showLoader);
+        },
+        getDeepProp: function(obj, desc) {
+            var arr = desc.split(".");
+            while (arr.length && (obj = obj[arr.shift()]));
+            return obj;
         }
     };
     return {

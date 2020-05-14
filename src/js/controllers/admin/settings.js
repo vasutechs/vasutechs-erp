@@ -18,13 +18,15 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
                 var module = angular.copy(modules[i]);
                 var optionIdVal = parentModule && parentModule.id + '.' + module.id || module.id;
                 var optionNameVal = parentModule && '-- ' + module.title || module.title;
-                field.allOptions[optionIdVal] = module;
-                field.allOptions[optionIdVal]['optionName'] = optionNameVal;
-                field.allOptions[optionIdVal]['optionId'] = optionIdVal;
-                field.options[optionIdVal] = field.allOptions[optionIdVal];
+                if (i !== 'disable') {
+                    field.allOptions[optionIdVal] = module;
+                    field.allOptions[optionIdVal]['optionName'] = optionNameVal;
+                    field.allOptions[optionIdVal]['optionId'] = optionIdVal;
+                    field.options[optionIdVal] = field.allOptions[optionIdVal];
 
-                if (!module.page) {
-                    context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
+                    if (!module.page) {
+                        context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
+                    }
                 }
             }
         }

@@ -6,7 +6,7 @@ erpApp.directive('alertRol', ['commonFact', 'authFact', function(commonFact, aut
         $scope.hideROL = function() {
             showROL = false;
         }
-        if (userType) {
+        if (userType && commonFact.defaultActions.getDeepProp(appConfig.modules, 'marketing.partMaster')) {
             commonFact.defaultActions.getData('marketing.partMaster').then(function(res) {
                 var partMaster = res.data;
                 commonFact.defaultActions.getData('report.partStock').then(function(res1) {

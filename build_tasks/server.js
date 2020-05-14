@@ -70,7 +70,7 @@ module.exports = function(config, task, gulp) {
         var inputVal = JSON.parse(inputData);
         var type = inputVal.type || null;
         var year = type && type.split('yearly-');
-        var uploadThisDb;
+        var uploadThisDb = masterDb;
         if (!inputVal.tables) {
             return uploadTableData(inputData);
         } else {
@@ -144,6 +144,7 @@ module.exports = function(config, task, gulp) {
                 var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
                 config.dist.path = config.release.dist;
                 config.release.status = true;
+                config.release.releaseProjectData = releaseProjectData;
                 task.buildProject();
                 config.buildPromise.then(function(resData) {
                     res.writeHead(200, {

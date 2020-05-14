@@ -9,11 +9,25 @@ module.exports = function(config, task, gulp) {
         AdmZip = require('adm-zip'),
         applyAppConfig = function() {
             appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
+            if (config.release.status) {
+                for (var i in appConfig.modules) {
+                    let module = appConfig.modules[i];
+                    if (!config.src.defaultModules.includes(i)) {
+                        delete appConfig.modules[i];
+                    }
+                };
+            }
             return JSON.stringify(appConfig);
         },
         getDefaultSrcFiles = function() {
             var defaultSrcJsFiles = config.src.defaultSrcJsFiles;
-            defaultSrcJsFiles.push('./src/js/controllers/**');
+            if (config.release.status) {
+                for (var i in config.src.defaultModules) {
+                    defaultSrcJsFiles.push('./src/js/controllers/' + config.src.defaultModules[i]);
+                }
+            } else {
+                defaultSrcJsFiles.push('./src/js/controllers/**');
+            }
             defaultSrcJsFiles.push(config.dist.path + '/js/template.js');
             return defaultSrcJsFiles;
         },
@@ -22,13 +36,15 @@ module.exports = function(config, task, gulp) {
                 js: './src/js',
                 template: './src/template',
                 defaultSrcJsFiles: ['./src/js/boot.js', './src/js/components/**.**', './src/js/factory/**.**', './src/js/services/**.**', './src/js/controllers/admin/**', './src/js/controllers/dashboard.js', './src/js/controllers/databaseUpload.js'],
-                defaultModules: ['databaseUpload', 'databaseDownload', 'calendarYear', 'dashboard', 'admin'],
+                defaultModules: ['databaseUpload', 'databaseDownload', 'calendarYear', 'dashboard', 'admin', 'marketing'],
                 assets: './src/assets'
             },
             dist: {
                 path: './dist'
             },
             release: {
+                //status: true,
+                //releaseProjectData: ['marketing'],
                 path: './release',
                 dist: './release/dist',
                 namePefix: 'VasuTechsERP-',
@@ -66,14 +82,14 @@ module.exports = function(config, task, gulp) {
     });
 
     gulp.task('build-js', task.buildJs = () => {
-        return gulp.src(getDefaultSrcFiles())
+        return gulp.src(getDefaultSrcFiles(), { allowEmpty: true })
             .pipe(gp_concat('boot.js'))
             .pipe(replace('STATIC_CONFIG', applyAppConfig))
             .pipe(gulp.dest(config.dist.path + '/js'));
     });
 
     gulp.task('build-js-minify', task.buildJsMinify = () => {
-        return gulp.src(getDefaultSrcFiles())
+        return gulp.src(getDefaultSrcFiles(), { allowEmpty: true })
             .pipe(gp_concat('boot.js'))
             .pipe(replace('STATIC_CONFIG', applyAppConfig))
             .pipe(gp_uglify())
