@@ -1,7 +1,6 @@
-erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', '$window', '$http', function(staticConfig, serviceApi, $filter, $location, authFact, $injector, $window, $http) {
+erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', '$window', '$http', '$q', function(staticConfig, serviceApi, $filter, $location, authFact, $injector, $window, $http, $q) {
     var erpAppConfig = staticConfig;
     var erpLoadPrsRes;
-    var pageContext;
     var erpLoadPrs = new Promise(function(resolve, reject) {
         erpLoadPrsRes = resolve;
     });
@@ -18,19 +17,16 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
     })();
 
     var initCtrl = function(scope, module, actions) {
+        var returnPageProm = $q.defer();
         return erpLoadPrs.then(function() {
             var appConfig = getErpAppConfig();
             var context = angular.copy(defaultActions.getDeepProp(appConfig.modules, module));
             var parentModule;
-            var returnPage;
-            var returnPromise = [];
+            var pageProm = [];
             var userType = authFact.isLogin();
             var formPromise;
-            var filterViewPromise;
-            var mappingPromise;
-            var listViewPromise;
             var formPromise;
-            pageContext = context;
+            scope.context = context;
             if (context.parentModule) {
                 parentModule = angular.copy(defaultActions.getDeepProp(appConfig.modules, context.parentModule));
                 context = angular.merge({}, angular.copy(parentModule), context);
@@ -48,25 +44,29 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.actions = angular.extend(angular.copy(defaultActions), actions || {});
             formPromise = context.form && context.actions.updateFields(context, context.form.fields);
             if (formPromise) {
-                formPromise && returnPromise.push(formPromise);
+                formPromise && pageProm.push(formPromise);
                 formPromise.then(function() {
-                    context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
+                    context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
                     if (context.form && context.form.mapping) {
-                        returnPromise.push(context.actions.updateFields(context, context.form.mapping.fields));
+                        pageProm.push(context.actions.updateFields(context, context.form.mapping.fields));
                     }
-                    returnPromise.push(context.actions.updateFields(context, context.listView));
+                    pageProm.push(context.actions.updateFields(context, context.listView));
                 });
             } else {
-                returnPromise.push(context.actions.updateFields(context, context.listView));
-                context.filterView && returnPromise.push(context.actions.updateFields(context, context.filterView.fields));
+                pageProm.push(context.actions.updateFields(context, context.listView));
+                context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
             }
             scope.$broadcast('showAlertRol');
-            return Promise.all(returnPromise).then(function() {
-                returnPage = context.actions[context.page.name] && context.actions[context.page.name](context) || true;
-                scope.context = context;
-                context.actions.showLoadingHttp(scope);
-                return returnPage;
+            Promise.all(pageProm).then(function() {
+                if (context.actions[context.page.name]) {
+                    context.actions[context.page.name](context).then(function() {
+                        context.actions.showLoadingHttp(scope);
+                        returnPageProm.resolve(context);
+                    });
+                };
+
             });
+            return returnPageProm.promise;
         });
     };
     var getErpAppConfig = function() {

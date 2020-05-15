@@ -9,7 +9,7 @@ erpApp.controller('releaseProjectCtrl', ['$scope', 'commonFact', function($scope
         makeModuleOptions: function(context, modules, field, parentModule) {
             for (var i in modules) {
                 var module = angular.copy(modules[i]);
-                var optionIdVal = parentModule && parentModule.id + '.' + module.id || module.id;
+                var optionIdVal = parentModule && parentModule.id + '/' + module.id || module.id;
                 var optionNameVal = parentModule && '-- ' + module.title || module.title;
                 if (module.defaultRelease === undefined) {
                     field.allOptions[optionIdVal] = module;

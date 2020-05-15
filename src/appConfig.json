@@ -4399,7 +4399,7 @@
                     },
                     {
                         "title": "M/C No",
-                        "id": "mcNo",
+                        "id": "machineNo",
                         "type": "select",
                         "dataFrom": "production.machineMaster",
                         "replaceName": "machineName"

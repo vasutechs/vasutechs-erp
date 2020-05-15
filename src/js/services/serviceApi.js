@@ -1,7 +1,8 @@
-erpApp.service('serviceApi', ['$http', '$cacheFactory', function($http, $cacheFactory) {
+erpApp.service('serviceApi', ['$http', '$cacheFactory', '$q', function($http, $cacheFactory, $q) {
     this.callServiceApi = function(serviceConf, inputData) {
         var servicePromise,
             httpCache = $cacheFactory.get('$http');
+        var deferred = $q.defer();
         if (inputData) {
             serviceConf['data'] = inputData;
         }
@@ -11,7 +12,15 @@ erpApp.service('serviceApi', ['$http', '$cacheFactory', function($http, $cacheFa
                 httpCache.remove(serviceConf.url + '/' + inputData.id);
             }
         }
-        servicePromise = $http(serviceConf);
+        if (!serviceConf.url) {
+            setTimeout(function() {
+                deferred.reject();
+            }, 200);
+            servicePromise = deferred.promise;
+        } else {
+            servicePromise = $http(serviceConf);
+        }
+
         return servicePromise;
     };
 }]);

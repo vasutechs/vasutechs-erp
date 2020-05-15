@@ -120,9 +120,10 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
 
                 for (var j in listViewData[i].mapping) {
                     var date = new Date(listViewData[i].mapping[j].date);
+                    var machineNo = listViewData[i].mapping[j]['machineNo'];
                     if ((!frmDate || (frmDate && new Date(frmDate) <= date)) && (!toDate || toDate && new Date(toDate) >= date)) {
                         var details = {
-                            machineNo: listViewData[i].machineNo,
+                            machineNo: machineNo,
                             jobCardNo: listViewData[i].jobCardNo,
                             partNo: listViewData[i].partNo,
                             operationFrom: listViewData[i].mapping[j].operationFrom,

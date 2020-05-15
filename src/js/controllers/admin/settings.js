@@ -12,6 +12,11 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
                 optionId: 'ADMIN'
             };
             context.form.mapping.fields['restrictUser'].options['ADMIN'] = adminOption;
+            if (context.lastData === undefined) {
+                context.actions.add(context);
+            } else {
+                context.actions.edit(context, context.lastData.id);
+            }
         },
         makeModuleOptions: function(context, modules, field, parentModule) {
             for (var i in modules) {
@@ -31,12 +36,6 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
             }
         }
     }
-    commonFact.initCtrl($scope, 'admin.settings', actions).then(function() {
-        if ($scope.context.lastData === undefined) {
-            $scope.context.actions.add($scope.context);
-        } else {
-            $scope.context.actions.edit($scope.context, $scope.context.lastData.id);
-        }
-    });
+    commonFact.initCtrl($scope, 'admin.settings', actions);
 
 }]);
