@@ -57,10 +57,11 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
             }
             scope.$broadcast('showAlertRol');
+            context.actions.showLoadingHttp(scope);
             Promise.all(pageProm).then(function() {
                 if (context.actions[context.page.name]) {
                     context.actions[context.page.name](context).then(function() {
-                        context.actions.showLoadingHttp(scope);
+                        scope.context = context;
                         returnPageProm.resolve(context);
                     });
                 };
