@@ -271,6 +271,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var userType = authFact.isLogin();
             var formPromise;
             var formPromise;
+            context.showLoading = true;
             scope.context = context;
             if (context.parentModule) {
                 parentModule = angular.copy(defaultActions.getDeepProp(appConfig.modules, context.parentModule));
@@ -302,11 +303,14 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
             }
             scope.$broadcast('showAlertRol');
-            context.actions.showLoadingHttp(scope);
+            scope.$on('$viewContentLoaded', function() {
+                console.log('page loaded...');
+            });
             Promise.all(pageProm).then(function() {
                 if (context.actions[context.page.name]) {
                     context.actions[context.page.name](context).then(function() {
                         scope.context = context;
+                        context.actions.showLoadingHttp(scope);
                         returnPageProm.resolve(context);
                     });
                 };
@@ -1150,6 +1154,244 @@ erpApp.controller('databaseUploadCtrl', ['$scope', 'commonFact', 'serviceApi', f
         }
     };
     commonFact.initCtrl($scope, 'databaseUpload', actions);
+}]);
+erpApp.controller('customerPaymentInvoiceCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
+    var actions = {
+        callBackList: function(context) {
+            context.form.mapping.actions = {};
+        },
+        callBackAdd: function(context) {
+            context.actions.makeOptionsFields(context, context.form.fields['invoiceNo']);
+            context.data['date'] = null;
+        },
+        callBackEdit: function(context) {
+            for (var i in context.data.mapping) {
+                context.data.mapping[i].date = new Date(context.data.mapping[i].date);
+            }
+            if (context.data.balanceAmount <= 0) {
+                context.form.mapping.actions.add = false;
+            }
+        },
+        callBackChangeMapping: function(context, data, key, field) {
+            context.data.balanceAmount = context.data.total;
+            context.data['date'] = context.actions.dateFormatChange(context.data['date']);
+        },
+        updateBalanceAmount: function(context, data, key, field) {
+            var amount = 0;
+            for (var i in context.data.mapping) {
+                amount += parseFloat(context.data.mapping[i].amount);
+            }
+            context.data.balanceAmount = parseFloat(context.data.total) - parseFloat(amount);
+            if (context.data.balanceAmount <= 0) {
+                context.form.mapping.actions.add = false;
+            }
+            if (context.data.balanceAmount < 0) {
+                context.data.balanceAmount = 0;
+                //data.amount = null;
+            }
+        }
+    };
+
+    if ($location.search() && $location.search()['type'] === 'cashBill') {
+        commonFact.initCtrl($scope, 'accounts.customerPaymentCashBill', actions);
+    } else {
+        commonFact.initCtrl($scope, 'accounts.customerPaymentInvoice', actions);
+    }
+
+
+}]);
+erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
+    var actions = {
+        callBackAdd: function(context) {
+            context.data['toDate'] = new Date();
+        },
+        getProductionEntry: function(context) {
+            var frmDate = context.data.frmDate;
+            var toDate = context.data.toDate;
+            var filterOperator = context.data.employeeCode;
+            var empPaidList = context.actions.getEmpPaymentPaid(context);
+            return context.actions.getData('report.productionEntryReport').then(function(res) {
+                var productionEntry = res.data;
+                var productionEntryList = {};
+                for (var i in productionEntry) {
+                    for (var j in productionEntry[i].mapping) {
+                        var date = new Date(productionEntry[i].mapping[j].date);
+                        var operator = productionEntry[i].mapping[j].operator;
+                        var objKey = productionEntry[i].mapping[j].operator + '-' + productionEntry[i].partNo + '-' + productionEntry[i].mapping[j].operationTo;
+                        if ((!filterOperator || (operator === filterOperator)) &&
+                            (!frmDate || (frmDate && new Date(frmDate) <= date)) &&
+                            (!toDate || toDate && new Date(toDate) >= date) &&
+                            (!empPaidList[objKey] || (empPaidList[objKey] && new Date(empPaidList[objKey].productionEntryDate) < date))) {
+
+                            var qty = parseInt(productionEntry[i].mapping[j].acceptedQty) || 0;
+                            if (productionEntryList[objKey]) {
+                                qty += productionEntryList[objKey].qty;
+                            }
+
+                            var details = {
+                                partNo: productionEntry[i].partNo,
+                                operationTo: productionEntry[i].mapping[j].operationTo,
+                                operator: productionEntry[i].mapping[j].operator,
+                                qty: qty,
+                                productionEntryKey: objKey,
+                                productionEntryDate: productionEntry[i].mapping[j].date,
+                                date: null
+                            };
+                            productionEntryList[objKey] = details;
+
+                        }
+                    }
+                }
+                return productionEntryList;
+            });
+
+        },
+        getEmpPaymentPaid: function(context) {
+            var listViewData = angular.copy(context.listViewDataMaster);
+            var filterOperator = context.data.employeeCode;
+            var empPaidList = {};
+
+            for (var i in listViewData) {
+                var operator = listViewData[i].employeeCode;
+                if (!filterOperator || (operator === filterOperator)) {
+                    for (var j in listViewData[i].mapping) {
+                        empPaidList[listViewData[i].mapping[j].productionEntryKey] = listViewData[i].mapping[j];
+                    }
+                }
+            }
+            return empPaidList;
+        },
+        callBackEdit: function(context) {
+            for (var i in context.data.mapping) {
+                context.data.mapping[i].date = new Date(context.data.mapping[i].date);
+            }
+            if (context.data.balanceAmount <= 0) {
+                context.form.mapping.actions.add = false;
+            }
+        },
+        addPartMap: function(context, data) {
+            context.actions.changeMapping(context, data, data.employeeCode, context.form.fields['employeeCode']);
+        },
+        callBackChangeMapping: function(context, data, key, field, fieldMapKey) {
+            context.actions.updatePartMap(context, data, key, field, fieldMapKey);
+        },
+        updatePartMap: function(context, data, key, field, fieldMapKey) {
+
+            context.actions.getProductionEntry(context).then(function(productionEntryList) {
+                var total = 0;
+                var employeeCode = context.data.employeeCode;
+                var newMapData = [];
+                newMapData = context.data.mapping.filter(function(data) {
+                    var mapFindKey = employeeCode + '-' + data.id + '-' + data.operationTo;
+                    if (productionEntryList[mapFindKey] && productionEntryList[mapFindKey].qty > 0) {
+                        data = angular.extend(data, angular.copy(productionEntryList[mapFindKey]));
+                        data.totalLaborCost = parseInt(productionEntryList[mapFindKey].qty * data.laborCost);
+                        total += data.totalLaborCost;
+                        return true;
+                    }
+                });
+                context.data.mapping = newMapData;
+                context.data.total = total;
+                context.data.balanceAmount = context.data.total;
+            });
+
+        },
+        updateBalanceAmount: function(context, data, key, field) {
+            var amount = context.data.balanceAmount;
+            if (data.paidStatus) {
+                amount -= parseInt(data.totalLaborCost);
+            } else {
+                amount += parseInt(data.totalLaborCost);
+            }
+            data.date = new Date();
+            context.data.balanceAmount = amount;
+        }
+    };
+
+    commonFact.initCtrl($scope, 'accounts.empPayment', actions);
+
+}]);
+erpApp.controller('subContractorPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
+    var actions = {
+        callBackList: function(context) {
+            context.form.mapping.actions = {};
+        },
+        callBackAdd: function(context) {
+            context.actions.makeOptionsFields(context, context.form.fields['grnNo']);
+        },
+        callBackEdit: function(context) {
+            for (var i in context.data.mapping) {
+                context.data.mapping[i].date = new Date(context.data.mapping[i].date);
+            }
+            if (context.data.balanceAmount <= 0) {
+                context.form.mapping.actions.add = false;
+            }
+        },
+        callBackChangeMapping: function(context, data, key, field) {
+            var total = 0;
+            var grnMap = field.options[context.data.grnNo];
+            context.data.total = grnMap.total;
+            context.data.subContractorDCDate = context.actions.dateFormatChange(context.data.subContractorDCDate);
+            context.data.balanceAmount = context.data.total;
+        },
+        updateBalanceAmount: function(context, data, key, field) {
+            var amount = 0;
+            for (var i in context.data.mapping) {
+                amount += parseFloat(context.data.mapping[i].amount);
+            }
+            context.data.balanceAmount = parseFloat(context.data.total) - parseFloat(amount);
+            if (context.data.balanceAmount <= 0) {
+                context.form.mapping.actions.add = false;
+            }
+            if (context.data.balanceAmount < 0) {
+                context.data.balanceAmount = 0;
+            }
+        }
+    };
+
+    commonFact.initCtrl($scope, 'accounts.subContractorPayment', actions);
+
+}]);
+erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
+    var actions = {
+        callBackList: function(context) {
+            context.form.mapping.actions = {};
+        },
+        callBackAdd: function(context) {
+            context.actions.makeOptionsFields(context, context.form.fields['grnNo']);
+        },
+        callBackEdit: function(context) {
+            for (var i in context.data.mapping) {
+                context.data.mapping[i].date = new Date(context.data.mapping[i].date);
+            }
+            if (context.data.balanceAmount <= 0) {
+                context.form.mapping.actions.add = false;
+            }
+        },
+        callBackChangeMapping: function(context, data, key, field) {
+            var total = 0;
+            var grnMap = field.options[context.data.grnNo];
+            context.data.total = grnMap.total;
+            context.data.supplierInvoiceDate = context.actions.dateFormatChange(context.data.supplierInvoiceDate);
+            context.data.balanceAmount = context.data.total;
+        },
+        updateBalanceAmount: function(context, data, key, field) {
+            var amount = 0;
+            for (var i in context.data.mapping) {
+                amount += parseFloat(context.data.mapping[i].amount);
+            }
+            context.data.balanceAmount = parseFloat(context.data.total) - parseFloat(amount);
+            if (context.data.balanceAmount <= 0) {
+                context.form.mapping.actions.add = false;
+            }
+            if (context.data.balanceAmount < 0) {
+                context.data.balanceAmount = 0;
+            }
+        }
+    };
+
+    commonFact.initCtrl($scope, 'accounts.suppilerPayment', actions);
+
 }]);
 erpApp.controller('customerMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
     commonFact.initCtrl($scope, 'marketing.customerMaster');
@@ -2073,6 +2315,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
         },
         toolHistoryCard: function(context) {
             var list = [];
+            context.listViewData = [];
             context.actions.getAllYearData(context).then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
@@ -2111,6 +2354,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
         },
         machineRunningTime: function(context) {
             var list = [];
+            context.listViewData = [];
             context.actions.getAllYearData(context).then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
@@ -2870,244 +3114,6 @@ erpApp.controller('grnSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', func
         };
 
     commonFact.initCtrl($scope, 'store.grnSupplier', actions);
-
-}]);
-erpApp.controller('customerPaymentInvoiceCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
-        callBackList: function(context) {
-            context.form.mapping.actions = {};
-        },
-        callBackAdd: function(context) {
-            context.actions.makeOptionsFields(context, context.form.fields['invoiceNo']);
-            context.data['date'] = null;
-        },
-        callBackEdit: function(context) {
-            for (var i in context.data.mapping) {
-                context.data.mapping[i].date = new Date(context.data.mapping[i].date);
-            }
-            if (context.data.balanceAmount <= 0) {
-                context.form.mapping.actions.add = false;
-            }
-        },
-        callBackChangeMapping: function(context, data, key, field) {
-            context.data.balanceAmount = context.data.total;
-            context.data['date'] = context.actions.dateFormatChange(context.data['date']);
-        },
-        updateBalanceAmount: function(context, data, key, field) {
-            var amount = 0;
-            for (var i in context.data.mapping) {
-                amount += parseFloat(context.data.mapping[i].amount);
-            }
-            context.data.balanceAmount = parseFloat(context.data.total) - parseFloat(amount);
-            if (context.data.balanceAmount <= 0) {
-                context.form.mapping.actions.add = false;
-            }
-            if (context.data.balanceAmount < 0) {
-                context.data.balanceAmount = 0;
-                //data.amount = null;
-            }
-        }
-    };
-
-    if ($location.search() && $location.search()['type'] === 'cashBill') {
-        commonFact.initCtrl($scope, 'accounts.customerPaymentCashBill', actions);
-    } else {
-        commonFact.initCtrl($scope, 'accounts.customerPaymentInvoice', actions);
-    }
-
-
-}]);
-erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
-        callBackAdd: function(context) {
-            context.data['toDate'] = new Date();
-        },
-        getProductionEntry: function(context) {
-            var frmDate = context.data.frmDate;
-            var toDate = context.data.toDate;
-            var filterOperator = context.data.employeeCode;
-            var empPaidList = context.actions.getEmpPaymentPaid(context);
-            return context.actions.getData('report.productionEntryReport').then(function(res) {
-                var productionEntry = res.data;
-                var productionEntryList = {};
-                for (var i in productionEntry) {
-                    for (var j in productionEntry[i].mapping) {
-                        var date = new Date(productionEntry[i].mapping[j].date);
-                        var operator = productionEntry[i].mapping[j].operator;
-                        var objKey = productionEntry[i].mapping[j].operator + '-' + productionEntry[i].partNo + '-' + productionEntry[i].mapping[j].operationTo;
-                        if ((!filterOperator || (operator === filterOperator)) &&
-                            (!frmDate || (frmDate && new Date(frmDate) <= date)) &&
-                            (!toDate || toDate && new Date(toDate) >= date) &&
-                            (!empPaidList[objKey] || (empPaidList[objKey] && new Date(empPaidList[objKey].productionEntryDate) < date))) {
-
-                            var qty = parseInt(productionEntry[i].mapping[j].acceptedQty) || 0;
-                            if (productionEntryList[objKey]) {
-                                qty += productionEntryList[objKey].qty;
-                            }
-
-                            var details = {
-                                partNo: productionEntry[i].partNo,
-                                operationTo: productionEntry[i].mapping[j].operationTo,
-                                operator: productionEntry[i].mapping[j].operator,
-                                qty: qty,
-                                productionEntryKey: objKey,
-                                productionEntryDate: productionEntry[i].mapping[j].date,
-                                date: null
-                            };
-                            productionEntryList[objKey] = details;
-
-                        }
-                    }
-                }
-                return productionEntryList;
-            });
-
-        },
-        getEmpPaymentPaid: function(context) {
-            var listViewData = angular.copy(context.listViewDataMaster);
-            var filterOperator = context.data.employeeCode;
-            var empPaidList = {};
-
-            for (var i in listViewData) {
-                var operator = listViewData[i].employeeCode;
-                if (!filterOperator || (operator === filterOperator)) {
-                    for (var j in listViewData[i].mapping) {
-                        empPaidList[listViewData[i].mapping[j].productionEntryKey] = listViewData[i].mapping[j];
-                    }
-                }
-            }
-            return empPaidList;
-        },
-        callBackEdit: function(context) {
-            for (var i in context.data.mapping) {
-                context.data.mapping[i].date = new Date(context.data.mapping[i].date);
-            }
-            if (context.data.balanceAmount <= 0) {
-                context.form.mapping.actions.add = false;
-            }
-        },
-        addPartMap: function(context, data) {
-            context.actions.changeMapping(context, data, data.employeeCode, context.form.fields['employeeCode']);
-        },
-        callBackChangeMapping: function(context, data, key, field, fieldMapKey) {
-            context.actions.updatePartMap(context, data, key, field, fieldMapKey);
-        },
-        updatePartMap: function(context, data, key, field, fieldMapKey) {
-
-            context.actions.getProductionEntry(context).then(function(productionEntryList) {
-                var total = 0;
-                var employeeCode = context.data.employeeCode;
-                var newMapData = [];
-                newMapData = context.data.mapping.filter(function(data) {
-                    var mapFindKey = employeeCode + '-' + data.id + '-' + data.operationTo;
-                    if (productionEntryList[mapFindKey] && productionEntryList[mapFindKey].qty > 0) {
-                        data = angular.extend(data, angular.copy(productionEntryList[mapFindKey]));
-                        data.totalLaborCost = parseInt(productionEntryList[mapFindKey].qty * data.laborCost);
-                        total += data.totalLaborCost;
-                        return true;
-                    }
-                });
-                context.data.mapping = newMapData;
-                context.data.total = total;
-                context.data.balanceAmount = context.data.total;
-            });
-
-        },
-        updateBalanceAmount: function(context, data, key, field) {
-            var amount = context.data.balanceAmount;
-            if (data.paidStatus) {
-                amount -= parseInt(data.totalLaborCost);
-            } else {
-                amount += parseInt(data.totalLaborCost);
-            }
-            data.date = new Date();
-            context.data.balanceAmount = amount;
-        }
-    };
-
-    commonFact.initCtrl($scope, 'accounts.empPayment', actions);
-
-}]);
-erpApp.controller('subContractorPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
-        callBackList: function(context) {
-            context.form.mapping.actions = {};
-        },
-        callBackAdd: function(context) {
-            context.actions.makeOptionsFields(context, context.form.fields['grnNo']);
-        },
-        callBackEdit: function(context) {
-            for (var i in context.data.mapping) {
-                context.data.mapping[i].date = new Date(context.data.mapping[i].date);
-            }
-            if (context.data.balanceAmount <= 0) {
-                context.form.mapping.actions.add = false;
-            }
-        },
-        callBackChangeMapping: function(context, data, key, field) {
-            var total = 0;
-            var grnMap = field.options[context.data.grnNo];
-            context.data.total = grnMap.total;
-            context.data.subContractorDCDate = context.actions.dateFormatChange(context.data.subContractorDCDate);
-            context.data.balanceAmount = context.data.total;
-        },
-        updateBalanceAmount: function(context, data, key, field) {
-            var amount = 0;
-            for (var i in context.data.mapping) {
-                amount += parseFloat(context.data.mapping[i].amount);
-            }
-            context.data.balanceAmount = parseFloat(context.data.total) - parseFloat(amount);
-            if (context.data.balanceAmount <= 0) {
-                context.form.mapping.actions.add = false;
-            }
-            if (context.data.balanceAmount < 0) {
-                context.data.balanceAmount = 0;
-            }
-        }
-    };
-
-    commonFact.initCtrl($scope, 'accounts.subContractorPayment', actions);
-
-}]);
-erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
-        callBackList: function(context) {
-            context.form.mapping.actions = {};
-        },
-        callBackAdd: function(context) {
-            context.actions.makeOptionsFields(context, context.form.fields['grnNo']);
-        },
-        callBackEdit: function(context) {
-            for (var i in context.data.mapping) {
-                context.data.mapping[i].date = new Date(context.data.mapping[i].date);
-            }
-            if (context.data.balanceAmount <= 0) {
-                context.form.mapping.actions.add = false;
-            }
-        },
-        callBackChangeMapping: function(context, data, key, field) {
-            var total = 0;
-            var grnMap = field.options[context.data.grnNo];
-            context.data.total = grnMap.total;
-            context.data.supplierInvoiceDate = context.actions.dateFormatChange(context.data.supplierInvoiceDate);
-            context.data.balanceAmount = context.data.total;
-        },
-        updateBalanceAmount: function(context, data, key, field) {
-            var amount = 0;
-            for (var i in context.data.mapping) {
-                amount += parseFloat(context.data.mapping[i].amount);
-            }
-            context.data.balanceAmount = parseFloat(context.data.total) - parseFloat(amount);
-            if (context.data.balanceAmount <= 0) {
-                context.form.mapping.actions.add = false;
-            }
-            if (context.data.balanceAmount < 0) {
-                context.data.balanceAmount = 0;
-            }
-        }
-    };
-
-    commonFact.initCtrl($scope, 'accounts.suppilerPayment', actions);
 
 }]);
 erpApp.controller('releaseProjectCtrl', ['$scope', 'commonFact', function($scope, commonFact) {

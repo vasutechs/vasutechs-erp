@@ -26,6 +26,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var userType = authFact.isLogin();
             var formPromise;
             var formPromise;
+            context.showLoading = true;
             scope.context = context;
             if (context.parentModule) {
                 parentModule = angular.copy(defaultActions.getDeepProp(appConfig.modules, context.parentModule));
@@ -57,11 +58,14 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
             }
             scope.$broadcast('showAlertRol');
-            context.actions.showLoadingHttp(scope);
+            scope.$on('$viewContentLoaded', function() {
+                console.log('page loaded...');
+            });
             Promise.all(pageProm).then(function() {
                 if (context.actions[context.page.name]) {
                     context.actions[context.page.name](context).then(function() {
                         scope.context = context;
+                        context.actions.showLoadingHttp(scope);
                         returnPageProm.resolve(context);
                     });
                 };

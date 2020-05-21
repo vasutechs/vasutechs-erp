@@ -9,6 +9,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
         },
         toolHistoryCard: function(context) {
             var list = [];
+            context.listViewData = [];
             context.actions.getAllYearData(context).then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
@@ -47,6 +48,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
         },
         machineRunningTime: function(context) {
             var list = [];
+            context.listViewData = [];
             context.actions.getAllYearData(context).then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
