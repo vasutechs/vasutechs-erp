@@ -5,14 +5,9 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
                 context.actions.getPartStock(context);
             },
             callBackEdit: function(context) {
-                var poNoField = context.form.fields['poNo'];
                 context.form.mapping.actions.delete = false;
                 orgItemVal = angular.copy(context.data);
-                poNoField.filter = {};
-                context.actions.makeOptionsFields(context, poNoField).then(function() {
-                    //context.actions.callBackChangeMapping(context);
-                });
-
+                context.actions.getDCQty(context);
             },
             getPOSubContractor: function(context, data, key, field) {
                 context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
@@ -22,6 +17,7 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
                     }
                 });
                 context.actions.makeOptionsFields(context, context.form.fields['poNo']);
+                context.actions.changeMapping(context, context.data, context.data['subContractorCode'], context.form.fields['subContractorCode']);
             },
             callBackChangeMapping: function(context) {
                 context.actions.checkAcceptedQty(context);
@@ -34,6 +30,7 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
                     var flowMasterData = res.data,
                         prevOpp,
                         qty;
+                    var dcPartStockQty;
                     for (var i in context.data.mapping) {
                         partNo = context.data.mapping[i].id;
                         qty = context.data.mapping[i].acceptedQty;
@@ -45,8 +42,12 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
                                         operationFrom = prevOpp.id;
                                     }
 
-                                    if (prevOpp && (context.partStock[partNo + '-' + prevOpp.id] === undefined || context.partStock[partNo + '-' + prevOpp.id].partStockQty < qty)) {
-                                        context.data.mapping[i].acceptedQty = qty = null;
+                                    if (operationFrom) {
+                                        dcPartStockQty = context.partStock[partNo + '-' + operationFrom].partStockQty;
+
+                                        if (dcPartStockQty === undefined || dcPartStockQty < qty) {
+                                            context.data.mapping[i].acceptedQty = qty = null;
+                                        }
                                     }
                                 }
                             }
@@ -87,19 +88,18 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
                 var poQty = 0;
                 var dcQty = 0;
                 var qty = 0;
-                var updatePO = true;
                 poSubContractor.status = 1;
                 for (var i in context.data.mapping) {
                     poQty = context.actions.getPOQty(context, context.data.mapping[i]);
                     dcQty = parseInt(context.dcQty[context.data['poNo'] + '-' + context.data.mapping[i].id]) || 0;
                     qty = parseInt(context.data.mapping[i].acceptedQty) + dcQty;
                     if (parseInt(poQty) > parseInt(qty)) {
-                        updatePO = false;
+                        poSubContractor.status = 0;
                     }
                 }
-                if (updatePO) {
-                    context.actions.updateData('purchase.poSubContractor', poSubContractor);
-                }
+
+                context.actions.updateData('purchase.poSubContractor', poSubContractor);
+
             },
             getDCQty: function(context, partNo) {
                 var dcQtyTag;
@@ -108,7 +108,7 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
                 return context.actions.getData('store.dcSubContractor').then(function(res) {
                     var listViewData = res.data;
                     for (var i in listViewData) {
-                        if (context.data.poNo === listViewData[i].poNo) {
+                        if (context.data.poNo === listViewData[i].poNo && (!orgItemVal || listViewData[i].id !== orgItemVal.id)) {
                             for (var j in listViewData[i].mapping) {
                                 dcQtyTag = listViewData[i].poNo + '-' + listViewData[i].mapping[j].id;
                                 if (partNo === undefined || listViewData[i].mapping[j].id === partNo) {
@@ -122,17 +122,41 @@ erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', 
                 });
             },
             callBackSubmit: function(context) {
+                var acceptedQty;
                 for (var i in context.data.mapping) {
                     var data = angular.copy(context.data.mapping[i]);
                     var newContext = angular.copy(context);
                     data.partNo = data.id;
                     data.subContractorCode = context.data.subContractorCode;
+                    if (orgItemVal && orgItemVal.mapping[i] && orgItemVal.mapping[i].acceptedQty) {
+                        acceptedQty = parseInt(data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
+                        data.acceptedQty = acceptedQty;
+                    }
                     newContext.data = data;
                     context.actions.updateSCStock(newContext);
                     newContext.updateCurStock = false;
                     context.actions.updatePartStock(newContext);
                 }
                 context.actions.updatePoSubContractor(context);
+            },
+            callBeforeDelete: function(context, id, item) {
+                var acceptedQty;
+                var poSubContractor = context.form.fields['poNo'].allOptions[item.poNo];
+                for (var i in item.mapping) {
+                    var data = angular.copy(item.mapping[i]);
+                    var newContext = angular.copy(context);
+                    data.partNo = data.id;
+                    data.subContractorCode = item.subContractorCode;
+                    acceptedQty = 0 - parseInt(data.acceptedQty);
+                    data.acceptedQty = acceptedQty;
+
+                    newContext.data = data;
+                    context.actions.updateSCStock(newContext);
+                    newContext.updateCurStock = false;
+                    context.actions.updatePartStock(newContext);
+                }
+                poSubContractor.status = 0;
+                context.actions.updateData('purchase.poSubContractor', poSubContractor);
             }
         };
 

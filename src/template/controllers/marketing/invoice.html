@@ -19,11 +19,11 @@
                     </button>
                 </div>
                 <div ng-if="context.page.printView" class="row">
-                    <div class="col-4">
+                    <div class="col-8">
                         <img ng-if="context.appConfig.companyLogoUrl" class="logo" src="{{context.appConfig.companyLogoUrl}}" title="{{context.appConfig.companyName}}" />
                         <h1 ng-if="!context.appConfig.companyLogoUrl" class="logo">{{context.appConfig.companyName}}</h1>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
 
                         <p class="font-italic"><b>{{context.appConfig.companyAddress}}</b></p>
                         <p class="font-italic"><b>Mobile:</b> {{context.appConfig.companyMobile}} <b>Email:</b> {{context.appConfig.companyEmail}}</p>
@@ -34,8 +34,8 @@
                     <entry-invoice></entry-invoice>
                 </div>
                 <div ng-if="context.page.printView" class="row">
-                    <div class="col-7"></div>
-                    <div class="col-3">
+                    <div class="col-8"></div>
+                    <div class="col-4">
                         <p class="text-center font-italic"><b>For {{context.companyDetail.name}}</b></p>
                         <br/>
                         <p class="text-center font-italic"><b>Authorised Signatory</b></p>
