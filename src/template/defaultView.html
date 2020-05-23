@@ -21,7 +21,7 @@
                 </div>
                 <div ng-if="context.page.printView" class="row">
                     <div class="col-8">
-                        <img ng-if="context.appConfig.companyLogoUrl" class="logo" src="{{context.appConfig.companyLogoUrl}}" title="{{context.appConfig.companyName}}" />
+                        <img ng-if="context.appConfig.companyLogoUrl" class="logo" title="{{context.appConfig.companyName}}" ng-src="{{context.appConfig.companyLogoUrl}}" />
                         <h1 ng-if="!context.appConfig.companyLogoUrl" class="logo">{{context.appConfig.companyName}}</h1>
                     </div>
                     <div class="col-4">

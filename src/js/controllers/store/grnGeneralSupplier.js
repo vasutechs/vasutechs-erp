@@ -23,11 +23,8 @@ erpApp.controller('grnGeneralSupplierCtrl', ['$scope', 'commonFact', 'serviceApi
                 orgItemVal = null;
             },
             callBackEdit: function(context, key) {
-                var poNoField = context.form.fields['poNo'];
                 context.form.mapping.actions.delete = false;
                 orgItemVal = angular.copy(context.data);
-                poNoField.filter = {};
-                context.actions.makeOptionsFields(context, poNoField);
                 context.data['generalSupplierInvoiceDate'] = new Date(context.data['generalSupplierInvoiceDate']);
             },
             updatePoGeneralSupplier: function(context) {

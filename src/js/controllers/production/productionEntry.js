@@ -5,17 +5,10 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             context.finalMapping = 0;
         },
         callBackEdit: function(context) {
-            var jobCardField = context.form.fields['jobCardNo'];
-            var jobCardData = angular.copy(context.data[jobCardField.id]);
             if (!context.page.printView) {
                 context.page.printViewMapping = true;
                 context.actions.addMapping(context.data.mapping);
                 context.finalMapping = context.data.mapping.length - 1;
-                jobCardField.filter = {};
-                context.actions.makeOptionsFields(context, jobCardField).then(function() {
-                    context.data[jobCardField.id] = jobCardData;
-                    context.actions[jobCardField.action](context, context.data, context.data[jobCardField.id], jobCardField)
-                });
             }
         },
         callBackList: function(context) {

@@ -5,19 +5,9 @@ erpApp.controller('grnSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi',
                 orgItemVal = null;
             },
             callBackEdit: function(context) {
-                var poNoField = context.form.fields['poNo'];
-                var dcNoField = context.form.fields['dcNo'];
                 context.form.mapping.actions.delete = false;
                 orgItemVal = angular.copy(context.data);
                 context.data['subContractorDCDate'] = new Date(context.data['subContractorDCDate']);
-                poNoField.filter = {};
-                dcNoField.filter = {};
-                context.actions.makeOptionsFields(context, poNoField).then(function() {
-                    context.actions.makeOptionsFields(context, dcNoField).then(function() {
-                        context.actions.callBackChangeMapping(context);
-                    });
-                });
-
             },
             callBackList: function(context) {
                 context.grnSC = true;

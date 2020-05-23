@@ -1,11 +1,5 @@
 erpApp.controller('flowMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
     var actions = {
-        callBackAdd: function(context) {
-            context.actions.makeOptionsFields(context, context.form.fields['partNo']);
-        },
-        callBackEdit: function(context) {
-            context.actions.callBackAdd(context);
-        },
         updateCostAnalysis: function(context, mappingData, value, field, fieldMapkey) {
             var machineDetails = context.form.mapping.fields.machineNo.options[mappingData.machineNo];
             var costAnalysis = 0;

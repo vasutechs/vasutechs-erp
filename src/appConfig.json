@@ -2315,6 +2315,8 @@
                     "dcNo": null,
                     "date": null,
                     "subContractorCode": null,
+                    "address": null,
+                    "gstin": null,
                     "poNo": null,
                     "status": 0,
                     "extraAmount": null,
@@ -2354,15 +2356,26 @@
                             "required": true
                         },
                         "subContractorCode": {
-                            "name": "Sub Contractor Code",
+                            "name": "To Sub Contractor",
                             "id": "subContractorCode",
                             "type": "select",
                             "options": {},
                             "action": "getPOSubContractor",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
+                            "updateData": ["address", "gstin"],
                             "isSingle": true,
                             "isEditDisable": true
+                        },
+                        "address": {
+                            "name": "Address",
+                            "id": "address",
+                            "type": "span"
+                        },
+                        "gstin": {
+                            "name": "GSTIN",
+                            "id": "gstin",
+                            "type": "span"
                         },
                         "poNo": {
                             "name": "PO No",

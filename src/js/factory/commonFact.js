@@ -24,8 +24,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var parentModule;
             var pageProm = [];
             var userType = authFact.isLogin();
-            var formPromise;
-            var formPromise;
             context.showLoading = true;
             scope.context = context;
             if (context.parentModule) {
@@ -43,24 +41,12 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             context.module = module;
             context.appConfig = appConfig;
             context.actions = angular.extend(angular.copy(defaultActions), actions || {});
-            formPromise = context.form && context.actions.updateFields(context, context.form.fields);
-            if (formPromise) {
-                formPromise && pageProm.push(formPromise);
-                formPromise.then(function() {
-                    context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
-                    if (context.form && context.form.mapping) {
-                        pageProm.push(context.actions.updateFields(context, context.form.mapping.fields));
-                    }
-                    pageProm.push(context.actions.updateFields(context, context.listView));
-                });
-            } else {
-                pageProm.push(context.actions.updateFields(context, context.listView));
-                context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
-            }
+
+            pageProm.push(context.actions.updateFields(context, context.listView));
+            context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
+
             scope.$broadcast('showAlertRol');
-            scope.$on('$viewContentLoaded', function() {
-                console.log('page loaded...');
-            });
+
             Promise.all(pageProm).then(function() {
                 if (context.actions[context.page.name]) {
                     context.actions[context.page.name](context).then(function() {
@@ -89,28 +75,33 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             context.page.editKey = undefined;
             context.page.printView = undefined;
-            context.actions.callBackAdd && context.actions.callBackAdd(context);
-            return true;
+            return context.actions.formRender(context).then(function() {
+                context.actions.callBackAdd && context.actions.callBackAdd(context);
+                return true;
+            });
         },
         edit: function(context, key, printView) {
             context.page.name = 'edit';
             context.page.printView = printView;
             context.page.editKey = key;
+            context.existEditData = context.page.editKey && context.actions.findObjectByKey(context.listViewDataMaster, 'id', context.page.editKey);
 
-            return context.actions.getData(context.module, key).then(function(res) {
-                context.data = res.data;
-                context.printData = angular.copy(context.data);
-                if (context.data['date']) {
-                    context.data['date'] = new Date(context.data['date']);
-                }
-                if (context.data['frmDate']) {
-                    context.data['frmDate'] = new Date(context.data['frmDate']);
-                }
-                if (context.data['toDate']) {
-                    context.data['toDate'] = new Date(context.data['toDate']);
-                }
-                context.actions.callBackEdit && context.actions.callBackEdit(context, key);
-                return context;
+            return context.actions.formRender(context).then(function() {
+                return context.actions.getData(context.module, key).then(function(res) {
+                    context.data = res.data;
+                    context.printData = angular.copy(context.data);
+                    if (context.data['date']) {
+                        context.data['date'] = new Date(context.data['date']);
+                    }
+                    if (context.data['frmDate']) {
+                        context.data['frmDate'] = new Date(context.data['frmDate']);
+                    }
+                    if (context.data['toDate']) {
+                        context.data['toDate'] = new Date(context.data['toDate']);
+                    }
+                    context.actions.callBackEdit && context.actions.callBackEdit(context, key);
+                    return context;
+                });
             });
 
         },
@@ -148,6 +139,15 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 context.actions.callBackList && context.actions.callBackList(context);
                 return context;
             });
+        },
+        formRender: function(context) {
+            return context.actions.updateFields(context, context.form.fields).then(function() {
+                if (context.form.mapping) {
+                    return context.actions.updateFields(context, context.form.mapping.fields);
+                }
+                return context;
+            });
+
         },
         getPageData: function(context) {
             return $filter('filter')(context.listViewData, context.filterBy, true) || [];
@@ -233,6 +233,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     var optionVal = field.optionId && list[i][field.optionId] || list[i]['id'];
                     var optionIdVal = field.optionId && list[i][field.optionId] || list[i]['id'];
                     var optionNameVal = field.valuePrefix && field.valuePrefix || '';
+                    var editOption = context.existEditData && optionIdVal === context.existEditData[field.id] || false;
                     optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
                     optionNameVal += list[i][field.replaceName] || '';
                     var isCheckExistVal = field.existingCheck && context.listViewDataMaster && context.actions.findObjectByKey(context.listViewDataMaster, field.id, optionIdVal) || false;
@@ -240,7 +241,7 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                     field.allOptions[optionVal]['optionName'] = optionNameVal;
                     field.allOptions[optionVal]['optionId'] = optionIdVal;
                     if ((field.filter === undefined || self.matchFilter(field, list[i], context) === true) &&
-                        (!isCheckExistVal || optionIdVal === context.data[field.id])) {
+                        (!isCheckExistVal || editOption)) {
                         field.options[optionVal] = field.allOptions[optionVal];
                     }
                 }
