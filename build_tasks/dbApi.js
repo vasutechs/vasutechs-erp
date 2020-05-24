@@ -1,17 +1,29 @@
 module.exports = function() {
+    var JsonDB = require('node-json-db');
+    var fs = require('fs');
     var masterDb = new JsonDB("data/database", true, true);
-    var db;
+    var currentDb;
     var databaseType;
     var calendarYear = new Date().getMonth() >= 3 ? new Date().getFullYear() : new Date().getFullYear() - 1;
     var currentYearDb = new JsonDB("data/" + calendarYear + "/database", true, true);
-    var getTableData = function(dataPath, inputData) {
+    var getTableData = function(dataPath) {
         var data;
         try {
-            data = db.getData('/tables' + dataPath);
+            data = dataPath && currentDb.getData('/tables' + dataPath) || currentDb.getData('/');
         } catch (error) {
             data = {};
         };
         return data;
+    };
+
+    var setCurrentDb = function(year) {
+        if (year && year[1]) {
+            currentDb = currentYearDb = calendarYear === year[1] && currentYearDb || new JsonDB("data/" + year[1] + "/database", true, true);
+            databaseType = "yearly-" + year[1];
+        } else {
+            currentDb = masterDb;
+            databaseType = "master";
+        }
     };
 
     var setTableData = function(dataPath, inputData) {
@@ -21,10 +33,10 @@ module.exports = function() {
         inputData = JSON.parse(inputData);
         if (!inputData.id && !inputData.delete) {
             try {
-                lastData = db.getData('/tables' + dataPath);
+                lastData = currentDb.getData('/tables' + dataPath);
             } catch (error) {
-                db.push('/tables' + dataPath, {}, true);
-                lastData = db.getData('/tables' + dataPath);
+                currentDb.push('/tables' + dataPath, {}, true);
+                lastData = currentDb.getData('/tables' + dataPath);
             };
             lastData = lastData && lastData[Object.keys(lastData)[Object.keys(lastData).length - 1]];
             newId = lastData && lastData.id && parseInt(lastData.id) + 1 || 1;
@@ -32,16 +44,16 @@ module.exports = function() {
             inputData['added'] = new Date();
         }
         try {
-            db.push('/type', databaseType, true);
-            db.push('/updated', new Date(), true);
+            currentDb.push('/type', databaseType, true);
+            currentDb.push('/updated', new Date(), true);
             if (inputData.delete) {
-                db.delete('/tables' + dataPath + '/' + inputData.key);
-                data = db.getData('/tables' + dataPath);
+                currentDb.delete('/tables' + dataPath + '/' + inputData.key);
+                data = currentDb.getData('/tables' + dataPath);
             } else {
                 id = '/' + inputData.id;
                 inputData['updated'] = new Date();
-                db.push('/tables' + dataPath + id, inputData, true);
-                data = db.getData('/tables' + dataPath + id);
+                currentDb.push('/tables' + dataPath + id, inputData, true);
+                data = currentDb.getData('/tables' + dataPath + id);
             }
 
         } catch (error) {
@@ -52,14 +64,14 @@ module.exports = function() {
 
     var uploadTableData = function(inputData) {
         var inputVal = JSON.parse(inputData);
-        db = currentYearDb;
+        currentDb = currentYearDb;
         databaseType = "yearly-" + new Date().getFullYear();
         for (var table in inputVal) {
             for (var data in inputVal[table]) {
                 setTableData('/' + table, JSON.stringify(inputVal[table][data]));
             }
         }
-        return db.getData('/tables');
+        return currentDb.getData('/tables');
     };
 
     var uploadDb = function(inputData) {
@@ -96,4 +108,12 @@ module.exports = function() {
         }
         return listDbYears;
     };
+    return {
+        getListDb: getListDb,
+        uploadDb: uploadDb,
+        uploadTableData: uploadTableData,
+        setTableData: setTableData,
+        getTableData: getTableData,
+        setCurrentDb: setCurrentDb
+    }
 };
