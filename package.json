@@ -11,7 +11,8 @@
         "app-start": "npm run app-update && node_modules\\.bin\\gulp server",
         "app-build": "node_modules\\.bin\\gulp build",
         "app-qa": "node_modules\\.bin\\gulp build-minify",
-        "app-server": "node_modules\\.bin\\gulp server"
+        "app-server": "node_modules\\.bin\\gulp server",
+        "app-node-server": "node build_tasks\\server.js --run"
     },
     "author": "",
     "license": "ISC",

@@ -1,9 +1,10 @@
-module.exports = function(config, task, gulp) {
+module.exports = function(config, gulp) {
 
     var gp_concat = require('gulp-concat'),
         gp_uglify = require('gulp-uglify'),
         replace = require('gulp-replace'),
         ngHtml2Js = require("gulp-ng-html2js"),
+        server = require('./server'),
         del = require('del'),
         fs = require('fs'),
         AdmZip = require('adm-zip'),
@@ -42,47 +43,22 @@ module.exports = function(config, task, gulp) {
             }
             defaultSrcJsFiles.push(config.dist.path + '/js/template.js');
             return defaultSrcJsFiles;
-        },
-        buildConfig = {
-            src: {
-                js: './src/js',
-                template: './src/template',
-                defaultSrcJsFiles: ['./src/js/boot.js', './src/js/components/**.**', './src/js/factory/**.**', './src/js/services/**.**', './src/js/controllers/admin/**', './src/js/controllers/dashboard.js', './src/js/controllers/databaseUpload.js'],
-                defaultModules: ['databaseUpload', 'databaseDownload', 'calendarYear', 'dashboard', 'admin/**'],
-                assets: './src/assets'
-            },
-            dist: {
-                path: './dist'
-            },
-            release: {
-                path: './release',
-                dist: './release/dist',
-                namePefix: 'VasuTechsERP-',
-                defaultFiles: [
-                    'index.html',
-                    'build_tasks/server.js',
-                    'package.json',
-                    'start',
-                    'gulpfile.js'
-                ]
-            }
         };
-    config = Object.assign(config, buildConfig);
     config.src.defaultModules = Object.assign(config.src.defaultModules, config.release.releaseProjectData);
 
-    gulp.task('clean', task.clean = () => {
+    gulp.task('clean', config.task.clean = () => {
         return del([config.dist.path]);
     });
 
-    gulp.task('clean-template', task.clean = () => {
+    gulp.task('clean-template', config.task.clean = () => {
         return del([config.dist.path + '/js/template.js']);
     });
 
-    gulp.task('build-assets', task.buildAssets = () => {
+    gulp.task('build-assets', config.task.buildAssets = () => {
         return gulp.src(config.src.assets + '/**/**.**').pipe(gulp.dest(config.dist.path + '/assets'));
     });
 
-    gulp.task('build-template', task.buildTemplate = () => {
+    gulp.task('build-template', config.task.buildTemplate = () => {
         return gulp.src(config.src.template + '/**/**.html')
             .pipe(ngHtml2Js({
                 moduleName: "erpApp",
@@ -92,14 +68,14 @@ module.exports = function(config, task, gulp) {
             .pipe(gulp.dest(config.dist.path + '/js'));
     });
 
-    gulp.task('build-js', task.buildJs = () => {
+    gulp.task('build-js', config.task.buildJs = () => {
         return gulp.src(getDefaultSrcFiles(), { allowEmpty: true })
             .pipe(gp_concat('boot.js'))
             .pipe(replace('STATIC_CONFIG', applyAppConfig))
             .pipe(gulp.dest(config.dist.path + '/js'));
     });
 
-    gulp.task('build-js-minify', task.buildJsMinify = () => {
+    gulp.task('build-js-minify', config.task.buildJsMinify = () => {
         return gulp.src(getDefaultSrcFiles(), { allowEmpty: true })
             .pipe(gp_concat('boot.js'))
             .pipe(replace('STATIC_CONFIG', applyAppConfig))
@@ -107,9 +83,9 @@ module.exports = function(config, task, gulp) {
             .pipe(gulp.dest(config.dist.path + '/js'));
     });
 
-    gulp.task('build', task.build = gulp.series('clean', 'build-template', 'build-assets', 'build-js', 'clean-template'));
+    gulp.task('build', config.task.build = gulp.series('clean', 'build-template', 'build-assets', 'build-js', 'clean-template'));
 
-    gulp.task('build-minify', task.buildMinify = gulp.series('clean', 'build-template', 'build-assets', 'build-js-minify', 'clean-template'));
+    gulp.task('build-minify', config.task.buildMinify = gulp.series('clean', 'build-template', 'build-assets', 'build-js-minify', 'clean-template'));
 
     gulp.task('build-release-files', buildReleaseFiles = () => {
         return gulp.src(config.release.defaultFiles, { base: "." })
@@ -124,5 +100,35 @@ module.exports = function(config, task, gulp) {
         config.buildProRes(data);
         done();
     });
-    gulp.task('build-project', task.buildProject = gulp.series('build-minify', 'build-release-files', 'build-project-zip'));
+    gulp.task('build-project', config.task.buildProject = gulp.series('build-minify', 'build-release-files', 'build-project-zip'));
+
+    gulp.task('create-api', config.task.createApi = (done) => {
+        config.httpMiddleWare.use('/releaseProject', function(req, res) {
+            var JsonDB = require('node-json-db');
+            var masterDb = new JsonDB("data/database", true, true);
+            var releaseProjectData = masterDb.getData('/tables' + req.originalUrl);
+            var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
+            config.dist.path = config.release.dist;
+            config.release.status = true;
+            config.release.releaseProjectData = releaseProjectData;
+            config.task.buildProject(releaseProjectData);
+            config.buildPromise.then(function(resData) {
+                res.writeHead(200, {
+                    'Content-Type': 'application/octet-stream',
+                    'Content-Disposition': 'attachment; filename=' + projectName,
+                    'Content-Length': resData.length
+                });
+
+                res.end(resData);
+            });
+        });
+        done();
+    });
+
+    gulp.task('create-server', config.task.createServer = (done) => {
+        server(config);
+        done();
+    });
+
+    gulp.task('server', config.task.server = gulp.series('create-api', 'create-server'));
 };

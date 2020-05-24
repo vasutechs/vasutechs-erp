@@ -1,28 +1,16 @@
 var gulp = require('gulp');
-var glob = require('glob');
-var arg = require('minimist')(process.argv.slice(3));
-var config = {
-    webServer: {
-        distPath: './',
-        serverPort: '9000',
-        serverPath: 'http://localhost:9000'
+var config = require('./build_tasks/config')();
+config = Object.assign(config, {
+    src: {
+        js: './src/js',
+        template: './src/template',
+        defaultSrcJsFiles: ['./src/js/boot.js', './src/js/components/**.**', './src/js/factory/**.**', './src/js/services/**.**', './src/js/controllers/admin/**', './src/js/controllers/dashboard.js', './src/js/controllers/databaseUpload.js'],
+        defaultModules: ['databaseUpload', 'databaseDownload', 'calendarYear', 'dashboard', 'admin/**'],
+        assets: './src/assets'
     },
-    httpMiddleWare: null,
-    buildTasks: './build_tasks'
-};
-config.buildProRes = null;
-config.buildPromise = new Promise(function(res) {
-    config.buildProRes = res;
-});
-config.arg = arg;
-
-
-var task = {};
-
-glob.sync(config.buildTasks + '/*.js').forEach(function(taskFile) {
-    require(taskFile)(config, task, gulp);
+    dist: {
+        path: './dist'
+    }
 });
 
-gulp.task('default', function() {
-
-});
+require(config.buildTasks + '/build.js')(config, gulp);
