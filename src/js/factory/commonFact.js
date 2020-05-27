@@ -1,24 +1,20 @@
 erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', '$window', '$http', '$q', function(staticConfig, serviceApi, $filter, $location, authFact, $injector, $window, $http, $q) {
     var erpAppConfig = staticConfig;
-    var erpLoadPrsRes;
-    var erpLoadPrs = new Promise(function(resolve, reject) {
-        erpLoadPrsRes = resolve;
-    });
+    var erpLoadProm = $q.defer();
     var loadErpAppConfig = (function() {
-        var userType = authFact.isLogin();
         var settingsService = angular.copy(erpAppConfig.modules.admin.settings.services.list);
         settingsService.url = settingsService.url + '/1';
         return serviceApi.callServiceApi(settingsService).then(function(res) {
             erpAppConfig = angular.extend(erpAppConfig, res.data);
             defaultActions.moduleAccess(erpAppConfig);
-            erpLoadPrsRes();
+            erpLoadProm.resolve();
             return erpAppConfig;
         });
     })();
 
     var initCtrl = function(scope, module, actions) {
         var returnPageProm = $q.defer();
-        return erpLoadPrs.then(function() {
+        return erpLoadProm.promise.then(function() {
             var appConfig = getErpAppConfig();
             var context = angular.copy(defaultActions.getDeepProp(appConfig.modules, module));
             var parentModule;

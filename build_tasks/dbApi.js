@@ -108,12 +108,31 @@ module.exports = function() {
         }
         return listDbYears;
     };
+
+    var dbConnect = function(req, res, inputData) {
+        var apiUrl = req.originalUrl;
+        var apiPath = apiUrl.split('/api');
+        var year = apiUrl.match(new RegExp("YEAR-(.*)/api"));
+        var data;
+
+        setCurrentDb(year);
+        if (apiPath[1] === '/download') {
+            data = getTableData();
+        } else if (apiPath[1] === '/getDatabases') {
+            data = { list: getListDb() };
+        } else if (apiPath[1] === '/upload') {
+            data = uploadDb(inputData);
+        } else if (apiPath[1] === '/calendarYear') {
+            setCurrentDb(year);
+        } else if (req.method === 'POST') {
+            data = setTableData(apiPath[1], inputData);
+        } else {
+            data = getTableData(apiPath[1] || apiUrl);
+        }
+        return data;
+    };
+
     return {
-        getListDb: getListDb,
-        uploadDb: uploadDb,
-        uploadTableData: uploadTableData,
-        setTableData: setTableData,
-        getTableData: getTableData,
-        setCurrentDb: setCurrentDb
+        dbConnect: dbConnect
     }
 };

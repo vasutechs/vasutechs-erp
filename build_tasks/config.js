@@ -18,8 +18,7 @@ module.exports = function() {
                 'build_tasks/server.js',
                 'build_tasks/dbApi.js',
                 'build_tasks/config.js',
-                'package.json',
-                'start'
+                'package.json'
             ]
         }
     };

@@ -7,6 +7,7 @@ module.exports = function(config, gulp) {
         server = require('./server'),
         del = require('del'),
         fs = require('fs'),
+        dbApi = require('./dbApi')(),
         AdmZip = require('adm-zip'),
         applyAppConfig = function() {
             appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
@@ -36,7 +37,7 @@ module.exports = function(config, gulp) {
             var defaultSrcJsFiles = config.src.defaultSrcJsFiles;
             if (config.release.status) {
                 for (var i in config.src.defaultModules) {
-                    defaultSrcJsFiles.push('./src/js/controllers/' + config.src.defaultModules[i] + '/**');
+                    defaultSrcJsFiles.push('./src/js/controllers/' + config.src.defaultModules[i] + '**');
                 }
             } else {
                 defaultSrcJsFiles.push('./src/js/controllers/**');
@@ -44,7 +45,19 @@ module.exports = function(config, gulp) {
             defaultSrcJsFiles.push(config.dist.path + '/js/template.js');
             return defaultSrcJsFiles;
         };
-    config.src.defaultModules = Object.assign(config.src.defaultModules, config.release.releaseProjectData);
+    config = Object.assign(config, {
+        src: {
+            js: './src/js',
+            template: './src/template',
+            defaultSrcJsFiles: ['./src/js/boot.js', './src/js/components/**.**', './src/js/factory/**.**', './src/js/services/**.**', './src/js/controllers/admin/**', './src/js/controllers/dashboard.js', './src/js/controllers/databaseUpload.js'],
+            defaultModules: ['databaseUpload', 'databaseDownload', 'calendarYear', 'dashboard', 'admin/**'],
+            assets: './src/assets'
+        },
+        dist: {
+            path: './dist'
+        }
+    });
+
 
     gulp.task('clean', config.task.clean = () => {
         return del([config.dist.path]);
@@ -87,7 +100,20 @@ module.exports = function(config, gulp) {
 
     gulp.task('build-minify', config.task.buildMinify = gulp.series('clean', 'build-template', 'build-assets', 'build-js-minify', 'clean-template'));
 
+    gulp.task('build-relase-package-json', buildReleaseCreateFiles = (done) => {
+        //fs.writeFile(config.release.path + '/start', 'node build_tasks\\server.js --run');
+        var packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+        console.log(packageJson);
+        delete packageJson.scripts['app-build'];
+        delete packageJson.scripts['app-qa'];
+        delete packageJson.scripts['app-server'];
+        packageJson.scripts['app-start'] = 'npm run app-update && npm run app-node-server'
+        fs.writeFile(config.release.path + '/package.json', JSON.stringify(packageJson));
+        done();
+    });
+
     gulp.task('build-release-files', buildReleaseFiles = () => {
+        fs.writeFile(config.release.path + '/start.bat', 'npm run app-start-node');
         return gulp.src(config.release.defaultFiles, { base: "." })
             .pipe(gulp.dest(config.release.path));
     });
@@ -100,27 +126,34 @@ module.exports = function(config, gulp) {
         config.buildProRes(data);
         done();
     });
-    gulp.task('build-project', config.task.buildProject = gulp.series('build-minify', 'build-release-files', 'build-project-zip'));
+    gulp.task('build-project', config.task.buildProject = gulp.series('build', 'build-release-files', 'build-project-zip'));
 
     gulp.task('create-api', config.task.createApi = (done) => {
         config.httpMiddleWare.use('/releaseProject', function(req, res) {
-            var JsonDB = require('node-json-db');
-            var masterDb = new JsonDB("data/database", true, true);
-            var releaseProjectData = masterDb.getData('/tables' + req.originalUrl);
+            var releaseProjectData = dbApi.dbConnect(req, res);
             var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
             config.dist.path = config.release.dist;
-            config.release.status = true;
-            config.release.releaseProjectData = releaseProjectData;
-            config.task.buildProject(releaseProjectData);
-            config.buildPromise.then(function(resData) {
-                res.writeHead(200, {
-                    'Content-Type': 'application/octet-stream',
-                    'Content-Disposition': 'attachment; filename=' + projectName,
-                    'Content-Length': resData.length
-                });
+            if (releaseProjectData) {
+                for (var i in releaseProjectData.mapping) {
+                    config.src.defaultModules.push(releaseProjectData.mapping[i].module);
+                }
+                config.src.defaultModules = Object.assign(config.src.defaultModules, releaseProjectData.modules);
+                config.release.status = true;
+                config.task.buildProject();
+                config.buildPromise.then(function(resData) {
+                    res.writeHead(200, {
+                        'Content-Type': 'application/octet-stream',
+                        'Content-Disposition': 'attachment; filename=' + projectName,
+                        'Content-Length': resData.length
+                    });
 
-                res.end(resData);
-            });
+                    res.end(resData);
+                });
+            } else {
+                res.writeHead(401, { 'Content-Type': 'application/json' });
+                res.end();
+            }
+
         });
         done();
     });
