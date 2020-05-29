@@ -21,14 +21,14 @@
                 </div>
                 <div ng-if="context.page.printView" class="row">
                     <div class="col-8">
-                        <img ng-if="context.appConfig.companyLogoUrl" class="logo" title="{{context.appConfig.companyName}}" ng-src="{{context.appConfig.companyLogoUrl}}" />
-                        <h1 ng-if="!context.appConfig.companyLogoUrl" class="logo">{{context.appConfig.companyName}}</h1>
+                        <img ng-if="context.erpAppConfig.companyLogoUrl" class="logo" title="{{context.erpAppConfig.companyName}}" ng-src="{{context.erpAppConfig.companyLogoUrl}}" />
+                        <h1 ng-if="!context.erpAppConfig.companyLogoUrl" class="logo">{{context.erpAppConfig.companyName}}</h1>
                     </div>
                     <div class="col-4">
 
-                        <p class="font-italic"><b>{{context.appConfig.companyAddress}}</b></p>
-                        <p class="font-italic"><b>Mobile:</b> {{context.appConfig.companyMobile}} <b>Email:</b> {{context.appConfig.companyEmail}}</p>
-                        <p class="font-italic" ng-if="!context.cashBill"><b>GSTIN:</b> {{context.appConfig.companyGstin}}</p>
+                        <p class="font-italic"><b>{{context.erpAppConfig.companyAddress}}</b></p>
+                        <p class="font-italic"><b>Mobile:</b> {{context.erpAppConfig.companyMobile}} <b>Email:</b> {{context.erpAppConfig.companyEmail}}</p>
+                        <p class="font-italic" ng-if="!context.cashBill"><b>GSTIN:</b> {{context.erpAppConfig.companyGstin}}</p>
                     </div>
                 </div>
                 <div class="card-body">

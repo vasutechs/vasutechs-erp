@@ -2,10 +2,10 @@ erpApp.controller('usersCtrl', ['$scope', 'commonFact', function($scope, commonF
     var actions = {
         callBackList: function(context) {
             var adminOption = {
-                userType: 'ADMIN',
-                desc: 'ADMIN',
-                optionName: 'ADMIN',
-                optionId: 'ADMIN'
+                userType: 'SUPERADMIN',
+                desc: 'SUPERADMIN',
+                optionName: 'SUPERADMIN',
+                optionId: 'SUPERADMIN'
             };
             context.form.fields['userType'].options['ADMIN'] = adminOption;
         }

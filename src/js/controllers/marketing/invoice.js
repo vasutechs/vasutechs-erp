@@ -8,7 +8,7 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                 delMapItemVal = [];
             },
             callBackSetAutoGenKey: function(context) {
-                var year = context.appConfig.calendarYear;
+                var year = context.erpAppConfig.calendarYear;
                 context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year + '-' + ('' + parseInt(year + 1)).substring(2);
             },
             callBackChangeMapping: function(context, data, key, field) {
@@ -33,12 +33,12 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
             getPartStockDetail: function(context, data, key, field) {
                 var newMapData = [];
                 newMapData = context.data.mapping.filter(function(data) {
-                    if (context.partStock[data.id + '-' + context.appConfig.finalStageOpp]) {
-                        data.operationFrom = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].operationFrom;
-                        data.operationTo = context.partStock[data.id + '-' + context.appConfig.finalStageOpp].operationTo;
+                    if (context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp]) {
+                        data.operationFrom = context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].operationFrom;
+                        data.operationTo = context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].operationTo;
                     }
 
-                    return (context.partStock && context.partStock[data.id + '-' + context.appConfig.finalStageOpp] && parseInt(context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty) > 0);
+                    return (context.partStock && context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp] && parseInt(context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].partStockQty) > 0);
                 });
                 context.data.mapping = newMapData;
             },
@@ -47,8 +47,8 @@ erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function(
                     totalBeforTax = 0,
                     partStock = 0;
 
-                if (context.partStock[data.id + '-' + context.appConfig.finalStageOpp]) {
-                    partStock = parseInt(context.partStock[data.id + '-' + context.appConfig.finalStageOpp].partStockQty);
+                if (context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp]) {
+                    partStock = parseInt(context.partStock[data.id + '-' + context.erp.finalStageOpp].partStockQty);
                     if (context.page.name === 'edit') {
                         partStock += parseInt(orgItemVal.mapping[fieldKey].unit);
                     }

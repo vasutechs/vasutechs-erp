@@ -32,7 +32,7 @@ erpApp.controller('assembleMaterialIssueNoteCtrl', ['$scope', 'commonFact', 'ser
             },
             updateQtyMake: function(context, mappingData, value, field, fieldMapkey) {
                 if (mappingData.id) {
-                    var partStockVal = context.partStock[mappingData.id + '-' + context.appConfig.finalStageOpp];
+                    var partStockVal = context.partStock[mappingData.id + '-' + context.erpAppConfig.finalStageOpp];
                     if (partStockVal) {
                         if (context.page.name === 'edit' && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[fieldMapkey].issueQty) {
                             field.max = parseInt(orgItemVal.mapping[fieldMapkey].issueQty) + parseInt(partStockVal.partStockQty);

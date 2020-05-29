@@ -20,18 +20,13 @@
                     </div>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto">
+            <ul ng-if="headerContext.modules" class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                 </li>
                 <li ng-if="!headerContext.modules['calendarYear'].disable" class="nav-item">
                     <select class="form-control" id="calendarYear" ng-change="headerContext.actions.changeCalendarYear(headerContext)" ng-model="headerContext.calendarYear" ng-options="option.optionId as option.optionName for option in headerContext.calendarYearList">
                         <option value="">--Select--</option>
                     </select>
-                </li>
-                <li ng-if="headerContext.modules['releaseProject']" class="nav-item">
-                    <a class="nav-link" title="Release Project" href="#!{{headerContext.modules['releaseProject'].page.link}}">
-                        <i class="fa fa-fw fa-rocket"></i>
-                    </a>
                 </li>
                 <li ng-if="!headerContext.modules['databaseUpload'].disable" class="nav-item">
                     <a class="nav-link" title="Import data" href="#!{{headerContext.modules['databaseUpload'].page.link}}">
@@ -44,6 +39,8 @@
                     </a>
 
                 </li>
+            </ul>
+            <ul ng-if="headerContext.modules" class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a ng-if="headerContext.isLogin" title="Logout" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}?type=logout">
                         <i class="fa fa-fw fa-sign-out"></i>

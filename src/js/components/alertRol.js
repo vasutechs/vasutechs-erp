@@ -1,5 +1,5 @@
-erpApp.directive('alertRol', ['commonFact', 'authFact', function(commonFact, authFact) {
-    var appConfig = commonFact.getErpAppConfig();
+erpApp.directive('alertRol', ['appFact', 'commonFact', 'authFact', function(appFact, commonFact, authFact) {
+    var erpAppConfig = appFact.getErpAppConfig();
     var showROL = true;
     var showAlertRol = function($scope) {
         var userType = authFact.isLogin();
@@ -18,7 +18,7 @@ erpApp.directive('alertRol', ['commonFact', 'authFact', function(commonFact, aut
                     for (var j in partMaster) {
                         var yellowAlert = partMaster[j].rolQtyYellowRage;
                         var redAlert = partMaster[j].rolQtyRedRage;
-                        var checkPartStock = partStock[partMaster[j].id + '-' + appConfig.finalStageOpp];
+                        var checkPartStock = partStock[partMaster[j].id + '-' + erpAppConfig.finalStageOpp];
 
                         if (checkPartStock) {
                             checkPartStock.partName = partMaster[j].partName;

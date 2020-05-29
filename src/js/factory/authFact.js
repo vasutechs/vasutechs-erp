@@ -1,6 +1,6 @@
 erpApp.factory('authFact', ['serviceApi', '$window', function(serviceApi, $window) {
     var login = function(context) {
-        var usersService = angular.copy(context.appConfig.modules.admin.users.services.list);
+        var usersService = angular.copy(context.erpAppConfig.modules.admin.users.services.list);
         return serviceApi.callServiceApi(usersService).then(function(res) {
             var data = res.data;
             var userDetail;

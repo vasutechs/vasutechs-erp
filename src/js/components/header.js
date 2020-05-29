@@ -1,12 +1,12 @@
-erpApp.directive('header', ['commonFact', '$location', 'authFact', function(commonFact, $location, authFact) {
+erpApp.directive('header', ['appFact', 'commonFact', '$location', 'authFact', function(appFact, commonFact, $location, authFact) {
     var headerComp = function($scope, element, attrs) {
-        var appConfig = commonFact.getErpAppConfig();
+        var erpAppConfig = appFact.getErpAppConfig() || null;
         var headerContext = {};
-        appConfig.calendarYear = new Date().getMonth() >= appConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
-        headerContext.appName = appConfig.appName;
-        headerContext.appNavMenus = appConfig.appNavMenus;
-        headerContext.modules = appConfig.modules;
-        headerContext.calendarYear = appConfig.calendarYear;
+        erpAppConfig.calendarYear = new Date().getMonth() >= erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
+        headerContext.appName = erpAppConfig.appName;
+        headerContext.appNavMenus = erpAppConfig.appNavMenus;
+        headerContext.modules = erpAppConfig.modules;
+        headerContext.calendarYear = erpAppConfig.calendarYear;
         headerContext.downloadDbName = headerContext.calendarYear + '-' + ('' + parseInt(headerContext.calendarYear + 1)).substring(2);
         headerContext.calendarYearList = [];
         headerContext.isLogin = authFact.isLogin();
@@ -21,9 +21,9 @@ erpApp.directive('header', ['commonFact', '$location', 'authFact', function(comm
         headerContext.actions = {
             showSubModule: commonFact.defaultActions.showSubModule,
             changeCalendarYear: function(context) {
-                appConfig.calendarYear = context.calendarYear;
+                erpAppConfig.calendarYear = context.calendarYear;
                 commonFact.defaultActions.getData('calendarYear');
-                commonFact.defaultActions.goToPage(appConfig.modules.dashboard.page.link);
+                commonFact.defaultActions.goToPage(erpAppConfig.modules.dashboard.page.link);
             },
             downloadData: function(context) {
                 angular.element('#downloadModal').modal('show');

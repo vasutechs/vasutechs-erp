@@ -6,6 +6,47 @@
     "yearChangeMonth": 3,
     "httpCache": true,
     "modules": {
+        "login": {
+            "id": "login",
+            "title": "Login",
+            "disableMenu": true,
+            "defaultRelease": true,
+            "masterData": {
+                "userName": null,
+                "password": null
+            },
+            "form": {
+                "name": "Login",
+                "id": "login",
+                "title": "Login",
+                "fields": {
+                    "userName": {
+                        "name": "User Name",
+                        "id": "userName",
+                        "type": "input",
+                        "inputType": "text",
+                        "required": true
+                    },
+                    "password": {
+                        "name": "Password",
+                        "id": "password",
+                        "type": "input",
+                        "inputType": "password",
+                        "required": true
+                    }
+                },
+                "actions": {
+                    "cancel": false
+                }
+            },
+            "page": {
+                "link": "login",
+                "name": "add",
+                "templateUrl": "template/defaultView.html",
+                "controller": "loginCtrl",
+                "actions": false
+            }
+        },
         "databaseUpload": {
             "id": "databaseUpload",
             "name": "Database Upload",
@@ -5411,8 +5452,8 @@
                 }
             }
         },
-        "admin": {
-            "id": "admin",
+        "appAdmin": {
+            "id": "appAdmin",
             "name": "Admin",
             "title": "Admin",
             "icon": "cog",
@@ -5428,7 +5469,6 @@
                     "companyEmail": null,
                     "companyGstin": null,
                     "finalStageOpp": null,
-                    "forceLoginSite": null,
                     "mapping": [{
                         "module": null,
                         "restrictUser": null,
@@ -5492,12 +5532,6 @@
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
                             "valuePrefixData": "opCode"
-                        },
-                        "forceLoginSite": {
-                            "name": "Force login to site",
-                            "id": "forceLoginSite",
-                            "type": "input",
-                            "inputType": "checkbox"
                         }
                     },
                     "mapping": {
@@ -5560,8 +5594,8 @@
                     }
                 }
             },
-            "users": {
-                "id": "users",
+            "appUsers": {
+                "id": "appUsers",
                 "title": "Users",
                 "masterData": {
                     "userName": null,
@@ -5605,7 +5639,7 @@
                     "link": "admin/users/list",
                     "name": "list",
                     "templateUrl": "template/defaultView.html",
-                    "controller": "usersCtrl"
+                    "controller": "appUsersCtrl"
                 },
                 "services": {
                     "list": {
@@ -5657,19 +5691,25 @@
                         "method": "GET"
                     }
                 }
-            },
-            "login": {
-                "id": "login",
-                "title": "Login",
-                "disableMenu": true,
+            }
+        },
+        "admin": {
+            "id": "admin",
+            "name": "Admin",
+            "title": "Admin",
+            "restricked": true,
+            "icon": "cog",
+            "users": {
+                "id": "users",
+                "title": "Users",
                 "masterData": {
                     "userName": null,
-                    "password": null
+                    "password": null,
+                    "userType": null
                 },
                 "form": {
-                    "name": "Login",
-                    "id": "login",
-                    "title": "Login",
+                    "name": "Users",
+                    "id": "users",
                     "fields": {
                         "userName": {
                             "name": "User Name",
@@ -5684,76 +5724,110 @@
                             "type": "input",
                             "inputType": "password",
                             "required": true
+                        },
+                        "userType": {
+                            "name": "User Type",
+                            "id": "userType",
+                            "type": "select",
+                            "options": {},
+                            "required": true
+                        }
+                    }
+                },
+                "listView": [{
+                    "title": "User Name",
+                    "id": "userName"
+                }],
+                "page": {
+                    "link": "admin/users/list",
+                    "name": "list",
+                    "templateUrl": "template/defaultView.html",
+                    "controller": "usersCtrl"
+                },
+                "services": {
+                    "list": {
+                        "url": "api/users",
+                        "method": "GET"
+                    }
+                }
+            },
+            "appCustomers": {
+                "name": "App Customers",
+                "id": "appCustomers",
+                "title": "App Customers",
+                "masterData": {
+                    "companyName": null,
+                    "address": null,
+                    "username": null,
+                    "password": null,
+                    "mapping": [{
+                        "module": null
+                    }]
+                },
+                "form": {
+                    "name": "App Customers",
+                    "id": "appCustomers",
+                    "fields": {
+                        "companyName": {
+                            "name": "Company Name",
+                            "id": "companyName",
+                            "type": "input",
+                            "inputType": "text",
+                            "required": true
+                        },
+                        "address": {
+                            "name": "Company Adress",
+                            "id": "address",
+                            "type": "input",
+                            "inputType": "text",
+                            "required": true
+                        },
+                        "userName": {
+                            "name": "User name",
+                            "id": "userName",
+                            "type": "input",
+                            "inputType": "text",
+                            "required": true
+                        },
+                        "password": {
+                            "name": "Password",
+                            "id": "password",
+                            "type": "input",
+                            "inputType": "password",
+                            "required": true
+                        }
+                    },
+                    "mapping": {
+                        "name": "Module Mapping",
+                        "fields": {
+                            "module": {
+                                "name": "Page name",
+                                "id": "module",
+                                "type": "select",
+                                "options": {},
+                                "makeFieldOptions": false
+                            }
                         }
                     },
                     "actions": {
-                        "cancel": false
+                        "customSubmit": "releaseSubmit"
                     }
                 },
+                "listView": [{
+                    "title": "Company Name",
+                    "id": "companyName"
+                }],
                 "page": {
-                    "link": "admin/login",
-                    "name": "add",
+                    "link": "appCustomers/list",
+                    "name": "list",
                     "templateUrl": "template/defaultView.html",
-                    "controller": "loginCtrl",
-                    "actions": false
-                }
-            }
-        },
-        "releaseProject": {
-            "name": "Release Project",
-            "id": "releaseProject",
-            "title": "Release Project",
-            "restricted": "SUPERADMIN",
-            "defaultRelease": false,
-            "disableMenu": true,
-            "masterData": {
-                "companyName": null,
-                "mapping": [{
-                    "module": null
-                }]
-            },
-            "form": {
-                "name": "Release Project",
-                "id": "releaseProject",
-                "fields": {
-                    "companyName": {
-                        "name": "Company Name",
-                        "id": "companyName",
-                        "type": "input",
-                        "inputType": "text",
-                        "required": true
-                    }
+                    "controller": "appCustomersCtrl"
                 },
-                "mapping": {
-                    "name": "Module Mapping",
-                    "fields": {
-                        "module": {
-                            "name": "Page name",
-                            "id": "module",
-                            "type": "select",
-                            "options": {},
-                            "makeFieldOptions": false
-                        }
+                "services": {
+                    "list": {
+                        "url": "api/appCustomers",
+                        "method": "GET"
                     }
-                },
-                "actions": {
-                    "customSubmit": "releaseSubmit"
-                }
-            },
-            "listView": [{
-                "title": "Company Name",
-                "id": "companyName"
-            }],
-            "page": {
-                "link": "releaseProject/list",
-                "name": "list",
-                "templateUrl": "template/defaultView.html",
-                "controller": "releaseProjectCtrl"
-            },
-            "services": {
-                "list": {
-                    "url": "api/releaseProject",
-                    "method": "GET"
                 }
             }
         }

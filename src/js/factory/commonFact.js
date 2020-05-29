@@ -1,64 +1,4 @@
-erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', 'authFact', '$injector', '$window', '$http', '$q', function(staticConfig, serviceApi, $filter, $location, authFact, $injector, $window, $http, $q) {
-    var erpAppConfig = staticConfig;
-    var erpLoadProm = $q.defer();
-    var loadErpAppConfig = (function() {
-        var settingsService = angular.copy(erpAppConfig.modules.admin.settings.services.list);
-        settingsService.url = settingsService.url + '/1';
-        return serviceApi.callServiceApi(settingsService).then(function(res) {
-            erpAppConfig = angular.extend(erpAppConfig, res.data);
-            defaultActions.moduleAccess(erpAppConfig);
-            erpLoadProm.resolve();
-            return erpAppConfig;
-        });
-    })();
-
-    var initCtrl = function(scope, module, actions) {
-        var returnPageProm = $q.defer();
-        return erpLoadProm.promise.then(function() {
-            var appConfig = getErpAppConfig();
-            var context = angular.copy(defaultActions.getDeepProp(appConfig.modules, module));
-            var parentModule;
-            var pageProm = [];
-            var userType = authFact.isLogin();
-            context.showLoading = true;
-            scope.context = context;
-            if (context.parentModule) {
-                parentModule = angular.copy(defaultActions.getDeepProp(appConfig.modules, context.parentModule));
-                context = angular.merge({}, angular.copy(parentModule), context);
-            }
-            if (!userType && appConfig.forceLoginSite) {
-                defaultActions.goToPage(appConfig.modules.admin.login.page.link);
-                return;
-            }
-            if (context.disable) {
-                defaultActions.goToPage(appConfig.modules.dashboard.page.link);
-                return;
-            }
-            context.module = module;
-            context.appConfig = appConfig;
-            context.actions = angular.extend(angular.copy(defaultActions), actions || {});
-
-            pageProm.push(context.actions.updateFields(context, context.listView));
-            context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
-
-            scope.$broadcast('showAlertRol');
-
-            Promise.all(pageProm).then(function() {
-                if (context.actions[context.page.name]) {
-                    context.actions[context.page.name](context).then(function() {
-                        scope.context = context;
-                        context.actions.showLoadingHttp(scope);
-                        returnPageProm.resolve(context);
-                    });
-                };
-
-            });
-            return returnPageProm.promise;
-        });
-    };
-    var getErpAppConfig = function() {
-        return erpAppConfig;
-    };
+erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', '$injector', '$window', '$http', '$q', function(staticConfig, serviceApi, $filter, $location, $injector, $window, $http, $q) {
     var defaultActions = {
         add: function(context) {
             context.page.name = 'add';
@@ -169,8 +109,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         },
         updateData: function(module, data, id) {
             var serviceConf = this.getServiceConfig(module, 'POST', id);
-            var userDetails = authFact.getUserDetail();
-            data.updatedUserId = userDetails && userDetails.id;
             //Get Part master data
             return serviceApi.callServiceApi(serviceConf, data);
         },
@@ -431,16 +369,16 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
 
         },
         getServiceConfig: function(module, replaceMethod, appendValue) {
-            var appConfig = getErpAppConfig();
-            var currentYear = new Date().getMonth() >= appConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
-            var serviceConfig = angular.copy(typeof(module) !== 'object' ? defaultActions.getDeepProp(appConfig.modules, module + '.services.list') : module);
+            var erpAppConfig = getErpAppConfig();
+            var currentYear = new Date().getMonth() >= erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
+            var serviceConfig = angular.copy(typeof(module) !== 'object' ? defaultActions.getDeepProp(erpAppConfig.modules, module + '.services.list') : module);
             if (!serviceConfig) {
                 return false;
             }
-            serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', appConfig.calendarYear || currentYear);
+            serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', erpAppConfig.calendarYear || currentYear);
             serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
             serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
-            serviceConfig.cache = serviceConfig.cache === undefined ? appConfig.httpCache : serviceConfig.cache;
+            serviceConfig.cache = serviceConfig.cache === undefined ? erpAppConfig.httpCache : serviceConfig.cache;
             return serviceConfig;
         },
         getPartStock: function(context) {
@@ -577,10 +515,10 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         updateFields: function(context, fields) {
             var returnPromise = [];
             for (var i in fields) {
-                if (fields[i].dataFrom && defaultActions.getDeepProp(erpAppConfig.modules, fields[i].dataFrom) && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
+                if (fields[i].dataFrom && defaultActions.getDeepProp(context.erpAppConfig.modules, fields[i].dataFrom) && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
                     returnPromise.push(context.actions.makeOptionsFields(context, fields[i]));
                 }
-                if (fields[i].dataFrom && !defaultActions.getDeepProp(erpAppConfig.modules, fields[i].dataFrom)) {
+                if (fields[i].dataFrom && !defaultActions.getDeepProp(context.erpAppConfig.modules, fields[i].dataFrom)) {
                     delete fields[i];
                 }
             }
@@ -596,26 +534,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             }
             return subModules;
         },
-        moduleAccess: function(erpAppConfig) {
-            var userType = authFact.isLogin();
-            if (userType !== 'ADMIN') {
-                for (var i in erpAppConfig.mapping) {
-                    var map = erpAppConfig.mapping[i];
-                    var module = defaultActions.getDeepProp(erpAppConfig.modules, map.module) || {};
-                    if (!userType || (userType && map.restrictUser !== userType)) {
-                        module.disable = map.restrictUser && true;
-                    }
-                    if (module.page && (module.page.actions || module.page.actions === undefined)) {
-                        module.page.actions = {
-                            print: true
-                        };
-                        module.page.actions.add = map.restrictUser === userType && map['add'] || false;
-                        module.page.actions.edit = map.restrictUser === userType && map['edit'] || false;
-                        module.page.actions.delete = map.restrictUser === userType && map['delete'] || false;
-                    }
-                }
-            }
-        },
         pageActionsAccess: function(context) {
             var actions = {
                 add: false,
@@ -630,16 +548,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                 actions.print = context.page.actions === undefined ? true : context.page.actions.print;
             }
             context.page.actions = actions;
-        },
-        isActionAccess: function(module, action) {
-            var erpAppConfig = getErpAppConfig();
-            var userType = authFact.isLogin();
-            if (!userType !== 'ADMIN' && erpAppConfig.pageAccess && erpAppConfig.pageAccess[module]) {
-                if (!userType || (userType && (erpAppConfig.pageAccess[module].restrictUser !== userType || !erpAppConfig.pageAccess[module][action]))) {
-                    return false;
-                }
-            }
-            return true;
         },
         isFloat: function(n) {
             return Number(n) === n && n % 1 !== 0;
@@ -770,8 +678,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
         }
     };
     return {
-        defaultActions: defaultActions,
-        initCtrl: initCtrl,
-        getErpAppConfig: getErpAppConfig
+        defaultActions: defaultActions
     };
 }]);

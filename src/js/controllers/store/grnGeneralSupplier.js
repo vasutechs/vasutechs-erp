@@ -42,7 +42,7 @@ erpApp.controller('grnGeneralSupplierCtrl', ['$scope', 'commonFact', 'serviceApi
                     var data = angular.copy(context.data.mapping[i]);
                     var newContext = angular.copy(context);
                     data.partNo = data.id;
-                    data.operationTo = context.appConfig.finalStageOpp;
+                    data.operationTo = context.erpAppConfig.finalStageOpp;
                     newContext.data = data;
                     newContext.updatePrevStock = false;
                     if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {

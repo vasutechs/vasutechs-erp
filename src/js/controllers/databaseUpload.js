@@ -5,7 +5,7 @@ erpApp.controller('databaseUploadCtrl', ['$scope', 'commonFact', 'serviceApi', f
                 context.actions.updateData(context.module, context.data.databaseUpload).then(function() {
                     context.message = 'Successfully uploded...';
                     context.alertMessage = undefined;
-                    context.actions.goToPage(context.appConfig.modules.dashboard.page.link, true);
+                    context.actions.goToPage(context.erpAppConfig.modules.dashboard.page.link, true);
                 });
             } else {
                 context.alertMessage = 'Failed uploded...';

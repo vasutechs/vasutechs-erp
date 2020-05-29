@@ -151,7 +151,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                 url: 'api/getDatabases',
                 method: 'GET'
             };
-            var prodTabConfig = context.appConfig.modules.report.productionEntryReport.services.list;
+            var prodTabConfig = context.erpAppConfig.modules.report.productionEntryReport.services.list;
             var dataList = [];
             return context.actions.getData(listOfDbsConfig).then(function(res) {
                 var listOfDbs = res.data.list;

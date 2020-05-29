@@ -40,7 +40,7 @@ module.exports = function(config, gulp) {
                     defaultSrcJsFiles.push('./src/js/controllers/' + config.src.defaultModules[i] + '**');
                 }
             } else {
-                defaultSrcJsFiles.push('./src/js/controllers/**');
+                defaultSrcJsFiles.push('./src/js/**');
             }
             defaultSrcJsFiles.push(config.dist.path + '/js/template.js');
             return defaultSrcJsFiles;
