@@ -35,9 +35,13 @@ erpApp.factory('authFact', ['serviceApi', '$window', function(serviceApi, $windo
         }
         return false;
     };
+    var logout = function() {
+        setUserDetail();
+    };
 
     return {
         login: login,
+        logout: logout,
         setUserDetail: setUserDetail,
         getUserDetail: getUserDetail,
         isLogin: isLogin

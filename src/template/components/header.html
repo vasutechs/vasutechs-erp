@@ -1,7 +1,7 @@
 <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top  hide-print" id="mainNav">
         <a class="navbar-brand" href="#/">{{headerContext.appName}}</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div ng-if="headerContext.isLogin" class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li ng-if="!module.disableMenu && !module.disable" class="nav-item dropdown" ng-repeat="(key, module) in headerContext.modules">
                     <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
@@ -42,10 +42,10 @@
             </ul>
             <ul ng-if="headerContext.modules" class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a ng-if="headerContext.isLogin" title="Logout" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}?type=logout">
+                    <a title="Logout" class="nav-link" href="#!{{headerContext.modules['login'].page.link}}?type=logout">
                         <i class="fa fa-fw fa-sign-out"></i>
                     </a>
-                    <a ng-if="!headerContext.isLogin" title="Login" class="nav-link" href="#!{{headerContext.modules['admin']['login'].page.link}}">
+                    <a ng-if="!headerContext.isLogin" title="Login" class="nav-link" href="#!{{headerContext.modules['login'].page.link}}">
                         <i class="fa fa-fw fa-sign-in"></i>
                     </a>
                 </li>

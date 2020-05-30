@@ -1,4 +1,5 @@
 erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', '$injector', '$window', '$http', '$q', function(staticConfig, serviceApi, $filter, $location, $injector, $window, $http, $q) {
+    var erpAppConfig = staticConfig;
     var defaultActions = {
         add: function(context) {
             context.page.name = 'add';
@@ -369,7 +370,6 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
 
         },
         getServiceConfig: function(module, replaceMethod, appendValue) {
-            var erpAppConfig = getErpAppConfig();
             var currentYear = new Date().getMonth() >= erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
             var serviceConfig = angular.copy(typeof(module) !== 'object' ? defaultActions.getDeepProp(erpAppConfig.modules, module + '.services.list') : module);
             if (!serviceConfig) {
@@ -675,7 +675,8 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
             var arr = desc.split(".");
             while (arr.length && (obj = obj[arr.shift()]));
             return obj;
-        }
+        },
+        location: $location
     };
     return {
         defaultActions: defaultActions

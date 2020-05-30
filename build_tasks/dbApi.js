@@ -6,6 +6,11 @@ module.exports = function() {
     var databaseType;
     var calendarYear = new Date().getMonth() >= 3 ? new Date().getFullYear() : new Date().getFullYear() - 1;
     var currentYearDb = new JsonDB("data/" + calendarYear + "/database", true, true);
+    const bcrypt = require("bcryptjs");
+    // bcrypt.hash("thisismypassword", 8)
+    //   .then(password => {
+    //     console.log(password); // hashed password
+    // });
     var getTableData = function(dataPath) {
         var data;
         try {

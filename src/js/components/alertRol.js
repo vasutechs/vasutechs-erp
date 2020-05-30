@@ -1,5 +1,5 @@
 erpApp.directive('alertRol', ['appFact', 'commonFact', 'authFact', function(appFact, commonFact, authFact) {
-    var erpAppConfig = appFact.getErpAppConfig();
+    var erpAppConfig = appFact.erpAppConfig;
     var showROL = true;
     var showAlertRol = function($scope) {
         var userType = authFact.isLogin();

@@ -5452,8 +5452,8 @@
                 }
             }
         },
-        "appAdmin": {
-            "id": "appAdmin",
+        "admin": {
+            "id": "admin",
             "name": "Admin",
             "title": "Admin",
             "icon": "cog",
@@ -5594,60 +5594,6 @@
                     }
                 }
             },
-            "appUsers": {
-                "id": "appUsers",
-                "title": "Users",
-                "masterData": {
-                    "userName": null,
-                    "password": null,
-                    "userType": null
-                },
-                "form": {
-                    "name": "Users",
-                    "id": "users",
-                    "fields": {
-                        "userName": {
-                            "name": "User Name",
-                            "id": "userName",
-                            "type": "input",
-                            "inputType": "text",
-                            "required": true
-                        },
-                        "password": {
-                            "name": "Password",
-                            "id": "password",
-                            "type": "input",
-                            "inputType": "password",
-                            "required": true
-                        },
-                        "userType": {
-                            "name": "User Type",
-                            "id": "userType",
-                            "type": "select",
-                            "options": {},
-                            "required": true,
-                            "dataFrom": "admin.userTypes",
-                            "replaceName": "userType"
-                        }
-                    }
-                },
-                "listView": [{
-                    "title": "User Name",
-                    "id": "userName"
-                }],
-                "page": {
-                    "link": "admin/users/list",
-                    "name": "list",
-                    "templateUrl": "template/defaultView.html",
-                    "controller": "appUsersCtrl"
-                },
-                "services": {
-                    "list": {
-                        "url": "api/users",
-                        "method": "GET"
-                    }
-                }
-            },
             "userTypes": {
                 "id": "userTypes",
                 "title": "User Types",
@@ -5691,14 +5637,7 @@
                         "method": "GET"
                     }
                 }
-            }
-        },
-        "admin": {
-            "id": "admin",
-            "name": "Admin",
-            "title": "Admin",
-            "restricked": true,
-            "icon": "cog",
+            },
             "users": {
                 "id": "users",
                 "title": "Users",
@@ -5755,6 +5694,7 @@
                 "name": "App Customers",
                 "id": "appCustomers",
                 "title": "App Customers",
+                "restricked": true,
                 "masterData": {
                     "companyName": null,
                     "address": null,
@@ -5831,5 +5771,6 @@
                 }
             }
         }
-    }
+    },
+    "moduleFiles": {}
 }

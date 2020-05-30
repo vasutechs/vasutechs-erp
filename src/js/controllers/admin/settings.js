@@ -36,6 +36,6 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
             }
         }
     }
-    commonFact.initCtrl($scope, 'appAdmin.settings', actions);
+    commonFact.initCtrl($scope, 'admin.settings', actions);
 
 }]);

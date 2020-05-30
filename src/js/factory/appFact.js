@@ -1,12 +1,10 @@
-erpApp.factory('appFact', ['staticConfig', '$location', 'authFact', 'commonFact', '$q', function(staticConfig, $location, authFact, commonFact, $q) {
+erpApp.factory('appFact', ['staticConfig', 'authFact', 'commonFact', '$q', function(staticConfig, authFact, commonFact, $q) {
     var erpAppConfig = staticConfig;
     var erpLoadProm = $q.defer();
     var defaultActions = commonFact.defaultActions;
 
     var appModuleAccess = function(erpAppConfig) {
-        var settingsService = angular.copy(erpAppConfig.modules.appAdmin.settings.services.list);
-        settingsService.url = settingsService.url + '/1';
-        return serviceApi.callServiceApi(settingsService).then(function(res) {
+        return defaultActions.getData('admin.settings', '1').then(function(res) {
             erpAppConfig = angular.extend(erpAppConfig, res.data);
 
             for (var i in erpAppConfig.mapping) {
@@ -39,17 +37,15 @@ erpApp.factory('appFact', ['staticConfig', '$location', 'authFact', 'commonFact'
     var initCtrl = function(scope, module, actions) {
         var returnPageProm = $q.defer();
         return erpLoadProm.promise.then(function() {
-            var erpAppConfig = getErpAppConfig();
-            var context = angular.copy(defaultActions.getDeepProp(erpAppConfig.modules, module));
+            var context = angular.copy(module);
             var parentModule;
             var pageProm = [];
             var userType = authFact.isLogin();
             var userDetails = authFact.getUserDetail();
-            context.showLoading = true;
             scope.context = context;
             context.module = module;
             context.erpAppConfig = erpAppConfig;
-            context.actions = angular.extend(angular.copy(defaultActions), actions || {});
+            context.actions = angular.extend(angular.copy(defaultActions), angular.copy(authFact), actions || {});
             if (context.data) {
                 context.data.updatedUserId = userDetails && userDetails.id || null;
             }
@@ -57,17 +53,14 @@ erpApp.factory('appFact', ['staticConfig', '$location', 'authFact', 'commonFact'
                 parentModule = angular.copy(context.actions.getDeepProp(context.erpAppConfig.modules, context.parentModule));
                 context = angular.merge({}, angular.copy(parentModule), context);
             }
-            if (!userType) {
+            if (!userType && context.module.id !== 'login') {
                 context.actions.goToPage(context.erpAppConfig.modules.login.page.link);
                 return;
-            }
-            if (context.disable) {
+            } else if (context.disable) {
                 context.actions.goToPage(context.erpAppConfig.modules.dashboard.page.link);
                 return;
             }
-
-
-
+            context.showLoading = true;
             pageProm.push(context.actions.updateFields(context, context.listView));
             context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
 
@@ -78,6 +71,7 @@ erpApp.factory('appFact', ['staticConfig', '$location', 'authFact', 'commonFact'
                     context.actions[context.page.name](context).then(function() {
                         scope.context = context;
                         context.actions.showLoadingHttp(scope);
+                        context.actions.onLoad && context.actions.onLoad(context);
                         returnPageProm.resolve(context);
                     });
                 };
@@ -86,12 +80,9 @@ erpApp.factory('appFact', ['staticConfig', '$location', 'authFact', 'commonFact'
             return returnPageProm.promise;
         });
     };
-    var getErpAppConfig = function() {
-        return erpAppConfig;
-    };
     return {
         initCtrl: initCtrl,
-        getErpAppConfig: getErpAppConfig
+        erpAppConfig: erpAppConfig
     };
 
 }]);
