@@ -1,10 +1,10 @@
-erpApp.controller('subContractorPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
+erpConfig.moduleFiles.subContractorPayment = function() {
+    return {
         callBackList: function(context) {
             context.form.mapping.actions = {};
         },
         callBackAdd: function(context) {
-            context.actions.makeOptionsFields(context, context.form.fields['grnNo']);
+            context.methods.makeOptionsFields(context, context.form.fields['grnNo']);
         },
         callBackEdit: function(context) {
             for (var i in context.data.mapping) {
@@ -18,7 +18,7 @@ erpApp.controller('subContractorPaymentCtrl', ['$scope', 'commonFact', '$locatio
             var total = 0;
             var grnMap = field.options[context.data.grnNo];
             context.data.total = grnMap.total;
-            context.data.subContractorDCDate = context.actions.dateFormatChange(context.data.subContractorDCDate);
+            context.data.subContractorDCDate = context.methods.dateFormatChange(context.data.subContractorDCDate);
             context.data.balanceAmount = context.data.total;
         },
         updateBalanceAmount: function(context, data, key, field) {
@@ -35,7 +35,4 @@ erpApp.controller('subContractorPaymentCtrl', ['$scope', 'commonFact', '$locatio
             }
         }
     };
-
-    commonFact.initCtrl($scope, 'accounts.subContractorPayment', actions);
-
-}]);
+};

@@ -1,5 +1,5 @@
-erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
+erpConfig.moduleFiles.productionEntry = function() {
+    return {
         callBackAdd: function(context) {
             context.page.printViewMapping = false;
             context.finalMapping = 0;
@@ -7,15 +7,15 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
         callBackEdit: function(context) {
             if (!context.page.printView) {
                 context.page.printViewMapping = true;
-                context.actions.addMapping(context.data.mapping);
+                context.methods.addMapping(context.data.mapping);
                 context.finalMapping = context.data.mapping.length - 1;
             }
         },
         callBackList: function(context) {
-            context.actions.getPartStock(context);
-            context.actions.getPRQty(context);
-            context.actions.getFlowMaster(context);
-            context.actions.getOperations(context);
+            context.methods.getPartStock(context);
+            context.methods.getPRQty(context);
+            context.methods.getFlowMaster(context);
+            context.methods.getOperations(context);
         },
         checkAcceptedQty: function(context, mappingData, value, field, fieldMapkey) {
             var qtyCanMake = 0,
@@ -50,8 +50,8 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             }
         },
         callBackChangeMapping: function(context, data, key, field) {
-            context.actions.updateOperationFrom(context, data, key, field);
-            context.actions.updateOperationTo(context, data, key, field);
+            context.methods.updateOperationFrom(context, data, key, field);
+            context.methods.updateOperationTo(context, data, key, field);
         },
         updateOperationFrom: function(context, data, key, field) {
             var prQtyFrmMap;
@@ -85,7 +85,7 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
                 restriction.filter = {
                     id: operation
                 }
-                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationFrom'], restriction);
+                context.methods.getOperationFromFlow(context, context.form.mapping.fields['operationFrom'], restriction);
             }
         },
         updateOperationTo: function(context, mappingData, key, field) {
@@ -105,7 +105,7 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
                     });
                 }
 
-                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction).then(function() {
+                context.methods.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction).then(function() {
                     var options = context.form.mapping.fields['operationTo'].options;
                     var firstOption = options[Object.keys(options)[0]];
                     if (firstOption && firstOption.source === 'Sub-Contractor') {
@@ -128,11 +128,11 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
             var jobCardQty = jobCard && jobCard.qtyCanMake;
             jobCard.status = 1;
-            context.actions.updateData('production.materialIssueNote', jobCard);
+            context.methods.updateData('production.materialIssueNote', jobCard);
         },
         getPRQty: function(context) {
             context.prQty = {};
-            return context.actions.getData('production.productionEntry').then(function(res) {
+            return context.methods.getData('production.productionEntry').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     for (var j in listViewData[i].mapping) {
@@ -168,15 +168,15 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             var newContext = angular.copy(context);
             data.partNo = context.data.partNo;
             newContext.data = data;
-            context.actions.updatePartStock(newContext);
-            context.actions.updateMaterialIssue(context);
+            context.methods.updatePartStock(newContext);
+            context.methods.updateMaterialIssue(context);
         },
         prodEntryDownload: function(context) {
             if (!context.selectedTableData) {
                 return;
             }
             var prodData = context.selectedTableData[context.id];
-            context.actions.getData('production.materialIssueNote').then(function(res) {
+            context.methods.getData('production.materialIssueNote').then(function(res) {
                 var materData = res.data;
                 var jobCardNo = 1;
                 context.selectedTableData['materialIssueNote'] = {};
@@ -187,11 +187,8 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
                     prodData[i].jobCardNo = jobCardNo;
                     jobCardNo++;
                 }
-                context.actions.downloadFile(context.selectedTableData, context.id + '.json');
+                context.methods.downloadFile(context.selectedTableData, context.id + '.json');
             });
         }
     };
-
-    commonFact.initCtrl($scope, 'production.productionEntry', actions);
-
-}]);
+};

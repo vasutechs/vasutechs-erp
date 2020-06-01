@@ -1,12 +1,12 @@
-erpApp.controller('flowMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    var actions = {
+erpConfig.moduleFiles.flowMaster = function() {
+    return {
         updateCostAnalysis: function(context, mappingData, value, field, fieldMapkey) {
             var machineDetails = context.form.mapping.fields.machineNo.options[mappingData.machineNo];
             var costAnalysis = 0;
 
             costAnalysis = machineDetails && (machineDetails.machineShiftRate / machineDetails.shiftHrs);
             mappingData.costAnalysis = costAnalysis > 0 && mappingData.palnQtyPerHr > 0 && (costAnalysis / mappingData.palnQtyPerHr) || 0;
-            context.actions.updateTotalCost(context);
+            context.methods.updateTotalCost(context);
         },
         updateTotalCost: function(context) {
             var totalCost = 0;
@@ -19,6 +19,5 @@ erpApp.controller('flowMasterCtrl', ['$scope', 'commonFact', function($scope, co
             }
             context.data.totalCost = totalCost;
         }
-    };
-    commonFact.initCtrl($scope, 'production.flowMaster', actions);
-}]);
+    }
+};

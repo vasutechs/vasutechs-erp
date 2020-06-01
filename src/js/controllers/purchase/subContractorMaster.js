@@ -1,8 +1,8 @@
-erpApp.controller('subContractorMasterCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
+erpConfig.moduleFiles.subContractorMaster = function() {
+    return {
         callBackList: function(context) {
             var partNos = [];
-            context.actions.getData(context.module).then(function(res) {
+            context.methods.getData(context).then(function(res) {
                 var flowMasterData = res.data;
                 for (var i in flowMasterData) {
                     for (var j in flowMasterData[i].mapping) {
@@ -17,7 +17,4 @@ erpApp.controller('subContractorMasterCtrl', ['$scope', 'commonFact', 'serviceAp
             });
         }
     };
-
-    commonFact.initCtrl($scope, 'purchase.subContractorMaster', actions);
-
-}]);
+};

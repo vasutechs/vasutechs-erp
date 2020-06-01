@@ -1,7 +1,7 @@
-erpApp.controller('poSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
+erpConfig.moduleFiles.poSupplier = function() {
+    return {
         updateRMDetails: function(mapping) {
-            context.actions.getData('purchase.rmMaster', mapping.id).then(function(res) {
+            context.methods.getData('purchase.rmMaster', mapping.id).then(function(res) {
                 var rmData = res.data;
                 for (var mapKey in rmData) {
                     if (mapping[mapKey] === null || mapping[mapKey] === '') {
@@ -16,7 +16,4 @@ erpApp.controller('poSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', funct
             }
         }
     };
-
-    commonFact.initCtrl($scope, 'purchase.poSupplier', actions);
-
-}]);
+};

@@ -1,10 +1,10 @@
-erpApp.controller('appCustomersCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    var actions = {
+erpConfig.moduleFiles.appCustomers = function() {
+    return {
         callBackList: function(context) {
             var moduleField = context.form.mapping.fields['module'];
             moduleField.options = {};
             moduleField.allOptions = {};
-            context.actions.makeModuleOptions(context, context.erpAppConfig.modules, moduleField);
+            context.methods.makeModuleOptions(context, context.erpAppConfig.modules.controllers, moduleField);
         },
         makeModuleOptions: function(context, modules, field, parentModule) {
             for (var i in modules) {
@@ -18,7 +18,7 @@ erpApp.controller('appCustomersCtrl', ['$scope', 'commonFact', function($scope, 
                     field.options[optionIdVal] = field.allOptions[optionIdVal];
 
                     if (!module.page) {
-                        context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
+                        context.methods.makeModuleOptions(context, context.methods.showSubModule(modules[i]), field, modules[i]);
                     }
                 }
             }
@@ -27,7 +27,5 @@ erpApp.controller('appCustomersCtrl', ['$scope', 'commonFact', function($scope, 
             var id = data.id;
             window.open('/appCustomers/' + id);
         }
-    }
-    commonFact.initCtrl($scope, 'admin.appCustomers', actions);
-
-}]);
+    };
+};

@@ -1,9 +1,9 @@
 <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top  hide-print" id="mainNav">
-        <a class="navbar-brand" href="#/">{{headerContext.appName}}</a>
-        <div ng-if="headerContext.isLogin" class="collapse navbar-collapse" id="navbarSupportedContent">
+        <a class="navbar-brand" href="#/">{{context.erpAppConfig.appName}}</a>
+        <div ng-if="context.methods.isLogin()" class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li ng-if="!module.disableMenu && !module.disable" class="nav-item dropdown" ng-repeat="(key, module) in headerContext.modules">
+                <li ng-if="context.methods.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">
                     <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
                         <i class="fa fa-fw fa-{{module.icon}}"></i>
                         <span class="nav-link-text">{{module.title}}</span>
@@ -13,39 +13,39 @@
                         <span class="nav-link-text">{{module.title}}</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <div ng-repeat="(subKey, subModule) in headerContext.actions.showSubModule(module)">
-                            <a ng-if="!subModule.disableMenu && !subModule.disable" class="dropdown-item" href="#!{{subModule.page.link}}">{{subModule.title}}</a>
-                            <div ng-if="!subModule.disableMenu && !subModule.disable" class="dropdown-divider"></div>
+                        <div ng-repeat="(subKey, subModule) in context.methods.showSubModule(module)">
+                            <a ng-if="context.methods.isShowMenu(subModule)" class="dropdown-item" href="#!{{subModule.page.link}}">{{subModule.title}}</a>
+                            <div ng-if="context.methods.isShowMenu(subModule)" class="dropdown-divider"></div>
                         </div>
                     </div>
                 </li>
             </ul>
-            <ul ng-if="headerContext.modules" class="navbar-nav ml-auto">
+            <ul ng-if="context.erpAppConfig.modules.controllers && !context.methods.isSuperAdmin()" class="nav-item dropdown" class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                 </li>
-                <li ng-if="!headerContext.modules['calendarYear'].disable" class="nav-item">
-                    <select class="form-control" id="calendarYear" ng-change="headerContext.actions.changeCalendarYear(headerContext)" ng-model="headerContext.calendarYear" ng-options="option.optionId as option.optionName for option in headerContext.calendarYearList">
+                <li ng-if="!context.erpAppConfig.modules.controllers['calendarYear'].disable" class="nav-item">
+                    <select class="form-control" id="calendarYear" ng-change="context.methods.changeCalendarYear()" ng-model="context.erpAppConfig.calendarYear" ng-options="option.optionId as option.optionName for option in context.calendarYearList">
                         <option value="">--Select--</option>
                     </select>
                 </li>
-                <li ng-if="!headerContext.modules['databaseUpload'].disable" class="nav-item">
-                    <a class="nav-link" title="Import data" href="#!{{headerContext.modules['databaseUpload'].page.link}}">
+                <li ng-if="!context.erpAppConfig.modules.controllers['databaseUpload'].disable" class="nav-item">
+                    <a class="nav-link" title="Import data" href="#!{{context.erpAppConfig.modules.controllers['databaseUpload'].page.link}}">
                         <i class="fa fa-fw fa-upload"></i>
                     </a>
                 </li>
-                <li ng-if="!headerContext.modules['databaseDownload'].disable" class="nav-item">
-                    <a class="nav-link" title="Download data" href="#" ng-click="headerContext.actions.downloadData(headerContext)">
+                <li ng-if="!context.erpAppConfig.modules.controllers['databaseDownload'].disable" class="nav-item">
+                    <a class="nav-link" title="Download data" href="#" ng-click="context.methods.downloadData()">
                         <i class="fa fa-fw fa-download"></i>
                     </a>
 
                 </li>
             </ul>
-            <ul ng-if="headerContext.modules" class="navbar-nav ml-auto">
+            <ul ng-if="context.erpAppConfig.modules.controllers" class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a title="Logout" class="nav-link" href="#!{{headerContext.modules['login'].page.link}}?type=logout">
+                    <a title="Logout" class="nav-link" href="#!{{context.erpAppConfig.modules.controllers['login'].page.link}}?type=logout">
                         <i class="fa fa-fw fa-sign-out"></i>
                     </a>
-                    <a ng-if="!headerContext.isLogin" title="Login" class="nav-link" href="#!{{headerContext.modules['login'].page.link}}">
+                    <a ng-if="!context.methods.isLogin" title="Login" class="nav-link" href="#!{{context.erpAppConfig.modules.controllers['login'].page.link}}">
                         <i class="fa fa-fw fa-sign-in"></i>
                     </a>
                 </li>
@@ -62,8 +62,8 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body modal-Scroll">
-                        <a href="{{headerContext.modules['databaseDownload'].page.link}}" download="master_database.json"> Master database</a> ||
-                        <a href="YEAR-{{headerContext.calendarYear}}/{{headerContext.modules['databaseDownload'].page.link}}" download="database_{{headerContext.downloadDbName}}.json"> Current Year database</a>
+                        <a href="{{context.erpAppConfig.modules.controllers['databaseDownload'].page.link}}" download="master_database.json"> Master database</a> ||
+                        <a href="YEAR-{{context.calendarYear}}/{{context.erpAppConfig.modules.controllers['databaseDownload'].page.link}}" download="database_{{context.downloadDbName}}.json"> Current Year database</a>
                     </div>
                 </div>
             </div>

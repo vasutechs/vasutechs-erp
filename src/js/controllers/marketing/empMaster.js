@@ -1,5 +1,5 @@
-erpApp.controller('empMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    var actions = {
+erpConfig.moduleFiles.empMaster = function() {
+    return {
         callBackChangeMapping: function(context, mappingData, key, field, fieldMapKey) {
 
         },
@@ -8,11 +8,10 @@ erpApp.controller('empMasterCtrl', ['$scope', 'commonFact', function($scope, com
                 partNo: mappingData.id
             };
             field.options = {};
-            context.actions.getOperationFromFlow(context, field, restriction);
+            context.methods.getOperationFromFlow(context, field, restriction);
         },
         callBackEdit: function(context) {
             context.data.mapping = !context.data.mapping && context.masterData.mapping || context.data.mapping;
         }
     };
-    commonFact.initCtrl($scope, 'marketing.empMaster', actions);
-}]);
+};

@@ -1,5 +1,5 @@
-erpApp.controller('rmStockCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
+erpConfig.moduleFiles.rmStock = function() {
+    return {
         callBackList: function(context) {
             var newList = angular.copy(context.listViewData);
             if ($location.search() && $location.search()['showall'] === 'no') {
@@ -8,7 +8,7 @@ erpApp.controller('rmStockCtrl', ['$scope', 'commonFact', '$location', function(
                 });
                 context.listViewData = newList
             }
-            context.actions.getData('purchase.rmMaster').then(function(res) {
+            context.methods.getData('purchase.rmMaster').then(function(res) {
                 var listViewData = angular.copy(context.listViewDataMaster);
                 for (var i in listViewData) {
                     var stockData = context.listViewData[i];
@@ -21,7 +21,7 @@ erpApp.controller('rmStockCtrl', ['$scope', 'commonFact', '$location', function(
         },
         submit: function(context) {
             var stockData;
-            context.actions.getData('report.rmStock').then(function(res) {
+            context.methods.getData('report.rmStock').then(function(res) {
                 stockData = res.data;
                 for (var i in stockData) {
                     if (!context.data.id && stockData[i].rmCode === context.data.rmCode) {
@@ -29,12 +29,9 @@ erpApp.controller('rmStockCtrl', ['$scope', 'commonFact', '$location', function(
                         context.data.rmStockQty = parseInt(context.data.rmStockQty) + parseInt(stockData[i].rmStockQty);
                     }
                 }
-                commonFact.defaultActions.submit(context);
+                commonFact.submit(context);
             });
 
         }
     };
-
-    commonFact.initCtrl($scope, 'report.rmStock', actions);
-
-}]);
+};

@@ -1,4 +1,4 @@
-erpApp.service('serviceApi', ['$http', '$cacheFactory', '$q', function($http, $cacheFactory, $q) {
+erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $q) {
     this.callServiceApi = function(serviceConf, inputData) {
         var servicePromise,
             httpCache = $cacheFactory.get('$http');
@@ -23,4 +23,6 @@ erpApp.service('serviceApi', ['$http', '$cacheFactory', '$q', function($http, $c
 
         return servicePromise;
     };
-}]);
+};
+
+erpApp.service('serviceApi', erpConfig.moduleFiles.serviceApi);

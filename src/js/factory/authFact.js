@@ -1,6 +1,6 @@
-erpApp.factory('authFact', ['serviceApi', '$window', function(serviceApi, $window) {
+erpConfig.moduleFiles.authFact = function(serviceApi, $window) {
     var login = function(context) {
-        var usersService = angular.copy(context.erpAppConfig.modules.admin.users.services.list);
+        var usersService = angular.copy(context.erpAppConfig.modules.controllers.admin.users.services.list);
         return serviceApi.callServiceApi(usersService).then(function(res) {
             var data = res.data;
             var userDetail;
@@ -21,14 +21,14 @@ erpApp.factory('authFact', ['serviceApi', '$window', function(serviceApi, $windo
         $window.sessionStorage.setItem('erpUserDetail', JSON.stringify(userDetail));
         return userDetail;
     };
-    var getUserDetail = function(context) {
+    var getUserDetail = function() {
         var userDetail = $window.sessionStorage.getItem('erpUserDetail');
         if (userDetail !== 'undefined') {
             userDetail = JSON.parse(userDetail);
         }
         return userDetail;
     };
-    var isLogin = function(context) {
+    var isLogin = function() {
         var userDetail = getUserDetail();
         if (userDetail) {
             return userDetail.userType;
@@ -46,4 +46,6 @@ erpApp.factory('authFact', ['serviceApi', '$window', function(serviceApi, $windo
         getUserDetail: getUserDetail,
         isLogin: isLogin
     };
-}]);
+};
+
+erpApp.factory('authFact', erpConfig.moduleFiles.authFact);

@@ -1,10 +1,10 @@
-erpApp.controller('customerPaymentInvoiceCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
+erpConfig.moduleFiles.customerPaymentInvoice = function() {
+    return {
         callBackList: function(context) {
             context.form.mapping.actions = {};
         },
         callBackAdd: function(context) {
-            context.actions.makeOptionsFields(context, context.form.fields['invoiceNo']);
+            context.methods.makeOptionsFields(context, context.form.fields['invoiceNo']);
             context.data['date'] = null;
         },
         callBackEdit: function(context) {
@@ -17,7 +17,7 @@ erpApp.controller('customerPaymentInvoiceCtrl', ['$scope', 'commonFact', '$locat
         },
         callBackChangeMapping: function(context, data, key, field) {
             context.data.balanceAmount = context.data.total;
-            context.data['date'] = context.actions.dateFormatChange(context.data['date']);
+            context.data['date'] = context.methods.dateFormatChange(context.data['date']);
         },
         updateBalanceAmount: function(context, data, key, field) {
             var amount = 0;
@@ -34,12 +34,6 @@ erpApp.controller('customerPaymentInvoiceCtrl', ['$scope', 'commonFact', '$locat
             }
         }
     };
+};
 
-    if ($location.search() && $location.search()['type'] === 'cashBill') {
-        commonFact.initCtrl($scope, 'accounts.customerPaymentCashBill', actions);
-    } else {
-        commonFact.initCtrl($scope, 'accounts.customerPaymentInvoice', actions);
-    }
-
-
-}]);
+erpConfig.moduleFiles.customerPaymentCashBill = erpConfig.moduleFiles.customerPaymentInvoice;

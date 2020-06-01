@@ -1,20 +1,20 @@
 <div>
     <h3>{{context.filterView.title}}
         <div ng-if="context.page.downloadTableData" class="pull-right">
-            <a href="javascript: void(0);" ng-click="context.page.downloadTableData === true && context.actions.downloadTableData(context) || context.actions[context.page.downloadTableData](context)" title="Download Table Data" class="fa fa-fw fa-download"></a>
+            <a href="javascript: void(0);" ng-click="context.page.downloadTableData === true && context.methods.downloadTableData() || context.methods[context.page.downloadTableData]()" title="Download Table Data" class="fa fa-fw fa-download"></a>
         </div>
         <div ng-if="context.page.downloadExcel" class="pull-right">
-            <a href="javascript: void(0);" ng-click="context.actions.downloadExcel(context, 'listView')" title="Download Excel" class="fa fa-fw fa-file-excel-o"></a>
+            <a href="javascript: void(0);" ng-click="context.methods.downloadExcel('listView')" title="Download Excel" class="fa fa-fw fa-file-excel-o"></a>
         </div>
     </h3>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th ng-repeat="(key, list) in context.filterView.fields">
-                    {{list.title}}:<select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="context.filterView.data[list.id]" ng-change="context.actions[list.action] && context.actions[list.action](context, list) || context.actions['list'](context)"
+                    {{list.title}}:<select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="context.filterView.data[list.id]" ng-change="context.methods[list.action] && context.methods[list.action](list) || context.methods['list']()"
                         ng-options="option.optionId as option.optionName for option in list.options">
                         <option value="">--Select--</option>
-                    </select> <input ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="context.filterView.data[list.id]" ng-change="context.actions[list.action] && context.actions[list.action](context, list) || context.actions['list'](context)"
+                    </select> <input ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="context.filterView.data[list.id]" ng-change="context.methods[list.action] && context.methods[list.action](list) || context.methods['list']()"
                     />
                 </th>
             </tr>
@@ -31,7 +31,7 @@
         <tbody>
             <tr ng-repeat="dataList in context.listViewData">
                 <td ng-repeat="(key, list) in context.listView">
-                    <div ng-if="!list.actions" ng-bind="context.actions.replaceFieldVal(dataList[list.id], list)"></div>
+                    <div ng-if="!list.actions" ng-bind="context.methods.replaceFieldVal(dataList[list.id], list)"></div>
                 </td>
             </tr>
         </tbody>

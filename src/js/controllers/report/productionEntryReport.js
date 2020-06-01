@@ -1,16 +1,16 @@
-erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'serviceApi', '$location', function($scope, commonFact, serviceApi, $location) {
-    var actions = {
+erpConfig.moduleFiles.productionEntryReport = function() {
+    return {
         callBackList: function(context) {
-            if ($location.search() && $location.search()['type']) {
-                context.actions[$location.search()['type']](context);
+            if (context.methods.location.search() && context.methods.location.search()['type']) {
+                context.methods[context.methods.location.search()['type']](context);
             } else {
-                context.actions.productionEntryReport(context);
+                context.methods.productionEntryReport(context);
             }
         },
         toolHistoryCard: function(context) {
             var list = [];
             context.listViewData = [];
-            context.actions.getAllYearData(context).then(function(listViewYearData) {
+            context.methods.getAllYearData(context).then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
                     for (var i in listViewData) {
@@ -33,7 +33,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                                     cummulativeQty: parseInt(listViewData[i].mapping[j].acceptedQty)
                                 };
 
-                                var isPartExist = context.actions.findObjectByKey(list, { toolNo: details.toolNo, partNo: details.partNo });
+                                var isPartExist = context.methods.findObjectByKey(list, { toolNo: details.toolNo, partNo: details.partNo });
                                 if (isPartExist) {
                                     details.cummulativeQty += parseInt(isPartExist.cummulativeQty);
                                 }
@@ -49,7 +49,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
         machineRunningTime: function(context) {
             var list = [];
             context.listViewData = [];
-            context.actions.getAllYearData(context).then(function(listViewYearData) {
+            context.methods.getAllYearData(context).then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
                     for (var i in listViewData) {
@@ -69,7 +69,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                                 };
 
                                 details.runningTime = details.cumRunningTime = parseFloat(details.endTime) - parseFloat(details.startTime);
-                                var isExist = context.actions.findObjectByKey(list, { machineNo: details.machineNo });
+                                var isExist = context.methods.findObjectByKey(list, { machineNo: details.machineNo });
                                 if (isExist) {
                                     details.cumRunningTime += parseFloat(isExist.cumRunningTime);
                                 }
@@ -151,15 +151,15 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                 url: 'api/getDatabases',
                 method: 'GET'
             };
-            var prodTabConfig = context.erpAppConfig.modules.report.productionEntryReport.services.list;
+            var prodTabConfig = context.erpAppConfig.modules.controllers.report.productionEntryReport.services.list;
             var dataList = [];
-            return context.actions.getData(listOfDbsConfig).then(function(res) {
+            return context.methods.getData(listOfDbsConfig).then(function(res) {
                 var listOfDbs = res.data.list;
                 var listOfDbsProm = [];
                 for (var i in listOfDbs) {
                     var serConf = angular.copy(prodTabConfig);
                     serConf.url = prodTabConfig.url.replace('{{YEAR}}', listOfDbs[i]);
-                    listOfDbsProm.push(context.actions.getData(serConf).then(function(prodRes) {
+                    listOfDbsProm.push(context.methods.getData(serConf).then(function(prodRes) {
                         dataList.push(prodRes.data);
                     }));
                 }
@@ -169,10 +169,6 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
             });
         }
     };
-    if ($location.search() && $location.search()['type']) {
-        commonFact.initCtrl($scope, 'report.' + $location.search()['type'], actions);
-    } else {
-        commonFact.initCtrl($scope, 'report.productionEntryReport', actions);
-    }
+};
 
-}]);
+erpConfig.moduleFiles.toolHistoryCard = erpConfig.moduleFiles.empPerformanceReport = erpConfig.moduleFiles.machineRunningTime = erpConfig.moduleFiles.productionEntryReport;

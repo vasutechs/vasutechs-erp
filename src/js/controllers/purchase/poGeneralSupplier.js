@@ -1,7 +1,7 @@
-erpApp.controller('poGeneralSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
+erpConfig.moduleFiles.poGeneralSupplier = function() {
+    return {
         updatePartDetails: function(mapping) {
-            context.actions.getData('marketing.partMaster', mapping.id).then(function(res) {
+            context.methods.getData('marketing.partMaster', mapping.id).then(function(res) {
                 var partData = res.data;
                 for (var mapKey in rmData) {
                     if (mapping[mapKey] === null || mapping[mapKey] === '') {
@@ -16,7 +16,4 @@ erpApp.controller('poGeneralSupplierCtrl', ['$scope', 'commonFact', 'serviceApi'
             }
         }
     };
-
-    commonFact.initCtrl($scope, 'purchase.poGeneralSupplier', actions);
-
-}]);
+};

@@ -1,5 +1,5 @@
-erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
+erpConfig.moduleFiles.empPayment = function() {
+    return {
         callBackAdd: function(context) {
             context.data['toDate'] = new Date();
         },
@@ -7,8 +7,8 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
             var frmDate = context.data.frmDate;
             var toDate = context.data.toDate;
             var filterOperator = context.data.employeeCode;
-            var empPaidList = context.actions.getEmpPaymentPaid(context);
-            return context.actions.getData('report.productionEntryReport').then(function(res) {
+            var empPaidList = context.methods.getEmpPaymentPaid(context);
+            return context.methods.getData('report.productionEntryReport').then(function(res) {
                 var productionEntry = res.data;
                 var productionEntryList = {};
                 for (var i in productionEntry) {
@@ -68,14 +68,14 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
             }
         },
         addPartMap: function(context, data) {
-            context.actions.changeMapping(context, data, data.employeeCode, context.form.fields['employeeCode']);
+            context.methods.changeMapping(context, data, data.employeeCode, context.form.fields['employeeCode']);
         },
         callBackChangeMapping: function(context, data, key, field, fieldMapKey) {
-            context.actions.updatePartMap(context, data, key, field, fieldMapKey);
+            context.methods.updatePartMap(context, data, key, field, fieldMapKey);
         },
         updatePartMap: function(context, data, key, field, fieldMapKey) {
 
-            context.actions.getProductionEntry(context).then(function(productionEntryList) {
+            context.methods.getProductionEntry(context).then(function(productionEntryList) {
                 var total = 0;
                 var employeeCode = context.data.employeeCode;
                 var newMapData = [];
@@ -105,7 +105,4 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
             context.data.balanceAmount = amount;
         }
     };
-
-    commonFact.initCtrl($scope, 'accounts.empPayment', actions);
-
-}]);
+};

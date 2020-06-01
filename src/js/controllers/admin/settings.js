@@ -1,10 +1,10 @@
-erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    var actions = {
+erpConfig.moduleFiles.settings = function() {
+    return {
         callBackList: function(context) {
             var moduleField = context.form.mapping.fields['module'];
             moduleField.options = {};
             moduleField.allOptions = {};
-            context.actions.makeModuleOptions(context, context.erpAppConfig.modules, moduleField);
+            context.methods.makeModuleOptions(context, context.erpAppConfig.modules.controllers, moduleField);
             var adminOption = {
                 userType: 'ADMIN',
                 desc: 'ADMIN',
@@ -13,9 +13,9 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
             };
             context.form.mapping.fields['restrictUser'].options['ADMIN'] = adminOption;
             if (context.lastData === undefined) {
-                context.actions.add(context);
+                context.methods.add(context);
             } else {
-                context.actions.edit(context, context.lastData.id);
+                context.methods.edit(context, context.lastData.id);
             }
         },
         makeModuleOptions: function(context, modules, field, parentModule) {
@@ -30,12 +30,10 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
                     field.options[optionIdVal] = field.allOptions[optionIdVal];
 
                     if (!module.page) {
-                        context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
+                        context.methods.makeModuleOptions(context, context.methods.showSubModule(modules[i]), field, modules[i]);
                     }
                 }
             }
         }
-    }
-    commonFact.initCtrl($scope, 'admin.settings', actions);
-
-}]);
+    };
+};

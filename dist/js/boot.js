@@ -1,229 +1,142 @@
 'use strict'
-
-var erpConfig = {"appName":"VASUTECHS","appBaseUrl":"/dashboard","calendarYear":"","finalStageOpp":9,"yearChangeMonth":3,"httpCache":true,"modules":{"login":{"id":"login","title":"Login","disableMenu":true,"defaultRelease":true,"masterData":{"userName":null,"password":null},"form":{"name":"Login","id":"login","title":"Login","fields":{"userName":{"name":"User Name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true}},"actions":{"cancel":false}},"page":{"link":"login","name":"add","templateUrl":"template/defaultView.html","controller":"loginCtrl","actions":false}},"databaseUpload":{"id":"databaseUpload","name":"Database Upload","title":"Database Upload","disableMenu":true,"defaultRelease":true,"masterData":{"databaseUpload":null},"page":{"link":"databaseUpload","name":"databaseUpload","templateUrl":"template/controllers/databaseUpload.html","controller":"databaseUploadCtrl"},"services":{"list":{"url":"api/upload","method":"POST"}}},"databaseDownload":{"id":"databaseDownload","name":"Database Download","title":"Database Download","disableMenu":true,"defaultRelease":true,"page":{"link":"/api/download","name":"databaseUpload"}},"calendarYear":{"id":"calendarYear","name":"Calendar Year","title":"Calendar Year","disableMenu":true,"defaultRelease":true,"page":{"link":"calendarYear","name":"calendarYear"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/calendarYear","method":"GET"}}},"dashboard":{"id":"dashboard","name":"Dashboard","title":"Dashboard","icon":"dashboard","disableMenu":true,"defaultRelease":true,"page":{"link":"dashboard","name":"dashboard","templateUrl":"template/controllers/dashboard.html","controller":"dashboardCtrl"}},"marketing":{"id":"marketing","name":"Marketing","title":"Marketing","icon":"stack-exchange","partMaster":{"id":"partMaster","title":"Part Master","masterData":{"partNo":null,"partName":null,"rmCode":null,"inputWeight":null,"finishedWeight":null,"hsnCode":null,"uomCode":null,"prodRateHr":null,"rate":null,"rolQtyYellowRage":null,"rolQtyRedRage":null,"rejection":null,"icc":null,"toolMaintenance":null,"profit":null,"transportCostKg":null},"form":{"name":"partMaster","id":"partMaster","fields":{"partNo":{"name":"Part No","id":"partNo","type":"input","inputType":"text","action":"isCheckExistField","required":true},"partName":{"name":"Part Name","id":"partName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"rmCode":{"name":"Raw material","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"inputWeight":{"name":"Input weight","id":"inputWeight","type":"input","inputType":"number","required":true},"finishedWeight":{"name":"Finished weight","id":"finishedWeight","type":"input","inputType":"number","required":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"input","inputType":"text","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true},"prodRateHr":{"name":"Prod Rate/ hr","id":"prodRateHr","type":"input","inputType":"number","required":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"number","required":true},"rolQtyYellowRage":{"name":"ROL Qty Yellow Rage","id":"rolQtyYellowRage","type":"input","inputType":"number","required":true},"rolQtyRedRage":{"name":"ROL Qty Red Rage","id":"rolQtyRedRage","type":"input","inputType":"number","required":true},"rejection":{"name":"Rejection %","id":"rejection","type":"input","inputType":"number","required":true},"icc":{"name":"ICC %","id":"icc","type":"input","inputType":"number","required":true},"toolMaintenance":{"name":"Tool Maintenance %","id":"toolMaintenance","type":"input","inputType":"number","required":true},"profit":{"name":"Profit %","id":"profit","type":"input","inputType":"number","required":true},"transportCostKg":{"name":"Transport cost per kg","id":"transportCostKg","type":"input","inputType":"number","required":true},"isAssemblePart":{"name":"Is Assemble Part","id":"isAssemblePart","type":"input","inputType":"checkbox"}}},"listView":[{"title":"PartNo","id":"id","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Part Name","id":"partName"}],"page":{"link":"marketing/partMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"partMasterCtrl"},"services":{"list":{"url":"api/partMaster","method":"GET"}}},"customerMaster":{"id":"customerMaster","title":"Customer Master","masterData":{"customerCode":null,"customerName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"cgst":null,"sgst":null,"igst":null,"mapping":[{"id":null,"partName":null,"hsnCode":null,"rate":null}]},"form":{"name":"customerMaster","id":"customerMaster","autoGenKey":"customerCode","fields":{"customerCode":{"name":"Customer Code","id":"customerCode","type":"span","valuePrefix":"VT-CUS-"},"customerName":{"name":"Customer Name","id":"customerName","type":"input","inputType":"text","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"text"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"text"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"text"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"text"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Customer Code","id":"customerCode","valuePrefix":"VT-CUS-"},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"marketing/customerMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"customerMasterCtrl"},"services":{"list":{"url":"api/customerMaster","method":"GET"}}},"empMaster":{"id":"empMaster","title":"Employee Master","masterData":{"id":null,"employeeCode":null,"employeeName":null,"address":null,"contactNo":null,"mailId":null,"qualification":null,"designation":null,"basicSalary":null,"hra":null,"ca":null,"ot":null,"totalSalary":null,"mapping":[{"id":null,"partName":null,"operationTo":null,"laborCost":null}]},"form":{"name":"empMaster","id":"empMaster","autoGenKey":"employeeCode","fields":{"employeeCode":{"name":"Employee Code","id":"employeeCode","valuePrefix":"VT-EMP-","type":"span"},"employeeName":{"name":"Employee Name","id":"employeeName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"mailId":{"name":"Mail Id","id":"mailId","type":"input","inputType":"email","required":true},"qualification":{"name":"Qualification","id":"qualification","type":"input","inputType":"text","required":true},"designation":{"name":"Designation","id":"designation","type":"input","inputType":"text","required":true},"basicSalary":{"name":"BasicSalary","id":"basicSalary","type":"input","inputType":"number","required":true},"hra":{"name":"HRA","id":"hra","type":"input","inputType":"number","required":true},"ca":{"name":"CA","id":"ca","type":"input","inputType":"number","required":true},"ot":{"name":"OT","id":"ot","type":"input","inputType":"number","required":true},"total":{"name":"Total","id":"total","type":"input","inputType":"number","required":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"operationTo":{"name":"Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isSingle":true},"laborCost":{"name":"Labor Cost","id":"laborCost","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Employee Name","id":"employeeName"},{"title":"Mail Id","id":"mailId"}],"page":{"link":"marketing/empMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"empMasterCtrl"},"services":{"list":{"url":"api/empMaster","method":"GET"}}},"uomMaster":{"id":"uomMaster","title":"UOM Master","masterData":{"uomCode":null,"uomName":null},"form":{"name":"uomMaster","id":"uomMaster","autoGenKey":"uomCode","fields":{"uomCode":{"name":"UOM Code","id":"uomCode","type":"span","valuePrefix":"VT-UOM-"},"uomName":{"name":"UOM Name","id":"uomName","type":"input","inputType":"text","action":"isCheckExistField","required":true}}},"listView":[{"title":"UOM Code","id":"uomCode","valuePrefix":"VT-UOM-"},{"title":"UOM Name","id":"uomName"}],"page":{"link":"marketing/uomMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"uomMasterCtrl"},"services":{"list":{"url":"api/uomMaster","method":"GET"}}},"invoice":{"id":"invoice","title":"Invoice","masterData":{"invoiceNo":null,"date":null,"customerCode":null,"address":null,"gstin":null,"subTotal":null,"taxRate":null,"cgst":null,"sgst":null,"gst":null,"igst":null,"cgstTotal":null,"sgstTotal":null,"igstTotal":null,"totalBeforTax":null,"total":null,"mapping":[{"id":null,"hsnCode":null,"unit":null,"rate":null,"amount":null}]},"form":{"name":"Invoice","id":"invoice","autoGenKey":"invoiceNo","disableByField":"id","fields":{"invoiceNo":{"name":"Invoice No","id":"invoiceNo","type":"span","valuePrefix":"VT-","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"customerCode":{"name":"To","id":"customerCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","igst","sgst","cgst","address","mapping"],"dataFrom":"marketing.customerMaster","replaceName":"customerName","isEditDisable":true,"isSingle":true},"address":{"name":"Customer Address","id":"address"},"partyGstin":{"name":"Party GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"taxRate":{"name":"Tax Rate","id":"taxRate","type":"input","inputType":"number","required":true},"cgst":{"name":"CGST","id":"cgst","type":"span"},"cgstTotal":{"name":"CGST Total","id":"cgstTotal","type":"span"},"sgst":{"name":"SGST","id":"sgst","type":"span"},"sgstTotal":{"name":"SGST Total","id":"sgstTotal","type":"span"},"igst":{"name":"IGST","id":"igst","type":"span"},"igstTotal":{"name":"IGST Total","id":"igstTotal","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","type":"input","inputType":"number","required":true},"total":{"name":"Total","id":"total","type":"input","inputType":"number","required":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"span"},"unit":{"name":"Unit","id":"unit","type":"input","inputType":"text","action":"updateTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"amount":{"name":"Amount","id":"amount","type":"span"}}}},"listView":[{"title":"Invoice No","id":"invoiceNo","valuePrefix":"VT-"},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}},{"title":"Date","id":"date","type":"date"}],"page":{"link":"marketing/invoice/list","name":"list","templateUrl":"template/controllers/marketing/invoice.html","controller":"invoiceCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/invoice","method":"GET"}}},"cashBill":{"id":"cashBill","name":"cashBill","title":"Cash Bill","parentModule":"marketing.invoice","form":{"autoGenValStart":null,"fields":{"invoiceNo":{"name":"CashBill No","id":"invoiceNo","type":"span","valuePrefix":"","required":true},"preBalance":{"name":"Previous Balance","id":"preBalance","type":"input","inputType":"text","action":"updatePreBalance"}}},"listView":[{"title":"Cash Bill No","id":"invoiceNo","valuePrefix":""}],"page":{"link":"marketing/invoice/list?type=cashBill","name":"list","templateUrl":"template/marketing/invoice.html","controller":"invoiceCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/cashBill","method":"GET"}}}},"purchase":{"id":"purchase","name":"Purchase","title":"Purchase","icon":"shopping-bag","rmMaster":{"id":"rmMaster","title":"Raw Material Master","masterData":{"rmCode":null,"rmName":null,"grade":null,"type":null,"hsnCode":null,"uomCode":null,"rate":null,"transportCostKg":null,"scrapRate":null},"form":{"name":"rmMaster","id":"rmMaster","autoGenKey":"rmCode","fields":{"rmCode":{"name":"RM Code","id":"rmCode","valuePrefix":"RM-","type":"span"},"rmName":{"name":"RM Name","id":"rmName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"grade":{"name":"Grade","id":"grade","type":"input","inputType":"text","required":true},"type":{"name":"Type","id":"type","type":"input","inputType":"text","required":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"input","inputType":"text","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"number","required":true},"transportCostKg":{"name":"Transport cost / kg","id":"transportCostKg","type":"input","inputType":"number","required":true},"scrapRate":{"name":"Scrap rate","id":"scrapRate","type":"input","inputType":"number","required":true}}},"listView":[{"title":"RM Code","id":"rmCode","valuePrefix":"RM-"},{"title":"Raw Material Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"purchase/rmMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"rmMasterCtrl"},"services":{"list":{"url":"api/rmMaster","method":"GET"}}},"supplierMaster":{"id":"supplierMaster","title":"Supplier Master","masterData":{"supplierCode":null,"supplierName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"rmCode":null,"rate":null}]},"form":{"name":"supplierMaster","id":"supplierMaster","autoGenKey":"supplierCode","fields":{"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"span","valuePrefix":"VT-SP-"},"supplierName":{"name":"Supplier Name","id":"supplierName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"text","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"RM Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Supplier Code","id":"supplierCode","valuePrefix":"VT-SP-"},{"title":"Supplier Name","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true}],"page":{"link":"purchase/supplierMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"supplierMasterCtrl"},"services":{"list":{"url":"api/supplierMaster","method":"GET"}}},"poSupplier":{"id":"poSupplier","title":"Purchase Order - Supplier","masterData":{"poNo":null,"date":null,"supplierCode":null,"gstin":null,"status":0,"subTotal":null,"extraAmount":null,"gstTotal":null,"total":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"rate":null,"amount":null}]},"form":{"name":"poSupplier","id":"poSupplier","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-SP-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isSingle":true},"gstin":{"name":"Party Gstin","id":"gstin","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"RM Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isDisable":true},"qty":{"name":"Qty","id":"qty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-SP-PO-"},{"title":"Supplier Code","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poSupplier/list","name":"list","templateUrl":"template/defaultView.html","controller":"poSupplierCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/poSupplier","method":"GET"}}},"generalSupplierMaster":{"id":"generalSupplierMaster","title":"General Supplier Master","masterData":{"generalSupplierCode":null,"generalSupplierName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"partName":null,"rate":null}]},"form":{"name":"General Supplier Master","id":"generalSupplierMaster","autoGenKey":"generalSupplierCode","fields":{"generalSupplierCode":{"name":"General Supplier Code","id":"generalSupplierCode","type":"span","valuePrefix":"VT-GSP-"},"supplierName":{"name":"General Supplier Name","id":"generalSupplierName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"text","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"General Supplier Code","id":"generalSupplierCode","valuePrefix":"VT-GSP-"},{"title":"General Supplier Name","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true}],"page":{"link":"purchase/generalSupplierMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"generalSupplierMasterCtrl"},"services":{"list":{"url":"api/generalSupplierMaster","method":"GET"}}},"poGeneralSupplier":{"id":"poGeneralSupplier","title":"Purchase Order - General Supplier","masterData":{"poNo":null,"date":null,"generalSupplierCode":null,"gstin":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"rate":null,"amount":null}]},"form":{"name":"poGeneralSupplier","id":"poGeneralSupplier","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-GSP-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"GeneralSupplier Code","id":"generalSupplierCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","isSingle":true},"gstin":{"name":"Party Gstin","id":"gstin","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"qty":{"name":"Qty","id":"qty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-GSP-PO-"},{"title":"General Supplier Code","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poGeneralSupplier/list","name":"list","templateUrl":"template/defaultView.html","controller":"poGeneralSupplierCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/poGeneralSupplier","method":"GET"}}},"subContractorMaster":{"id":"subContractorMaster","title":"Sub Contractor Master","masterData":{"subContractorCode":null,"subContractorName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"operationTo":null,"rate":null}]},"form":{"name":"subContractorMaster","id":"subContractorMaster","autoGenKey":"subContractorCode","fields":{"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"span","valuePrefix":"VT-SC-"},"subContractorName":{"name":"Sub Contractor Name","id":"subContractorName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo","required":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","filter":{"source":["Sub-Contractor"]},"required":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Sub Contractor Code","id":"subContractorCode","valuePrefix":"VT-SC-"},{"title":"Sub Contractor Name","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true}],"page":{"link":"purchase/subContractorMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"subContractorMasterCtrl"},"services":{"list":{"url":"api/subContractorMaster","method":"GET"}}},"poSubContractor":{"id":"poSubContractor","title":"Purchase Order - Sub Contractor","masterData":{"poNo":null,"date":null,"subContractorCode":null,"gstin":null,"status":0,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationTo":null,"qty":null,"uomCode":null,"rate":null,"total":null}]},"form":{"name":"poSubContractor","id":"poSubContractor","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-SC-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isSingle":true,"callBack":false},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isDisable":true},"acceptedQty":{"name":"Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-SC-PO-"},{"title":"SubContractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poSubContractor/list","name":"list","templateUrl":"template/defaultView.html","controller":"poSubContractorCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/poSubContractor","method":"GET"}}}},"store":{"id":"store","name":"Store","title":"Store","icon":"suitcase","grnSupplier":{"id":"grnSupplier","title":"Good Receipt Note - Supplier","masterData":{"grnNo":null,"date":null,"supplierCode":null,"poNo":null,"supplierInvoiceNo":null,"supplierInvoiceDate":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"cost":null,"total":null}]},"form":{"name":"grnSupplier","id":"grnSupplier","autoGenKey":"grnNo","disableByField":"id","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"select","options":{},"action":"getPOSupplier","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isSingle":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"dataFrom":"purchase.poSupplier","replaceName":"poNo","valuePrefix":"VT-SP-PO-","filter":{"status":0},"isEditDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"Supplier Invoice No","id":"supplierInvoiceNo","type":"input","inputType":"text","required":true},"supplierInvoiceDate":{"name":"Supplier Invoice Date","id":"supplierInvoiceDate","type":"input","inputType":"date","required":true},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isDisable":true},"qty":{"name":"PO Qty","id":"qty","type":"span"},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updateRmTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updateRmTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-GRN-"},{"title":"Supplier","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true}],"page":{"link":"store/grnSupplier/list","name":"list","templateUrl":"template/defaultView.html","controller":"grnSupplierCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/grnSupplier","method":"GET"}}},"grnGeneralSupplier":{"id":"grnGeneralSupplier","title":"Good Receipt Note - General Supplier","masterData":{"grnNo":null,"date":null,"generalSupplierCode":null,"poNo":null,"generalSupplierInvoiceNo":null,"generalSupplierInvoiceDate":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"cost":null,"total":null}]},"form":{"name":"grnSupplier","id":"grnSupplier","autoGenKey":"grnNo","disableByField":"id","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"General Supplier Code","id":"generalSupplierCode","type":"select","options":{},"action":"getPOGeneralSupplier","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","isSingle":true,"isEditDisable":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"dataFrom":"purchase.poGeneralSupplier","replaceName":"poNo","valuePrefix":"VT-GSP-PO-","filter":{"status":0},"isEditDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"General Supplier Invoice No","id":"generalSupplierInvoiceNo","type":"input","inputType":"text","required":true},"supplierInvoiceDate":{"name":"General Supplier Invoice Date","id":"generalSupplierInvoiceDate","type":"input","inputType":"date","required":true},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"qty":{"name":"PO Qty","id":"qty","type":"span"},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updatePTTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePTTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-GRN-"},{"title":"General General Supplier","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true}],"page":{"link":"store/grnGeneralSupplier/list","name":"list","templateUrl":"template/defaultView.html","controller":"grnGeneralSupplierCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/grnGeneralSupplier","method":"GET"}}},"dcSubContractor":{"id":"dcSubContractor","title":"Delivery Chellan - Sub Contractor","masterData":{"dcNo":null,"date":null,"subContractorCode":null,"address":null,"gstin":null,"poNo":null,"status":0,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationFrom":null,"operationTo":null,"acceptedQty":null,"uomCode":null,"rate":null,"total":null}]},"form":{"name":"dcSubContractor","id":"dcSubContractor","disableByField":"id","autoGenKey":"dcNo","fields":{"dcNo":{"name":"DC No","id":"dcNo","type":"span","valuePrefix":"VT-DC-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"To Sub Contractor","id":"subContractorCode","type":"select","options":{},"action":"getPOSubContractor","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","updateData":["address","gstin"],"isSingle":true,"isEditDisable":true},"address":{"name":"Address","id":"address","type":"span"},"gstin":{"name":"GSTIN","id":"gstin","type":"span"},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","dataFrom":"purchase.poSubContractor","replaceName":"poNo","valuePrefix":"VT-SC-PO-","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"filter":{"status":0},"isSingle":true,"isEditDisable":true},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"GST/IGST Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationFrom":{"name":"Part From","id":"operationFrom","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"operationTo":{"name":"For the purpose","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"acceptedQty":{"name":"Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"DC NO","id":"dcNo","valuePrefix":"VT-DC-"},{"title":"Sub Contractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"store/dcSubContractor/list","name":"list","templateUrl":"template/defaultView.html","controller":"dcSubContractorCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/dcSubContractor","method":"GET"}}},"grnSubContractor":{"id":"grnSubContractor","title":"Good Receipt Note - Sub Contractor","masterData":{"grnNo":null,"date":null,"subContractorCode":null,"poNo":null,"subContractorDCNo":null,"subContractorDCDate":null,"dcNo":null,"status":0,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationFrom":null,"operationTo":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"gst":null,"cost":null,"total":null}]},"form":{"name":"grnSubContractor","id":"grnSubContractor","disableByField":"id","autoGenKey":"grnNo","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-SC-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"select","options":{},"action":"getPOSubContractor","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isSingle":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"getDCSubContractor","dataFrom":"purchase.poSubContractor","replaceName":"poNo","valuePrefix":"VT-SC-PO-","filter":{"status":0},"isSingle":true,"isEditDisable":true},"dcNo":{"name":"Our DC No","id":"dcNo","type":"select","options":{},"dataFrom":"store.dcSubContractor","action":"changeMapping","replaceName":"dcNo","valuePrefix":"VT-DC-","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"filter":{"status":0},"isSingle":true,"isEditDisable":true,"onLoadActions":true},"subContractorDCCode":{"name":"Sub Contractor DC Code","id":"subContractorDCCode","type":"input","inputType":"number","required":true},"subContractorDCDate":{"name":"Sub Contractor DC Date","id":"subContractorDCDate","type":"input","inputType":"date","required":true},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"GST/IGST Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationFrom":{"name":"Part From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-SC-GRN-"},{"title":"Sub Contractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true}],"page":{"link":"store/grnSubContractor/list","name":"list","templateUrl":"template/defaultView.html","controller":"grnSubContractorCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/grnSubContractor","method":"GET"}}}},"production":{"id":"production","name":"Production","title":"Production","icon":"cogs","operationMaster":{"id":"operationMaster","title":"Operation Master","masterData":{"opCode":null,"opName":null,"source":null},"form":{"name":"operationMaster","id":"operationMaster","fields":{"opCode":{"name":"Operation","id":"opCode","type":"input","inputType":"text","required":true},"opName":{"name":"Operation Name","id":"opName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"source":{"name":"Source","id":"source","type":"select","options":{"Supplier":{"optionId":"Supplier","optionName":"Supplier"},"In-House":{"optionId":"In-House","optionName":"IN House"},"Sub-Contractor":{"optionId":"Sub-Contractor","optionName":"Sub Contractor"}},"makeFieldOptions":false,"required":true}}},"listView":[{"title":"Operation","id":"opCode"},{"title":"Operation Name","id":"id","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true}],"page":{"link":"production/operationMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"operationMasterCtrl"},"services":{"list":{"url":"api/operationMaster","method":"GET"}}},"bom":{"id":"bom","title":"BOM","masterData":{"partNo":null,"partName":null,"rmCode":null,"partNorms":null},"form":{"name":"bom","id":"bom","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","updateData":["rmCode","partName"],"action":"changeMapping","existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"rmCode":{"name":"RM Code","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"RM Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","type":"select","isFilterBy":true}],"page":{"link":"production/bom/list","name":"list","templateUrl":"template/defaultView.html","controller":"bomCtrl"},"services":{"list":{"url":"api/bom","method":"GET"}}},"bomAssemblePart":{"id":"bomAssemblePart","title":"BOM Assemble Part","masterData":{"partNo":null,"partName":null,"mapping":[{"id":null,"partName":null,"partNorms":null}]},"form":{"name":"bomAssemblePart","id":"bomAssemblePart","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","updateData":["partName"],"action":"changeMapping","existingCheck":true,"isSingle":true,"filter":{"isAssemblePart":1}},"partName":{"name":"Part Name","id":"partName","type":"span"}},"mapping":{"name":"Sub Part Mapping","enabled":false,"fields":{"id":{"name":"Sub Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"changeMapping","updateData":["partName"],"existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"filter":{"isAssemblePart":1}}],"page":{"link":"production/bomAssemblePart/list","name":"list","templateUrl":"template/defaultView.html","controller":"bomAssemblePartCtrl"},"services":{"list":{"url":"api/bomAssemblePart","method":"GET"}}},"machineMaster":{"id":"machineMaster","title":"Machine Master","masterData":{"machineNo":null,"machineName":null,"make":null,"model":null,"capacity":null,"yop":null,"id":null,"machineShiftRate":null,"shiftHrs":null},"form":{"name":"machineMaster","id":"machineMaster","autoGenKey":"machineNo","fields":{"machineNo":{"name":"Machine No","id":"machineNo","type":"span","valuePrefix":"VT-M/C-"},"machineName":{"name":"Machine Name","id":"machineName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"make":{"name":"Make","id":"make","type":"input","inputType":"text","required":true},"model":{"name":"Model","id":"model","type":"input","inputType":"text","required":true},"capacity":{"name":"Capacity","id":"capacity","type":"input","inputType":"text","required":true},"yop":{"name":"Year of Purchase","id":"yop","type":"input","inputType":"text","required":true},"value":{"name":"Value","id":"value","type":"input","inputType":"text","required":true},"machineShiftRate":{"name":"Machine Shift Rate","id":"machineShiftRate","type":"input","inputType":"text","required":true},"shiftHrs":{"name":"Shift Hrs","id":"shiftHrs","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Machine No","id":"machineNo","valuePrefix":"VT-M/C-"},{"title":"Machine Name","id":"machineNo","dataFrom":"production.machineMaster","replaceName":"machineName","type":"select","isFilterBy":true}],"page":{"link":"production/machineMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"machineMasterCtrl"},"services":{"list":{"url":"api/machineMaster","method":"GET"}}},"flowMaster":{"id":"flowMaster","title":"Flow Master","masterData":{"partNo":null,"partName":null,"mapping":[{"id":null,"opName":null,"source":null,"toolNo":null,"machineNo":null,"palnQtyPerHr":null,"costAnalysis":null,"otherCost":null}],"totalCost":null},"form":{"name":"flowMaster","id":"flowMaster","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"required":true,"action":"changeMapping","updateData":["partName"],"dataFrom":"marketing.partMaster","replaceName":"partNo","existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"totalCost":{"name":"Total Cost","id":"totalCost","type":"span","afterMapping":true}},"mapping":{"name":"OP Mapping","fields":{"id":{"name":"Part op code","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","required":true},"opName":{"name":"op Name","id":"opName","type":"span"},"source":{"name":"Source","id":"source","type":"span"},"toolNo":{"name":"Tool Name","id":"toolNo","type":"select","options":{},"dataFrom":"production.toolMaster","replaceName":"toolName","required":true},"machineNo":{"name":"M/C No","id":"machineNo","type":"select","options":{},"dataFrom":"production.machineMaster","replaceName":"machineName","action":"updateCostAnalysis","required":true},"palnQtyPerHr":{"name":"Paln Qty Per Hr","id":"palnQtyPerHr","type":"input","inputType":"number","action":"updateCostAnalysis","required":true},"costAnalysis":{"name":"Cost Analysis","id":"costAnalysis","type":"span"},"otherCost":{"name":"Other Cost","id":"otherCost","type":"input","inputType":"number","action":"updateTotalCost"}}}},"listView":[{"title":"Part NO","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true}],"page":{"link":"store/flowMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"flowMasterCtrl"},"services":{"list":{"url":"api/flowMaster","method":"GET"}}},"toolMaster":{"id":"toolMaster","title":"Tool Master","masterData":{"toolNo":null,"toolName":null,"make":null,"type":null,"toolLife":null,"yop":null,"id":null},"form":{"name":"toolMaster","id":"toolMaster","autoGenKey":"toolNo","fields":{"toolNo":{"name":"Tool No","id":"toolNo","type":"span","valuePrefix":"VT-T-"},"toolName":{"name":"Tool Name","id":"toolName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"make":{"name":"Make","id":"make","type":"input","inputType":"text","required":true},"type":{"name":"Type","id":"type","type":"input","inputType":"text","required":true},"toolLife":{"name":"Tool Life","id":"toolLife","type":"input","inputType":"text","required":true},"yop":{"name":"Year of Purchase","id":"yop","type":"input","inputType":"text","required":true},"value":{"name":"Value","id":"value","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Tool No","id":"toolNo","valuePrefix":"VT-T-"},{"title":"Tool Name","id":"toolNo","dataFrom":"production.toolMaster","replaceName":"toolName","type":"select","isFilterBy":true}],"page":{"link":"production/toolMaster/list","name":"list","templateUrl":"template/defaultView.html","controller":"toolMasterCtrl"},"services":{"list":{"url":"api/toolMaster","method":"GET"}}},"materialIssueNote":{"id":"materialIssueNote","title":"Material Issue Note","masterData":{"jobCardNo":null,"date":null,"rmCode":null,"partNo":null,"partNorms":null,"issueQty":null,"qtyCanMake":null,"operationTo":null,"status":0},"form":{"name":"materialIssueNote","id":"materialIssueNote","autoGenKey":"jobCardNo","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"span","valuePrefix":"VT-"},"date":{"name":"Job Card Date","id":"date","type":"input","inputType":"date","required":true},"rmCode":{"name":"RM Code","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","action":"getPartNo","isEditDisable":true,"isSingle":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"getNorms","isEditDisable":true,"isSingle":true},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"issueQty":{"name":"Issue Qty","id":"issueQty","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"qtyCanMake":{"name":"Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true},"operationTo":{"name":"Issue Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isEditDisable":true,"isSingle":true}}},"listView":[{"title":"Job Card No","id":"jobCardNo","valuePrefix":"VT-"},{"title":"PartNo","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Qty Can Make","id":"qtyCanMake"},{"title":"Date","id":"date","type":"date"},{"title":"Status","id":"status"}],"page":{"link":"production/materialIssueNote/list","name":"list","templateUrl":"template/defaultView.html","controller":"materialIssueNoteCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/materialIssueNote","method":"GET"}}},"assembleMaterialIssueNote":{"id":"assembleMaterialIssueNote","title":"Assemble Material Issue Note","masterData":{"jobCardNo":null,"date":null,"partNo":null,"status":0,"operationTo":null,"qtyCanMake":null,"isAssemblePart":1,"mapping":[{"id":null,"partName":null,"partNorms":null,"issueQty":null,"qtyCanMake":null,"operationTo":null}]},"form":{"name":"assembleMaterialIssueNote","id":"assembleMaterialIssueNote","autoGenKey":"jobCardNo","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"span","valuePrefix":"VT-"},"date":{"name":"Job Card Date","id":"date","type":"input","inputType":"date","required":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"getSubParts","isSingle":true,"filter":{"isAssemblePart":1}},"operationTo":{"name":"Issue Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isEditDisable":true,"filter":{"opCode":["105"]},"isSingle":true},"qtyCanMake":{"name":"Total Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true,"afterMapping":true}},"mapping":{"name":"Sub Part Mapping","enabled":false,"fields":{"id":{"name":"Sub Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"partNorms":{"name":"Part Norms","id":"partNorms","type":"span"},"issueQty":{"name":"Issue Qty","id":"issueQty","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"qtyCanMake":{"name":"Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true}},"actions":{"add":false}}},"listView":[{"title":"Job Card No","id":"jobCardNo","valuePrefix":"VT-"},{"title":"PartNo","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"filter":{"isAssemblePart":1}},{"title":"Qty Can Make","id":"qtyCanMake"},{"title":"Date","id":"date","type":"date"},{"title":"Status","id":"status"}],"page":{"link":"production/assembleMaterialIssueNote/list","name":"list","templateUrl":"template/defaultView.html","controller":"assembleMaterialIssueNoteCtrl"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/materialIssueNote","method":"GET","filter":{"isAssemblePart":1}}}},"productionEntry":{"id":"productionEntry","title":"Production Entry","masterData":{"jobCardNo":null,"partNo":null,"mapping":[{"date":null,"machineNo":null,"operationFrom":null,"operationTo":null,"toolNo":null,"operator":null,"startTime":null,"endTime":null,"planQty":null,"acceptedQty":null,"rejectionQty":null,"rwQty":null}]},"form":{"name":"productionEntry","id":"productionEntry","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"select","options":{},"required":true,"dataFrom":"production.materialIssueNote","replaceName":"jobCardNo","valuePrefix":"VT-","action":"changeMapping","updateData":["partNo"],"filter":{"status":0},"isEditDisable":true,"isSingle":true,"onLoadActions":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"required":true,"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true,"isEditDisable":true,"isSingle":true}},"mapping":{"name":"Production Mapping","fields":{"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"machineNo":{"name":"M/C No","id":"machineNo","type":"select","options":{},"dataFrom":"production.machineMaster","replaceName":"machineName","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"action":"updateOperationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","required":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","action":"updateToolNo","valuePrefixData":"opCode"},"toolName":{"name":"Tool Name","id":"toolNo","type":"select","options":{},"dataFrom":"production.toolMaster","replaceName":"toolName"},"operator":{"name":"Operator","id":"operator","type":"select","options":{},"required":true,"dataFrom":"marketing.empMaster","replaceName":"employeeName"},"startTime":{"name":"Start Time: (1-24)","id":"startTime","type":"input","inputType":"number","required":true},"endTime":{"name":"End Time: (1-24)","id":"endTime","type":"input","inputType":"number","required":true,"action":"calculatePlanQty"},"planQty":{"name":"Plan Qty","id":"planQty","type":"input","inputType":"number","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"},"rejectionQty":{"name":"Rejection Qty","id":"rejectionQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"},"rwQty":{"name":"R/w Qty","id":"rwQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"}},"actions":{"add":false,"delete":false}}},"listView":[{"title":"Job Card No","id":"jobCardNo","dataFrom":"production.materialIssueNote","isFilterBy":true,"replaceName":"id","valuePrefix":"VT-","type":"select","options":{}},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"options":{}}],"page":{"link":"production/productionEntry/list","name":"list","templateUrl":"template/defaultView.html","controller":"productionEntryCtrl","downloadTableData":"prodEntryDownload"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/productionEntry","method":"GET"}}}},"report":{"id":"report","name":"Report","title":"Report","icon":"tasks","rmStock":{"id":"rmStock","title":"Raw Material Stock","masterData":{"rmName":null,"rmStockQty":null,"uomCode":null},"form":{"name":"RMStock","id":"RMStock","fields":{"rmName":{"name":"RM Name","id":"rmCode","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"rmStockQty":{"name":"Stock Qty","id":"rmStockQty","type":"input","inputType":"number","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true}}},"listView":[{"title":"Raw Material Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isFilterBy":true,"type":"select","options":{}},{"title":"Rm Stock Qty","id":"rmStockQty"},{"title":"UOM","id":"uomCode","dataFrom":"marketing.uomMaster","replaceName":"uomName"},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/rmStock/list","name":"list","templateUrl":"template/defaultView.html","controller":"rmStockCtrl","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}},"services":{"list":{"url":"YEAR-{{YEAR}}/api/rmStock","method":"GET"}}},"partStock":{"id":"partStock","title":"Part Stock","masterData":{"partNo":null,"partStockQty":null,"operationFrom":null,"operationTo":null},"form":{"name":"PartStock","id":"PartStock","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"updateOperationFrom","isSingle":true},"partStockQty":{"name":"Part Qty","id":"partStockQty","type":"input","inputType":"number","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","action":"updateOperationTo","replaceName":"opName","isSingle":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isSingle":true}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Part Stock Qty","id":"partStockQty"},{"title":"Operation From","id":"operationFrom","dataFrom":"production.operationMaster","replaceName":"opName","type":"select"},{"title":"Operation To","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","type":"select"},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/partStock/list","name":"list","templateUrl":"template/defaultView.html","controller":"partStockCtrl","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}},"services":{"list":{"url":"YEAR-{{YEAR}}/api/partStock","method":"GET"}}},"subContractorStock":{"id":"subContractorStock","title":"SubContractor Stock","masterData":{"subContractorCode":null,"partStockQty":null,"operationFrom":null,"operationTo":null},"form":{"name":"subContractorStock","id":"subContractorStock","fields":{"subContractorCode":{"name":"SubContractor Code","id":"subContractorCode","type":"select","options":{},"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","action":"getPartNos","isSingle":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"updateOperationFrom","isSingle":true},"partStockQty":{"name":"SubContractor Qty","id":"partStockQty","type":"input","inputType":"number","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","action":"updateOperationTo","replaceName":"opName","isSingle":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isSingle":true}}},"listView":[{"title":"SubContractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Part Stock Qty","id":"partStockQty"},{"title":"Operation From","id":"operationFrom","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true},{"title":"Operation To","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/subContractorStock/list","name":"list","templateUrl":"template/defaultView.html","controller":"subContractorStockCtrl","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}},"services":{"list":{"url":"YEAR-{{YEAR}}/api/subContractorStock","method":"GET"}}},"salesAnalysisInvoice":{"id":"salesAnalysisInvoice","title":"Sales Analysis - Invoice","filterView":{"title":"Filter","data":{"customerCode":null,"frmDate":null,"toDate":null},"fields":[{"title":"Customer","id":"customerCode","type":"select","dataFrom":"marketing.customerMaster","replaceName":"customerName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Customer","id":"customerCode","type":"select","dataFrom":"marketing.customerMaster","replaceName":"customerName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Part Qty","id":"unit"},{"title":"Part Price","id":"rate"},{"title":"Sales Value","id":"amount"},{"title":"Dates","id":"dates"},{"title":"Invoice Nos","id":"invoiceNos"}],"page":{"link":"report/salesAnalysisInvoice/list","name":"list","templateUrl":"template/defaultView.html","controller":"salesAnalysisInvoiceCtrl","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/invoice","method":"GET"}}},"salesAnalysisCashBill":{"id":"salesAnalysisCashBill","name":"salesAnalysisCashBill","title":"Sales Analysis - Cash Bill","parentModule":"report.salesAnalysisInvoice","page":{"link":"report/salesAnalysisInvoice/list?type=cashBill","name":"list","templateUrl":"template/defaultView.html","controller":"salesAnalysisInvoiceCtrl","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/cashBill","method":"GET"}}},"costAnalysis":{"id":"costAnalysisInvoice","title":"Cost Analysis","listView":[{"title":"PartNo","id":"id","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Input Weight","id":"inputWeight"},{"title":"Finished Weight","id":"finishedWeight"},{"title":"RM Rate","id":"rmRate"},{"title":"Scrap Rate","id":"scrapRate"},{"title":"Material Cost","id":"materialCost"},{"title":"Conversion Cost","id":"conversionCost"},{"title":"Sub Total","id":"subTotal"},{"title":"Rej Cost","id":"rejCost"},{"title":"ICC cost","id":"iccCost"},{"title":"Tool Maint cost","id":"toolMaintCost"},{"title":"Trans Cost","id":"transCost"},{"title":"Profit Cost","id":"profitCost"},{"title":"Total","id":"total"},{"title":"Sales Rate","id":"salesRate"},{"title":"Difference in cost","id":"differenceInCost"},{"title":"% of Gain or Loss","id":"gainOrLoss"}],"page":{"link":"report/costAnalysis/list","name":"list","templateUrl":"template/defaultView.html","controller":"costAnalysisCtrl","downloadExcel":true,"actions":false},"services":{"list":{"url":"api/partMaster","method":"GET"}}},"productionEntryReport":{"id":"productionEntryReport","title":"Production Entry Report","filterView":{"title":"Filter","data":{"frmDate":null,"toDate":null},"fields":[{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"M/C No","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"Job Card No","id":"jobCardNo","type":"input"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Operation","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","type":"select"},{"title":"Operator","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"Start Time","id":"startTime"},{"title":"End Time","id":"endTime"},{"title":"Plan Qty","id":"planQty"},{"title":"Qty","id":"acceptedQty"},{"title":"Rejection Qty","id":"rejectionQty"},{"title":"RW Qty","id":"rwQty"}],"page":{"link":"report/productionEntryReport/list","name":"list","templateUrl":"template/defaultView.html","controller":"productionEntryReportCtrl","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/productionEntry","method":"GET"}}},"toolHistoryCard":{"id":"toolHistoryCard","title":"Tool History Card","filterView":{"title":"Filter","data":{"toolNo":null,"partNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Tool Name","id":"toolNo","type":"select","dataFrom":"production.toolMaster","replaceName":"toolName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Tool Name","id":"toolNo","type":"select","dataFrom":"production.toolMaster","replaceName":"toolName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Qty","id":"qty"},{"title":"Cummulative Qty","id":"cummulativeQty"},{"title":"Activity","id":"activity","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode"}],"page":{"link":"report/productionEntryReport/list?type=toolHistoryCard","name":"list","templateUrl":"template/defaultView.html","controller":"productionEntryReportCtrl","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/productionEntry","method":"GET"}}},"machineRunningTime":{"id":"machineRunningTime","title":"Machine Running Time","filterView":{"title":"Filter","data":{"machineNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Machine Name","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Machine No","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"Year","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"yop"},{"title":"Time On","id":"startTime"},{"title":"Time Off","id":"endTime"},{"title":"Running Time","id":"runningTime"},{"title":"Cum Running Time","id":"cumRunningTime"}],"page":{"link":"report/productionEntryReport/list?type=machineRunningTime","name":"list","templateUrl":"template/defaultView.html","controller":"productionEntryReportCtrl","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/productionEntry","method":"GET"}}},"empPerformanceReport":{"id":"empPerformanceReport","title":"Employee Performance Report","filterView":{"title":"Filter","data":{"partNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Part No","id":"partNo","type":"select","dataFrom":"marketing.partMaster","replaceName":"partNo"},{"title":"Employee Name","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Employee Name","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Operation","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","type":"select"},{"title":"Start Time","id":"startTime"},{"title":"End Time","id":"endTime"},{"title":"Plan Qty","id":"planQty"},{"title":"Qty","id":"acceptedQty"}],"page":{"link":"report/productionEntryReport/list?type=empPerformanceReport","name":"list","templateUrl":"template/defaultView.html","controller":"productionEntryReportCtrl","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/productionEntry","method":"GET"}}}},"accounts":{"id":"accounts","name":"Accounts","title":"Accounts","icon":"money","customerPaymentInvoice":{"id":"customerPaymentInvoice","title":"Customer Payment - Invoice","masterData":{"invoiceNo":null,"customerCode":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Customer Payment","id":"customerPayment","fields":{"invoiceNo":{"name":"Invoice No","id":"invoiceNo","type":"select","options":{},"action":"changeMapping","updateData":["customerCode","total","date"],"dataFrom":"marketing.invoice","replaceName":"invoiceNo","valuePrefix":"VT-","required":true,"existingCheck":true,"isSingle":true},"customerCode":{"name":"Customer Code","id":"customerCode","type":"select","options":{},"dataFrom":"marketing.customerMaster","replaceName":"customerName","isSingle":true,"isDisable":true},"date":{"name":"Invoice Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"Invoice No","id":"invoiceNo","dataFrom":"marketing.invoice","valuePrefix":"VT-","replaceName":"invoiceNo","isFilterBy":true,"type":"select","options":{}},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/customerPaymentInvoice/list","name":"list","templateUrl":"template/defaultView.html","controller":"customerPaymentInvoiceCtrl","downloadExcel":true},"services":{"list":{"url":"YEAR-{{YEAR}}/api/customerPaymentInvoice","method":"GET"}}},"customerPaymentCashBill":{"id":"customerPaymentCashBill","name":"customerPaymentCashBill","title":"Customer Payment - Cash Bill","parentModule":"accounts.customerPaymentInvoice","form":{"fields":{"invoiceNo":{"name":"CashBill No","id":"invoiceNo","options":{},"action":"changeMapping","updateData":["date","customerCode","total"],"dataFrom":"marketing.cashBill","replaceName":"invoiceNo","valuePrefix":"","required":true,"existingCheck":true,"isSingle":true}}},"listView":[{"title":"Cash Bill No","id":"invoiceNo","valuePrefix":"","dataFrom":"marketing.cashBill","replaceName":"invoiceNo","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"accounts/customerPaymentInvoice/list?type=cashBill","name":"list","templateUrl":"template/defaultView.html","controller":"customerPaymentInvoiceCtrl","downloadExcel":true},"services":{"list":{"url":"YEAR-{{YEAR}}/api/customerPaymentCashBill","method":"GET"}}},"suppilerPayment":{"id":"suppilerPayment","title":"Suppiler Payment","masterData":{"grnNo":null,"supplierCode":null,"supplierInvoiceNo":null,"supplierInvoiceDate":null,"invoiceDate":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Suppiler Payment","id":"suppilerPayment","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"select","options":{},"action":"changeMapping","updateData":["supplierCode","supplierInvoiceNo","supplierInvoiceDate","date"],"dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","required":true,"existingCheck":true,"isSingle":true},"supplierCode":{"name":"Supplier Name","id":"supplierCode","type":"select","options":{},"dataFrom":"purchase.supplierMaster","replaceName":"supplierName","required":true,"isDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"Supplier Invoice No","id":"supplierInvoiceNo","type":"span"},"supplierInvoiceDate":{"name":"Supplier Invoice Date","id":"supplierInvoiceDate","type":"span"},"date":{"name":"GRN Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"GRN No","id":"grnNo","dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","isFilterBy":true,"type":"select","options":{}},{"title":"Supplier Name","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isFilterBy":true,"type":"select","options":{}},{"title":"Supplier InvoiceNo No","id":"supplierInvoiceNo","dataFrom":"store.grnSupplier","replaceName":"supplierInvoiceNo","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/suppilerPayment/list","name":"list","templateUrl":"template/defaultView.html","controller":"suppilerPaymentCtrl","downloadExcel":true},"services":{"list":{"url":"YEAR-{{YEAR}}/api/suppilerPayment","method":"GET"}}},"subContractorPayment":{"id":"subContractorPayment","title":"Sub Contractor Payment","masterData":{"grnNo":null,"subContractorCode":null,"subContractorDCCode":null,"subContractorDCDate":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Sub Contractor Payment","id":"subContractorPayment","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"select","options":{},"action":"changeMapping","updateData":["subContractorCode","subContractorDCCode","subContractorDCDate","date"],"dataFrom":"store.grnSubContractor","replaceName":"grnNo","valuePrefix":"VT-SC-GRN","required":true,"existingCheck":true,"isSingle":true},"subContractorCode":{"name":"Sub Contractor Name","id":"subContractorCode","type":"select","options":{},"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","required":true,"isDisable":true,"isSingle":true},"subContractorDCCode":{"name":"Sub Contractor Invoice No","id":"subContractorDCCode","type":"span"},"subContractorDCDate":{"name":"Sub Contractor Invoice Date","id":"subContractorDCDate","type":"span"},"date":{"name":"GRN Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"GRN No","id":"grnNo","dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","isFilterBy":true,"type":"select","options":{}},{"title":"Sub Contractor Name","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isFilterBy":true,"type":"select","options":{}},{"title":"Sub Contractor InvoiceNo No","id":"subContractorDCCode","dataFrom":"store.grnSupplier","replaceName":"subContractorDCCode","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/subContractorPayment/list","name":"list","templateUrl":"template/defaultView.html","controller":"subContractorPaymentCtrl","downloadExcel":true},"services":{"list":{"url":"YEAR-{{YEAR}}/api/subContractorPayment","method":"GET"}}},"empPayment":{"id":"empPayment","title":"Employee Labor Payment","masterData":{"employeeCode":null,"frmDate":null,"toDate":null,"total":0,"balanceAmount":0,"mapping":[{"id":null,"operationTo":null,"qty":null,"laborCost":null,"totalCost":null,"date":null,"paidStatus":false,"productionEntryKey":null,"productionEntryDate":null}]},"form":{"name":"Employee Payment","id":"employeePayment","disableByField":"id","fields":{"employeeCode":{"name":"Employee Name","id":"employeeCode","type":"select","options":{},"action":"addPartMap","updateMapping":true,"updateData":["mapping"],"required":true,"dataFrom":"marketing.empMaster","replaceName":"employeeName","isEditDisable":true},"frmDate":{"name":"From Date","id":"frmDate","type":"input","action":"addPartMap","inputType":"date","isEditDisable":true},"toDate":{"name":"To Date","id":"toDate","type":"input","action":"addPartMap","inputType":"date","isEditDisable":true},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Payment","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"operationTo":{"name":"Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isSingle":true,"isDisable":true},"qty":{"name":"Qty","id":"qty","type":"span"},"laborCost":{"name":"Labor Cost","id":"laborCost","type":"span"},"totalLaborCost":{"name":"Total Labor Cost","id":"totalLaborCost","type":"span"},"date":{"name":"Date","id":"date","type":"input","inputType":"date"},"paidStatus":{"name":"Paid Status","id":"paidStatus","type":"input","action":"updateBalanceAmount","inputType":"checkbox"}},"actions":{"add":false,"delete":false}}},"listView":[{"title":"Employee Name","id":"employeeCode","dataFrom":"marketing.empMaster","replaceName":"employeeName","isFilterBy":true,"type":"select","options":{}},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/empPayment/list","name":"list","templateUrl":"template/defaultView.html","controller":"empPaymentCtrl","downloadExcel":true},"services":{"list":{"url":"YEAR-{{YEAR}}/api/empPayment","method":"GET"}}}},"admin":{"id":"admin","name":"Admin","title":"Admin","icon":"cog","defaultRelease":true,"settings":{"id":"settings","title":"Settings","masterData":{"companyName":null,"companyLogoUrl":null,"companyAddress":null,"companyMobile":null,"companyEmail":null,"companyGstin":null,"finalStageOpp":null,"mapping":[{"module":null,"restrictUser":null,"add":null,"edit":null,"delete":null}]},"form":{"name":"Settings","id":"settings","fields":{"companyName":{"name":"Company Name","id":"companyName","type":"input","inputType":"text","required":true},"companyLogoUrl":{"name":"Company Logo Url","id":"companyLogoUrl","type":"input","inputType":"text","required":true},"companyAddress":{"name":"Company Address","id":"companyAddress","type":"input","inputType":"text","required":true},"companyMobile":{"name":"Company Mobile","id":"companyMobile","type":"input","inputType":"text","required":true},"companyEmail":{"name":"Company Email","id":"companyEmail","type":"input","inputType":"text","required":true},"companyGstin":{"name":"Company GSTIN","id":"companyGstin","type":"input","inputType":"text","required":true},"finalStageOpp":{"name":"Operation Final Stage","id":"finalStageOpp","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode"}},"mapping":{"name":"Restrict Mapping","fields":{"module":{"name":"Page name","id":"module","type":"select","options":{},"makeFieldOptions":false},"restrictUser":{"name":"Restrict Type","id":"restrictUser","type":"select","options":{},"required":true,"dataFrom":"admin.userTypes","replaceName":"userType"},"add":{"name":"Show Add action","id":"add","type":"input","inputType":"checkbox"},"edit":{"name":"Show Edit action","id":"edit","type":"input","inputType":"checkbox"},"delete":{"name":"Show Delete action","id":"delete","type":"input","inputType":"checkbox"}}}},"listView":[{"title":"Company Name","id":"companyName"}],"page":{"link":"admin/settings/list","name":"list","templateUrl":"template/defaultView.html","controller":"settingsCtrl","actions":{"edit":true}},"services":{"list":{"url":"api/settings","method":"GET"}}},"userTypes":{"id":"userTypes","title":"User Types","masterData":{"userType":null,"desc":null},"form":{"name":"User Types","id":"userTypes","fields":{"userType":{"name":"User Type","id":"userType","type":"input","inputType":"text","required":true},"desc":{"name":"Description","id":"desc","type":"input","inputType":"text","required":true}}},"listView":[{"title":"User Name","id":"userType"}],"page":{"link":"admin/userTypes/list","name":"list","templateUrl":"template/defaultView.html","controller":"userTypesCtrl"},"services":{"list":{"url":"api/userTypes","method":"GET"}}},"users":{"id":"users","title":"Users","masterData":{"userName":null,"password":null,"userType":null},"form":{"name":"Users","id":"users","fields":{"userName":{"name":"User Name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true},"userType":{"name":"User Type","id":"userType","type":"select","options":{},"required":true}}},"listView":[{"title":"User Name","id":"userName"}],"page":{"link":"admin/users/list","name":"list","templateUrl":"template/defaultView.html","controller":"usersCtrl"},"services":{"list":{"url":"api/users","method":"GET"}}},"appCustomers":{"name":"App Customers","id":"appCustomers","title":"App Customers","restricked":true,"masterData":{"companyName":null,"address":null,"username":null,"password":null,"mapping":[{"module":null}]},"form":{"name":"App Customers","id":"appCustomers","fields":{"companyName":{"name":"Company Name","id":"companyName","type":"input","inputType":"text","required":true},"address":{"name":"Company Adress","id":"address","type":"input","inputType":"text","required":true},"userName":{"name":"User name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true}},"mapping":{"name":"Module Mapping","fields":{"module":{"name":"Page name","id":"module","type":"select","options":{},"makeFieldOptions":false}}},"actions":{"customSubmit":"releaseSubmit"}},"listView":[{"title":"Company Name","id":"companyName"}],"page":{"link":"appCustomers/list","name":"list","templateUrl":"template/defaultView.html","controller":"appCustomersCtrl"},"services":{"list":{"url":"api/appCustomers","method":"GET"}}}}},"moduleFiles":{}};
+var erpConfig = {"appName":"VASUTECHS","appBaseUrl":"/dashboard","calendarYear":"","finalStageOpp":9,"yearChangeMonth":3,"httpCache":true,"modules":{"controllers":{"login":{"id":"login","title":"Login","disableMenu":true,"defaultRelease":true,"masterData":{"userName":null,"password":null},"form":{"name":"Login","id":"login","title":"Login","fields":{"userName":{"name":"User Name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true}},"actions":{"cancel":false}},"page":{"link":"login","name":"add","actions":false}},"databaseUpload":{"id":"databaseUpload","name":"Database Upload","title":"Database Upload","disableMenu":true,"defaultRelease":true,"masterData":{"databaseUpload":null},"page":{"link":"databaseUpload","name":"databaseUpload","templateUrl":"template/controllers/databaseUpload.html"},"services":{"list":{"url":"api/upload","method":"POST"}}},"databaseDownload":{"id":"databaseDownload","name":"Database Download","title":"Database Download","disableMenu":true,"defaultRelease":true,"page":{"link":"/api/download","name":"databaseUpload"}},"calendarYear":{"id":"calendarYear","name":"Calendar Year","title":"Calendar Year","disableMenu":true,"defaultRelease":true,"page":{"link":"calendarYear","name":"calendarYear"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/calendarYear","method":"GET"}}},"dashboard":{"id":"dashboard","name":"Dashboard","title":"Dashboard","icon":"dashboard","disableMenu":true,"defaultRelease":true,"page":{"link":"dashboard","name":"dashboard","templateUrl":"template/controllers/dashboard.html"}},"marketing":{"id":"marketing","name":"Marketing","title":"Marketing","icon":"stack-exchange","partMaster":{"id":"partMaster","title":"Part Master","masterData":{"partNo":null,"partName":null,"rmCode":null,"inputWeight":null,"finishedWeight":null,"hsnCode":null,"uomCode":null,"prodRateHr":null,"rate":null,"rolQtyYellowRage":null,"rolQtyRedRage":null,"rejection":null,"icc":null,"toolMaintenance":null,"profit":null,"transportCostKg":null},"form":{"name":"partMaster","id":"partMaster","fields":{"partNo":{"name":"Part No","id":"partNo","type":"input","inputType":"text","action":"isCheckExistField","required":true},"partName":{"name":"Part Name","id":"partName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"rmCode":{"name":"Raw material","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"inputWeight":{"name":"Input weight","id":"inputWeight","type":"input","inputType":"number","required":true},"finishedWeight":{"name":"Finished weight","id":"finishedWeight","type":"input","inputType":"number","required":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"input","inputType":"text","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true},"prodRateHr":{"name":"Prod Rate/ hr","id":"prodRateHr","type":"input","inputType":"number","required":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"number","required":true},"rolQtyYellowRage":{"name":"ROL Qty Yellow Rage","id":"rolQtyYellowRage","type":"input","inputType":"number","required":true},"rolQtyRedRage":{"name":"ROL Qty Red Rage","id":"rolQtyRedRage","type":"input","inputType":"number","required":true},"rejection":{"name":"Rejection %","id":"rejection","type":"input","inputType":"number","required":true},"icc":{"name":"ICC %","id":"icc","type":"input","inputType":"number","required":true},"toolMaintenance":{"name":"Tool Maintenance %","id":"toolMaintenance","type":"input","inputType":"number","required":true},"profit":{"name":"Profit %","id":"profit","type":"input","inputType":"number","required":true},"transportCostKg":{"name":"Transport cost per kg","id":"transportCostKg","type":"input","inputType":"number","required":true},"isAssemblePart":{"name":"Is Assemble Part","id":"isAssemblePart","type":"input","inputType":"checkbox"}}},"listView":[{"title":"PartNo","id":"id","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Part Name","id":"partName"}],"page":{"link":"marketing/partMaster/list","name":"list"},"services":{"list":{"url":"api/partMaster","method":"GET"}}},"customerMaster":{"id":"customerMaster","title":"Customer Master","masterData":{"customerCode":null,"customerName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"cgst":null,"sgst":null,"igst":null,"mapping":[{"id":null,"partName":null,"hsnCode":null,"rate":null}]},"form":{"name":"customerMaster","id":"customerMaster","autoGenKey":"customerCode","fields":{"customerCode":{"name":"Customer Code","id":"customerCode","type":"span","valuePrefix":"VT-CUS-"},"customerName":{"name":"Customer Name","id":"customerName","type":"input","inputType":"text","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"text"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"text"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"text"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"text"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Customer Code","id":"customerCode","valuePrefix":"VT-CUS-"},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"marketing/customerMaster/list","name":"list"},"services":{"list":{"url":"api/customerMaster","method":"GET"}}},"empMaster":{"id":"empMaster","title":"Employee Master","masterData":{"id":null,"employeeCode":null,"employeeName":null,"address":null,"contactNo":null,"mailId":null,"qualification":null,"designation":null,"basicSalary":null,"hra":null,"ca":null,"ot":null,"totalSalary":null,"mapping":[{"id":null,"partName":null,"operationTo":null,"laborCost":null}]},"form":{"name":"empMaster","id":"empMaster","autoGenKey":"employeeCode","fields":{"employeeCode":{"name":"Employee Code","id":"employeeCode","valuePrefix":"VT-EMP-","type":"span"},"employeeName":{"name":"Employee Name","id":"employeeName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"mailId":{"name":"Mail Id","id":"mailId","type":"input","inputType":"email","required":true},"qualification":{"name":"Qualification","id":"qualification","type":"input","inputType":"text","required":true},"designation":{"name":"Designation","id":"designation","type":"input","inputType":"text","required":true},"basicSalary":{"name":"BasicSalary","id":"basicSalary","type":"input","inputType":"number","required":true},"hra":{"name":"HRA","id":"hra","type":"input","inputType":"number","required":true},"ca":{"name":"CA","id":"ca","type":"input","inputType":"number","required":true},"ot":{"name":"OT","id":"ot","type":"input","inputType":"number","required":true},"total":{"name":"Total","id":"total","type":"input","inputType":"number","required":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"operationTo":{"name":"Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isSingle":true},"laborCost":{"name":"Labor Cost","id":"laborCost","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Employee Name","id":"employeeName"},{"title":"Mail Id","id":"mailId"}],"page":{"link":"marketing/empMaster/list","name":"list"},"services":{"list":{"url":"api/empMaster","method":"GET"}}},"uomMaster":{"id":"uomMaster","title":"UOM Master","masterData":{"uomCode":null,"uomName":null},"form":{"name":"uomMaster","id":"uomMaster","autoGenKey":"uomCode","fields":{"uomCode":{"name":"UOM Code","id":"uomCode","type":"span","valuePrefix":"VT-UOM-"},"uomName":{"name":"UOM Name","id":"uomName","type":"input","inputType":"text","action":"isCheckExistField","required":true}}},"listView":[{"title":"UOM Code","id":"uomCode","valuePrefix":"VT-UOM-"},{"title":"UOM Name","id":"uomName"}],"page":{"link":"marketing/uomMaster/list","name":"list"},"services":{"list":{"url":"api/uomMaster","method":"GET"}}},"invoice":{"id":"invoice","title":"Invoice","masterData":{"invoiceNo":null,"date":null,"customerCode":null,"address":null,"gstin":null,"subTotal":null,"taxRate":null,"cgst":null,"sgst":null,"gst":null,"igst":null,"cgstTotal":null,"sgstTotal":null,"igstTotal":null,"totalBeforTax":null,"total":null,"mapping":[{"id":null,"hsnCode":null,"unit":null,"rate":null,"amount":null}]},"form":{"name":"Invoice","id":"invoice","autoGenKey":"invoiceNo","disableByField":"id","fields":{"invoiceNo":{"name":"Invoice No","id":"invoiceNo","type":"span","valuePrefix":"VT-","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"customerCode":{"name":"To","id":"customerCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","igst","sgst","cgst","address","mapping"],"dataFrom":"marketing.customerMaster","replaceName":"customerName","isEditDisable":true,"isSingle":true},"address":{"name":"Customer Address","id":"address"},"partyGstin":{"name":"Party GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"taxRate":{"name":"Tax Rate","id":"taxRate","type":"input","inputType":"number","required":true},"cgst":{"name":"CGST","id":"cgst","type":"span"},"cgstTotal":{"name":"CGST Total","id":"cgstTotal","type":"span"},"sgst":{"name":"SGST","id":"sgst","type":"span"},"sgstTotal":{"name":"SGST Total","id":"sgstTotal","type":"span"},"igst":{"name":"IGST","id":"igst","type":"span"},"igstTotal":{"name":"IGST Total","id":"igstTotal","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","type":"input","inputType":"number","required":true},"total":{"name":"Total","id":"total","type":"input","inputType":"number","required":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"span"},"unit":{"name":"Unit","id":"unit","type":"input","inputType":"text","action":"updateTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"amount":{"name":"Amount","id":"amount","type":"span"}}}},"listView":[{"title":"Invoice No","id":"invoiceNo","valuePrefix":"VT-"},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}},{"title":"Date","id":"date","type":"date"}],"page":{"link":"marketing/invoice/list","name":"list","templateUrl":"template/controllers/marketing/invoice.html"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/invoice","method":"GET"}}},"cashBill":{"id":"cashBill","name":"cashBill","title":"Cash Bill","parentModule":"marketing.invoice","form":{"autoGenValStart":null,"fields":{"invoiceNo":{"name":"CashBill No","id":"invoiceNo","type":"span","valuePrefix":"","required":true},"preBalance":{"name":"Previous Balance","id":"preBalance","type":"input","inputType":"text","action":"updatePreBalance"}}},"listView":[{"title":"Cash Bill No","id":"invoiceNo","valuePrefix":""}],"page":{"link":"marketing/invoice/list?type=cashBill","name":"list","templateUrl":"template/marketing/invoice.html"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/cashBill","method":"GET"}}}},"purchase":{"id":"purchase","name":"Purchase","title":"Purchase","icon":"shopping-bag","rmMaster":{"id":"rmMaster","title":"Raw Material Master","masterData":{"rmCode":null,"rmName":null,"grade":null,"type":null,"hsnCode":null,"uomCode":null,"rate":null,"transportCostKg":null,"scrapRate":null},"form":{"name":"rmMaster","id":"rmMaster","autoGenKey":"rmCode","fields":{"rmCode":{"name":"RM Code","id":"rmCode","valuePrefix":"RM-","type":"span"},"rmName":{"name":"RM Name","id":"rmName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"grade":{"name":"Grade","id":"grade","type":"input","inputType":"text","required":true},"type":{"name":"Type","id":"type","type":"input","inputType":"text","required":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"input","inputType":"text","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"number","required":true},"transportCostKg":{"name":"Transport cost / kg","id":"transportCostKg","type":"input","inputType":"number","required":true},"scrapRate":{"name":"Scrap rate","id":"scrapRate","type":"input","inputType":"number","required":true}}},"listView":[{"title":"RM Code","id":"rmCode","valuePrefix":"RM-"},{"title":"Raw Material Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"purchase/rmMaster/list","name":"list","templateUrl":"template/defaultView.html"},"services":{"list":{"url":"api/rmMaster","method":"GET"}}},"supplierMaster":{"id":"supplierMaster","title":"Supplier Master","masterData":{"supplierCode":null,"supplierName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"rmCode":null,"rate":null}]},"form":{"name":"supplierMaster","id":"supplierMaster","autoGenKey":"supplierCode","fields":{"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"span","valuePrefix":"VT-SP-"},"supplierName":{"name":"Supplier Name","id":"supplierName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"text","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"RM Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Supplier Code","id":"supplierCode","valuePrefix":"VT-SP-"},{"title":"Supplier Name","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true}],"page":{"link":"purchase/supplierMaster/list","name":"list"},"services":{"list":{"url":"api/supplierMaster","method":"GET"}}},"poSupplier":{"id":"poSupplier","title":"Purchase Order - Supplier","masterData":{"poNo":null,"date":null,"supplierCode":null,"gstin":null,"status":0,"subTotal":null,"extraAmount":null,"gstTotal":null,"total":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"rate":null,"amount":null}]},"form":{"name":"poSupplier","id":"poSupplier","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-SP-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isSingle":true},"gstin":{"name":"Party Gstin","id":"gstin","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"RM Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isDisable":true},"qty":{"name":"Qty","id":"qty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-SP-PO-"},{"title":"Supplier Code","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poSupplier/list","name":"list"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/poSupplier","method":"GET"}}},"generalSupplierMaster":{"id":"generalSupplierMaster","title":"General Supplier Master","masterData":{"generalSupplierCode":null,"generalSupplierName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"partName":null,"rate":null}]},"form":{"name":"General Supplier Master","id":"generalSupplierMaster","autoGenKey":"generalSupplierCode","fields":{"generalSupplierCode":{"name":"General Supplier Code","id":"generalSupplierCode","type":"span","valuePrefix":"VT-GSP-"},"supplierName":{"name":"General Supplier Name","id":"generalSupplierName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"text","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"General Supplier Code","id":"generalSupplierCode","valuePrefix":"VT-GSP-"},{"title":"General Supplier Name","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true}],"page":{"link":"purchase/generalSupplierMaster/list","name":"list"},"services":{"list":{"url":"api/generalSupplierMaster","method":"GET"}}},"poGeneralSupplier":{"id":"poGeneralSupplier","title":"Purchase Order - General Supplier","masterData":{"poNo":null,"date":null,"generalSupplierCode":null,"gstin":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"rate":null,"amount":null}]},"form":{"name":"poGeneralSupplier","id":"poGeneralSupplier","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-GSP-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"GeneralSupplier Code","id":"generalSupplierCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","isSingle":true},"gstin":{"name":"Party Gstin","id":"gstin","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"qty":{"name":"Qty","id":"qty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-GSP-PO-"},{"title":"General Supplier Code","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poGeneralSupplier/list","name":"list"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/poGeneralSupplier","method":"GET"}}},"subContractorMaster":{"id":"subContractorMaster","title":"Sub Contractor Master","masterData":{"subContractorCode":null,"subContractorName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"operationTo":null,"rate":null}]},"form":{"name":"subContractorMaster","id":"subContractorMaster","autoGenKey":"subContractorCode","fields":{"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"span","valuePrefix":"VT-SC-"},"subContractorName":{"name":"Sub Contractor Name","id":"subContractorName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo","required":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","filter":{"source":["Sub-Contractor"]},"required":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Sub Contractor Code","id":"subContractorCode","valuePrefix":"VT-SC-"},{"title":"Sub Contractor Name","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true}],"page":{"link":"purchase/subContractorMaster/list","name":"list"},"services":{"list":{"url":"api/subContractorMaster","method":"GET"}}},"poSubContractor":{"id":"poSubContractor","title":"Purchase Order - Sub Contractor","masterData":{"poNo":null,"date":null,"subContractorCode":null,"gstin":null,"status":0,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationTo":null,"qty":null,"uomCode":null,"rate":null,"total":null}]},"form":{"name":"poSubContractor","id":"poSubContractor","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-SC-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isSingle":true,"callBack":false},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isDisable":true},"acceptedQty":{"name":"Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-SC-PO-"},{"title":"SubContractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poSubContractor/list","name":"list"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/poSubContractor","method":"GET"}}}},"store":{"id":"store","name":"Store","title":"Store","icon":"suitcase","grnSupplier":{"id":"grnSupplier","title":"Good Receipt Note - Supplier","masterData":{"grnNo":null,"date":null,"supplierCode":null,"poNo":null,"supplierInvoiceNo":null,"supplierInvoiceDate":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"cost":null,"total":null}]},"form":{"name":"grnSupplier","id":"grnSupplier","autoGenKey":"grnNo","disableByField":"id","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"select","options":{},"action":"getPOSupplier","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isSingle":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"dataFrom":"purchase.poSupplier","replaceName":"poNo","valuePrefix":"VT-SP-PO-","filter":{"status":0},"isEditDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"Supplier Invoice No","id":"supplierInvoiceNo","type":"input","inputType":"text","required":true},"supplierInvoiceDate":{"name":"Supplier Invoice Date","id":"supplierInvoiceDate","type":"input","inputType":"date","required":true},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isDisable":true},"qty":{"name":"PO Qty","id":"qty","type":"span"},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updateRmTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updateRmTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-GRN-"},{"title":"Supplier","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true}],"page":{"link":"store/grnSupplier/list","name":"list"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/grnSupplier","method":"GET"}}},"grnGeneralSupplier":{"id":"grnGeneralSupplier","title":"Good Receipt Note - General Supplier","masterData":{"grnNo":null,"date":null,"generalSupplierCode":null,"poNo":null,"generalSupplierInvoiceNo":null,"generalSupplierInvoiceDate":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"cost":null,"total":null}]},"form":{"name":"grnSupplier","id":"grnSupplier","autoGenKey":"grnNo","disableByField":"id","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"General Supplier Code","id":"generalSupplierCode","type":"select","options":{},"action":"getPOGeneralSupplier","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","isSingle":true,"isEditDisable":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"dataFrom":"purchase.poGeneralSupplier","replaceName":"poNo","valuePrefix":"VT-GSP-PO-","filter":{"status":0},"isEditDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"General Supplier Invoice No","id":"generalSupplierInvoiceNo","type":"input","inputType":"text","required":true},"supplierInvoiceDate":{"name":"General Supplier Invoice Date","id":"generalSupplierInvoiceDate","type":"input","inputType":"date","required":true},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"qty":{"name":"PO Qty","id":"qty","type":"span"},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updatePTTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePTTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-GRN-"},{"title":"General General Supplier","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true}],"page":{"link":"store/grnGeneralSupplier/list","name":"list"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/grnGeneralSupplier","method":"GET"}}},"dcSubContractor":{"id":"dcSubContractor","title":"Delivery Chellan - Sub Contractor","masterData":{"dcNo":null,"date":null,"subContractorCode":null,"address":null,"gstin":null,"poNo":null,"status":0,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationFrom":null,"operationTo":null,"acceptedQty":null,"uomCode":null,"rate":null,"total":null}]},"form":{"name":"dcSubContractor","id":"dcSubContractor","disableByField":"id","autoGenKey":"dcNo","fields":{"dcNo":{"name":"DC No","id":"dcNo","type":"span","valuePrefix":"VT-DC-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"To Sub Contractor","id":"subContractorCode","type":"select","options":{},"action":"getPOSubContractor","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","updateData":["address","gstin"],"isSingle":true,"isEditDisable":true},"address":{"name":"Address","id":"address","type":"span"},"gstin":{"name":"GSTIN","id":"gstin","type":"span"},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","dataFrom":"purchase.poSubContractor","replaceName":"poNo","valuePrefix":"VT-SC-PO-","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"filter":{"status":0},"isSingle":true,"isEditDisable":true},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"GST/IGST Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationFrom":{"name":"Part From","id":"operationFrom","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"operationTo":{"name":"For the purpose","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"acceptedQty":{"name":"Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"DC NO","id":"dcNo","valuePrefix":"VT-DC-"},{"title":"Sub Contractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"store/dcSubContractor/list","name":"list"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/dcSubContractor","method":"GET"}}},"grnSubContractor":{"id":"grnSubContractor","title":"Good Receipt Note - Sub Contractor","masterData":{"grnNo":null,"date":null,"subContractorCode":null,"poNo":null,"subContractorDCNo":null,"subContractorDCDate":null,"dcNo":null,"status":0,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationFrom":null,"operationTo":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"gst":null,"cost":null,"total":null}]},"form":{"name":"grnSubContractor","id":"grnSubContractor","disableByField":"id","autoGenKey":"grnNo","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-SC-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"select","options":{},"action":"getPOSubContractor","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isSingle":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"getDCSubContractor","dataFrom":"purchase.poSubContractor","replaceName":"poNo","valuePrefix":"VT-SC-PO-","filter":{"status":0},"isSingle":true,"isEditDisable":true},"dcNo":{"name":"Our DC No","id":"dcNo","type":"select","options":{},"dataFrom":"store.dcSubContractor","action":"changeMapping","replaceName":"dcNo","valuePrefix":"VT-DC-","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"filter":{"status":0},"isSingle":true,"isEditDisable":true,"onLoadActions":true},"subContractorDCCode":{"name":"Sub Contractor DC Code","id":"subContractorDCCode","type":"input","inputType":"number","required":true},"subContractorDCDate":{"name":"Sub Contractor DC Date","id":"subContractorDCDate","type":"input","inputType":"date","required":true},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"GST/IGST Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationFrom":{"name":"Part From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-SC-GRN-"},{"title":"Sub Contractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true}],"page":{"link":"store/grnSubContractor/list","name":"list"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/grnSubContractor","method":"GET"}}}},"production":{"id":"production","name":"Production","title":"Production","icon":"cogs","operationMaster":{"id":"operationMaster","title":"Operation Master","masterData":{"opCode":null,"opName":null,"source":null},"form":{"name":"operationMaster","id":"operationMaster","fields":{"opCode":{"name":"Operation","id":"opCode","type":"input","inputType":"text","required":true},"opName":{"name":"Operation Name","id":"opName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"source":{"name":"Source","id":"source","type":"select","options":{"Supplier":{"optionId":"Supplier","optionName":"Supplier"},"In-House":{"optionId":"In-House","optionName":"IN House"},"Sub-Contractor":{"optionId":"Sub-Contractor","optionName":"Sub Contractor"}},"makeFieldOptions":false,"required":true}}},"listView":[{"title":"Operation","id":"opCode"},{"title":"Operation Name","id":"id","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true}],"page":{"link":"production/operationMaster/list","name":"list"},"services":{"list":{"url":"api/operationMaster","method":"GET"}}},"bom":{"id":"bom","title":"BOM","masterData":{"partNo":null,"partName":null,"rmCode":null,"partNorms":null},"form":{"name":"bom","id":"bom","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","updateData":["rmCode","partName"],"action":"changeMapping","existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"rmCode":{"name":"RM Code","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"RM Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","type":"select","isFilterBy":true}],"page":{"link":"production/bom/list","name":"list"},"services":{"list":{"url":"api/bom","method":"GET"}}},"bomAssemblePart":{"id":"bomAssemblePart","title":"BOM Assemble Part","masterData":{"partNo":null,"partName":null,"mapping":[{"id":null,"partName":null,"partNorms":null}]},"form":{"name":"bomAssemblePart","id":"bomAssemblePart","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","updateData":["partName"],"action":"changeMapping","existingCheck":true,"isSingle":true,"filter":{"isAssemblePart":1}},"partName":{"name":"Part Name","id":"partName","type":"span"}},"mapping":{"name":"Sub Part Mapping","enabled":false,"fields":{"id":{"name":"Sub Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"changeMapping","updateData":["partName"],"existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"filter":{"isAssemblePart":1}}],"page":{"link":"production/bomAssemblePart/list","name":"list"},"services":{"list":{"url":"api/bomAssemblePart","method":"GET"}}},"machineMaster":{"id":"machineMaster","title":"Machine Master","masterData":{"machineNo":null,"machineName":null,"make":null,"model":null,"capacity":null,"yop":null,"id":null,"machineShiftRate":null,"shiftHrs":null},"form":{"name":"machineMaster","id":"machineMaster","autoGenKey":"machineNo","fields":{"machineNo":{"name":"Machine No","id":"machineNo","type":"span","valuePrefix":"VT-M/C-"},"machineName":{"name":"Machine Name","id":"machineName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"make":{"name":"Make","id":"make","type":"input","inputType":"text","required":true},"model":{"name":"Model","id":"model","type":"input","inputType":"text","required":true},"capacity":{"name":"Capacity","id":"capacity","type":"input","inputType":"text","required":true},"yop":{"name":"Year of Purchase","id":"yop","type":"input","inputType":"text","required":true},"value":{"name":"Value","id":"value","type":"input","inputType":"text","required":true},"machineShiftRate":{"name":"Machine Shift Rate","id":"machineShiftRate","type":"input","inputType":"text","required":true},"shiftHrs":{"name":"Shift Hrs","id":"shiftHrs","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Machine No","id":"machineNo","valuePrefix":"VT-M/C-"},{"title":"Machine Name","id":"machineNo","dataFrom":"production.machineMaster","replaceName":"machineName","type":"select","isFilterBy":true}],"page":{"link":"production/machineMaster/list","name":"list"},"services":{"list":{"url":"api/machineMaster","method":"GET"}}},"flowMaster":{"id":"flowMaster","title":"Flow Master","masterData":{"partNo":null,"partName":null,"mapping":[{"id":null,"opName":null,"source":null,"toolNo":null,"machineNo":null,"palnQtyPerHr":null,"costAnalysis":null,"otherCost":null}],"totalCost":null},"form":{"name":"flowMaster","id":"flowMaster","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"required":true,"action":"changeMapping","updateData":["partName"],"dataFrom":"marketing.partMaster","replaceName":"partNo","existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"totalCost":{"name":"Total Cost","id":"totalCost","type":"span","afterMapping":true}},"mapping":{"name":"OP Mapping","fields":{"id":{"name":"Part op code","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","required":true},"opName":{"name":"op Name","id":"opName","type":"span"},"source":{"name":"Source","id":"source","type":"span"},"toolNo":{"name":"Tool Name","id":"toolNo","type":"select","options":{},"dataFrom":"production.toolMaster","replaceName":"toolName","required":true},"machineNo":{"name":"M/C No","id":"machineNo","type":"select","options":{},"dataFrom":"production.machineMaster","replaceName":"machineName","action":"updateCostAnalysis","required":true},"palnQtyPerHr":{"name":"Paln Qty Per Hr","id":"palnQtyPerHr","type":"input","inputType":"number","action":"updateCostAnalysis","required":true},"costAnalysis":{"name":"Cost Analysis","id":"costAnalysis","type":"span"},"otherCost":{"name":"Other Cost","id":"otherCost","type":"input","inputType":"number","action":"updateTotalCost"}}}},"listView":[{"title":"Part NO","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true}],"page":{"link":"store/flowMaster/list","name":"list"},"services":{"list":{"url":"api/flowMaster","method":"GET"}}},"toolMaster":{"id":"toolMaster","title":"Tool Master","masterData":{"toolNo":null,"toolName":null,"make":null,"type":null,"toolLife":null,"yop":null,"id":null},"form":{"name":"toolMaster","id":"toolMaster","autoGenKey":"toolNo","fields":{"toolNo":{"name":"Tool No","id":"toolNo","type":"span","valuePrefix":"VT-T-"},"toolName":{"name":"Tool Name","id":"toolName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"make":{"name":"Make","id":"make","type":"input","inputType":"text","required":true},"type":{"name":"Type","id":"type","type":"input","inputType":"text","required":true},"toolLife":{"name":"Tool Life","id":"toolLife","type":"input","inputType":"text","required":true},"yop":{"name":"Year of Purchase","id":"yop","type":"input","inputType":"text","required":true},"value":{"name":"Value","id":"value","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Tool No","id":"toolNo","valuePrefix":"VT-T-"},{"title":"Tool Name","id":"toolNo","dataFrom":"production.toolMaster","replaceName":"toolName","type":"select","isFilterBy":true}],"page":{"link":"production/toolMaster/list","name":"list"},"services":{"list":{"url":"api/toolMaster","method":"GET"}}},"materialIssueNote":{"id":"materialIssueNote","title":"Material Issue Note","masterData":{"jobCardNo":null,"date":null,"rmCode":null,"partNo":null,"partNorms":null,"issueQty":null,"qtyCanMake":null,"operationTo":null,"status":0},"form":{"name":"materialIssueNote","id":"materialIssueNote","autoGenKey":"jobCardNo","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"span","valuePrefix":"VT-"},"date":{"name":"Job Card Date","id":"date","type":"input","inputType":"date","required":true},"rmCode":{"name":"RM Code","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","action":"getPartNo","isEditDisable":true,"isSingle":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"getNorms","isEditDisable":true,"isSingle":true},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"issueQty":{"name":"Issue Qty","id":"issueQty","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"qtyCanMake":{"name":"Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true},"operationTo":{"name":"Issue Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isEditDisable":true,"isSingle":true}}},"listView":[{"title":"Job Card No","id":"jobCardNo","valuePrefix":"VT-"},{"title":"PartNo","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Qty Can Make","id":"qtyCanMake"},{"title":"Date","id":"date","type":"date"},{"title":"Status","id":"status"}],"page":{"link":"production/materialIssueNote/list","name":"list"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/materialIssueNote","method":"GET"}}},"assembleMaterialIssueNote":{"id":"assembleMaterialIssueNote","title":"Assemble Material Issue Note","masterData":{"jobCardNo":null,"date":null,"partNo":null,"status":0,"operationTo":null,"qtyCanMake":null,"isAssemblePart":1,"mapping":[{"id":null,"partName":null,"partNorms":null,"issueQty":null,"qtyCanMake":null,"operationTo":null}]},"form":{"name":"assembleMaterialIssueNote","id":"assembleMaterialIssueNote","autoGenKey":"jobCardNo","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"span","valuePrefix":"VT-"},"date":{"name":"Job Card Date","id":"date","type":"input","inputType":"date","required":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"getSubParts","isSingle":true,"filter":{"isAssemblePart":1}},"operationTo":{"name":"Issue Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isEditDisable":true,"filter":{"opCode":["105"]},"isSingle":true},"qtyCanMake":{"name":"Total Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true,"afterMapping":true}},"mapping":{"name":"Sub Part Mapping","enabled":false,"fields":{"id":{"name":"Sub Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"partNorms":{"name":"Part Norms","id":"partNorms","type":"span"},"issueQty":{"name":"Issue Qty","id":"issueQty","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"qtyCanMake":{"name":"Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true}},"actions":{"add":false}}},"listView":[{"title":"Job Card No","id":"jobCardNo","valuePrefix":"VT-"},{"title":"PartNo","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"filter":{"isAssemblePart":1}},{"title":"Qty Can Make","id":"qtyCanMake"},{"title":"Date","id":"date","type":"date"},{"title":"Status","id":"status"}],"page":{"link":"production/assembleMaterialIssueNote/list","name":"list"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/materialIssueNote","method":"GET","filter":{"isAssemblePart":1}}}},"productionEntry":{"id":"productionEntry","title":"Production Entry","masterData":{"jobCardNo":null,"partNo":null,"mapping":[{"date":null,"machineNo":null,"operationFrom":null,"operationTo":null,"toolNo":null,"operator":null,"startTime":null,"endTime":null,"planQty":null,"acceptedQty":null,"rejectionQty":null,"rwQty":null}]},"form":{"name":"productionEntry","id":"productionEntry","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"select","options":{},"required":true,"dataFrom":"production.materialIssueNote","replaceName":"jobCardNo","valuePrefix":"VT-","action":"changeMapping","updateData":["partNo"],"filter":{"status":0},"isEditDisable":true,"isSingle":true,"onLoadActions":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"required":true,"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true,"isEditDisable":true,"isSingle":true}},"mapping":{"name":"Production Mapping","fields":{"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"machineNo":{"name":"M/C No","id":"machineNo","type":"select","options":{},"dataFrom":"production.machineMaster","replaceName":"machineName","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"action":"updateOperationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","required":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","action":"updateToolNo","valuePrefixData":"opCode"},"toolName":{"name":"Tool Name","id":"toolNo","type":"select","options":{},"dataFrom":"production.toolMaster","replaceName":"toolName"},"operator":{"name":"Operator","id":"operator","type":"select","options":{},"required":true,"dataFrom":"marketing.empMaster","replaceName":"employeeName"},"startTime":{"name":"Start Time: (1-24)","id":"startTime","type":"input","inputType":"number","required":true},"endTime":{"name":"End Time: (1-24)","id":"endTime","type":"input","inputType":"number","required":true,"action":"calculatePlanQty"},"planQty":{"name":"Plan Qty","id":"planQty","type":"input","inputType":"number","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"},"rejectionQty":{"name":"Rejection Qty","id":"rejectionQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"},"rwQty":{"name":"R/w Qty","id":"rwQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"}},"actions":{"add":false,"delete":false}}},"listView":[{"title":"Job Card No","id":"jobCardNo","dataFrom":"production.materialIssueNote","isFilterBy":true,"replaceName":"id","valuePrefix":"VT-","type":"select","options":{}},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"options":{}}],"page":{"link":"production/productionEntry/list","name":"list","downloadTableData":"prodEntryDownload"},"services":{"list":{"url":"YEAR-{{YEAR}}/api/productionEntry","method":"GET"}}}},"report":{"id":"report","name":"Report","title":"Report","icon":"tasks","rmStock":{"id":"rmStock","title":"Raw Material Stock","masterData":{"rmName":null,"rmStockQty":null,"uomCode":null},"form":{"name":"RMStock","id":"RMStock","fields":{"rmName":{"name":"RM Name","id":"rmCode","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"rmStockQty":{"name":"Stock Qty","id":"rmStockQty","type":"input","inputType":"number","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true}}},"listView":[{"title":"Raw Material Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isFilterBy":true,"type":"select","options":{}},{"title":"Rm Stock Qty","id":"rmStockQty"},{"title":"UOM","id":"uomCode","dataFrom":"marketing.uomMaster","replaceName":"uomName"},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/rmStock/list","name":"list","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}},"services":{"list":{"url":"YEAR-{{YEAR}}/api/rmStock","method":"GET"}}},"partStock":{"id":"partStock","title":"Part Stock","masterData":{"partNo":null,"partStockQty":null,"operationFrom":null,"operationTo":null},"form":{"name":"PartStock","id":"PartStock","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"updateOperationFrom","isSingle":true},"partStockQty":{"name":"Part Qty","id":"partStockQty","type":"input","inputType":"number","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","action":"updateOperationTo","replaceName":"opName","isSingle":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isSingle":true}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Part Stock Qty","id":"partStockQty"},{"title":"Operation From","id":"operationFrom","dataFrom":"production.operationMaster","replaceName":"opName","type":"select"},{"title":"Operation To","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","type":"select"},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/partStock/list","name":"list","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}},"services":{"list":{"url":"YEAR-{{YEAR}}/api/partStock","method":"GET"}}},"subContractorStock":{"id":"subContractorStock","title":"SubContractor Stock","masterData":{"subContractorCode":null,"partStockQty":null,"operationFrom":null,"operationTo":null},"form":{"name":"subContractorStock","id":"subContractorStock","fields":{"subContractorCode":{"name":"SubContractor Code","id":"subContractorCode","type":"select","options":{},"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","action":"getPartNos","isSingle":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"updateOperationFrom","isSingle":true},"partStockQty":{"name":"SubContractor Qty","id":"partStockQty","type":"input","inputType":"number","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","action":"updateOperationTo","replaceName":"opName","isSingle":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isSingle":true}}},"listView":[{"title":"SubContractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Part Stock Qty","id":"partStockQty"},{"title":"Operation From","id":"operationFrom","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true},{"title":"Operation To","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/subContractorStock/list","name":"list","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}},"services":{"list":{"url":"YEAR-{{YEAR}}/api/subContractorStock","method":"GET"}}},"salesAnalysisInvoice":{"id":"salesAnalysisInvoice","title":"Sales Analysis - Invoice","filterView":{"title":"Filter","data":{"customerCode":null,"frmDate":null,"toDate":null},"fields":[{"title":"Customer","id":"customerCode","type":"select","dataFrom":"marketing.customerMaster","replaceName":"customerName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Customer","id":"customerCode","type":"select","dataFrom":"marketing.customerMaster","replaceName":"customerName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Part Qty","id":"unit"},{"title":"Part Price","id":"rate"},{"title":"Sales Value","id":"amount"},{"title":"Dates","id":"dates"},{"title":"Invoice Nos","id":"invoiceNos"}],"page":{"link":"report/salesAnalysisInvoice/list","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/invoice","method":"GET"}}},"salesAnalysisCashBill":{"id":"salesAnalysisCashBill","name":"salesAnalysisCashBill","title":"Sales Analysis - Cash Bill","parentModule":"report.salesAnalysisInvoice","page":{"link":"report/salesAnalysisInvoice/list?type=cashBill","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/cashBill","method":"GET"}}},"costAnalysis":{"id":"costAnalysisInvoice","title":"Cost Analysis","listView":[{"title":"PartNo","id":"id","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Input Weight","id":"inputWeight"},{"title":"Finished Weight","id":"finishedWeight"},{"title":"RM Rate","id":"rmRate"},{"title":"Scrap Rate","id":"scrapRate"},{"title":"Material Cost","id":"materialCost"},{"title":"Conversion Cost","id":"conversionCost"},{"title":"Sub Total","id":"subTotal"},{"title":"Rej Cost","id":"rejCost"},{"title":"ICC cost","id":"iccCost"},{"title":"Tool Maint cost","id":"toolMaintCost"},{"title":"Trans Cost","id":"transCost"},{"title":"Profit Cost","id":"profitCost"},{"title":"Total","id":"total"},{"title":"Sales Rate","id":"salesRate"},{"title":"Difference in cost","id":"differenceInCost"},{"title":"% of Gain or Loss","id":"gainOrLoss"}],"page":{"link":"report/costAnalysis/list","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"url":"api/partMaster","method":"GET"}}},"productionEntryReport":{"id":"productionEntryReport","title":"Production Entry Report","filterView":{"title":"Filter","data":{"frmDate":null,"toDate":null},"fields":[{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"M/C No","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"Job Card No","id":"jobCardNo","type":"input"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Operation","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","type":"select"},{"title":"Operator","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"Start Time","id":"startTime"},{"title":"End Time","id":"endTime"},{"title":"Plan Qty","id":"planQty"},{"title":"Qty","id":"acceptedQty"},{"title":"Rejection Qty","id":"rejectionQty"},{"title":"RW Qty","id":"rwQty"}],"page":{"link":"report/productionEntryReport/list","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/productionEntry","method":"GET"}}},"toolHistoryCard":{"id":"toolHistoryCard","title":"Tool History Card","filterView":{"title":"Filter","data":{"toolNo":null,"partNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Tool Name","id":"toolNo","type":"select","dataFrom":"production.toolMaster","replaceName":"toolName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Tool Name","id":"toolNo","type":"select","dataFrom":"production.toolMaster","replaceName":"toolName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Qty","id":"qty"},{"title":"Cummulative Qty","id":"cummulativeQty"},{"title":"Activity","id":"activity","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode"}],"page":{"link":"report/productionEntryReport/list?type=toolHistoryCard","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/productionEntry","method":"GET"}}},"machineRunningTime":{"id":"machineRunningTime","title":"Machine Running Time","filterView":{"title":"Filter","data":{"machineNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Machine Name","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Machine No","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"Year","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"yop"},{"title":"Time On","id":"startTime"},{"title":"Time Off","id":"endTime"},{"title":"Running Time","id":"runningTime"},{"title":"Cum Running Time","id":"cumRunningTime"}],"page":{"link":"report/productionEntryReport/list?type=machineRunningTime","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/productionEntry","method":"GET"}}},"empPerformanceReport":{"id":"empPerformanceReport","title":"Employee Performance Report","filterView":{"title":"Filter","data":{"partNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Part No","id":"partNo","type":"select","dataFrom":"marketing.partMaster","replaceName":"partNo"},{"title":"Employee Name","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Employee Name","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Operation","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","type":"select"},{"title":"Start Time","id":"startTime"},{"title":"End Time","id":"endTime"},{"title":"Plan Qty","id":"planQty"},{"title":"Qty","id":"acceptedQty"}],"page":{"link":"report/productionEntryReport/list?type=empPerformanceReport","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"url":"YEAR-{{YEAR}}/api/productionEntry","method":"GET"}}}},"accounts":{"id":"accounts","name":"Accounts","title":"Accounts","icon":"money","customerPaymentInvoice":{"id":"customerPaymentInvoice","title":"Customer Payment - Invoice","masterData":{"invoiceNo":null,"customerCode":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Customer Payment","id":"customerPayment","fields":{"invoiceNo":{"name":"Invoice No","id":"invoiceNo","type":"select","options":{},"action":"changeMapping","updateData":["customerCode","total","date"],"dataFrom":"marketing.invoice","replaceName":"invoiceNo","valuePrefix":"VT-","required":true,"existingCheck":true,"isSingle":true},"customerCode":{"name":"Customer Code","id":"customerCode","type":"select","options":{},"dataFrom":"marketing.customerMaster","replaceName":"customerName","isSingle":true,"isDisable":true},"date":{"name":"Invoice Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"Invoice No","id":"invoiceNo","dataFrom":"marketing.invoice","valuePrefix":"VT-","replaceName":"invoiceNo","isFilterBy":true,"type":"select","options":{}},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/customerPaymentInvoice/list","name":"list","downloadExcel":true},"services":{"list":{"url":"YEAR-{{YEAR}}/api/customerPaymentInvoice","method":"GET"}}},"customerPaymentCashBill":{"id":"customerPaymentCashBill","name":"customerPaymentCashBill","title":"Customer Payment - Cash Bill","parentModule":"accounts.customerPaymentInvoice","form":{"fields":{"invoiceNo":{"name":"CashBill No","id":"invoiceNo","options":{},"action":"changeMapping","updateData":["date","customerCode","total"],"dataFrom":"marketing.cashBill","replaceName":"invoiceNo","valuePrefix":"","required":true,"existingCheck":true,"isSingle":true}}},"listView":[{"title":"Cash Bill No","id":"invoiceNo","valuePrefix":"","dataFrom":"marketing.cashBill","replaceName":"invoiceNo","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"accounts/customerPaymentInvoice/list?type=cashBill","name":"list","downloadExcel":true},"services":{"list":{"url":"YEAR-{{YEAR}}/api/customerPaymentCashBill","method":"GET"}}},"suppilerPayment":{"id":"suppilerPayment","title":"Suppiler Payment","masterData":{"grnNo":null,"supplierCode":null,"supplierInvoiceNo":null,"supplierInvoiceDate":null,"invoiceDate":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Suppiler Payment","id":"suppilerPayment","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"select","options":{},"action":"changeMapping","updateData":["supplierCode","supplierInvoiceNo","supplierInvoiceDate","date"],"dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","required":true,"existingCheck":true,"isSingle":true},"supplierCode":{"name":"Supplier Name","id":"supplierCode","type":"select","options":{},"dataFrom":"purchase.supplierMaster","replaceName":"supplierName","required":true,"isDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"Supplier Invoice No","id":"supplierInvoiceNo","type":"span"},"supplierInvoiceDate":{"name":"Supplier Invoice Date","id":"supplierInvoiceDate","type":"span"},"date":{"name":"GRN Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"GRN No","id":"grnNo","dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","isFilterBy":true,"type":"select","options":{}},{"title":"Supplier Name","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isFilterBy":true,"type":"select","options":{}},{"title":"Supplier InvoiceNo No","id":"supplierInvoiceNo","dataFrom":"store.grnSupplier","replaceName":"supplierInvoiceNo","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/suppilerPayment/list","name":"list","downloadExcel":true},"services":{"list":{"url":"YEAR-{{YEAR}}/api/suppilerPayment","method":"GET"}}},"subContractorPayment":{"id":"subContractorPayment","title":"Sub Contractor Payment","masterData":{"grnNo":null,"subContractorCode":null,"subContractorDCCode":null,"subContractorDCDate":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Sub Contractor Payment","id":"subContractorPayment","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"select","options":{},"action":"changeMapping","updateData":["subContractorCode","subContractorDCCode","subContractorDCDate","date"],"dataFrom":"store.grnSubContractor","replaceName":"grnNo","valuePrefix":"VT-SC-GRN","required":true,"existingCheck":true,"isSingle":true},"subContractorCode":{"name":"Sub Contractor Name","id":"subContractorCode","type":"select","options":{},"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","required":true,"isDisable":true,"isSingle":true},"subContractorDCCode":{"name":"Sub Contractor Invoice No","id":"subContractorDCCode","type":"span"},"subContractorDCDate":{"name":"Sub Contractor Invoice Date","id":"subContractorDCDate","type":"span"},"date":{"name":"GRN Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"GRN No","id":"grnNo","dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","isFilterBy":true,"type":"select","options":{}},{"title":"Sub Contractor Name","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isFilterBy":true,"type":"select","options":{}},{"title":"Sub Contractor InvoiceNo No","id":"subContractorDCCode","dataFrom":"store.grnSupplier","replaceName":"subContractorDCCode","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/subContractorPayment/list","name":"list","downloadExcel":true},"services":{"list":{"url":"YEAR-{{YEAR}}/api/subContractorPayment","method":"GET"}}},"empPayment":{"id":"empPayment","title":"Employee Labor Payment","masterData":{"employeeCode":null,"frmDate":null,"toDate":null,"total":0,"balanceAmount":0,"mapping":[{"id":null,"operationTo":null,"qty":null,"laborCost":null,"totalCost":null,"date":null,"paidStatus":false,"productionEntryKey":null,"productionEntryDate":null}]},"form":{"name":"Employee Payment","id":"employeePayment","disableByField":"id","fields":{"employeeCode":{"name":"Employee Name","id":"employeeCode","type":"select","options":{},"action":"addPartMap","updateMapping":true,"updateData":["mapping"],"required":true,"dataFrom":"marketing.empMaster","replaceName":"employeeName","isEditDisable":true},"frmDate":{"name":"From Date","id":"frmDate","type":"input","action":"addPartMap","inputType":"date","isEditDisable":true},"toDate":{"name":"To Date","id":"toDate","type":"input","action":"addPartMap","inputType":"date","isEditDisable":true},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Payment","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"operationTo":{"name":"Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isSingle":true,"isDisable":true},"qty":{"name":"Qty","id":"qty","type":"span"},"laborCost":{"name":"Labor Cost","id":"laborCost","type":"span"},"totalLaborCost":{"name":"Total Labor Cost","id":"totalLaborCost","type":"span"},"date":{"name":"Date","id":"date","type":"input","inputType":"date"},"paidStatus":{"name":"Paid Status","id":"paidStatus","type":"input","action":"updateBalanceAmount","inputType":"checkbox"}},"actions":{"add":false,"delete":false}}},"listView":[{"title":"Employee Name","id":"employeeCode","dataFrom":"marketing.empMaster","replaceName":"employeeName","isFilterBy":true,"type":"select","options":{}},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/empPayment/list","name":"list","downloadExcel":true},"services":{"list":{"url":"YEAR-{{YEAR}}/api/empPayment","method":"GET"}}}},"admin":{"id":"admin","name":"Admin","title":"Admin","icon":"cog","restricked":true,"defaultRelease":true,"settings":{"id":"settings","title":"Settings","masterData":{"companyName":null,"companyLogoUrl":null,"companyAddress":null,"companyMobile":null,"companyEmail":null,"companyGstin":null,"finalStageOpp":null,"mapping":[{"module":null,"restrictUser":null,"add":null,"edit":null,"delete":null}]},"form":{"name":"Settings","id":"settings","fields":{"companyName":{"name":"Company Name","id":"companyName","type":"input","inputType":"text","required":true},"companyLogoUrl":{"name":"Company Logo Url","id":"companyLogoUrl","type":"input","inputType":"text","required":true},"companyAddress":{"name":"Company Address","id":"companyAddress","type":"input","inputType":"text","required":true},"companyMobile":{"name":"Company Mobile","id":"companyMobile","type":"input","inputType":"text","required":true},"companyEmail":{"name":"Company Email","id":"companyEmail","type":"input","inputType":"text","required":true},"companyGstin":{"name":"Company GSTIN","id":"companyGstin","type":"input","inputType":"text","required":true},"finalStageOpp":{"name":"Operation Final Stage","id":"finalStageOpp","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode"}},"mapping":{"name":"Restrict Mapping","fields":{"module":{"name":"Page name","id":"module","type":"select","options":{},"makeFieldOptions":false},"restrictUser":{"name":"Restrict Type","id":"restrictUser","type":"select","options":{},"required":true,"dataFrom":"admin.userTypes","replaceName":"userType"},"add":{"name":"Show Add action","id":"add","type":"input","inputType":"checkbox"},"edit":{"name":"Show Edit action","id":"edit","type":"input","inputType":"checkbox"},"delete":{"name":"Show Delete action","id":"delete","type":"input","inputType":"checkbox"}}}},"listView":[{"title":"Company Name","id":"companyName"}],"page":{"link":"admin/settings/list","name":"list","actions":{"edit":true}},"services":{"list":{"url":"api/settings","method":"GET"}}},"userTypes":{"id":"userTypes","title":"User Types","masterData":{"userType":null,"desc":null},"form":{"name":"User Types","id":"userTypes","fields":{"userType":{"name":"User Type","id":"userType","type":"input","inputType":"text","required":true},"desc":{"name":"Description","id":"desc","type":"input","inputType":"text","required":true}}},"listView":[{"title":"User Name","id":"userType"}],"page":{"link":"admin/userTypes/list","name":"list"},"services":{"list":{"url":"api/userTypes","method":"GET"}}},"users":{"id":"users","title":"Users","masterData":{"userName":null,"password":null,"userType":null},"form":{"name":"Users","id":"users","fields":{"userName":{"name":"User Name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true},"userType":{"name":"User Type","id":"userType","type":"select","options":{},"required":true}}},"listView":[{"title":"User Name","id":"userName"}],"page":{"link":"admin/users/list","name":"list"},"services":{"list":{"url":"api/users","method":"GET"}}},"appCustomers":{"name":"App Customers","id":"appCustomers","title":"App Customers","restricked":true,"masterData":{"companyName":null,"address":null,"username":null,"password":null,"mapping":[{"module":null}]},"form":{"name":"App Customers","id":"appCustomers","fields":{"companyName":{"name":"Company Name","id":"companyName","type":"input","inputType":"text","required":true},"address":{"name":"Company Adress","id":"address","type":"input","inputType":"text","required":true},"userName":{"name":"User name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true}},"mapping":{"name":"Module Mapping","fields":{"module":{"name":"Page name","id":"module","type":"select","options":{},"makeFieldOptions":false}}},"actions":{"customSubmit":"releaseSubmit"}},"listView":[{"title":"Company Name","id":"companyName"}],"page":{"link":"appCustomers/list","name":"list"},"services":{"list":{"url":"api/appCustomers","method":"GET"}}}}},"components":{"header":{"id":"header"},"customForm":{"id":"customForm"},"mappingForm":{"id":"mappingForm"},"entryInvoice":{"id":"entryInvoice"},"listView":{"id":"listView"},"filterView":{"id":"filterView"},"fileModel":{"id":"fileModel","restrict":"A"}},"filters":{"startFrom":{"id":"startFrom"}},"factory":{"appFact":{"id":"appFact"},"authFact":{"id":"authFact"},"commonFact":{"id":"commonFact"}}},"moduleFiles":{}};
 var erpApp = (function() {
+    var routers = [];
     var erpAngularApp = angular.module('erpApp', ['ngRoute']).directive('myApp', function() {
             return {
                 restrict: 'E',
                 templateUrl: 'template/app.html'
             };
         })
-        .constant('staticConfig', erpConfig)
-        .config(['$routeProvider', 'staticConfig', function($routeProvider, staticConfig) {
-            var page;
+        .config(['$routeProvider', function($routeProvider) {
+            var ctrl;
             for (var i in routers) {
-                page = routers[i];
-                $routeProvider.when('/' + page.link, {
-                    templateUrl: page.templateUrl,
-                    controller: page.controller
+                ctrl = routers[i];
+                $routeProvider.when('/' + ctrl.page.link, {
+                    templateUrl: ctrl.page.templateUrl || "template/defaultView.html",
+                    controller: ctrl.id
                 });
             }
             $routeProvider.otherwise({
-                redirectTo: staticConfig.appBaseUrl
+                redirectTo: erpConfig.appBaseUrl
             });
         }]);
-    var routers = [];
-    var buildModules = function(modules) {
-        var module,
-            buildModule = function(module) {
-                if (module.page.link) {
-                    if (module.page.controller && module.page.templateUrl) {
-                        erpAngularApp.controller(module.page.controller, function($scope, appFact) {
-                            var moduleFile = erpConfig.moduleFiles[module.id] && erpConfig.moduleFiles[module.id]();
-                            var moduleActions = moduleFile && moduleFile.actions;
-                            appFact.initCtrl($scope, module, moduleActions);
-                        });
-                        routers.push(module.page);
-                    }
 
+    var buildControllers = function(controllers) {
+        var ctrl,
+            buildCtrl = function(ctrl) {
+                if (ctrl.page.link) {
+
+                    erpAngularApp.controller(ctrl.id, function($scope, appFact) {
+                        appFact.initCtrl($scope, ctrl, erpConfig.moduleFiles[ctrl.id]);
+                    });
+                    routers.push(ctrl);
                 } else {
                     for (var i in page) {
-                        buildModule(page[i]);
+                        buildCtrl(page[i]);
                     }
                 }
             };
-        for (var i in modules) {
-            module = modules[i];
-            if (module.page) {
-                buildModule(module);
-            } else if (typeof(module) === 'object') {
-                buildModules(module);
+        for (var i in controllers) {
+            ctrl = controllers[i];
+            if (ctrl.page) {
+                buildCtrl(ctrl);
+            } else if (typeof(ctrl) === 'object') {
+                buildControllers(ctrl);
             }
         }
     };
-    buildModules(erpConfig.modules);
+    var buildComponents = function(components) {
+        var buildComp = function(comp) {
+            erpAngularApp.directive(comp.id, function(appFact) {
+                var compMethods = erpConfig.moduleFiles[comp.id];
+                var compLink = compMethods && compMethods(appFact);
+                return {
+                    restrict: comp.restrict || 'E',
+                    templateUrl: 'template/components/' + comp.id + '.html',
+                    link: compLink
+                };
+            });
+        };
+        for (var i in components) {
+            buildComp(components[i]);
+        }
+    };
+
+    buildControllers(erpConfig.modules.controllers);
+    buildComponents(erpConfig.modules.components);
+
 
     return erpAngularApp;
 })();
-erpApp.directive('alertRol', ['appFact', 'commonFact', 'authFact', function(appFact, commonFact, authFact) {
-    var erpAppConfig = appFact.erpAppConfig;
-    var showROL = true;
-    var showAlertRol = function($scope) {
-        var userType = authFact.isLogin();
-        $scope.hideROL = function() {
-            showROL = false;
-        }
-        if (userType) {
-            commonFact.defaultActions.getData('marketing.partMaster').then(function(res) {
-                var partMaster = res.data;
-                commonFact.defaultActions.getData('report.partStock').then(function(res1) {
-                    var partStockData = res1.data,
-                        partStock = {};
-                    for (var i in partStockData) {
-                        partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
-                    }
-                    for (var j in partMaster) {
-                        var yellowAlert = partMaster[j].rolQtyYellowRage;
-                        var redAlert = partMaster[j].rolQtyRedRage;
-                        var checkPartStock = partStock[partMaster[j].id + '-' + erpAppConfig.finalStageOpp];
-
-                        if (checkPartStock) {
-                            checkPartStock.partName = partMaster[j].partName;
-                            if (redAlert >= checkPartStock.partStockQty) {
-                                $scope.alertRolContext.partRolRed.push(checkPartStock);
-                            } else if (yellowAlert >= checkPartStock.partStockQty) {
-                                $scope.alertRolContext.partRolYellow.push(checkPartStock);
-                            }
-                        }
-
-                    }
-                    if (($scope.alertRolContext.partRolRed.length > 0 || $scope.alertRolContext.partRolYellow.length > 0) && showROL) {
-                        angular.element('#RolModal').modal('show');
-                    }
-                });
-            });
-        }
-    }
-    var alertRolComp = function($scope, element, attrs) {
-
-        $scope.alertRolContext = {};
-        $scope.alertRolContext.partRolYellow = [];
-        $scope.alertRolContext.partRolRed = [];
-        $scope.$on('showAlertRol', function() {
-            showAlertRol($scope);
+erpConfig.moduleFiles.alertRol = function(appFact) {
+    return function(scope) {
+        scope.$on('showAlertRol', function() {
+            scope.alertRolContext = appFact.context.methods.showAlertRol(scope);
         });
     };
-    return {
-        restrict: 'E',
-        templateUrl: 'template/components/alertRol.html',
-        link: alertRolComp
-    };
-}]);
-erpApp.directive('customForm', [function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'template/components/customForm.html'
-    };
-}]);
-erpApp.directive('fileModel', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var model = $parse(attrs.fileModel);
-            var modelSetter = model.assign;
+};
+erpConfig.moduleFiles.fileModel = function() {
+    return function(scope, element, attrs) {
+        var model = JSON.parse(attrs.fileModel);
+        var modelSetter = model.assign;
 
-            element.bind('change', function(changeEvent) {
-                var reader = new FileReader();
-                reader.onload = function(loadEvent) {
-                    scope.$apply(function() {
-                        try{
-                           modelSetter(scope, JSON.parse(loadEvent.target.result));
-                        }
-                        catch(err){
-                           modelSetter(scope, {});
-                        }
-                        
-                    });
-                }
-                reader.readAsText(changeEvent.target.files[0]);
+        element.bind('change', function(changeEvent) {
+            var reader = new FileReader();
+            reader.onload = function(loadEvent) {
+                scope.$apply(function() {
+                    try {
+                        modelSetter(scope, JSON.parse(loadEvent.target.result));
+                    } catch (err) {
+                        modelSetter(scope, {});
+                    }
 
-            });
-        }
-    };
-}]);
-erpApp.directive('filterView', [function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'template/components/filterView.html'
-    };
-}]);
-erpApp.directive('header', ['appFact', 'commonFact', '$location', 'authFact', function(appFact, commonFact, $location, authFact) {
-    var headerComp = function($scope, element, attrs) {
-        var erpAppConfig = appFact.erpAppConfig || null;
-        var headerContext = {};
-        erpAppConfig.calendarYear = new Date().getMonth() >= erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
-        headerContext.appName = erpAppConfig.appName;
-        headerContext.appNavMenus = erpAppConfig.appNavMenus;
-        headerContext.modules = erpAppConfig.modules;
-        headerContext.calendarYear = erpAppConfig.calendarYear;
-        headerContext.downloadDbName = headerContext.calendarYear + '-' + ('' + parseInt(headerContext.calendarYear + 1)).substring(2);
-        headerContext.calendarYearList = [];
-        headerContext.isLogin = authFact.isLogin();
-        for (var i = 10; i >= 0; i--) {
-            var nextYear = parseInt(headerContext.calendarYear - i + 1);
-
-            headerContext.calendarYearList.push({
-                optionId: headerContext.calendarYear - i,
-                optionName: headerContext.calendarYear - i + '-' + ('' + nextYear).substring(2)
-            });
-        }
-        headerContext.actions = {
-            showSubModule: commonFact.defaultActions.showSubModule,
-            changeCalendarYear: function(context) {
-                erpAppConfig.calendarYear = context.calendarYear;
-                commonFact.defaultActions.getData('calendarYear');
-                commonFact.defaultActions.goToPage(erpAppConfig.modules.dashboard.page.link);
-            },
-            downloadData: function(context) {
-                angular.element('#downloadModal').modal('show');
+                });
             }
-        };
-        $scope.headerContext = headerContext;
+            reader.readAsText(changeEvent.target.files[0]);
 
+        });
     };
-    return {
-        restrict: 'E',
-        templateUrl: 'template/components/header.html',
-        link: headerComp
-    };
-}]);
-erpApp.directive('entryInvoice', function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'template/components/entryInvoice.html'
-    };
-})
-erpApp.directive('listView', [function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'template/components/listView.html'
-    };
-}]);
+};
+erpConfig.moduleFiles.header = function(appFact) {
+    var context = appFact.context || null;
+    context.erpAppConfig.calendarYear = new Date().getMonth() >= context.erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
+    context.downloadDbName = context.erpAppConfig.calendarYear + '-' + ('' + parseInt(context.erpAppConfig.calendarYear + 1)).substring(2);
+    context.calendarYearList = [];
+    for (var i = 10; i >= 0; i--) {
+        var nextYear = parseInt(context.erpAppConfig.calendarYear - i + 1);
 
-erpApp.filter('startFrom', function() {
+        context.calendarYearList.push({
+            optionId: context.erpAppConfig.calendarYear - i,
+            optionName: context.erpAppConfig.calendarYear - i + '-' + ('' + nextYear).substring(2)
+        });
+    }
+    return function(scope) {
+        scope.context = context;
+    };
+};
+erpConfig.moduleFiles.startFrom = function() {
     return function(input, start) {
         start = +start; //parse to int
         return input && input.slice(start) || false;
     }
-});
-erpApp.directive('mappingForm', [function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'template/components/mappingForm.html'
-    };
-}]);
-erpApp.factory('appFact', ['staticConfig', 'authFact', 'commonFact', '$q', function(staticConfig, authFact, commonFact, $q) {
-    var erpAppConfig = staticConfig;
+};
+erpApp.filter('startFrom', erpConfig.moduleFiles.startFrom);
+erpConfig.moduleFiles.appFact = function(authFact, commonFact, $q) {
     var erpLoadProm = $q.defer();
-    var defaultActions = commonFact.defaultActions;
+    var context = {
+        erpAppConfig: erpConfig,
+        erpLoadProm: erpLoadProm
+    };
+    context.methods = angular.extend(commonFact(context), authFact);
 
-    var appModuleAccess = function(erpAppConfig) {
-        return defaultActions.getData('admin.settings', '1').then(function(res) {
-            erpAppConfig = angular.extend(erpAppConfig, res.data);
+    var appModuleAccess = function() {
+        return context.methods.getData(context.erpAppConfig.modules.controllers.admin.settings, '1').then(function(res) {
+            context.erpAppConfig = angular.extend(context.erpAppConfig, res.data);
 
-            for (var i in erpAppConfig.mapping) {
-                var map = erpAppConfig.mapping[i];
-                var module = defaultActions.getDeepProp(erpAppConfig.modules, map.module) || {};
+            for (var i in context.erpAppConfig.mapping) {
+                var map = context.erpAppConfig.mapping[i];
+                var module = context.methods.getDeepProp(context.erpAppConfig.modules.controllers, map.module) || {};
                 if (!userType || (userType && map.restrictUser !== userType)) {
                     module.disable = map.restrictUser && true;
                 }
@@ -239,70 +152,64 @@ erpApp.factory('appFact', ['staticConfig', 'authFact', 'commonFact', '$q', funct
             erpLoadProm.resolve();
         });
     };
-    var loadErpAppConfig = (function() {
-        var userType = authFact.isLogin();
-        if (userType && userType !== 'ADMIN') {
-            appModuleAccess(erpAppConfig);
+    var loadErpAppConfig = function() {
+        if (context.methods.isAppUser()) {
+            appModuleAccess();
         } else {
             erpLoadProm.resolve();
         }
-    })();
+    }();
 
-    var initCtrl = function(scope, module, actions) {
+    var initCtrl = function(scope, module, methods) {
         var returnPageProm = $q.defer();
         return erpLoadProm.promise.then(function() {
-            var context = angular.copy(module);
             var parentModule;
             var pageProm = [];
             var userType = authFact.isLogin();
-            var userDetails = authFact.getUserDetail();
+            context = angular.extend(context, angular.copy(module));
             scope.context = context;
-            context.module = module;
-            context.erpAppConfig = erpAppConfig;
-            context.actions = angular.extend(angular.copy(defaultActions), angular.copy(authFact), actions || {});
-            if (context.data) {
-                context.data.updatedUserId = userDetails && userDetails.id || null;
-            }
+            context.methods = angular.extend(context.methods, methods && methods(context) || {});
+
             if (context.parentModule) {
-                parentModule = angular.copy(context.actions.getDeepProp(context.erpAppConfig.modules, context.parentModule));
+                parentModule = angular.copy(context.methods.getDeepProp(context.erpAppConfig.modules.controllers, context.parentModule));
                 context = angular.merge({}, angular.copy(parentModule), context);
             }
-            if (!userType && context.module.id !== 'login') {
-                context.actions.goToPage(context.erpAppConfig.modules.login.page.link);
+            if (!userType && context.id !== 'login') {
+                context.methods.goToPage(context.erpAppConfig.modules.controllers.login.page.link);
                 return;
             } else if (context.disable) {
-                context.actions.goToPage(context.erpAppConfig.modules.dashboard.page.link);
+                context.methods.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link);
                 return;
             }
             context.showLoading = true;
-            pageProm.push(context.actions.updateFields(context, context.listView));
-            context.filterView && pageProm.push(context.actions.updateFields(context, context.filterView.fields));
+            pageProm.push(context.methods.updateFields(context, context.listView));
+            context.filterView && pageProm.push(context.methods.updateFields(context, context.filterView.fields));
 
             scope.$broadcast('showAlertRol');
 
             Promise.all(pageProm).then(function() {
-                if (context.actions[context.page.name]) {
-                    context.actions[context.page.name](context).then(function() {
+                if (context.methods[context.page.name]) {
+                    context.methods[context.page.name](context).then(function() {
                         scope.context = context;
-                        context.actions.showLoadingHttp(scope);
-                        context.actions.onLoad && context.actions.onLoad(context);
+                        context.methods.showLoadingHttp(scope);
+                        context.methods.onLoad && context.methods.onLoad(context);
                         returnPageProm.resolve(context);
                     });
                 };
-
             });
             return returnPageProm.promise;
         });
     };
     return {
         initCtrl: initCtrl,
-        erpAppConfig: erpAppConfig
+        context: context
     };
+};
 
-}]);
-erpApp.factory('authFact', ['serviceApi', '$window', function(serviceApi, $window) {
+erpApp.factory('appFact', erpConfig.moduleFiles.appFact);
+erpConfig.moduleFiles.authFact = function(serviceApi, $window) {
     var login = function(context) {
-        var usersService = angular.copy(context.erpAppConfig.modules.admin.users.services.list);
+        var usersService = angular.copy(context.erpAppConfig.modules.controllers.admin.users.services.list);
         return serviceApi.callServiceApi(usersService).then(function(res) {
             var data = res.data;
             var userDetail;
@@ -323,14 +230,14 @@ erpApp.factory('authFact', ['serviceApi', '$window', function(serviceApi, $windo
         $window.sessionStorage.setItem('erpUserDetail', JSON.stringify(userDetail));
         return userDetail;
     };
-    var getUserDetail = function(context) {
+    var getUserDetail = function() {
         var userDetail = $window.sessionStorage.getItem('erpUserDetail');
         if (userDetail !== 'undefined') {
             userDetail = JSON.parse(userDetail);
         }
         return userDetail;
     };
-    var isLogin = function(context) {
+    var isLogin = function() {
         var userDetail = getUserDetail();
         if (userDetail) {
             return userDetail.userType;
@@ -348,222 +255,227 @@ erpApp.factory('authFact', ['serviceApi', '$window', function(serviceApi, $windo
         getUserDetail: getUserDetail,
         isLogin: isLogin
     };
-}]);
-erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$location', '$injector', '$window', '$http', '$q', function(staticConfig, serviceApi, $filter, $location, $injector, $window, $http, $q) {
-    var erpAppConfig = staticConfig;
-    var defaultActions = {
-        add: function(context) {
-            context.page.name = 'add';
-            context.data = angular.copy(context.masterData);
-            if (context.form.autoGenKey) {
-                context.actions.setAutoGenKey(context);
-            }
-            if (context.data.date === null) {
-                context.data.date = new Date();
-            }
-            context.page.editKey = undefined;
-            context.page.printView = undefined;
-            return context.actions.formRender(context).then(function() {
-                context.actions.callBackAdd && context.actions.callBackAdd(context);
-                return true;
-            });
-        },
-        edit: function(context, key, printView) {
-            context.page.name = 'edit';
-            context.page.printView = printView;
-            context.page.editKey = key;
-            context.existEditData = context.page.editKey && context.actions.findObjectByKey(context.listViewDataMaster, 'id', context.page.editKey);
+};
 
-            return context.actions.formRender(context).then(function() {
-                return context.actions.getData(context.module, key).then(function(res) {
-                    context.data = res.data;
-                    context.printData = angular.copy(context.data);
-                    if (context.data['date']) {
-                        context.data['date'] = new Date(context.data['date']);
+erpApp.factory('authFact', erpConfig.moduleFiles.authFact);
+erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $window, $http) {
+    return function(context) {
+        return {
+            add: function() {
+                context.page.name = 'add';
+                context.data = angular.copy(context.masterData);
+                if (context.form.autoGenKey) {
+                    context.methods.setAutoGenKey();
+                }
+                if (context.data.date === null) {
+                    context.data.date = new Date();
+                }
+                context.page.editKey = undefined;
+                context.page.printView = undefined;
+                return context.methods.formRender().then(function() {
+                    context.methods.callBackAdd && context.methods.callBackAdd();
+                    return true;
+                });
+            },
+            edit: function(key, printView) {
+                context.page.name = 'edit';
+                context.page.printView = printView;
+                context.page.editKey = key;
+                context.existEditData = context.page.editKey && context.methods.findObjectByKey(context.listViewDataMaster, 'id', context.page.editKey);
+
+                return context.methods.formRender().then(function() {
+                    return context.methods.getData(context, key).then(function(res) {
+                        context.data = res.data;
+                        context.printData = angular.copy(context.data);
+                        if (context.data['date']) {
+                            context.data['date'] = new Date(context.data['date']);
+                        }
+                        if (context.data['frmDate']) {
+                            context.data['frmDate'] = new Date(context.data['frmDate']);
+                        }
+                        if (context.data['toDate']) {
+                            context.data['toDate'] = new Date(context.data['toDate']);
+                        }
+                        context.methods.callBackEdit && context.methods.callBackEdit(key);
+                        return context;
+                    });
+                });
+
+            },
+            printView: function(key, printView) {
+                context.methods.edit(key, printView);
+            },
+            disable: function(id, item) {
+                context.methods.callBeforeDelete && context.methods.callBeforeDelete(item);
+                context.listViewDataMaster[id]['disabled'] = true;
+                context.methods.updateData(context, context.listViewData[id]);
+                context.methods.list();
+                context.methods.callBackDelete && context.methods.callBackDelete(id, item);
+            },
+            delete: function(id, item) {
+                context.methods.callBeforeDelete && context.methods.callBeforeDelete(id, item);
+                context.methods.updateData(context, { key: id, delete: 'yes' });
+                context.methods.list();
+                context.methods.callBackDelete && context.methods.callBackDelete(id, item);
+            },
+            list: function() {
+                context.page.name = 'list';
+                context.currentPage = 0;
+                context.pageSize = 10;
+                context.filterBy = context.services.list.filter || {};
+                context.listViewData = [];
+                context.orderByProperty = 'updated';
+                context.methods.pageActionsAccess();
+                return context.methods.getData(context).then(function(res) {
+                    var listViewData = res.data;
+                    for (var x in listViewData) {
+                        listViewData.hasOwnProperty(x) && !listViewData[x].disabled && context.listViewData.push(listViewData[x])
                     }
-                    if (context.data['frmDate']) {
-                        context.data['frmDate'] = new Date(context.data['frmDate']);
-                    }
-                    if (context.data['toDate']) {
-                        context.data['toDate'] = new Date(context.data['toDate']);
-                    }
-                    context.actions.callBackEdit && context.actions.callBackEdit(context, key);
+                    context.listViewDataMaster = angular.copy(context.listViewData);
+                    context.lastData = angular.copy(context.listViewData[context.listViewData.length - 1]);
+                    context.methods.callBackList && context.methods.callBackList();
                     return context;
                 });
-            });
-
-        },
-        printView: function(context, key, printView) {
-            this.edit(context, key, printView);
-        },
-        disable: function(context, id, item) {
-            context.actions.callBeforeDelete && context.actions.callBeforeDelete(context, item);
-            context.listViewDataMaster[id]['disabled'] = true;
-            context.actions.updateData(context.module, context.listViewData[id]);
-            context.actions.list(context);
-            context.actions.callBackDelete && context.actions.callBackDelete(context, id, item);
-        },
-        delete: function(context, id, item) {
-            context.actions.callBeforeDelete && context.actions.callBeforeDelete(context, id, item);
-            context.actions.updateData(context.module, { key: id, delete: 'yes' });
-            context.actions.list(context);
-            context.actions.callBackDelete && context.actions.callBackDelete(context, id, item);
-        },
-        list: function(context) {
-            context.page.name = 'list';
-            context.currentPage = 0;
-            context.pageSize = 10;
-            context.filterBy = context.services.list.filter || {};
-            context.listViewData = [];
-            context.orderByProperty = 'updated';
-            context.actions.pageActionsAccess(context);
-            return context.actions.getData(context.module).then(function(res) {
-                var listViewData = res.data;
-                for (var x in listViewData) {
-                    listViewData.hasOwnProperty(x) && !listViewData[x].disabled && context.listViewData.push(listViewData[x])
-                }
-                context.listViewDataMaster = angular.copy(context.listViewData);
-                context.lastData = angular.copy(context.listViewData[context.listViewData.length - 1]);
-                context.actions.callBackList && context.actions.callBackList(context);
-                return context;
-            });
-        },
-        formRender: function(context) {
-            return context.actions.updateFields(context, context.form.fields).then(function() {
-                if (context.form.mapping) {
-                    return context.actions.updateFields(context, context.form.mapping.fields);
-                }
-                return context;
-            });
-
-        },
-        getPageData: function(context) {
-            return $filter('filter')(context.listViewData, context.filterBy, true) || [];
-        },
-        numberOfPages: function(context) {
-            return Math.ceil(context.actions.getPageData(context).length / context.pageSize);
-        },
-        submit: function(context) {
-            return context.actions.updateData(context.module, context.data).then(function(res) {
-                context.actions.list(context);
-                context.actions.callBackSubmit && context.actions.callBackSubmit(context, res.data);
-                return context;
-            });
-
-        },
-        cancel: function(context) {
-            context.actions.list(context);
-        },
-        getData: function(module, id) {
-            var serviceConf = this.getServiceConfig(module, 'GET', id);
-            //Get Part master data
-            return serviceApi.callServiceApi(serviceConf);
-        },
-        updateData: function(module, data, id) {
-            var serviceConf = this.getServiceConfig(module, 'POST', id);
-            //Get Part master data
-            return serviceApi.callServiceApi(serviceConf, data);
-        },
-        replaceFieldVal: function(viewData, field) {
-            var list,
-                serviceConf,
-                self = this,
-                orgViewDataFieldId = viewData,
-                updateField = function(field, fieldData, list) {
-                    fieldData = (fieldData && list && list[orgViewDataFieldId] && field.replaceName) ? list[orgViewDataFieldId][field.replaceName] : fieldData;
-                    fieldData = field.valuePrefix ? field.valuePrefix + fieldData : fieldData;
-                    fieldData = field.valuePrefixData ? list[orgViewDataFieldId][field.valuePrefixData] + ' - ' + fieldData : fieldData;
-                    if (self.isFloat(fieldData)) {
-                        fieldData = parseFloat(fieldData).toFixed(2);
+            },
+            formRender: function() {
+                return context.methods.updateFields(context.form.fields).then(function() {
+                    if (context.form.mapping) {
+                        return context.methods.updateFields(context.form.mapping.fields);
                     }
-                    return fieldData;
-                };
-            //Get Part master data
-            if (field.type === 'select' || field.dataFrom) {
-                viewData = field.options && field.options[viewData] && field.options[viewData].optionName || (field.allOptions && field.allOptions[viewData]) && field.allOptions[viewData].optionName || viewData;
-            } else if (field.type === 'date' || field.inputType === 'date') {
-                viewData = viewData && self.dateFormatChange(viewData) || '';
-            } else if (field.inputType === 'password') {
-                viewData = 'XXX';
-            } else {
-                viewData = updateField(field, viewData);
-            }
-            return viewData;
-        },
-        matchFilter: function(field, list, context) {
-            var returnFlag = false;
-            if (context && context.page.name === 'edit') {
-                return true;
-            }
-            for (var i in field.filter) {
-                if (typeof(field.filter[i]) === 'object' && field.filter[i].indexOf(list[i]) < 0) {
-                    return false;
-                } else if (typeof(field.filter[i]) !== 'object' && field.filter[i] != list[i]) {
-                    return false;
+                    return context;
+                });
+
+            },
+            getPageData: function() {
+                return $filter('filter')(context.listViewData, context.filterBy, true) || [];
+            },
+            numberOfPages: function() {
+                return Math.ceil(context.methods.getPageData(context).length / context.pageSize);
+            },
+            submit: function() {
+                var userDetails = authFact.getUserDetail();
+                context.data.updatedUserId = userDetails && userDetails.id || null;
+                return context.methods.updateData(context, context.data).then(function(res) {
+                    context.methods.list();
+                    context.methods.callBackSubmit && context.methods.callBackSubmit(res.data);
+                    return context;
+                });
+
+            },
+            cancel: function() {
+                context.methods.list();
+            },
+            getData: function(module, id) {
+                var serviceConf = this.getServiceConfig(module, 'GET', id);
+                //Get Part master data
+                return serviceApi.callServiceApi(serviceConf);
+            },
+            updateData: function(module, data, id) {
+                var serviceConf = context.methods.getServiceConfig(module, 'POST', id);
+                //Get Part master data
+                return serviceApi.callServiceApi(serviceConf, data);
+            },
+            replaceFieldVal: function(viewData, field) {
+                var list,
+                    serviceConf,
+                    self = this,
+                    orgViewDataFieldId = viewData,
+                    updateField = function(field, fieldData, list) {
+                        fieldData = (fieldData && list && list[orgViewDataFieldId] && field.replaceName) ? list[orgViewDataFieldId][field.replaceName] : fieldData;
+                        fieldData = field.valuePrefix ? field.valuePrefix + fieldData : fieldData;
+                        fieldData = field.valuePrefixData ? list[orgViewDataFieldId][field.valuePrefixData] + ' - ' + fieldData : fieldData;
+                        if (self.isFloat(fieldData)) {
+                            fieldData = parseFloat(fieldData).toFixed(2);
+                        }
+                        return fieldData;
+                    };
+                //Get Part master data
+                if (field.type === 'select' || field.dataFrom) {
+                    viewData = field.options && field.options[viewData] && field.options[viewData].optionName || (field.allOptions && field.allOptions[viewData]) && field.allOptions[viewData].optionName || viewData;
+                } else if (field.type === 'date' || field.inputType === 'date') {
+                    viewData = viewData && self.dateFormatChange(viewData) || '';
+                } else if (field.inputType === 'password') {
+                    viewData = 'XXX';
                 } else {
-                    returnFlag = true;
+                    viewData = updateField(field, viewData);
                 }
-            }
-            return returnFlag;
-        },
-        makeOptionsFields: function(context, field) {
-            var self = this,
-                list;
-
-            field.options = {};
-            field.allOptions = {};
-
-            return context.actions.getData(field.dataFrom).then(function(res) {
-                list = res.data;
-                for (var i in list) {
-                    var optionVal = field.optionId && list[i][field.optionId] || list[i]['id'];
-                    var optionIdVal = field.optionId && list[i][field.optionId] || list[i]['id'];
-                    var optionNameVal = field.valuePrefix && field.valuePrefix || '';
-                    var editOption = context.existEditData && optionIdVal === context.existEditData[field.id] || false;
-                    optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
-                    optionNameVal += list[i][field.replaceName] || '';
-                    var isCheckExistVal = field.existingCheck && context.listViewDataMaster && context.actions.findObjectByKey(context.listViewDataMaster, field.id, optionIdVal) || false;
-                    field.allOptions[optionVal] = list[i];
-                    field.allOptions[optionVal]['optionName'] = optionNameVal;
-                    field.allOptions[optionVal]['optionId'] = optionIdVal;
-                    if ((field.filter === undefined || self.matchFilter(field, list[i], context) === true) &&
-                        (!isCheckExistVal || editOption)) {
-                        field.options[optionVal] = field.allOptions[optionVal];
+                return viewData;
+            },
+            matchFilter: function(field, list) {
+                var returnFlag = false;
+                if (context && context.page.name === 'edit') {
+                    return true;
+                }
+                for (var i in field.filter) {
+                    if (typeof(field.filter[i]) === 'object' && field.filter[i].indexOf(list[i]) < 0) {
+                        return false;
+                    } else if (typeof(field.filter[i]) !== 'object' && field.filter[i] != list[i]) {
+                        return false;
+                    } else {
+                        returnFlag = true;
                     }
                 }
-                return field;
-            });
-        },
-        addMapping: function(mapping) {
-            var newMapping = angular.extend({}, mapping[0]);
-            for (var mapKey in newMapping) {
-                newMapping[mapKey] = null;
-            }
-            mapping.push(newMapping);
-        },
-        removeMapping: function(context, data, key) {
-            delete data.splice(key, 1);
-            context.actions.callBackRemoveMapping && context.actions.callBackRemoveMapping(context, data, key);
-        },
-        changeMapping: function(context, data, key, field, fieldMapKey) {
-            for (var dataKey in data) {
-                if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
-                    if (key === null) {
-                        data[dataKey] = context.masterData[dataKey];
-                    } else if (key !== undefined && field.options[key][dataKey]) {
-                        if (typeof(field.options[key][dataKey]) !== 'object') {
-                            data[dataKey] = field.options[key][dataKey];
-                        } else if (field.updateMapping) {
-                            data[dataKey] = angular.copy(context.masterData[dataKey]);
-                            for (var mapKey in field.options[key][dataKey]) {
-                                var copyDataMapKey = angular.copy(context.masterData[dataKey][0]);
-                                if (field.options[key][dataKey][mapKey] !== null || field.options[key][dataKey][mapKey] !== '') {
-                                    data[dataKey][mapKey] = angular.extend(copyDataMapKey, field.options[key][dataKey][mapKey]);
-                                    for (var mapFieldKey in context.form.mapping.fields) {
-                                        var mapfield = context.form.mapping.fields[mapFieldKey];
-                                        if (mapfield.action && context.actions[mapfield.action]) {
-                                            if (mapfield.type === 'select') {
-                                                context.actions[mapfield.action](context, data[dataKey][mapKey], data[dataKey][mapKey][mapfield.id], mapfield, mapKey);
+                return returnFlag;
+            },
+            makeOptionsFields: function(field) {
+                var self = this,
+                    list;
+
+                field.options = {};
+                field.allOptions = {};
+
+                return context.methods.getData(field.dataFrom).then(function(res) {
+                    list = res.data;
+                    for (var i in list) {
+                        var optionVal = field.optionId && list[i][field.optionId] || list[i]['id'];
+                        var optionIdVal = field.optionId && list[i][field.optionId] || list[i]['id'];
+                        var optionNameVal = field.valuePrefix && field.valuePrefix || '';
+                        var editOption = context.existEditData && optionIdVal === context.existEditData[field.id] || false;
+                        optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
+                        optionNameVal += list[i][field.replaceName] || '';
+                        var isCheckExistVal = field.existingCheck && context.listViewDataMaster && context.methods.findObjectByKey(context.listViewDataMaster, field.id, optionIdVal) || false;
+                        field.allOptions[optionVal] = list[i];
+                        field.allOptions[optionVal]['optionName'] = optionNameVal;
+                        field.allOptions[optionVal]['optionId'] = optionIdVal;
+                        if ((field.filter === undefined || self.matchFilter(field, list[i], context) === true) &&
+                            (!isCheckExistVal || editOption)) {
+                            field.options[optionVal] = field.allOptions[optionVal];
+                        }
+                    }
+                    return field;
+                });
+            },
+            addMapping: function(mapping) {
+                var newMapping = angular.extend({}, mapping[0]);
+                for (var mapKey in newMapping) {
+                    newMapping[mapKey] = null;
+                }
+                mapping.push(newMapping);
+            },
+            removeMapping: function(data, key) {
+                delete data.splice(key, 1);
+                context.methods.callBackRemoveMapping && context.methods.callBackRemoveMapping(data, key);
+            },
+            changeMapping: function(data, key, field, fieldMapKey) {
+                for (var dataKey in data) {
+                    if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
+                        if (key === null) {
+                            data[dataKey] = context.masterData[dataKey];
+                        } else if (key !== undefined && field.options[key][dataKey]) {
+                            if (typeof(field.options[key][dataKey]) !== 'object') {
+                                data[dataKey] = field.options[key][dataKey];
+                            } else if (field.updateMapping) {
+                                data[dataKey] = angular.copy(context.masterData[dataKey]);
+                                for (var mapKey in field.options[key][dataKey]) {
+                                    var copyDataMapKey = angular.copy(context.masterData[dataKey][0]);
+                                    if (field.options[key][dataKey][mapKey] !== null || field.options[key][dataKey][mapKey] !== '') {
+                                        data[dataKey][mapKey] = angular.extend(copyDataMapKey, field.options[key][dataKey][mapKey]);
+                                        for (var mapFieldKey in context.form.mapping.fields) {
+                                            var mapfield = context.form.mapping.fields[mapFieldKey];
+                                            if (mapfield.action && context.methods[mapfield.action]) {
+                                                if (mapfield.type === 'select') {
+                                                    context.methods[mapfield.action](data[dataKey][mapKey], data[dataKey][mapKey][mapfield.id], mapfield, mapKey);
+                                                }
                                             }
                                         }
                                     }
@@ -572,468 +484,543 @@ erpApp.factory('commonFact', ['staticConfig', 'serviceApi', '$filter', '$locatio
                         }
                     }
                 }
-            }
-            field.callBack !== false && context.actions.callBackChangeMapping && context.actions.callBackChangeMapping(context, data, key, field, fieldMapKey);
-        },
-        setAutoGenKey: function(context) {
-            var lastDataKey = context.lastData ? context.lastData[context.form.autoGenKey] : undefined;
-            lastDataKey = lastDataKey ? parseInt(lastDataKey) + 1 : context.form.autoGenValStart ? context.form.autoGenValStart : 1;
-            context.data[context.form.autoGenKey] = lastDataKey;
-            context.actions.callBackSetAutoGenKey && context.actions.callBackSetAutoGenKey(context);
-        },
-        dateFormatChange: function(dateValue) {
-            dateValue = new Date(dateValue);
-            return dateValue.getDate() + '-' + (dateValue.getMonth() + 1) + '-' + dateValue.getFullYear();
-        },
-        timeFormatChange: function(value) {
-            value = new Date(value);
-            return value.getHours() + ':' + value.getMinutes() + ':' + value.getSeconds();
-        },
-        getOperationFromFlow: function(context, field, restriction) {
-            var self = this,
-                partNo = restriction.partNo || context.data.partNo,
-                limit = 0;
-            var returnPromise = [];
-            var partStockPromise;
-            if (partNo) {
-                context.actions.makeOptionsFields(context, field);
-                var localOptions = field.options;
-                partStockPromise = context.actions.getData('production.flowMaster').then(function(res) {
-                    var flowMasterData = res.data,
-                        flowMasterVal;
-                    field.options = {};
-                    for (var i in flowMasterData) {
-                        if (flowMasterData[i].partNo === partNo) {
-                            var flowMapPromise = context.actions.mergeOprFlowMap(context, flowMasterData[i].mapping).then(function(flowMasterMap) {
-                                var startWith = context.actions.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
-                                flowMasterMap = context.actions.objectSort(flowMasterMap, 'opCode');
-                                for (var j in flowMasterMap) {
-                                    flowMasterVal = flowMasterMap[j];
-                                    if ((!restriction.limit || limit < restriction.limit) &&
-                                        (!restriction.startWith || (startWith.opCode < flowMasterVal.opCode)) &&
-                                        (restriction.filter === undefined || self.matchFilter(restriction, flowMasterVal) === true)) {
-                                        limit++;
-                                        field.options[' ' + flowMasterVal.id] = localOptions[flowMasterVal.id];
+                field.callBack !== false && context.methods.callBackChangeMapping && context.methods.callBackChangeMapping(data, key, field, fieldMapKey);
+            },
+            setAutoGenKey: function() {
+                var lastDataKey = context.lastData ? context.lastData[context.form.autoGenKey] : undefined;
+                lastDataKey = lastDataKey ? parseInt(lastDataKey) + 1 : context.form.autoGenValStart ? context.form.autoGenValStart : 1;
+                context.data[context.form.autoGenKey] = lastDataKey;
+                context.methods.callBackSetAutoGenKey && context.methods.callBackSetAutoGenKey();
+            },
+            dateFormatChange: function(dateValue) {
+                dateValue = new Date(dateValue);
+                return dateValue.getDate() + '-' + (dateValue.getMonth() + 1) + '-' + dateValue.getFullYear();
+            },
+            timeFormatChange: function(value) {
+                value = new Date(value);
+                return value.getHours() + ':' + value.getMinutes() + ':' + value.getSeconds();
+            },
+            getOperationFromFlow: function(field, restriction) {
+                var self = this,
+                    partNo = restriction.partNo || context.data.partNo,
+                    limit = 0;
+                var returnPromise = [];
+                var partStockPromise;
+                if (partNo) {
+                    context.methods.makeOptionsFields(field);
+                    var localOptions = field.options;
+                    partStockPromise = context.methods.getData('production.flowMaster').then(function(res) {
+                        var flowMasterData = res.data,
+                            flowMasterVal;
+                        field.options = {};
+                        for (var i in flowMasterData) {
+                            if (flowMasterData[i].partNo === partNo) {
+                                var flowMapPromise = context.methods.mergeOprFlowMap(flowMasterData[i].mapping).then(function(flowMasterMap) {
+                                    var startWith = context.methods.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
+                                    flowMasterMap = context.methods.objectSort(flowMasterMap, 'opCode');
+                                    for (var j in flowMasterMap) {
+                                        flowMasterVal = flowMasterMap[j];
+                                        if ((!restriction.limit || limit < restriction.limit) &&
+                                            (!restriction.startWith || (startWith.opCode < flowMasterVal.opCode)) &&
+                                            (restriction.filter === undefined || self.matchFilter(restriction, flowMasterVal) === true)) {
+                                            limit++;
+                                            field.options[' ' + flowMasterVal.id] = localOptions[flowMasterVal.id];
+                                        }
                                     }
-                                }
-                                return field;
-                            });
-                            returnPromise.push(flowMapPromise);
+                                    return field;
+                                });
+                                returnPromise.push(flowMapPromise);
+                            }
                         }
-                    }
-                    return field;
-                });
-            }
-            returnPromise.push(partStockPromise);
-
-            return Promise.all(returnPromise);
-        },
-        updatePartStock: function(context) {
-            var self = this;
-            var returnPromise = [];
-            var partStockPromise = context.actions.getData('report.partStock').then(function(res) {
-                var partStockData = res.data,
-                    partStock = {};
-                for (var i in partStockData) {
-                    partStock[partStockData[i].partNo + '-' + partStockData[i].operationFrom + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
-                    partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
+                        return field;
+                    });
                 }
-                var existingStock = partStock[context.data.partNo + '-' + context.data.operationFrom + '-' + context.data.operationTo];
-                var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) : parseInt(context.data.acceptedQty);
-                if (context.updateCurStock === undefined || context.updateCurStock) {
+                returnPromise.push(partStockPromise);
+
+                return Promise.all(returnPromise);
+            },
+            updatePartStock: function() {
+                var self = this;
+                var returnPromise = [];
+                var partStockPromise = context.methods.getData('report.partStock').then(function(res) {
+                    var partStockData = res.data,
+                        partStock = {};
+                    for (var i in partStockData) {
+                        partStock[partStockData[i].partNo + '-' + partStockData[i].operationFrom + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
+                        partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
+                    }
+                    var existingStock = partStock[context.data.partNo + '-' + context.data.operationFrom + '-' + context.data.operationTo];
+                    var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) : parseInt(context.data.acceptedQty);
+                    if (context.updateCurStock === undefined || context.updateCurStock) {
+                        var data = {
+                            id: existingStock && existingStock.id || undefined,
+                            partNo: context.data.partNo,
+                            partStockQty: partStockQty,
+                            operationFrom: context.data.operationFrom,
+                            operationTo: context.data.operationTo
+                        }
+                        returnPromise.push(context.methods.updateData('report.partStock', data).then(function() {
+                            context.methods.getPartStock();
+                        }));
+                    }
+
+                    var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
+                    if (existingPrevStock && (context.updatePrevStock === undefined || context.updatePrevStock)) {
+                        var existPartStockQty = parseInt(context.data.acceptedQty);
+                        existPartStockQty += parseInt(context.data.rejectionQty) || 0;
+                        existPartStockQty += parseInt(context.data.rwQty) || 0;
+                        existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
+                        data = {
+                            id: existingPrevStock.id,
+                            partNo: context.data.partNo,
+                            partStockQty: existPartStockQty,
+                            operationFrom: existingPrevStock.operationFrom,
+                            operationTo: existingPrevStock.operationTo
+                        }
+
+                        returnPromise.push(context.methods.updateData('report.partStock', data).then(function() {
+                            context.methods.getPartStock();
+                        }));
+                    }
+                });
+                returnPromise.push(partStockPromise);
+
+                return Promise.all(returnPromise);
+            },
+            updateSCStock: function() {
+                var self = this;
+                var returnPromise = [];
+                var partStockPromise = context.methods.getData('report.subContractorStock').then(function(res) {
+                    var scStockData = res.data,
+                        scStock = {};
+                    for (var i in scStockData) {
+                        scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
+                        scStock[scStockData[i].partNo + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
+                    }
+                    var existingStock = scStock[context.data.partNo + '-' + context.data.operationFrom + '-' + context.data.operationTo];
+                    var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) : parseInt(context.data.acceptedQty);
                     var data = {
                         id: existingStock && existingStock.id || undefined,
                         partNo: context.data.partNo,
+                        subContractorCode: context.data.subContractorCode,
                         partStockQty: partStockQty,
                         operationFrom: context.data.operationFrom,
                         operationTo: context.data.operationTo
                     }
-                    returnPromise.push(context.actions.updateData('report.partStock', data).then(function() {
-                        context.actions.getPartStock(context);
-                    }));
-                }
+                    returnPromise.push(context.methods.updateData('report.subContractorStock', data));
+                });
 
-                var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
-                if (existingPrevStock && (context.updatePrevStock === undefined || context.updatePrevStock)) {
-                    var existPartStockQty = parseInt(context.data.acceptedQty);
-                    existPartStockQty += parseInt(context.data.rejectionQty) || 0;
-                    existPartStockQty += parseInt(context.data.rwQty) || 0;
-                    existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
-                    data = {
-                        id: existingPrevStock.id,
-                        partNo: context.data.partNo,
-                        partStockQty: existPartStockQty,
-                        operationFrom: existingPrevStock.operationFrom,
-                        operationTo: existingPrevStock.operationTo
+                returnPromise.push(partStockPromise);
+
+                return Promise.all(returnPromise);
+            },
+            updatePartTotal: function(data, newValue, field, fieldMapKey) {
+                var total = 0,
+                    totalBeforTax = 0,
+                    qty = newValue,
+                    operation = data.operationFrom;
+                if (data.id &&
+                    operation &&
+                    (context.partStock === undefined ||
+                        context.partStock[data.id + '-' + operation] === undefined ||
+                        context.partStock[data.id + '-' + operation].partStockQty < qty)) {
+                    data[field.id] = qty = null;
+                }
+                totalBeforTax = qty * data.rate;
+                data.total = parseFloat(totalBeforTax).toFixed(2);
+                context.methods.callBackUpdatePartTotal && context.methods.callBackUpdatePartTotal(data, newValue, field, fieldMapKey);
+
+            },
+            getServiceConfig: function(module, replaceMethod, appendValue) {
+                var currentYear = new Date().getMonth() >= context.erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
+                var serviceConfig = module;
+                if (typeof(module) !== 'object') {
+                    serviceConfig = context.methods.getDeepProp(context.erpAppConfig.modules.controllers, module + '.services.list')
+                } else if (module.id) {
+                    serviceConfig = module.services.list;
+                }
+                if (!serviceConfig) {
+                    return false;
+                }
+                serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', context.erpAppConfig.calendarYear || currentYear);
+                serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
+                serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
+                serviceConfig.cache = serviceConfig.cache === undefined ? context.erpAppConfig.httpCache : serviceConfig.cache;
+                return serviceConfig;
+            },
+            getPartStock: function() {
+                context.methods.getData('report.partStock').then(function(res) {
+                    var partStockData = res.data,
+                        partStock = {};
+                    for (var i in partStockData) {
+                        partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                     }
-
-                    returnPromise.push(context.actions.updateData('report.partStock', data).then(function() {
-                        context.actions.getPartStock(context);
-                    }));
+                    context.partStock = partStock;
+                });
+            },
+            getSCStock: function() {
+                return context.methods.getData('report.subContractorStock').then(function(res) {
+                    var scStockData = res.data,
+                        scStock = {};
+                    for (var i in scStockData) {
+                        scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom] = scStockData[i] && scStockData[i] || undefined;
+                    }
+                    context.partStock = scStock;
+                    return scStock;
+                });
+            },
+            getRMStock: function() {
+                context.methods.getData('report.rmStock').then(function(res) {
+                    var rmStockData = res.data,
+                        rmStock = {};
+                    for (var i in rmStockData) {
+                        rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
+                    }
+                    context.rmStock = rmStock;
+                });
+            },
+            objectSort: function(obj, sortBy) {
+                function compare(a, b) {
+                    if (a[sortBy] < b[sortBy])
+                        return -1;
+                    if (a[sortBy] > b[sortBy])
+                        return 1;
+                    return 0;
                 }
-            });
-            returnPromise.push(partStockPromise);
 
-            return Promise.all(returnPromise);
-        },
-        updateSCStock: function(context) {
-            var self = this;
-            var returnPromise = [];
-            var partStockPromise = context.actions.getData('report.subContractorStock').then(function(res) {
-                var scStockData = res.data,
-                    scStock = {};
-                for (var i in scStockData) {
-                    scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
-                    scStock[scStockData[i].partNo + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
-                }
-                var existingStock = scStock[context.data.partNo + '-' + context.data.operationFrom + '-' + context.data.operationTo];
-                var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) : parseInt(context.data.acceptedQty);
-                var data = {
-                    id: existingStock && existingStock.id || undefined,
-                    partNo: context.data.partNo,
-                    subContractorCode: context.data.subContractorCode,
-                    partStockQty: partStockQty,
-                    operationFrom: context.data.operationFrom,
-                    operationTo: context.data.operationTo
-                }
-                returnPromise.push(context.actions.updateData('report.subContractorStock', data));
-            });
-
-            returnPromise.push(partStockPromise);
-
-            return Promise.all(returnPromise);
-        },
-        updatePartTotal: function(context, data, newValue, field, fieldMapKey) {
-            var total = 0,
-                totalBeforTax = 0,
-                qty = newValue,
-                operation = data.operationFrom;
-            if (data.id &&
-                operation &&
-                (context.partStock === undefined ||
-                    context.partStock[data.id + '-' + operation] === undefined ||
-                    context.partStock[data.id + '-' + operation].partStockQty < qty)) {
-                data[field.id] = qty = null;
-            }
-            totalBeforTax = qty * data.rate;
-            data.total = parseFloat(totalBeforTax).toFixed(2);
-            context.actions.callBackUpdatePartTotal && context.actions.callBackUpdatePartTotal(context, data, newValue, field, fieldMapKey);
-
-        },
-        getServiceConfig: function(module, replaceMethod, appendValue) {
-            var currentYear = new Date().getMonth() >= erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
-            var serviceConfig = angular.copy(typeof(module) !== 'object' ? defaultActions.getDeepProp(erpAppConfig.modules, module + '.services.list') : module);
-            if (!serviceConfig) {
-                return false;
-            }
-            serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', erpAppConfig.calendarYear || currentYear);
-            serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
-            serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
-            serviceConfig.cache = serviceConfig.cache === undefined ? erpAppConfig.httpCache : serviceConfig.cache;
-            return serviceConfig;
-        },
-        getPartStock: function(context) {
-            context.actions.getData('report.partStock').then(function(res) {
-                var partStockData = res.data,
-                    partStock = {};
-                for (var i in partStockData) {
-                    partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
-                }
-                context.partStock = partStock;
-            });
-        },
-        getSCStock: function(context) {
-            return context.actions.getData('report.subContractorStock').then(function(res) {
-                var scStockData = res.data,
-                    scStock = {};
-                for (var i in scStockData) {
-                    scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom] = scStockData[i] && scStockData[i] || undefined;
-                }
-                context.partStock = scStock;
-                return scStock;
-            });
-        },
-        getRMStock: function(context) {
-            context.actions.getData('report.rmStock').then(function(res) {
-                var rmStockData = res.data,
-                    rmStock = {};
-                for (var i in rmStockData) {
-                    rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
-                }
-                context.rmStock = rmStock;
-            });
-        },
-        objectSort: function(obj, sortBy) {
-            function compare(a, b) {
-                if (a[sortBy] < b[sortBy])
-                    return -1;
-                if (a[sortBy] > b[sortBy])
-                    return 1;
-                return 0;
-            }
-
-            return obj.sort(compare);
-        },
-        viewFilterBy: function(context, list) {
-            var self = this;
-            if (!list.selectedFilterBy) {
-                delete context.filterBy[list.id];
-            } else {
-                if (list.type === 'date' || list.inputType === 'date') {
-                    context.filterBy[list.id] = new Date(list.selectedFilterBy).toISOString();
+                return obj.sort(compare);
+            },
+            viewFilterBy: function(list) {
+                var self = this;
+                if (!list.selectedFilterBy) {
+                    delete context.filterBy[list.id];
                 } else {
-                    context.filterBy[list.id] = list.selectedFilterBy;
-                }
-            }
-        },
-        getFlowMaster: function(context) {
-            context.flowMasterData = {};
-            context.flowMasterByPart = {};
-            context.flowMasterByPartOpr = {};
-
-            return context.actions.getData('production.flowMaster').then(function(res) {
-                var flowMasterData = res.data,
-                    prevOpp;
-
-                context.flowMasterData = flowMasterData;
-                for (var i in flowMasterData) {
-                    context.flowMasterByPart[flowMasterData[i].partNo] = flowMasterData[i];
-                    for (var j in flowMasterData[i].mapping) {
-                        context.flowMasterByPartOpr[flowMasterData[i].partNo + '-' + flowMasterData[i].mapping[j].id] = flowMasterData[i].mapping[j];
+                    if (list.type === 'date' || list.inputType === 'date') {
+                        context.filterBy[list.id] = new Date(list.selectedFilterBy).toISOString();
+                    } else {
+                        context.filterBy[list.id] = list.selectedFilterBy;
                     }
                 }
-                return context;
-            });
+            },
+            getFlowMaster: function() {
+                context.flowMasterData = {};
+                context.flowMasterByPart = {};
+                context.flowMasterByPartOpr = {};
 
-        },
-        mergeOprFlowMap: function(context, flowMap) {
-            var optionsPromiseResolve, optionsPromise = new Promise(function(resolve, reject) {
-                optionsPromiseResolve = resolve;
-            });
+                return context.methods.getData('production.flowMaster').then(function(res) {
+                    var flowMasterData = res.data,
+                        prevOpp;
 
-            context.actions.getData('production.operationMaster').then(function(res) {
-                for (var i in flowMap) {
-                    flowMap[i] = res.data[flowMap[i].id];
-                    flowMap[i].opCode = parseInt(res.data[flowMap[i].id].opCode);
-                }
-                optionsPromiseResolve(flowMap);
-            });
-            return optionsPromise;
-        },
-        getOperations: function(context) {
-            context.operationsData = {};
-
-            context.actions.getData('production.operationMaster').then(function(res) {
-                context.operationsData = res.data;
-            });
-
-        },
-        isCheckExistField: function(context, data, value, field) {
-            if (context.listViewData && context.actions.findObjectByKey(context.listViewData, field.id, value)) {
-                data[field.id] = null;
-            }
-        },
-        findObjectByKey: function(array, key, value) {
-            var isExist = false;
-            for (var i = 0; i < array.length; i++) {
-                if (typeof(key) === 'object') {
-                    for (var j in key) {
-                        if ((!isExist || typeof(isExist) === 'object') && array[i][j] === key[j]) {
-                            isExist = array[i];
+                    context.flowMasterData = flowMasterData;
+                    for (var i in flowMasterData) {
+                        context.flowMasterByPart[flowMasterData[i].partNo] = flowMasterData[i];
+                        for (var j in flowMasterData[i].mapping) {
+                            context.flowMasterByPartOpr[flowMasterData[i].partNo + '-' + flowMasterData[i].mapping[j].id] = flowMasterData[i].mapping[j];
                         }
                     }
-                } else if (array[i][key] === value) {
-                    isExist = array[i];
+                    return context;
+                });
+
+            },
+            mergeOprFlowMap: function(flowMap) {
+                var optionsPromiseResolve, optionsPromise = new Promise(function(resolve, reject) {
+                    optionsPromiseResolve = resolve;
+                });
+
+                context.methods.getData('production.operationMaster').then(function(res) {
+                    for (var i in flowMap) {
+                        flowMap[i] = res.data[flowMap[i].id];
+                        flowMap[i].opCode = parseInt(res.data[flowMap[i].id].opCode);
+                    }
+                    optionsPromiseResolve(flowMap);
+                });
+                return optionsPromise;
+            },
+            getOperations: function() {
+                context.operationsData = {};
+
+                context.methods.getData('production.operationMaster').then(function(res) {
+                    context.operationsData = res.data;
+                });
+
+            },
+            isCheckExistField: function(data, value, field) {
+                if (context.listViewData && context.methods.findObjectByKey(context.listViewData, field.id, value)) {
+                    data[field.id] = null;
                 }
-            }
-            return isExist;
-        },
-        updateGstPart: function(context, data, newValue, field, fieldMapKey) {
-            var acceptedQtyField = context.form.mapping.fields['acceptedQty'];
-            var cgstField = context.form.mapping.fields['cgst'];
-            var sgstField = context.form.mapping.fields['sgst'];
-            if (cgstField && sgstField) {
-                if (newValue > 0) {
-                    data[cgstField.id] = parseInt(newValue) / 2;
-                    data[sgstField.id] = parseInt(newValue) / 2;
-                } else {
-                    data[cgstField.id] = 0;
-                    data[sgstField.id] = 0;
+            },
+            findObjectByKey: function(array, key, value) {
+                var isExist = false;
+                for (var i = 0; i < array.length; i++) {
+                    if (typeof(key) === 'object') {
+                        for (var j in key) {
+                            if ((!isExist || typeof(isExist) === 'object') && array[i][j] === key[j]) {
+                                isExist = array[i];
+                            }
+                        }
+                    } else if (array[i][key] === value) {
+                        isExist = array[i];
+                    }
                 }
-            }
-            context.actions.updatePartTotal(context, data, data[acceptedQtyField.id], acceptedQtyField, fieldMapKey);
-        },
-        updateFields: function(context, fields) {
-            var returnPromise = [];
-            for (var i in fields) {
-                if (fields[i].dataFrom && defaultActions.getDeepProp(context.erpAppConfig.modules, fields[i].dataFrom) && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
-                    returnPromise.push(context.actions.makeOptionsFields(context, fields[i]));
+                return isExist;
+            },
+            updateGstPart: function(data, newValue, field, fieldMapKey) {
+                var acceptedQtyField = context.form.mapping.fields['acceptedQty'];
+                var cgstField = context.form.mapping.fields['cgst'];
+                var sgstField = context.form.mapping.fields['sgst'];
+                if (cgstField && sgstField) {
+                    if (newValue > 0) {
+                        data[cgstField.id] = parseInt(newValue) / 2;
+                        data[sgstField.id] = parseInt(newValue) / 2;
+                    } else {
+                        data[cgstField.id] = 0;
+                        data[sgstField.id] = 0;
+                    }
                 }
-                if (fields[i].dataFrom && !defaultActions.getDeepProp(context.erpAppConfig.modules, fields[i].dataFrom)) {
-                    delete fields[i];
+                context.methods.updatePartTotal(data, data[acceptedQtyField.id], acceptedQtyField, fieldMapKey);
+            },
+            updateFields: function(fields) {
+                var returnPromise = [];
+                for (var i in fields) {
+                    if (fields[i].dataFrom && context.methods.getDeepProp(context.erpAppConfig.modules.controllers, fields[i].dataFrom) && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
+                        returnPromise.push(context.methods.makeOptionsFields(fields[i]));
+                    }
+                    if (fields[i].dataFrom && !context.methods.getDeepProp(context.erpAppConfig.modules.controllers, fields[i].dataFrom)) {
+                        delete fields[i];
+                    }
                 }
-            }
-            return Promise.all(returnPromise);
-        },
-        showSubModule: function(module) {
-            var subModules = {};
+                return Promise.all(returnPromise);
+            },
+            showSubModule: function(module) {
+                var subModules = {};
 
-            for (var i in module) {
-                if (typeof(module[i]) === 'object') {
-                    subModules[i] = module[i];
+                for (var i in module) {
+                    if (typeof(module[i]) === 'object') {
+                        subModules[i] = module[i];
+                    }
                 }
-            }
-            return subModules;
-        },
-        pageActionsAccess: function(context) {
-            var actions = {
-                add: false,
-                edit: false,
-                delete: false,
-                print: false
-            };
-            if (context.page && (context.page.actions === undefined || context.page.actions)) {
-                actions.add = context.page.actions === undefined ? true : context.page.actions.add;
-                actions.edit = context.page.actions === undefined ? true : context.page.actions.edit;
-                actions.delete = context.page.actions === undefined ? true : context.page.actions.delete;
-                actions.print = context.page.actions === undefined ? true : context.page.actions.print;
-            }
-            context.page.actions = actions;
-        },
-        isFloat: function(n) {
-            return Number(n) === n && n % 1 !== 0;
-        },
-        downloadExcel: function(context, table) {
-            context.filterBy = [];
-            var uri = 'data:application/vnd.ms-excel;base64,',
-                template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
-                base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
-                format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) };
-            if (!table.nodeType) table = document.getElementById(table);
-            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
-            var downloadLink = document.createElement("a");
-            downloadLink.href = uri + base64(format(template, ctx));
-            downloadLink.download = "downloadExcel.xls";
-
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        },
-        updatePORmTotal: function(context, data) {
-            var total = 0;
-            var qty = data['qty'] || data['acceptedQty'] || 0;
-            total = qty * data.rate;
-            data.total = parseFloat(total).toFixed(2);
-            context.actions.updatePOTotalAmount(context);
-
-        },
-        updatePOTotalAmount: function(context) {
-            var gst = context.data.gst,
-                igst = context.data.igst,
-                cgst = context.data.cgst,
-                sgst = context.data.sgst,
-                igstTotal = 0,
-                cgstTotal = 0,
-                sgstTotal = 0,
-                gstTotal = 0,
-                total = 0,
-                subTotal = 0,
-                mapping = context.data.mapping,
-                extraAmount = context.data.extraAmount || 0;
-
-            for (var i in mapping) {
-                subTotal += mapping[i].total && parseFloat(mapping[i].total) || 0;
-            }
-            cgstTotal = context.data.cgst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.cgst / 100)) || 0;
-            sgstTotal = context.data.sgst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.sgst / 100)) || 0;
-            igstTotal = context.data.igst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.igst / 100)) || 0;
-
-            gstTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
-            total = subTotal + gstTotal + extraAmount;
-            context.data.gstTotal = parseFloat(gstTotal).toFixed(2);
-            context.data.subTotal = parseFloat(subTotal).toFixed(2);
-            context.data.total = parseInt(total);
-        },
-        goToPage: function(url, isReload) {
-            window.location.hash = '#!/' + url;
-            if (isReload) {
-                setTimeout(function() { window.location.reload() }, 500);
-            }
-        },
-        setSessionStore: function(key, data) {
-            $window.sessionStorage.setItem(key, data);
-        },
-        getSessionStore: function(key) {
-            var data = $window.sessionStorage.getItem(key);
-
-            return data;
-        },
-        selectListData: function(context, data) {
-            if (!context.selectedTableData) {
-                context.selectedTableData = {};
-                context.selectedTableData[context.id] = {};
-            }
-            context.selectedTableData[context.id][data.id] = angular.copy(data);
-            delete context.selectedTableData[context.id][data.id].id;
-            delete context.selectedTableData[context.id][data.id].isExported;
-        },
-        downloadTableData: function(context) {
-            context.actions.downloadFile(context.selectedTableData, context.id + '.json');
-        },
-        downloadFile: function(data, name, type) {
-
-            if (!type || type === 'json') {
-                data = JSON.stringify(data);
-            }
-            //Convert JSON string to BLOB.
-            data = [data];
-
-            var blob1 = new Blob(data, { type: 'application/octet-stream' });
-
-            //Check the Browser.
-            var isIE = false || !!document.documentMode;
-            if (isIE) {
-                window.navigator.msSaveBlob(blob1, name);
-            } else {
-                var url = window.URL || window.webkitURL;
-                var hrefData = url.createObjectURL(blob1);
-
+                return subModules;
+            },
+            pageActionsAccess: function() {
+                var actions = {
+                    add: false,
+                    edit: false,
+                    delete: false,
+                    print: false
+                };
+                if (context.page && (context.page.actions === undefined || context.page.actions)) {
+                    actions.add = context.page.actions === undefined ? true : context.page.actions.add;
+                    actions.edit = context.page.actions === undefined ? true : context.page.actions.edit;
+                    actions.delete = context.page.actions === undefined ? true : context.page.actions.delete;
+                    actions.print = context.page.actions === undefined ? true : context.page.actions.print;
+                }
+                context.page.actions = actions;
+            },
+            isFloat: function(n) {
+                return Number(n) === n && n % 1 !== 0;
+            },
+            downloadExcel: function(table) {
+                context.filterBy = [];
+                var uri = 'data:application/vnd.ms-excel;base64,',
+                    template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+                    base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+                    format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) };
+                if (!table.nodeType) table = document.getElementById(table);
+                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
                 var downloadLink = document.createElement("a");
-
-                downloadLink.href = hrefData;
-                downloadLink.download = name;
+                downloadLink.href = uri + base64(format(template, ctx));
+                downloadLink.download = "downloadExcel.xls";
 
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
-            }
-        },
-        showLoadingHttp: function(scope) {
-            var showLoader = function(v) {
-                if (v) {
-                    scope.context.showLoading = false;
-                } else {
-                    scope.context.showLoading = true;
-                }
-            };
-            scope.isLoading = function() {
-                return $http.pendingRequests.length <= 0;
-            };
+            },
+            updatePORmTotal: function(data) {
+                var total = 0;
+                var qty = data['qty'] || data['acceptedQty'] || 0;
+                total = qty * data.rate;
+                data.total = parseFloat(total).toFixed(2);
+                context.methods.updatePOTotalAmount();
 
-            scope.$watch(scope.isLoading, showLoader);
-        },
-        getDeepProp: function(obj, desc) {
-            var arr = desc.split(".");
-            while (arr.length && (obj = obj[arr.shift()]));
-            return obj;
-        },
-        location: $location
+            },
+            updatePOTotalAmount: function() {
+                var gst = context.data.gst,
+                    igst = context.data.igst,
+                    cgst = context.data.cgst,
+                    sgst = context.data.sgst,
+                    igstTotal = 0,
+                    cgstTotal = 0,
+                    sgstTotal = 0,
+                    gstTotal = 0,
+                    total = 0,
+                    subTotal = 0,
+                    mapping = context.data.mapping,
+                    extraAmount = context.data.extraAmount || 0;
+
+                for (var i in mapping) {
+                    subTotal += mapping[i].total && parseFloat(mapping[i].total) || 0;
+                }
+                cgstTotal = context.data.cgst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.cgst / 100)) || 0;
+                sgstTotal = context.data.sgst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.sgst / 100)) || 0;
+                igstTotal = context.data.igst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.igst / 100)) || 0;
+
+                gstTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
+                total = subTotal + gstTotal + extraAmount;
+                context.data.gstTotal = parseFloat(gstTotal).toFixed(2);
+                context.data.subTotal = parseFloat(subTotal).toFixed(2);
+                context.data.total = parseInt(total);
+            },
+            goToPage: function(url, isReload) {
+                window.location.hash = '#!/' + url;
+                if (isReload) {
+                    setTimeout(function() { window.location.reload() }, 500);
+                }
+            },
+            setSessionStore: function(key, data) {
+                $window.sessionStorage.setItem(key, data);
+            },
+            getSessionStore: function(key) {
+                var data = $window.sessionStorage.getItem(key);
+
+                return data;
+            },
+            selectListData: function(data) {
+                if (!context.selectedTableData) {
+                    context.selectedTableData = {};
+                    context.selectedTableData[context.id] = {};
+                }
+                context.selectedTableData[context.id][data.id] = angular.copy(data);
+                delete context.selectedTableData[context.id][data.id].id;
+                delete context.selectedTableData[context.id][data.id].isExported;
+            },
+            downloadTableData: function() {
+                context.methods.downloadFile(context.selectedTableData, context.id + '.json');
+            },
+            downloadFile: function(data, name, type) {
+
+                if (!type || type === 'json') {
+                    data = JSON.stringify(data);
+                }
+                //Convert JSON string to BLOB.
+                data = [data];
+
+                var blob1 = new Blob(data, { type: 'application/octet-stream' });
+
+                //Check the Browser.
+                var isIE = false || !!document.documentMode;
+                if (isIE) {
+                    window.navigator.msSaveBlob(blob1, name);
+                } else {
+                    var url = window.URL || window.webkitURL;
+                    var hrefData = url.createObjectURL(blob1);
+
+                    var downloadLink = document.createElement("a");
+
+                    downloadLink.href = hrefData;
+                    downloadLink.download = name;
+
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                }
+            },
+            showLoadingHttp: function(scope) {
+                var showLoader = function(v) {
+                    if (v) {
+                        scope.context.showLoading = false;
+                    } else {
+                        scope.context.showLoading = true;
+                    }
+                };
+                scope.isLoading = function() {
+                    return $http.pendingRequests.length <= 0;
+                };
+
+                scope.$watch(scope.isLoading, showLoader);
+            },
+            getDeepProp: function(obj, desc) {
+                var arr = desc.split(".");
+                while (arr.length && (obj = obj[arr.shift()]));
+                return obj;
+            },
+            location: $location,
+            changeCalendarYear: function() {
+                context.methods.getData('calendarYear');
+                context.methods.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link);
+            },
+            downloadData: function() {
+                angular.element('#downloadModal').modal('show');
+            },
+            showAlertRol: function() {
+                var showROL = true;
+                var userType = context.methods.isLogin();
+                var alertRolContext = {
+                    partRolYellow: [],
+                    partRolRed: [],
+                    hideROL: function() {
+                        showROL = false;
+                    }
+                };
+                if (userType) {
+                    context.methods.getData('marketing.partMaster').then(function(res) {
+                        var partMaster = res.data;
+                        context.methods.getData('report.partStock').then(function(res1) {
+                            var partStockData = res1.data,
+                                partStock = {};
+                            for (var i in partStockData) {
+                                partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
+                            }
+                            for (var j in partMaster) {
+                                var yellowAlert = partMaster[j].rolQtyYellowRage;
+                                var redAlert = partMaster[j].rolQtyRedRage;
+                                var checkPartStock = partStock[partMaster[j].id + '-' + context.erpAppConfig.finalStageOpp];
+
+                                if (checkPartStock) {
+                                    checkPartStock.partName = partMaster[j].partName;
+                                    if (redAlert >= checkPartStock.partStockQty) {
+                                        alertRolContext.alertRolContext.partRolRed.push(checkPartStock);
+                                    } else if (yellowAlert >= checkPartStock.partStockQty) {
+                                        alertRolContext.alertRolContext.partRolYellow.push(checkPartStock);
+                                    }
+                                }
+
+                            }
+                            if ((alertRolContext.alertRolContext.partRolRed.length > 0 || alertRolContext.alertRolContext.partRolYellow.length > 0) && showROL) {
+                                angular.element('#RolModal').modal('show');
+                            }
+                        });
+                    });
+                }
+                return alertRolContext;
+            },
+            isAppUser: function() {
+                var userType = context.methods.isLogin();
+                return userType !== 'SUPERADMIN' && userType !== 'ADMIN';
+            },
+            isSuperAdmin: function() {
+                var userType = context.methods.isLogin();
+                return userType === 'SUPERADMIN';
+            },
+            isAppAdmin: function() {
+                var userType = context.methods.isLogin();
+                return userType === 'ADMIN';
+            },
+            isAppCustomer: function() {
+                var userDetails = context.methods.getUserDetail()();
+                return userDetails.appCustomer;
+            },
+            isShowMenu: function(menu) {
+                var disabled = menu.disableMenu || menu.disable;
+                var restricked = context.methods.isSuperAdmin() && menu.restricked || false;
+                var isAppCustomer = !menu.restricked && context.methods.isAppCustomer();
+                return !disabled && (restricked || isAppCustomer);
+            }
+        };
     };
-    return {
-        defaultActions: defaultActions
-    };
-}]);
-erpApp.service('serviceApi', ['$http', '$cacheFactory', '$q', function($http, $cacheFactory, $q) {
+};
+
+erpApp.factory('commonFact', erpConfig.moduleFiles.commonFact);
+erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $q) {
     this.callServiceApi = function(serviceConf, inputData) {
         var servicePromise,
             httpCache = $cacheFactory.get('$http');
@@ -1058,14 +1045,16 @@ erpApp.service('serviceApi', ['$http', '$cacheFactory', '$q', function($http, $c
 
         return servicePromise;
     };
-}]);
-erpApp.controller('appCustomersCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    var actions = {
+};
+
+erpApp.service('serviceApi', erpConfig.moduleFiles.serviceApi);
+erpConfig.moduleFiles.appCustomers = function() {
+    return {
         callBackList: function(context) {
             var moduleField = context.form.mapping.fields['module'];
             moduleField.options = {};
             moduleField.allOptions = {};
-            context.actions.makeModuleOptions(context, context.erpAppConfig.modules, moduleField);
+            context.methods.makeModuleOptions(context, context.erpAppConfig.modules.controllers, moduleField);
         },
         makeModuleOptions: function(context, modules, field, parentModule) {
             for (var i in modules) {
@@ -1079,7 +1068,7 @@ erpApp.controller('appCustomersCtrl', ['$scope', 'commonFact', function($scope, 
                     field.options[optionIdVal] = field.allOptions[optionIdVal];
 
                     if (!module.page) {
-                        context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
+                        context.methods.makeModuleOptions(context, context.methods.showSubModule(modules[i]), field, modules[i]);
                     }
                 }
             }
@@ -1088,17 +1077,15 @@ erpApp.controller('appCustomersCtrl', ['$scope', 'commonFact', function($scope, 
             var id = data.id;
             window.open('/appCustomers/' + id);
         }
-    }
-    commonFact.initCtrl($scope, 'admin.appCustomers', actions);
-
-}]);
-erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    var actions = {
+    };
+};
+erpConfig.moduleFiles.settings = function() {
+    return {
         callBackList: function(context) {
             var moduleField = context.form.mapping.fields['module'];
             moduleField.options = {};
             moduleField.allOptions = {};
-            context.actions.makeModuleOptions(context, context.erpAppConfig.modules, moduleField);
+            context.methods.makeModuleOptions(context, context.erpAppConfig.modules.controllers, moduleField);
             var adminOption = {
                 userType: 'ADMIN',
                 desc: 'ADMIN',
@@ -1107,9 +1094,9 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
             };
             context.form.mapping.fields['restrictUser'].options['ADMIN'] = adminOption;
             if (context.lastData === undefined) {
-                context.actions.add(context);
+                context.methods.add(context);
             } else {
-                context.actions.edit(context, context.lastData.id);
+                context.methods.edit(context, context.lastData.id);
             }
         },
         makeModuleOptions: function(context, modules, field, parentModule) {
@@ -1124,17 +1111,15 @@ erpApp.controller('settingsCtrl', ['$scope', 'commonFact', function($scope, comm
                     field.options[optionIdVal] = field.allOptions[optionIdVal];
 
                     if (!module.page) {
-                        context.actions.makeModuleOptions(context, context.actions.showSubModule(modules[i]), field, modules[i]);
+                        context.methods.makeModuleOptions(context, context.methods.showSubModule(modules[i]), field, modules[i]);
                     }
                 }
             }
         }
-    }
-    commonFact.initCtrl($scope, 'admin.settings', actions);
-
-}]);
-erpApp.controller('usersCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    var actions = {
+    };
+};
+erpConfig.moduleFiles.users = function() {
+    return {
         callBackList: function(context) {
             var adminOption = {
                 userType: 'ADMIN',
@@ -1145,19 +1130,15 @@ erpApp.controller('usersCtrl', ['$scope', 'commonFact', function($scope, commonF
             context.form.fields['userType'].options['ADMIN'] = adminOption;
         }
     };
-    commonFact.initCtrl($scope, 'admin.users', actions);
-}]);
-erpApp.controller('userTypesCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    commonFact.initCtrl($scope, 'admin.userTypes');
-}]);
-erpApp.controller('databaseUploadCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
-        uploadDatabase: function(context) {
+};
+erpConfig.moduleFiles.databaseUpload = function(context) {
+    return {
+        uploadDatabase: function() {
             if (context.data && context.data.databaseUpload && context.data.databaseUpload) {
-                context.actions.updateData(context.module, context.data.databaseUpload).then(function() {
+                context.methods.updateData(context, context.data.databaseUpload).then(function() {
                     context.message = 'Successfully uploded...';
                     context.alertMessage = undefined;
-                    context.actions.goToPage(context.erpAppConfig.modules.dashboard.page.link, true);
+                    context.methods.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link, true);
                 });
             } else {
                 context.alertMessage = 'Failed uploded...';
@@ -1166,38 +1147,34 @@ erpApp.controller('databaseUploadCtrl', ['$scope', 'commonFact', 'serviceApi', f
 
         }
     };
-    commonFact.initCtrl($scope, 'databaseUpload', actions);
-}]);
-erpConfig.moduleFiles.login = function() {
-    var actions = {
-        submit: function(context) {
-            context.actions.login(context).then(function(userDetail) {
+};
+erpConfig.moduleFiles.login = function(context) {
+    return {
+        submit: function() {
+            context.methods.login(context).then(function(userDetail) {
                 if (!userDetail || !userDetail.userType) {
                     context.alertMessage = 'Invalid User!!!';
                 } else {
-                    context.actions.goToPage(context.erpAppConfig.modules.dashboard.page.link, true);
+                    context.methods.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link, true);
                 }
             });
         },
-        onLoad: function(context) {
-            if (context.actions.location.search() && context.actions.location.search()['type'] === 'logout') {
-                context.actions.logout(undefined);
-                context.actions.location.search('');
-                context.actions.goToPage(context.erpAppConfig.modules.dashboard.page.link, true);
+        onLoad: function() {
+            if (context.methods.location.search() && context.methods.location.search()['type'] === 'logout') {
+                context.methods.logout(undefined);
+                context.methods.location.search('');
+                context.methods.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link, true);
             }
         }
     };
-    return {
-        actions: actions
-    };
 };
-erpApp.controller('customerPaymentInvoiceCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
+erpConfig.moduleFiles.customerPaymentInvoice = function() {
+    return {
         callBackList: function(context) {
             context.form.mapping.actions = {};
         },
         callBackAdd: function(context) {
-            context.actions.makeOptionsFields(context, context.form.fields['invoiceNo']);
+            context.methods.makeOptionsFields(context, context.form.fields['invoiceNo']);
             context.data['date'] = null;
         },
         callBackEdit: function(context) {
@@ -1210,7 +1187,7 @@ erpApp.controller('customerPaymentInvoiceCtrl', ['$scope', 'commonFact', '$locat
         },
         callBackChangeMapping: function(context, data, key, field) {
             context.data.balanceAmount = context.data.total;
-            context.data['date'] = context.actions.dateFormatChange(context.data['date']);
+            context.data['date'] = context.methods.dateFormatChange(context.data['date']);
         },
         updateBalanceAmount: function(context, data, key, field) {
             var amount = 0;
@@ -1227,17 +1204,11 @@ erpApp.controller('customerPaymentInvoiceCtrl', ['$scope', 'commonFact', '$locat
             }
         }
     };
+};
 
-    if ($location.search() && $location.search()['type'] === 'cashBill') {
-        commonFact.initCtrl($scope, 'accounts.customerPaymentCashBill', actions);
-    } else {
-        commonFact.initCtrl($scope, 'accounts.customerPaymentInvoice', actions);
-    }
-
-
-}]);
-erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
+erpConfig.moduleFiles.customerPaymentCashBill = erpConfig.moduleFiles.customerPaymentInvoice;
+erpConfig.moduleFiles.empPayment = function() {
+    return {
         callBackAdd: function(context) {
             context.data['toDate'] = new Date();
         },
@@ -1245,8 +1216,8 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
             var frmDate = context.data.frmDate;
             var toDate = context.data.toDate;
             var filterOperator = context.data.employeeCode;
-            var empPaidList = context.actions.getEmpPaymentPaid(context);
-            return context.actions.getData('report.productionEntryReport').then(function(res) {
+            var empPaidList = context.methods.getEmpPaymentPaid(context);
+            return context.methods.getData('report.productionEntryReport').then(function(res) {
                 var productionEntry = res.data;
                 var productionEntryList = {};
                 for (var i in productionEntry) {
@@ -1306,14 +1277,14 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
             }
         },
         addPartMap: function(context, data) {
-            context.actions.changeMapping(context, data, data.employeeCode, context.form.fields['employeeCode']);
+            context.methods.changeMapping(context, data, data.employeeCode, context.form.fields['employeeCode']);
         },
         callBackChangeMapping: function(context, data, key, field, fieldMapKey) {
-            context.actions.updatePartMap(context, data, key, field, fieldMapKey);
+            context.methods.updatePartMap(context, data, key, field, fieldMapKey);
         },
         updatePartMap: function(context, data, key, field, fieldMapKey) {
 
-            context.actions.getProductionEntry(context).then(function(productionEntryList) {
+            context.methods.getProductionEntry(context).then(function(productionEntryList) {
                 var total = 0;
                 var employeeCode = context.data.employeeCode;
                 var newMapData = [];
@@ -1343,17 +1314,14 @@ erpApp.controller('empPaymentCtrl', ['$scope', 'commonFact', '$location', functi
             context.data.balanceAmount = amount;
         }
     };
-
-    commonFact.initCtrl($scope, 'accounts.empPayment', actions);
-
-}]);
-erpApp.controller('subContractorPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
+};
+erpConfig.moduleFiles.subContractorPayment = function() {
+    return {
         callBackList: function(context) {
             context.form.mapping.actions = {};
         },
         callBackAdd: function(context) {
-            context.actions.makeOptionsFields(context, context.form.fields['grnNo']);
+            context.methods.makeOptionsFields(context, context.form.fields['grnNo']);
         },
         callBackEdit: function(context) {
             for (var i in context.data.mapping) {
@@ -1367,7 +1335,7 @@ erpApp.controller('subContractorPaymentCtrl', ['$scope', 'commonFact', '$locatio
             var total = 0;
             var grnMap = field.options[context.data.grnNo];
             context.data.total = grnMap.total;
-            context.data.subContractorDCDate = context.actions.dateFormatChange(context.data.subContractorDCDate);
+            context.data.subContractorDCDate = context.methods.dateFormatChange(context.data.subContractorDCDate);
             context.data.balanceAmount = context.data.total;
         },
         updateBalanceAmount: function(context, data, key, field) {
@@ -1384,17 +1352,14 @@ erpApp.controller('subContractorPaymentCtrl', ['$scope', 'commonFact', '$locatio
             }
         }
     };
-
-    commonFact.initCtrl($scope, 'accounts.subContractorPayment', actions);
-
-}]);
-erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
+};
+erpConfig.moduleFiles.suppilerPayment = function() {
+    return {
         callBackList: function(context) {
             context.form.mapping.actions = {};
         },
         callBackAdd: function(context) {
-            context.actions.makeOptionsFields(context, context.form.fields['grnNo']);
+            context.methods.makeOptionsFields(context, context.form.fields['grnNo']);
         },
         callBackEdit: function(context) {
             for (var i in context.data.mapping) {
@@ -1408,7 +1373,7 @@ erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', f
             var total = 0;
             var grnMap = field.options[context.data.grnNo];
             context.data.total = grnMap.total;
-            context.data.supplierInvoiceDate = context.actions.dateFormatChange(context.data.supplierInvoiceDate);
+            context.data.supplierInvoiceDate = context.methods.dateFormatChange(context.data.supplierInvoiceDate);
             context.data.balanceAmount = context.data.total;
         },
         updateBalanceAmount: function(context, data, key, field) {
@@ -1425,15 +1390,9 @@ erpApp.controller('suppilerPaymentCtrl', ['$scope', 'commonFact', '$location', f
             }
         }
     };
-
-    commonFact.initCtrl($scope, 'accounts.suppilerPayment', actions);
-
-}]);
-erpApp.controller('customerMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    commonFact.initCtrl($scope, 'marketing.customerMaster');
-}]);
-erpApp.controller('empMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    var actions = {
+};
+erpConfig.moduleFiles.empMaster = function() {
+    return {
         callBackChangeMapping: function(context, mappingData, key, field, fieldMapKey) {
 
         },
@@ -1442,307 +1401,285 @@ erpApp.controller('empMasterCtrl', ['$scope', 'commonFact', function($scope, com
                 partNo: mappingData.id
             };
             field.options = {};
-            context.actions.getOperationFromFlow(context, field, restriction);
+            context.methods.getOperationFromFlow(context, field, restriction);
         },
         callBackEdit: function(context) {
             context.data.mapping = !context.data.mapping && context.masterData.mapping || context.data.mapping;
         }
     };
-    commonFact.initCtrl($scope, 'marketing.empMaster', actions);
-}]);
-erpApp.controller('invoiceCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
+};
+erpConfig.moduleFiles.invoice = function() {
     var orgItemVal = null,
-        delMapItemVal = [],
-        actions = {
-            callBackList: function(context) {
-                context.actions.getPartStock(context);
-                orgItemVal = null;
-                delMapItemVal = [];
-            },
-            callBackSetAutoGenKey: function(context) {
-                var year = context.erpAppConfig.calendarYear;
-                context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year + '-' + ('' + parseInt(year + 1)).substring(2);
-            },
-            callBackChangeMapping: function(context, data, key, field) {
-                context.actions.getPartStockDetail(context, data, key, field);
-                orgItemVal.mapping = angular.copy(context.data.mapping);
-                context.actions.updateTotalAmount(context);
-            },
-            callBackRemoveMapping: function(context, data, key) {
-                if (context.page.name === 'edit') {
-                    delMapItemVal.push(orgItemVal.mapping[key]);
-                }
-                delete orgItemVal.mapping.splice(key, 1);
-            },
-            callBackAdd: function(context) {
-                orgItemVal = angular.copy(context.data);
-                delMapItemVal = [];
-            },
-            callBackEdit: function(context) {
-                orgItemVal = angular.copy(context.data);
-                delMapItemVal = [];
-            },
-            getPartStockDetail: function(context, data, key, field) {
-                var newMapData = [];
-                newMapData = context.data.mapping.filter(function(data) {
-                    if (context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp]) {
-                        data.operationFrom = context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].operationFrom;
-                        data.operationTo = context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].operationTo;
-                    }
-
-                    return (context.partStock && context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp] && parseInt(context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].partStockQty) > 0);
-                });
-                context.data.mapping = newMapData;
-            },
-            updateTotal: function(context, data, updateValue, field, fieldKey) {
-                var partDetail = context.form.mapping.fields['id'].options[data.id],
-                    totalBeforTax = 0,
-                    partStock = 0;
-
+        delMapItemVal = [];
+    return {
+        callBackList: function(context) {
+            context.methods.getPartStock(context);
+            orgItemVal = null;
+            delMapItemVal = [];
+        },
+        callBackSetAutoGenKey: function(context) {
+            var year = context.erpAppConfig.calendarYear;
+            context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year + '-' + ('' + parseInt(year + 1)).substring(2);
+        },
+        callBackChangeMapping: function(context, data, key, field) {
+            context.methods.getPartStockDetail(context, data, key, field);
+            orgItemVal.mapping = angular.copy(context.data.mapping);
+            context.methods.updateTotalAmount(context);
+        },
+        callBackRemoveMapping: function(context, data, key) {
+            if (context.page.name === 'edit') {
+                delMapItemVal.push(orgItemVal.mapping[key]);
+            }
+            delete orgItemVal.mapping.splice(key, 1);
+        },
+        callBackAdd: function(context) {
+            orgItemVal = angular.copy(context.data);
+            delMapItemVal = [];
+        },
+        callBackEdit: function(context) {
+            orgItemVal = angular.copy(context.data);
+            delMapItemVal = [];
+        },
+        getPartStockDetail: function(context, data, key, field) {
+            var newMapData = [];
+            newMapData = context.data.mapping.filter(function(data) {
                 if (context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp]) {
-                    partStock = parseInt(context.partStock[data.id + '-' + context.erp.finalStageOpp].partStockQty);
-                    if (context.page.name === 'edit') {
-                        partStock += parseInt(orgItemVal.mapping[fieldKey].unit);
-                    }
-                    data.unit = partStock < data.unit ? null : data.unit;
+                    data.operationFrom = context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].operationFrom;
+                    data.operationTo = context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].operationTo;
                 }
 
-                totalBeforTax = data.unit * data.rate;
+                return (context.partStock && context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp] && parseInt(context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].partStockQty) > 0);
+            });
+            context.data.mapping = newMapData;
+        },
+        updateTotal: function(context, data, updateValue, field, fieldKey) {
+            var partDetail = context.form.mapping.fields['id'].options[data.id],
+                totalBeforTax = 0,
+                partStock = 0;
 
-                data.amount = parseFloat(totalBeforTax).toFixed(2);
-                context.actions.updateTotalAmount(context);
-
-            },
-            updateTotalAmount: function(context) {
-                var taxRateTotal = 0,
-                    cgstTotal = 0,
-                    sgstTotal = 0,
-                    igstTotal = 0,
-                    total = 0,
-                    subTotal = 0,
-                    mapping = context.data.mapping;
-
-                for (var i in mapping) {
-                    subTotal += mapping[i].amount && parseFloat(mapping[i].amount) || 0;
+            if (context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp]) {
+                partStock = parseInt(context.partStock[data.id + '-' + context.erp.finalStageOpp].partStockQty);
+                if (context.page.name === 'edit') {
+                    partStock += parseInt(orgItemVal.mapping[fieldKey].unit);
                 }
-
-                if (context.cashBill === false) {
-
-                    cgstTotal = context.data.cgst && (parseFloat(subTotal) * parseFloat(context.data.cgst / 100)) || 0;
-                    sgstTotal = context.data.sgst && (parseFloat(subTotal) * parseFloat(context.data.sgst / 100)) || 0;
-                    igstTotal = context.data.igst && (parseFloat(subTotal) * parseFloat(context.data.igst / 100)) || 0;
-                    taxRateTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
-
-                    total = subTotal + taxRateTotal;
-                    context.data.taxRate = context.data.gst;
-                    context.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
-                    context.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
-                    context.data.igstTotal = parseFloat(igstTotal).toFixed(2);
-                } else {
-                    total = subTotal;
-                }
-
-                context.data.subTotal = parseFloat(subTotal).toFixed(2);
-                context.data.total = Math.round(total);
-                if (context.cashBill) {
-                    context.actions.updatePreBalance(context);
-                }
-            },
-            updatePreBalance: function(context) {
-                var total = parseFloat(context.data.subTotal);
-                if (context.data.preBalance) {
-                    total = total + parseFloat(context.data.preBalance);
-                }
-                context.data.total = Math.round(total);
-            },
-            updateInvoicePartStock: function(context) {
-                var mapStockUpdate = function(map, key, del) {
-                    var data = angular.copy(map);
-                    var newContext = angular.copy(context);
-                    data.partNo = data.id;
-                    if (!del && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[key]) {
-                        if (orgItemVal.id) {
-                            data.acceptedQty = parseInt(orgItemVal.mapping[key].unit) - parseInt(map.unit);
-                        } else {
-                            data.acceptedQty = 0 - parseInt(map.unit);
-                        }
-                    } else {
-                        data.acceptedQty = parseInt(map.unit);
-                    }
-                    newContext.data = data;
-                    newContext.updatePrevStock = false;
-                    context.actions.updatePartStock(newContext);
-                };
-                for (var i in context.data.mapping) {
-                    mapStockUpdate(context.data.mapping[i], i, false);
-                }
-                for (var j in delMapItemVal) {
-                    mapStockUpdate(delMapItemVal[j], j, true);
-                }
-
-            },
-            callBackSubmit: function(context) {
-                context.actions.updateInvoicePartStock(context);
-            },
-            callBeforeDelete: function(context, id, item) {
-                context.data = item;
-                context.actions.updateInvoicePartStock(context);
+                data.unit = partStock < data.unit ? null : data.unit;
             }
-        };
-    if ($location.search() && $location.search()['type'] === 'cashBill') {
-        commonFact.initCtrl($scope, 'marketing.cashBill', actions).then(function() {
-            $scope.context.cashBill = true;
-        });
-    } else {
-        commonFact.initCtrl($scope, 'marketing.invoice', actions).then(function() {
-            $scope.context.cashBill = false;
-        });
-    }
-}]);
-erpApp.controller('partMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    commonFact.initCtrl($scope, 'marketing.partMaster');
-}]);
-erpApp.controller('uomMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    commonFact.initCtrl($scope, 'marketing.uomMaster');
-}]);
-erpApp.controller('assembleMaterialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var orgItemVal = null,
-        actions = {
-            callBackEdit: function(context) {
-                orgItemVal = angular.copy(context.data);
-            },
-            callBackAdd: function(context) {
-                orgItemVal = angular.copy(context.data);
-            },
-            callBackList: function(context) {
-                context.actions.getPartStock(context);
-                orgItemVal = null;
-                var listViewData = angular.copy(context.listViewDataMaster);
-                var partDetailList = [];
-                for (var i in listViewData) {
-                    if (listViewData[i].isAssemblePart === 1) {
-                        partDetailList.push(listViewData[i]);
-                    }
 
-                }
-                context.listViewData = partDetailList;
-            },
-            getSubParts: function(context) {
-                context.actions.getData('production.bomAssemblePart').then(function(res) {
-                    var bomData = res.data;
-                    for (var i in bomData) {
-                        if (bomData[i].partNo === context.data.partNo) {
-                            context.data.mapping = angular.extend(context.data.mapping, bomData[i].mapping);
-                        }
-                    }
-                });
-            },
-            updateQtyMake: function(context, mappingData, value, field, fieldMapkey) {
-                if (mappingData.id) {
-                    var partStockVal = context.partStock[mappingData.id + '-' + context.erpAppConfig.finalStageOpp];
-                    if (partStockVal) {
-                        if (context.page.name === 'edit' && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[fieldMapkey].issueQty) {
-                            field.max = parseInt(orgItemVal.mapping[fieldMapkey].issueQty) + parseInt(partStockVal.partStockQty);
-                        } else {
-                            field.max = partStockVal.partStockQty;
-                        }
+            totalBeforTax = data.unit * data.rate;
 
-                        mappingData.operationFrom = partStockVal.operationFrom;
-                        mappingData.operationTo = partStockVal.operationTo;
-                    }
-                    if (mappingData.partNorms && mappingData.issueQty && field.max && field.max >= mappingData.issueQty) {
-                        mappingData.qtyCanMake = mappingData.issueQty / mappingData.partNorms;
-                    } else {
-                        mappingData.qtyCanMake = null;
-                    }
+            data.amount = parseFloat(totalBeforTax).toFixed(2);
+            context.methods.updateTotalAmount(context);
 
-                }
-                context.actions.updateTotalQtyMake(context);
-            },
-            updateTotalQtyMake: function(context) {
-                var subPartsLength = context.data.mapping.length;
-                var totalQtyMake = 0;
-                var qtyCanMake;
-                var prevCanMake;
-                var isValid = false;
-                for (var i in context.data.mapping) {
-                    if (context.data.mapping[i].qtyCanMake) {
-                        totalQtyMake += context.data.mapping[i].qtyCanMake;
-                    }
-                    if (!prevCanMake || prevCanMake === context.data.mapping[i].qtyCanMake) {
-                        isValid = true;
-                    } else {
-                        isValid = false;
-                    }
-                    prevCanMake = context.data.mapping[i].qtyCanMake;
-                }
-                qtyCanMake = totalQtyMake / subPartsLength;
-                if (Number.isInteger(qtyCanMake) && isValid) {
-                    context.data.qtyCanMake = qtyCanMake;
-                } else {
-                    context.data.qtyCanMake = null;
-                }
+        },
+        updateTotalAmount: function(context) {
+            var taxRateTotal = 0,
+                cgstTotal = 0,
+                sgstTotal = 0,
+                igstTotal = 0,
+                total = 0,
+                subTotal = 0,
+                mapping = context.data.mapping;
 
-            },
-            updateSubPartStock: function(context) {
-                var mapStockUpdate = function(map, key, del) {
-                    var data = angular.copy(map);
-                    var newContext = angular.copy(context);
-                    data.partNo = data.id;
-                    if (!del && orgItemVal) {
-                        if (orgItemVal.id && orgItemVal.mapping && orgItemVal.mapping[key]) {
-                            data.acceptedQty = parseInt(orgItemVal.mapping[key].qtyCanMake) - parseInt(map.qtyCanMake);
-                        } else {
-                            data.acceptedQty = 0 - parseInt(map.qtyCanMake);
-                        }
-                    } else {
-                        data.acceptedQty = parseInt(map.qtyCanMake);
-                    }
-                    newContext.data = data;
-                    newContext.updatePrevStock = false;
-                    context.actions.updatePartStock(newContext);
-                };
-                for (var i in context.data.mapping) {
-                    mapStockUpdate(context.data.mapping[i], i, false);
-                }
-            },
-            callBackSubmit: function(context) {
-                var qtyCanMake;
-                context.actions.updateSubPartStock(context);
-                if (orgItemVal && orgItemVal.qtyCanMake) {
-                    qtyCanMake = parseInt(context.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
-                    context.data.acceptedQty = qtyCanMake;
-                } else {
-                    context.data.acceptedQty = context.data.qtyCanMake;
-                }
-                context.actions.updatePartStock(context);
-            },
-            callBeforeDelete: function(context, id, item) {
-                var qtyCanMake;
-                context.data = item;
-                context.actions.updateSubPartStock(context, true);
-                context.data.acceptedQty = 0 - parseInt(context.data.qtyCanMake);
-                context.actions.updatePartStock(context);
+            for (var i in mapping) {
+                subTotal += mapping[i].amount && parseFloat(mapping[i].amount) || 0;
             }
-        };
 
-    commonFact.initCtrl($scope, 'production.assembleMaterialIssueNote', actions);
-}]);
-erpApp.controller('bomCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    commonFact.initCtrl($scope, 'production.bom');
-}]);
-erpApp.controller('bomAssemblePartCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    commonFact.initCtrl($scope, 'production.bomAssemblePart');
-}]);
-erpApp.controller('flowMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-    var actions = {
+            if (context.cashBill === false) {
+
+                cgstTotal = context.data.cgst && (parseFloat(subTotal) * parseFloat(context.data.cgst / 100)) || 0;
+                sgstTotal = context.data.sgst && (parseFloat(subTotal) * parseFloat(context.data.sgst / 100)) || 0;
+                igstTotal = context.data.igst && (parseFloat(subTotal) * parseFloat(context.data.igst / 100)) || 0;
+                taxRateTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
+
+                total = subTotal + taxRateTotal;
+                context.data.taxRate = context.data.gst;
+                context.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
+                context.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
+                context.data.igstTotal = parseFloat(igstTotal).toFixed(2);
+            } else {
+                total = subTotal;
+            }
+
+            context.data.subTotal = parseFloat(subTotal).toFixed(2);
+            context.data.total = Math.round(total);
+            if (context.cashBill) {
+                context.methods.updatePreBalance(context);
+            }
+        },
+        updatePreBalance: function(context) {
+            var total = parseFloat(context.data.subTotal);
+            if (context.data.preBalance) {
+                total = total + parseFloat(context.data.preBalance);
+            }
+            context.data.total = Math.round(total);
+        },
+        updateInvoicePartStock: function(context) {
+            var mapStockUpdate = function(map, key, del) {
+                var data = angular.copy(map);
+                var newContext = angular.copy(context);
+                data.partNo = data.id;
+                if (!del && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[key]) {
+                    if (orgItemVal.id) {
+                        data.acceptedQty = parseInt(orgItemVal.mapping[key].unit) - parseInt(map.unit);
+                    } else {
+                        data.acceptedQty = 0 - parseInt(map.unit);
+                    }
+                } else {
+                    data.acceptedQty = parseInt(map.unit);
+                }
+                newContext.data = data;
+                newContext.updatePrevStock = false;
+                context.methods.updatePartStock(newContext);
+            };
+            for (var i in context.data.mapping) {
+                mapStockUpdate(context.data.mapping[i], i, false);
+            }
+            for (var j in delMapItemVal) {
+                mapStockUpdate(delMapItemVal[j], j, true);
+            }
+
+        },
+        callBackSubmit: function(context) {
+            context.methods.updateInvoicePartStock(context);
+        },
+        callBeforeDelete: function(context, id, item) {
+            context.data = item;
+            context.methods.updateInvoicePartStock(context);
+        }
+    };
+};
+
+erpConfig.moduleFiles.cashBill = erpConfig.moduleFiles.invoice;
+erpConfig.moduleFiles.assembleMaterialIssueNote = function() {
+    var orgItemVal = null;
+    return {
+        callBackEdit: function(context) {
+            orgItemVal = angular.copy(context.data);
+        },
+        callBackAdd: function(context) {
+            orgItemVal = angular.copy(context.data);
+        },
+        callBackList: function(context) {
+            context.methods.getPartStock(context);
+            orgItemVal = null;
+            var listViewData = angular.copy(context.listViewDataMaster);
+            var partDetailList = [];
+            for (var i in listViewData) {
+                if (listViewData[i].isAssemblePart === 1) {
+                    partDetailList.push(listViewData[i]);
+                }
+
+            }
+            context.listViewData = partDetailList;
+        },
+        getSubParts: function(context) {
+            context.methods.getData('production.bomAssemblePart').then(function(res) {
+                var bomData = res.data;
+                for (var i in bomData) {
+                    if (bomData[i].partNo === context.data.partNo) {
+                        context.data.mapping = angular.extend(context.data.mapping, bomData[i].mapping);
+                    }
+                }
+            });
+        },
+        updateQtyMake: function(context, mappingData, value, field, fieldMapkey) {
+            if (mappingData.id) {
+                var partStockVal = context.partStock[mappingData.id + '-' + context.erpAppConfig.finalStageOpp];
+                if (partStockVal) {
+                    if (context.page.name === 'edit' && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[fieldMapkey].issueQty) {
+                        field.max = parseInt(orgItemVal.mapping[fieldMapkey].issueQty) + parseInt(partStockVal.partStockQty);
+                    } else {
+                        field.max = partStockVal.partStockQty;
+                    }
+
+                    mappingData.operationFrom = partStockVal.operationFrom;
+                    mappingData.operationTo = partStockVal.operationTo;
+                }
+                if (mappingData.partNorms && mappingData.issueQty && field.max && field.max >= mappingData.issueQty) {
+                    mappingData.qtyCanMake = mappingData.issueQty / mappingData.partNorms;
+                } else {
+                    mappingData.qtyCanMake = null;
+                }
+
+            }
+            context.methods.updateTotalQtyMake(context);
+        },
+        updateTotalQtyMake: function(context) {
+            var subPartsLength = context.data.mapping.length;
+            var totalQtyMake = 0;
+            var qtyCanMake;
+            var prevCanMake;
+            var isValid = false;
+            for (var i in context.data.mapping) {
+                if (context.data.mapping[i].qtyCanMake) {
+                    totalQtyMake += context.data.mapping[i].qtyCanMake;
+                }
+                if (!prevCanMake || prevCanMake === context.data.mapping[i].qtyCanMake) {
+                    isValid = true;
+                } else {
+                    isValid = false;
+                }
+                prevCanMake = context.data.mapping[i].qtyCanMake;
+            }
+            qtyCanMake = totalQtyMake / subPartsLength;
+            if (Number.isInteger(qtyCanMake) && isValid) {
+                context.data.qtyCanMake = qtyCanMake;
+            } else {
+                context.data.qtyCanMake = null;
+            }
+
+        },
+        updateSubPartStock: function(context) {
+            var mapStockUpdate = function(map, key, del) {
+                var data = angular.copy(map);
+                var newContext = angular.copy(context);
+                data.partNo = data.id;
+                if (!del && orgItemVal) {
+                    if (orgItemVal.id && orgItemVal.mapping && orgItemVal.mapping[key]) {
+                        data.acceptedQty = parseInt(orgItemVal.mapping[key].qtyCanMake) - parseInt(map.qtyCanMake);
+                    } else {
+                        data.acceptedQty = 0 - parseInt(map.qtyCanMake);
+                    }
+                } else {
+                    data.acceptedQty = parseInt(map.qtyCanMake);
+                }
+                newContext.data = data;
+                newContext.updatePrevStock = false;
+                context.methods.updatePartStock(newContext);
+            };
+            for (var i in context.data.mapping) {
+                mapStockUpdate(context.data.mapping[i], i, false);
+            }
+        },
+        callBackSubmit: function(context) {
+            var qtyCanMake;
+            context.methods.updateSubPartStock(context);
+            if (orgItemVal && orgItemVal.qtyCanMake) {
+                qtyCanMake = parseInt(context.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
+                context.data.acceptedQty = qtyCanMake;
+            } else {
+                context.data.acceptedQty = context.data.qtyCanMake;
+            }
+            context.methods.updatePartStock(context);
+        },
+        callBeforeDelete: function(context, id, item) {
+            var qtyCanMake;
+            context.data = item;
+            context.methods.updateSubPartStock(context, true);
+            context.data.acceptedQty = 0 - parseInt(context.data.qtyCanMake);
+            context.methods.updatePartStock(context);
+        }
+    };
+};
+erpConfig.moduleFiles.flowMaster = function() {
+    return {
         updateCostAnalysis: function(context, mappingData, value, field, fieldMapkey) {
             var machineDetails = context.form.mapping.fields.machineNo.options[mappingData.machineNo];
             var costAnalysis = 0;
 
             costAnalysis = machineDetails && (machineDetails.machineShiftRate / machineDetails.shiftHrs);
             mappingData.costAnalysis = costAnalysis > 0 && mappingData.palnQtyPerHr > 0 && (costAnalysis / mappingData.palnQtyPerHr) || 0;
-            context.actions.updateTotalCost(context);
+            context.methods.updateTotalCost(context);
         },
         updateTotalCost: function(context) {
             var totalCost = 0;
@@ -1755,159 +1692,146 @@ erpApp.controller('flowMasterCtrl', ['$scope', 'commonFact', function($scope, co
             }
             context.data.totalCost = totalCost;
         }
-    };
-    commonFact.initCtrl($scope, 'production.flowMaster', actions);
-}]);
-erpApp.controller('machineMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
+    }
+};
+erpConfig.moduleFiles.materialIssueNote = function() {
+    var orgItemVal = null;
+    return {
+        callBackEdit: function(context) {
+            context.methods.callBackAdd(context);
+            orgItemVal = angular.copy(context.data);
+        },
+        callBackAdd: function(context) {
+            var rmStock = [];
+            orgItemVal = null;
 
-    commonFact.initCtrl($scope, 'production.machineMaster');
-
-}]);
-erpApp.controller('materialIssueNoteCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var orgItemVal = null,
-        actions = {
-            callBackEdit: function(context) {
-                context.actions.callBackAdd(context);
-                orgItemVal = angular.copy(context.data);
-            },
-            callBackAdd: function(context) {
-                var rmStock = [];
-                orgItemVal = null;
-
-                for (var i in context.rmStock) {
-                    if (context.rmStock[i] && context.rmStock[i].rmStockQty > 0) {
-                        rmStock.push(context.rmStock[i].rmCode);
-                    }
-
+            for (var i in context.rmStock) {
+                if (context.rmStock[i] && context.rmStock[i].rmStockQty > 0) {
+                    rmStock.push(context.rmStock[i].rmCode);
                 }
-                context.form.fields['rmCode'] = angular.extend(context.form.fields['rmCode'], {
-                    filter: {
-                        id: rmStock
+
+            }
+            context.form.fields['rmCode'] = angular.extend(context.form.fields['rmCode'], {
+                filter: {
+                    id: rmStock
+                }
+            });
+            context.methods.makeOptionsFields(context, context.form.fields['rmCode']);
+
+
+        },
+        callBackList: function(context) {
+            context.methods.getRMStock(context);
+            context.listView[1].filter = {
+                isAssemblePart: undefined
+            };
+            context.methods.makeOptionsFields(context, context.listView[1]);
+
+            var listViewData = angular.copy(context.listViewDataMaster);
+            var partDetailList = [];
+            for (var i in listViewData) {
+                if (listViewData[i].isAssemblePart === undefined) {
+                    partDetailList.push(listViewData[i]);
+                }
+
+            }
+            context.listViewData = partDetailList;
+        },
+        getPartNo: function(context) {
+            if (context.data.rmCode) {
+                context.form.fields['partNo'].filter = {
+                    rmCode: context.data.rmCode
+                };
+                context.methods.makeOptionsFields(context, context.form.fields['partNo']);
+            }
+        },
+        getNorms: function(context) {
+            var restriction = {
+                partNo: context.data.partNo,
+                filter: {
+                    source: ['Supplier']
+                }
+            };
+            if (context.data.rmCode && context.data.partNo) {
+                context.data.partNorms = null;
+                context.data.qtyCanMake = null;
+                context.data.issueQty = null;
+                context.methods.getData('production.bom').then(function(res) {
+                    var bomData = res.data;
+                    for (var i in bomData) {
+                        if (bomData[i].partNo === context.data.partNo && bomData[i].rmCode === context.data.rmCode) {
+                            context.data.partNorms = bomData[i].partNorms;
+                        }
                     }
                 });
-                context.actions.makeOptionsFields(context, context.form.fields['rmCode']);
-
-
-            },
-            callBackList: function(context) {
-                context.actions.getRMStock(context);
-                context.listView[1].filter = {
-                    isAssemblePart: undefined
-                };
-                context.actions.makeOptionsFields(context, context.listView[1]);
-
-                var listViewData = angular.copy(context.listViewDataMaster);
-                var partDetailList = [];
-                for (var i in listViewData) {
-                    if (listViewData[i].isAssemblePart === undefined) {
-                        partDetailList.push(listViewData[i]);
-                    }
-
-                }
-                context.listViewData = partDetailList;
-            },
-            getPartNo: function(context) {
-                if (context.data.rmCode) {
-                    context.form.fields['partNo'].filter = {
-                        rmCode: context.data.rmCode
-                    };
-                    context.actions.makeOptionsFields(context, context.form.fields['partNo']);
-                }
-            },
-            getNorms: function(context) {
-                var restriction = {
-                    partNo: context.data.partNo,
-                    filter: {
-                        source: ['Supplier']
-                    }
-                };
-                if (context.data.rmCode && context.data.partNo) {
-                    context.data.partNorms = null;
-                    context.data.qtyCanMake = null;
-                    context.data.issueQty = null;
-                    context.actions.getData('production.bom').then(function(res) {
-                        var bomData = res.data;
-                        for (var i in bomData) {
-                            if (bomData[i].partNo === context.data.partNo && bomData[i].rmCode === context.data.rmCode) {
-                                context.data.partNorms = bomData[i].partNorms;
-                            }
-                        }
-                    });
-                    context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
-                }
-            },
-            updateQtyMake: function(context) {
-                if (context.data.rmCode) {
-
-                    if (orgItemVal && orgItemVal.issueQty) {
-                        context.form.fields['issueQty'].max = parseInt(orgItemVal.issueQty) + parseInt(context.rmStock[context.data.rmCode].rmStockQty);
-                    } else {
-                        context.form.fields['issueQty'].max = context.rmStock[context.data.rmCode].rmStockQty;
-                    }
-
-                    if (context.data.partNorms && context.data.issueQty && context.form.fields['issueQty'].max >= context.data.issueQty) {
-                        context.data.qtyCanMake = context.data.issueQty / context.data.partNorms;
-                    } else {
-                        context.data.qtyCanMake = null;
-                    }
-
-                }
-            },
-            removeRMStockQty: function(context, del) {
-                var rmCode = context.data.rmCode,
-                    existingStock = null,
-                    removeQty = context.data.issueQty;
-
-                existingStock = context.rmStock[rmCode];
-                if (existingStock) {
-                    var rmStockQty;
-                    if (!del && orgItemVal && orgItemVal.issueQty) {
-                        removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
-                        rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
-                    } else if (del) {
-                        rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
-                    } else {
-                        rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
-                    }
-                    var data = {
-                        id: existingStock.id,
-                        rmCode: rmCode,
-                        rmStockQty: rmStockQty,
-                        uomCode: existingStock.uomCode
-                    };
-                    context.actions.updateData('report.rmStock', data);
-                }
-            },
-            callBackSubmit: function(context) {
-                var qtyCanMake;
-                context.actions.removeRMStockQty(context);
+                context.methods.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
+            }
+        },
+        updateQtyMake: function(context) {
+            if (context.data.rmCode) {
 
                 if (orgItemVal && orgItemVal.issueQty) {
-                    qtyCanMake = parseInt(context.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
-                    context.data.acceptedQty = qtyCanMake;
+                    context.form.fields['issueQty'].max = parseInt(orgItemVal.issueQty) + parseInt(context.rmStock[context.data.rmCode].rmStockQty);
                 } else {
-                    context.data.acceptedQty = context.data.qtyCanMake;
+                    context.form.fields['issueQty'].max = context.rmStock[context.data.rmCode].rmStockQty;
                 }
-                context.actions.updatePartStock(context);
-            },
-            callBeforeDelete: function(context, id, item) {
-                var qtyCanMake;
-                context.data = item;
-                context.actions.removeRMStockQty(context, true);
-                context.data.acceptedQty = 0 - parseInt(context.data.qtyCanMake);
-                context.actions.updatePartStock(context);
+
+                if (context.data.partNorms && context.data.issueQty && context.form.fields['issueQty'].max >= context.data.issueQty) {
+                    context.data.qtyCanMake = context.data.issueQty / context.data.partNorms;
+                } else {
+                    context.data.qtyCanMake = null;
+                }
+
             }
-        };
+        },
+        removeRMStockQty: function(context, del) {
+            var rmCode = context.data.rmCode,
+                existingStock = null,
+                removeQty = context.data.issueQty;
 
-    commonFact.initCtrl($scope, 'production.materialIssueNote', actions);
-}]);
-erpApp.controller('operationMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
+            existingStock = context.rmStock[rmCode];
+            if (existingStock) {
+                var rmStockQty;
+                if (!del && orgItemVal && orgItemVal.issueQty) {
+                    removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
+                    rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
+                } else if (del) {
+                    rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
+                } else {
+                    rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
+                }
+                var data = {
+                    id: existingStock.id,
+                    rmCode: rmCode,
+                    rmStockQty: rmStockQty,
+                    uomCode: existingStock.uomCode
+                };
+                context.methods.updateData('report.rmStock', data);
+            }
+        },
+        callBackSubmit: function(context) {
+            var qtyCanMake;
+            context.methods.removeRMStockQty(context);
 
-    commonFact.initCtrl($scope, 'production.operationMaster');
-
-}]);
-erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
+            if (orgItemVal && orgItemVal.issueQty) {
+                qtyCanMake = parseInt(context.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
+                context.data.acceptedQty = qtyCanMake;
+            } else {
+                context.data.acceptedQty = context.data.qtyCanMake;
+            }
+            context.methods.updatePartStock(context);
+        },
+        callBeforeDelete: function(context, id, item) {
+            var qtyCanMake;
+            context.data = item;
+            context.methods.removeRMStockQty(context, true);
+            context.data.acceptedQty = 0 - parseInt(context.data.qtyCanMake);
+            context.methods.updatePartStock(context);
+        }
+    };
+};
+erpConfig.moduleFiles.productionEntry = function() {
+    return {
         callBackAdd: function(context) {
             context.page.printViewMapping = false;
             context.finalMapping = 0;
@@ -1915,15 +1839,15 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
         callBackEdit: function(context) {
             if (!context.page.printView) {
                 context.page.printViewMapping = true;
-                context.actions.addMapping(context.data.mapping);
+                context.methods.addMapping(context.data.mapping);
                 context.finalMapping = context.data.mapping.length - 1;
             }
         },
         callBackList: function(context) {
-            context.actions.getPartStock(context);
-            context.actions.getPRQty(context);
-            context.actions.getFlowMaster(context);
-            context.actions.getOperations(context);
+            context.methods.getPartStock(context);
+            context.methods.getPRQty(context);
+            context.methods.getFlowMaster(context);
+            context.methods.getOperations(context);
         },
         checkAcceptedQty: function(context, mappingData, value, field, fieldMapkey) {
             var qtyCanMake = 0,
@@ -1958,8 +1882,8 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             }
         },
         callBackChangeMapping: function(context, data, key, field) {
-            context.actions.updateOperationFrom(context, data, key, field);
-            context.actions.updateOperationTo(context, data, key, field);
+            context.methods.updateOperationFrom(context, data, key, field);
+            context.methods.updateOperationTo(context, data, key, field);
         },
         updateOperationFrom: function(context, data, key, field) {
             var prQtyFrmMap;
@@ -1993,7 +1917,7 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
                 restriction.filter = {
                     id: operation
                 }
-                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationFrom'], restriction);
+                context.methods.getOperationFromFlow(context, context.form.mapping.fields['operationFrom'], restriction);
             }
         },
         updateOperationTo: function(context, mappingData, key, field) {
@@ -2013,7 +1937,7 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
                     });
                 }
 
-                context.actions.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction).then(function() {
+                context.methods.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction).then(function() {
                     var options = context.form.mapping.fields['operationTo'].options;
                     var firstOption = options[Object.keys(options)[0]];
                     if (firstOption && firstOption.source === 'Sub-Contractor') {
@@ -2036,11 +1960,11 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
             var jobCardQty = jobCard && jobCard.qtyCanMake;
             jobCard.status = 1;
-            context.actions.updateData('production.materialIssueNote', jobCard);
+            context.methods.updateData('production.materialIssueNote', jobCard);
         },
         getPRQty: function(context) {
             context.prQty = {};
-            return context.actions.getData('production.productionEntry').then(function(res) {
+            return context.methods.getData('production.productionEntry').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     for (var j in listViewData[i].mapping) {
@@ -2076,15 +2000,15 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
             var newContext = angular.copy(context);
             data.partNo = context.data.partNo;
             newContext.data = data;
-            context.actions.updatePartStock(newContext);
-            context.actions.updateMaterialIssue(context);
+            context.methods.updatePartStock(newContext);
+            context.methods.updateMaterialIssue(context);
         },
         prodEntryDownload: function(context) {
             if (!context.selectedTableData) {
                 return;
             }
             var prodData = context.selectedTableData[context.id];
-            context.actions.getData('production.materialIssueNote').then(function(res) {
+            context.methods.getData('production.materialIssueNote').then(function(res) {
                 var materData = res.data;
                 var jobCardNo = 1;
                 context.selectedTableData['materialIssueNote'] = {};
@@ -2095,28 +2019,15 @@ erpApp.controller('productionEntryCtrl', ['$scope', 'commonFact', 'serviceApi', 
                     prodData[i].jobCardNo = jobCardNo;
                     jobCardNo++;
                 }
-                context.actions.downloadFile(context.selectedTableData, context.id + '.json');
+                context.methods.downloadFile(context.selectedTableData, context.id + '.json');
             });
         }
     };
-
-    commonFact.initCtrl($scope, 'production.productionEntry', actions);
-
-}]);
-erpApp.controller('toolMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-	
-    commonFact.initCtrl($scope, 'production.toolMaster');
-
-}]);
-erpApp.controller('generalSupplierMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-
-    commonFact.initCtrl($scope, 'purchase.generalSupplierMaster');
-
-}]);
-erpApp.controller('poGeneralSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
+};
+erpConfig.moduleFiles.poGeneralSupplier = function() {
+    return {
         updatePartDetails: function(mapping) {
-            context.actions.getData('marketing.partMaster', mapping.id).then(function(res) {
+            context.methods.getData('marketing.partMaster', mapping.id).then(function(res) {
                 var partData = res.data;
                 for (var mapKey in rmData) {
                     if (mapping[mapKey] === null || mapping[mapKey] === '') {
@@ -2131,19 +2042,11 @@ erpApp.controller('poGeneralSupplierCtrl', ['$scope', 'commonFact', 'serviceApi'
             }
         }
     };
-
-    commonFact.initCtrl($scope, 'purchase.poGeneralSupplier', actions);
-
-}]);
-erpApp.controller('poSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-
-    commonFact.initCtrl($scope, 'purchase.poSubContractor');
-
-}]);
-erpApp.controller('poSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
+};
+erpConfig.moduleFiles.poSupplier = function() {
+    return {
         updateRMDetails: function(mapping) {
-            context.actions.getData('purchase.rmMaster', mapping.id).then(function(res) {
+            context.methods.getData('purchase.rmMaster', mapping.id).then(function(res) {
                 var rmData = res.data;
                 for (var mapKey in rmData) {
                     if (mapping[mapKey] === null || mapping[mapKey] === '') {
@@ -2158,20 +2061,12 @@ erpApp.controller('poSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', funct
             }
         }
     };
-
-    commonFact.initCtrl($scope, 'purchase.poSupplier', actions);
-
-}]);
-erpApp.controller('rmMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-	
-    commonFact.initCtrl($scope, 'purchase.rmMaster');
-
-}]);
-erpApp.controller('subContractorMasterCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
+};
+erpConfig.moduleFiles.subContractorMaster = function() {
+    return {
         callBackList: function(context) {
             var partNos = [];
-            context.actions.getData(context.module).then(function(res) {
+            context.methods.getData(context).then(function(res) {
                 var flowMasterData = res.data;
                 for (var i in flowMasterData) {
                     for (var j in flowMasterData[i].mapping) {
@@ -2186,76 +2081,65 @@ erpApp.controller('subContractorMasterCtrl', ['$scope', 'commonFact', 'serviceAp
             });
         }
     };
+};
+erpConfig.moduleFiles.costAnalysis = function() {
+    return {
+        callBackList: function(context) {
+            context.methods.getFlowMaster(context).then(function() {
+                context.methods.getData('purchase.rmMaster').then(function(res) {
 
-    commonFact.initCtrl($scope, 'purchase.subContractorMaster', actions);
-
-}]);
-erpApp.controller('supplierMasterCtrl', ['$scope', 'commonFact', function($scope, commonFact) {
-
-    commonFact.initCtrl($scope, 'purchase.supplierMaster');
-
-}]);
-erpApp.controller('costAnalysisCtrl', ['$scope', 'commonFact', 'serviceApi', '$location', function($scope, commonFact, serviceApi, $location) {
-    var cashBill = false,
-        actions = {
-            callBackList: function(context) {
-                context.actions.getFlowMaster(context).then(function() {
-                    context.actions.getData('purchase.rmMaster').then(function(res) {
-
-                        for (var i in context.listViewData) {
-                            var partDetails = context.listViewData[i];
-                            var rmCode = context.listViewData[i].rmCode;
-                            var rmDetails = rmCode && res.data[rmCode];
-                            var flowMasterDetails = context.flowMasterByPart[partDetails.id];
-                            var materialCost;
-                            var conversionCost;
-                            var subTotal;
-                            var rejCost;
-                            var iccCost;
-                            var toolMaintCost;
-                            var transCost;
-                            var profitCost;
-                            var total;
-                            var salesRate;
-                            var differenceInCost;
-                            var gainOrLoss;
-                            if (rmDetails) {
-                                partDetails.rmRate = rmDetails.rate;
-                                partDetails.scrapRate = rmDetails.scrapRate;
-                                partDetails.materialCost = rmDetails && ((parseFloat(partDetails.inputWeight) * parseFloat(rmDetails.rate)) - (((parseFloat(partDetails.inputWeight) - parseFloat(partDetails.finishedWeight)) * parseFloat(rmDetails.scrapRate))));
-                                partDetails.conversionCost = flowMasterDetails && flowMasterDetails.totalCost;
-                                partDetails.subTotal = parseFloat(partDetails.materialCost) + parseFloat(partDetails.conversionCost);
-                                partDetails.rejCost = partDetails.subTotal * (partDetails.rejection / 100);
-                                partDetails.iccCost = partDetails.subTotal * (partDetails.icc / 100);
-                                partDetails.toolMaintCost = partDetails.subTotal * (partDetails.toolMaintenance / 100);
-                                partDetails.transCost = rmDetails && ((parseFloat(partDetails.finishedWeight) * parseFloat(partDetails.transportCostKg)) + (parseFloat(partDetails.inputWeight) * parseFloat(rmDetails.transportCostKg)));
-                                partDetails.profitCost = partDetails.subTotal * (partDetails.profit / 100);
-                                partDetails.total = partDetails.subTotal + partDetails.rejCost + partDetails.iccCost + partDetails.toolMaintCost + partDetails.transCost + partDetails.profitCost;
-                                partDetails.salesRate = partDetails.rate;
-                                partDetails.differenceInCost = partDetails.salesRate - partDetails.total;
-                                partDetails.gainOrLoss = (partDetails.differenceInCost / partDetails.salesRate) * 100;
-                            }
+                    for (var i in context.listViewData) {
+                        var partDetails = context.listViewData[i];
+                        var rmCode = context.listViewData[i].rmCode;
+                        var rmDetails = rmCode && res.data[rmCode];
+                        var flowMasterDetails = context.flowMasterByPart[partDetails.id];
+                        var materialCost;
+                        var conversionCost;
+                        var subTotal;
+                        var rejCost;
+                        var iccCost;
+                        var toolMaintCost;
+                        var transCost;
+                        var profitCost;
+                        var total;
+                        var salesRate;
+                        var differenceInCost;
+                        var gainOrLoss;
+                        if (rmDetails) {
+                            partDetails.rmRate = rmDetails.rate;
+                            partDetails.scrapRate = rmDetails.scrapRate;
+                            partDetails.materialCost = rmDetails && ((parseFloat(partDetails.inputWeight) * parseFloat(rmDetails.rate)) - (((parseFloat(partDetails.inputWeight) - parseFloat(partDetails.finishedWeight)) * parseFloat(rmDetails.scrapRate))));
+                            partDetails.conversionCost = flowMasterDetails && flowMasterDetails.totalCost;
+                            partDetails.subTotal = parseFloat(partDetails.materialCost) + parseFloat(partDetails.conversionCost);
+                            partDetails.rejCost = partDetails.subTotal * (partDetails.rejection / 100);
+                            partDetails.iccCost = partDetails.subTotal * (partDetails.icc / 100);
+                            partDetails.toolMaintCost = partDetails.subTotal * (partDetails.toolMaintenance / 100);
+                            partDetails.transCost = rmDetails && ((parseFloat(partDetails.finishedWeight) * parseFloat(partDetails.transportCostKg)) + (parseFloat(partDetails.inputWeight) * parseFloat(rmDetails.transportCostKg)));
+                            partDetails.profitCost = partDetails.subTotal * (partDetails.profit / 100);
+                            partDetails.total = partDetails.subTotal + partDetails.rejCost + partDetails.iccCost + partDetails.toolMaintCost + partDetails.transCost + partDetails.profitCost;
+                            partDetails.salesRate = partDetails.rate;
+                            partDetails.differenceInCost = partDetails.salesRate - partDetails.total;
+                            partDetails.gainOrLoss = (partDetails.differenceInCost / partDetails.salesRate) * 100;
                         }
+                    }
 
-                    });
                 });
-            }
-        };
-    commonFact.initCtrl($scope, 'report.costAnalysis', actions);
-
-}]);
-erpApp.controller('partStockCtrl', ['$scope', 'commonFact', '$location', 'serviceApi', function($scope, commonFact, $location, serviceApi) {
-    var actions = {
+            });
+        }
+    };
+};
+erpConfig.moduleFiles.partStock = function() {
+    return {
         callBackList: function(context) {
             var newList = angular.copy(context.listViewData);
-            if ($location.search() && $location.search()['showall'] === 'no') {
+            if (context.methods.location.search() && context.methods.location.search()['showall'] === 'no') {
                 newList = context.listViewData.filter(function(data) {
                     return data.partStockQty > 0;
                 });
                 context.listViewData = newList
             }
 
-            context.actions.getData('marketing.partMaster').then(function(res) {
+            context.methods.getData('marketing.partMaster').then(function(res) {
                 var listViewData = angular.copy(context.listViewDataMaster);
                 for (var i in listViewData) {
                     var stockData = context.listViewData[i];
@@ -2271,7 +2155,7 @@ erpApp.controller('partStockCtrl', ['$scope', 'commonFact', '$location', 'servic
                 var restriction = {
                     partNo: context.data.partNo
                 };
-                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
+                context.methods.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
             }
         },
         updateOperationTo: function(context, data, key, field) {
@@ -2288,42 +2172,39 @@ erpApp.controller('partStockCtrl', ['$scope', 'commonFact', '$location', 'servic
                     });
                 }
 
-                context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
+                context.methods.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
             }
         },
         submit: function(context) {
             var submitService;
             if (context.data.id) {
-                submitService = context.actions.updateData(context.module, context.data)
+                submitService = context.methods.updateData(context, context.data)
             } else {
                 context.updatePrevStock = false;
                 context.data.acceptedQty = context.data.partStockQty;
-                submitService = context.actions.updatePartStock(context);
+                submitService = context.methods.updatePartStock(context);
             }
 
             submitService.then(function() {
                 context.page.name = 'list';
-                context.actions.list(context);
+                context.methods.list(context);
             });
         }
     };
-
-    commonFact.initCtrl($scope, 'report.partStock', actions);
-
-}]);
-erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'serviceApi', '$location', function($scope, commonFact, serviceApi, $location) {
-    var actions = {
+};
+erpConfig.moduleFiles.productionEntryReport = function() {
+    return {
         callBackList: function(context) {
-            if ($location.search() && $location.search()['type']) {
-                context.actions[$location.search()['type']](context);
+            if (context.methods.location.search() && context.methods.location.search()['type']) {
+                context.methods[context.methods.location.search()['type']](context);
             } else {
-                context.actions.productionEntryReport(context);
+                context.methods.productionEntryReport(context);
             }
         },
         toolHistoryCard: function(context) {
             var list = [];
             context.listViewData = [];
-            context.actions.getAllYearData(context).then(function(listViewYearData) {
+            context.methods.getAllYearData(context).then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
                     for (var i in listViewData) {
@@ -2346,7 +2227,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                                     cummulativeQty: parseInt(listViewData[i].mapping[j].acceptedQty)
                                 };
 
-                                var isPartExist = context.actions.findObjectByKey(list, { toolNo: details.toolNo, partNo: details.partNo });
+                                var isPartExist = context.methods.findObjectByKey(list, { toolNo: details.toolNo, partNo: details.partNo });
                                 if (isPartExist) {
                                     details.cummulativeQty += parseInt(isPartExist.cummulativeQty);
                                 }
@@ -2362,7 +2243,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
         machineRunningTime: function(context) {
             var list = [];
             context.listViewData = [];
-            context.actions.getAllYearData(context).then(function(listViewYearData) {
+            context.methods.getAllYearData(context).then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
                     for (var i in listViewData) {
@@ -2382,7 +2263,7 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                                 };
 
                                 details.runningTime = details.cumRunningTime = parseFloat(details.endTime) - parseFloat(details.startTime);
-                                var isExist = context.actions.findObjectByKey(list, { machineNo: details.machineNo });
+                                var isExist = context.methods.findObjectByKey(list, { machineNo: details.machineNo });
                                 if (isExist) {
                                     details.cumRunningTime += parseFloat(isExist.cumRunningTime);
                                 }
@@ -2464,15 +2345,15 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
                 url: 'api/getDatabases',
                 method: 'GET'
             };
-            var prodTabConfig = context.erpAppConfig.modules.report.productionEntryReport.services.list;
+            var prodTabConfig = context.erpAppConfig.modules.controllers.report.productionEntryReport.services.list;
             var dataList = [];
-            return context.actions.getData(listOfDbsConfig).then(function(res) {
+            return context.methods.getData(listOfDbsConfig).then(function(res) {
                 var listOfDbs = res.data.list;
                 var listOfDbsProm = [];
                 for (var i in listOfDbs) {
                     var serConf = angular.copy(prodTabConfig);
                     serConf.url = prodTabConfig.url.replace('{{YEAR}}', listOfDbs[i]);
-                    listOfDbsProm.push(context.actions.getData(serConf).then(function(prodRes) {
+                    listOfDbsProm.push(context.methods.getData(serConf).then(function(prodRes) {
                         dataList.push(prodRes.data);
                     }));
                 }
@@ -2482,15 +2363,11 @@ erpApp.controller('productionEntryReportCtrl', ['$scope', 'commonFact', 'service
             });
         }
     };
-    if ($location.search() && $location.search()['type']) {
-        commonFact.initCtrl($scope, 'report.' + $location.search()['type'], actions);
-    } else {
-        commonFact.initCtrl($scope, 'report.productionEntryReport', actions);
-    }
+};
 
-}]);
-erpApp.controller('rmStockCtrl', ['$scope', 'commonFact', '$location', function($scope, commonFact, $location) {
-    var actions = {
+erpConfig.moduleFiles.toolHistoryCard = erpConfig.moduleFiles.empPerformanceReport = erpConfig.moduleFiles.machineRunningTime = erpConfig.moduleFiles.productionEntryReport;
+erpConfig.moduleFiles.rmStock = function() {
+    return {
         callBackList: function(context) {
             var newList = angular.copy(context.listViewData);
             if ($location.search() && $location.search()['showall'] === 'no') {
@@ -2499,7 +2376,7 @@ erpApp.controller('rmStockCtrl', ['$scope', 'commonFact', '$location', function(
                 });
                 context.listViewData = newList
             }
-            context.actions.getData('purchase.rmMaster').then(function(res) {
+            context.methods.getData('purchase.rmMaster').then(function(res) {
                 var listViewData = angular.copy(context.listViewDataMaster);
                 for (var i in listViewData) {
                     var stockData = context.listViewData[i];
@@ -2512,7 +2389,7 @@ erpApp.controller('rmStockCtrl', ['$scope', 'commonFact', '$location', function(
         },
         submit: function(context) {
             var stockData;
-            context.actions.getData('report.rmStock').then(function(res) {
+            context.methods.getData('report.rmStock').then(function(res) {
                 stockData = res.data;
                 for (var i in stockData) {
                     if (!context.data.id && stockData[i].rmCode === context.data.rmCode) {
@@ -2520,72 +2397,63 @@ erpApp.controller('rmStockCtrl', ['$scope', 'commonFact', '$location', function(
                         context.data.rmStockQty = parseInt(context.data.rmStockQty) + parseInt(stockData[i].rmStockQty);
                     }
                 }
-                commonFact.defaultActions.submit(context);
+                commonFact.submit(context);
             });
 
         }
     };
+};
+erpConfig.moduleFiles.salesAnalysisInvoice = function() {
+    var cashBill = false;
+    return {
+        callBackList: function(context) {
+            var partDetailList = [];
+            var listViewData = angular.copy(context.listViewDataMaster);
+            for (var i in listViewData) {
+                var frmDate = context.filterView.data['frmDate'];
+                var toDate = context.filterView.data['toDate'];
+                var filterCustomerCode = context.filterView.data['customerCode'];
+                var customerCode = listViewData[i]['customerCode'];
+                var date = new Date(listViewData[i]['date']);
+                frmDate = frmDate && new Date(frmDate) || false;
+                toDate = toDate && new Date(toDate) || false;
+                toDate = toDate && new Date(toDate.setDate(toDate.getDate() + 1)) || false;
+                if ((!filterCustomerCode || (customerCode === filterCustomerCode)) && (!frmDate || (frmDate && frmDate <= date)) && (!toDate || toDate && toDate >= date)) {
+                    for (var j in listViewData[i].mapping) {
+                        var partDetail = {
+                            partNo: listViewData[i].mapping[j].id,
+                            amount: listViewData[i].mapping[j].amount,
+                            rate: listViewData[i].mapping[j].rate,
+                            taxRate: listViewData[i].taxRate || listViewData[i].igst,
+                            unit: listViewData[i].mapping[j].unit,
+                            customerCode: listViewData[i]['customerCode'],
+                            dates: context.methods.dateFormatChange(date),
+                            invoiceNos: !cashBill ? 'H-' + listViewData[i]['invoiceNo'] : listViewData[i]['invoiceNo']
+                        };
 
-    commonFact.initCtrl($scope, 'report.rmStock', actions);
+                        if (!cashBill) {
+                            partDetail.amount = parseFloat(partDetail.amount) + (parseFloat(partDetail.amount) * parseFloat(partDetail.taxRate / 100));
+                        }
+                        var isPartExist = context.methods.findObjectByKey(partDetailList, 'partNo', partDetail['partNo']);
+                        if (isPartExist && isPartExist.customerCode === partDetail.customerCode) {
+                            isPartExist.amount = parseFloat(isPartExist.amount) + parseFloat(partDetail.amount);
+                            isPartExist.unit = parseFloat(isPartExist.unit) + parseFloat(partDetail.unit);
+                            isPartExist.dates = isPartExist.dates + ', ' + partDetail.dates;
+                            isPartExist.invoiceNos = isPartExist.invoiceNos + ', ' + partDetail.invoiceNos;
 
-}]);
-erpApp.controller('salesAnalysisInvoiceCtrl', ['$scope', 'commonFact', 'serviceApi', '$location', function($scope, commonFact, serviceApi, $location) {
-    var cashBill = false,
-        actions = {
-            callBackList: function(context) {
-                var partDetailList = [];
-                var listViewData = angular.copy(context.listViewDataMaster);
-                for (var i in listViewData) {
-                    var frmDate = context.filterView.data['frmDate'];
-                    var toDate = context.filterView.data['toDate'];
-                    var filterCustomerCode = context.filterView.data['customerCode'];
-                    var customerCode = listViewData[i]['customerCode'];
-                    var date = new Date(listViewData[i]['date']);
-                    frmDate = frmDate && new Date(frmDate) || false;
-                    toDate = toDate && new Date(toDate) || false;
-                    toDate = toDate && new Date(toDate.setDate(toDate.getDate() + 1)) || false;
-                    if ((!filterCustomerCode || (customerCode === filterCustomerCode)) && (!frmDate || (frmDate && frmDate <= date)) && (!toDate || toDate && toDate >= date)) {
-                        for (var j in listViewData[i].mapping) {
-                            var partDetail = {
-                                partNo: listViewData[i].mapping[j].id,
-                                amount: listViewData[i].mapping[j].amount,
-                                rate: listViewData[i].mapping[j].rate,
-                                taxRate: listViewData[i].taxRate || listViewData[i].igst,
-                                unit: listViewData[i].mapping[j].unit,
-                                customerCode: listViewData[i]['customerCode'],
-                                dates: context.actions.dateFormatChange(date),
-                                invoiceNos: !cashBill ? 'H-' + listViewData[i]['invoiceNo'] : listViewData[i]['invoiceNo']
-                            };
-
-                            if (!cashBill) {
-                                partDetail.amount = parseFloat(partDetail.amount) + (parseFloat(partDetail.amount) * parseFloat(partDetail.taxRate / 100));
-                            }
-                            var isPartExist = context.actions.findObjectByKey(partDetailList, 'partNo', partDetail['partNo']);
-                            if (isPartExist && isPartExist.customerCode === partDetail.customerCode) {
-                                isPartExist.amount = parseFloat(isPartExist.amount) + parseFloat(partDetail.amount);
-                                isPartExist.unit = parseFloat(isPartExist.unit) + parseFloat(partDetail.unit);
-                                isPartExist.dates = isPartExist.dates + ', ' + partDetail.dates;
-                                isPartExist.invoiceNos = isPartExist.invoiceNos + ', ' + partDetail.invoiceNos;
-
-                            } else {
-                                partDetailList.push(partDetail);
-                            }
+                        } else {
+                            partDetailList.push(partDetail);
                         }
                     }
                 }
-                context.listViewData = partDetailList;
             }
-        };
-
-    if ($location.search() && $location.search()['type'] === 'cashBill') {
-        cashBill = true;
-        commonFact.initCtrl($scope, 'report.salesAnalysisCashBill', actions);
-    } else {
-        commonFact.initCtrl($scope, 'report.salesAnalysisInvoice', actions);
-    }
-}]);
-erpApp.controller('subContractorStockCtrl', ['$scope', 'commonFact', '$location', 'serviceApi', function($scope, commonFact, $location, serviceApi) {
-    var actions = {
+            context.listViewData = partDetailList;
+        }
+    };
+};
+erpConfig.moduleFiles.salesAnalysisCashBill = erpConfig.moduleFiles.salesAnalysisInvoice
+erpConfig.moduleFiles.subContractorStock = function() {
+    return {
         callBackList: function(context) {
             var newList = angular.copy(context.listViewData);
             if ($location.search() && $location.search()['showall'] === 'no') {
@@ -2594,7 +2462,7 @@ erpApp.controller('subContractorStockCtrl', ['$scope', 'commonFact', '$location'
                 });
                 context.listViewData = newList
             }
-            context.actions.getData('marketing.partMaster').then(function(res) {
+            context.methods.getData('marketing.partMaster').then(function(res) {
                 var listViewData = angular.copy(context.listViewDataMaster);
                 for (var i in listViewData) {
                     var stockData = context.listViewData[i];
@@ -2604,18 +2472,18 @@ erpApp.controller('subContractorStockCtrl', ['$scope', 'commonFact', '$location'
                     stockData.totalAmount = stockData.rate && (stockData.rate * stockData.partStockQty);
                 }
             });
-            context.actions.getFlowMaster(context);
+            context.methods.getFlowMaster(context);
         },
         callBackEdit: function(context) {
             setTimeout(function() {
-                context.actions.updateOperationFrom(context);
-                context.actions.updateOperationTo(context);
+                context.methods.updateOperationFrom(context);
+                context.methods.updateOperationTo(context);
             }, 1000);
         },
         getPartNos: function(context) {
             var partNos = [];
             if (context.data.subContractorCode) {
-                context.actions.getData('purchase.subContractorMaster', context.data.subContractorCode).then(function(res) {
+                context.methods.getData('purchase.subContractorMaster', context.data.subContractorCode).then(function(res) {
                     var data = res.data;
                     for (var i in data.mapping) {
                         partNos.push(data.mapping[i].id);
@@ -2623,7 +2491,7 @@ erpApp.controller('subContractorStockCtrl', ['$scope', 'commonFact', '$location'
                     context.form.fields['partNo'].filter = {
                         id: partNos
                     };
-                    context.actions.makeOptionsFields(context, context.form.fields['partNo']);
+                    context.methods.makeOptionsFields(context, context.form.fields['partNo']);
                 });
             }
         },
@@ -2647,7 +2515,7 @@ erpApp.controller('subContractorStockCtrl', ['$scope', 'commonFact', '$location'
                 restriction.filter = {
                     id: operationFrom
                 }
-                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
+                context.methods.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
             }
         },
         updateOperationTo: function(context, data, key, field) {
@@ -2664,473 +2532,458 @@ erpApp.controller('subContractorStockCtrl', ['$scope', 'commonFact', '$location'
                     });
                 }
 
-                context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
+                context.methods.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
             }
         },
         submit: function(context) {
             var submitService;
             if (context.data.id) {
-                submitService = context.actions.updateData(context.module, context.data)
+                submitService = context.methods.updateData(context, context.data)
             } else {
                 context.data.acceptedQty = context.data.partStockQty;
-                submitService = context.actions.updateSCStock(context);
+                submitService = context.methods.updateSCStock(context);
             }
 
             submitService.then(function() {
                 context.page.name = 'list';
-                context.actions.list(context);
+                context.methods.list(context);
             });
         }
     };
+};
+erpConfig.moduleFiles.dcSubContractor = function() {
+    var orgItemVal = null;
+    return {
+        callBackList: function(context) {
+            context.methods.getPartStock(context);
+        },
+        callBackEdit: function(context) {
+            context.form.mapping.actions.delete = false;
+            orgItemVal = angular.copy(context.data);
+            context.methods.getDCQty(context);
+        },
+        getPOSubContractor: function(context, data, key, field) {
+            context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
+                filter: {
+                    subContractorCode: key,
+                    status: 0
+                }
+            });
+            context.methods.makeOptionsFields(context, context.form.fields['poNo']);
+            context.methods.changeMapping(context, context.data, context.data['subContractorCode'], context.form.fields['subContractorCode']);
+        },
+        callBackChangeMapping: function(context) {
+            context.methods.checkAcceptedQty(context);
+            context.methods.getDCQty(context);
+        },
+        checkAcceptedQty: function(context) {
+            var partNo,
+                operationFrom;
+            context.methods.getData('production.flowMaster').then(function(res) {
+                var flowMasterData = res.data,
+                    prevOpp,
+                    qty;
+                var dcPartStockQty;
+                for (var i in context.data.mapping) {
+                    partNo = context.data.mapping[i].id;
+                    qty = context.data.mapping[i].acceptedQty;
+                    for (var j in flowMasterData) {
+                        if (flowMasterData[j].partNo === partNo) {
+                            for (var k in flowMasterData[j].mapping) {
+                                prevOpp = flowMasterData[j].mapping[k - 1];
+                                if (prevOpp && flowMasterData[j].mapping[k].source === 'Sub-Contractor') {
+                                    operationFrom = prevOpp.id;
+                                }
 
-    commonFact.initCtrl($scope, 'report.subContractorStock', actions);
+                                if (operationFrom) {
+                                    dcPartStockQty = context.partStock[partNo + '-' + operationFrom].partStockQty;
 
-}]);
-erpApp.controller('dcSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var orgItemVal = null,
-        actions = {
-            callBackList: function(context) {
-                context.actions.getPartStock(context);
-            },
-            callBackEdit: function(context) {
-                context.form.mapping.actions.delete = false;
-                orgItemVal = angular.copy(context.data);
-                context.actions.getDCQty(context);
-            },
-            getPOSubContractor: function(context, data, key, field) {
-                context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
-                    filter: {
-                        subContractorCode: key,
-                        status: 0
-                    }
-                });
-                context.actions.makeOptionsFields(context, context.form.fields['poNo']);
-                context.actions.changeMapping(context, context.data, context.data['subContractorCode'], context.form.fields['subContractorCode']);
-            },
-            callBackChangeMapping: function(context) {
-                context.actions.checkAcceptedQty(context);
-                context.actions.getDCQty(context);
-            },
-            checkAcceptedQty: function(context) {
-                var partNo,
-                    operationFrom;
-                context.actions.getData('production.flowMaster').then(function(res) {
-                    var flowMasterData = res.data,
-                        prevOpp,
-                        qty;
-                    var dcPartStockQty;
-                    for (var i in context.data.mapping) {
-                        partNo = context.data.mapping[i].id;
-                        qty = context.data.mapping[i].acceptedQty;
-                        for (var j in flowMasterData) {
-                            if (flowMasterData[j].partNo === partNo) {
-                                for (var k in flowMasterData[j].mapping) {
-                                    prevOpp = flowMasterData[j].mapping[k - 1];
-                                    if (prevOpp && flowMasterData[j].mapping[k].source === 'Sub-Contractor') {
-                                        operationFrom = prevOpp.id;
-                                    }
-
-                                    if (operationFrom) {
-                                        dcPartStockQty = context.partStock[partNo + '-' + operationFrom].partStockQty;
-
-                                        if (dcPartStockQty === undefined || dcPartStockQty < qty) {
-                                            context.data.mapping[i].acceptedQty = qty = null;
-                                        }
+                                    if (dcPartStockQty === undefined || dcPartStockQty < qty) {
+                                        context.data.mapping[i].acceptedQty = qty = null;
                                     }
                                 }
                             }
                         }
-                        context.data.mapping[i].operationFrom = operationFrom;
                     }
-                });
-            },
-            callBackUpdatePartTotal: function(context, data) {
-                var qty = parseInt(data.acceptedQty),
-                    poQty = parseInt(context.actions.getPOQty(context, data)),
-                    dcQty = context.dcQty && context.dcQty[context.data['poNo'] + '-' + data.id] || 0;
-
-                qty += parseInt(dcQty);
-                if (poQty < qty) {
-                    data.acceptedQty = null;
+                    context.data.mapping[i].operationFrom = operationFrom;
                 }
-                context.actions.updatePOTotalAmount(context);
-            },
-            getPOQty: function(context, data) {
-                var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
-                var poQty = 0;
-                var poNo = context.data.poNo;
+            });
+        },
+        callBackUpdatePartTotal: function(context, data) {
+            var qty = parseInt(data.acceptedQty),
+                poQty = parseInt(context.methods.getPOQty(context, data)),
+                dcQty = context.dcQty && context.dcQty[context.data['poNo'] + '-' + data.id] || 0;
 
-                for (var i in poSubContractor.mapping) {
-                    if (data && data.id) {
-                        if (poSubContractor.mapping[i].id === data.id) {
-                            poQty += parseInt(poSubContractor.mapping[i].acceptedQty);
-                        }
-                    } else {
+            qty += parseInt(dcQty);
+            if (poQty < qty) {
+                data.acceptedQty = null;
+            }
+            context.methods.updatePOTotalAmount(context);
+        },
+        getPOQty: function(context, data) {
+            var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
+            var poQty = 0;
+            var poNo = context.data.poNo;
+
+            for (var i in poSubContractor.mapping) {
+                if (data && data.id) {
+                    if (poSubContractor.mapping[i].id === data.id) {
                         poQty += parseInt(poSubContractor.mapping[i].acceptedQty);
                     }
+                } else {
+                    poQty += parseInt(poSubContractor.mapping[i].acceptedQty);
                 }
-                return poQty;
-            },
-            updatePoSubContractor: function(context) {
-                var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
-                var poQty = 0;
-                var dcQty = 0;
-                var qty = 0;
-                poSubContractor.status = 1;
-                for (var i in context.data.mapping) {
-                    poQty = context.actions.getPOQty(context, context.data.mapping[i]);
-                    dcQty = parseInt(context.dcQty[context.data['poNo'] + '-' + context.data.mapping[i].id]) || 0;
-                    qty = parseInt(context.data.mapping[i].acceptedQty) + dcQty;
-                    if (parseInt(poQty) > parseInt(qty)) {
-                        poSubContractor.status = 0;
-                    }
-                }
-
-                context.actions.updateData('purchase.poSubContractor', poSubContractor);
-
-            },
-            getDCQty: function(context, partNo) {
-                var dcQtyTag;
-                var dcQty;
-                context.dcQty = [];
-                return context.actions.getData('store.dcSubContractor').then(function(res) {
-                    var listViewData = res.data;
-                    for (var i in listViewData) {
-                        if (context.data.poNo === listViewData[i].poNo && (!orgItemVal || listViewData[i].id !== orgItemVal.id)) {
-                            for (var j in listViewData[i].mapping) {
-                                dcQtyTag = listViewData[i].poNo + '-' + listViewData[i].mapping[j].id;
-                                if (partNo === undefined || listViewData[i].mapping[j].id === partNo) {
-                                    dcQty = parseInt(listViewData[i].mapping[j].acceptedQty);
-                                }
-                                context.dcQty[dcQtyTag] = context.dcQty[dcQtyTag] === undefined ? dcQty : parseInt(context.dcQty[dcQtyTag]) + dcQty;
-                            }
-                        }
-                    }
-                    return dcQty;
-                });
-            },
-            callBackSubmit: function(context) {
-                var acceptedQty;
-                for (var i in context.data.mapping) {
-                    var data = angular.copy(context.data.mapping[i]);
-                    var newContext = angular.copy(context);
-                    data.partNo = data.id;
-                    data.subContractorCode = context.data.subContractorCode;
-                    if (orgItemVal && orgItemVal.mapping[i] && orgItemVal.mapping[i].acceptedQty) {
-                        acceptedQty = parseInt(data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
-                        data.acceptedQty = acceptedQty;
-                    }
-                    newContext.data = data;
-                    context.actions.updateSCStock(newContext);
-                    newContext.updateCurStock = false;
-                    context.actions.updatePartStock(newContext);
-                }
-                context.actions.updatePoSubContractor(context);
-            },
-            callBeforeDelete: function(context, id, item) {
-                var acceptedQty;
-                var poSubContractor = context.form.fields['poNo'].allOptions[item.poNo];
-                for (var i in item.mapping) {
-                    var data = angular.copy(item.mapping[i]);
-                    var newContext = angular.copy(context);
-                    data.partNo = data.id;
-                    data.subContractorCode = item.subContractorCode;
-                    acceptedQty = 0 - parseInt(data.acceptedQty);
-                    data.acceptedQty = acceptedQty;
-
-                    newContext.data = data;
-                    context.actions.updateSCStock(newContext);
-                    newContext.updateCurStock = false;
-                    context.actions.updatePartStock(newContext);
-                }
-                poSubContractor.status = 0;
-                context.actions.updateData('purchase.poSubContractor', poSubContractor);
             }
-        };
-
-    commonFact.initCtrl($scope, 'store.dcSubContractor', actions);
-
-}]);
-erpApp.controller('grnGeneralSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var orgItemVal = null,
-        actions = {
-            getPOGeneralSupplier: function(context, data, key, field) {
-                context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
-                    dataFrom: 'purchase.poGeneralSupplier',
-                    replaceName: 'poNo',
-                    filter: {
-                        generalSupplierCode: key,
-                        status: 0
-                    }
-                });
-                context.actions.makeOptionsFields(context, context.form.fields['poNo']);
-            },
-            updatePTTotal: function(context, data, updateValue) {
-                var total = 0;
-                var qty = updateValue || 0;
-                total = qty * data.rate;
-                data.total = parseFloat(total).toFixed(2);
-                context.actions.updatePOTotalAmount(context);
-            },
-            callBackAdd: function(context) {
-                orgItemVal = null;
-            },
-            callBackEdit: function(context, key) {
-                context.form.mapping.actions.delete = false;
-                orgItemVal = angular.copy(context.data);
-                context.data['generalSupplierInvoiceDate'] = new Date(context.data['generalSupplierInvoiceDate']);
-            },
-            updatePoGeneralSupplier: function(context) {
-                context.actions.getData('purchase.poGeneralSupplier', context.data.poNo).then(function(res) {
-                    var poGeneralSupplierData = res.data;
-                    poGeneralSupplierData.status = 1;
-                    poGeneralSupplierData.id = context.data.poNo;
-                    context.actions.updateData('purchase.poGeneralSupplier', poGeneralSupplierData);
-                });
-            },
-            callBackSubmit: function(context) {
-                var newQty;
-                var acceptedQty;
-                for (var i in context.data.mapping) {
-                    var data = angular.copy(context.data.mapping[i]);
-                    var newContext = angular.copy(context);
-                    data.partNo = data.id;
-                    data.operationTo = context.erpAppConfig.finalStageOpp;
-                    newContext.data = data;
-                    newContext.updatePrevStock = false;
-                    if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
-                        acceptedQty = parseInt(newContext.data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
-                        newContext.data.acceptedQty = acceptedQty;
-                    }
-                    context.actions.updatePartStock(newContext);
-
+            return poQty;
+        },
+        updatePoSubContractor: function(context) {
+            var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
+            var poQty = 0;
+            var dcQty = 0;
+            var qty = 0;
+            poSubContractor.status = 1;
+            for (var i in context.data.mapping) {
+                poQty = context.methods.getPOQty(context, context.data.mapping[i]);
+                dcQty = parseInt(context.dcQty[context.data['poNo'] + '-' + context.data.mapping[i].id]) || 0;
+                qty = parseInt(context.data.mapping[i].acceptedQty) + dcQty;
+                if (parseInt(poQty) > parseInt(qty)) {
+                    poSubContractor.status = 0;
                 }
-                context.actions.updatePoGeneralSupplier(context);
             }
-        };
 
-    commonFact.initCtrl($scope, 'store.grnGeneralSupplier', actions);
+            context.methods.updateData('purchase.poSubContractor', poSubContractor);
 
-}]);
-erpApp.controller('grnSubContractorCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var orgItemVal = null,
-        actions = {
-            callBackAdd: function(context) {
-                orgItemVal = null;
-            },
-            callBackEdit: function(context) {
-                context.form.mapping.actions.delete = false;
-                orgItemVal = angular.copy(context.data);
-                context.data['subContractorDCDate'] = new Date(context.data['subContractorDCDate']);
-            },
-            callBackList: function(context) {
-                context.grnSC = true;
-            },
-            getDCSubContractor: function(context, data, key, field) {
-                context.form.fields['dcNo'] = angular.extend(context.form.fields['dcNo'], {
-                    filter: {
-                        poNo: key,
-                        status: 0
-                    }
-                });
-                context.actions.makeOptionsFields(context, context.form.fields['dcNo']);
-            },
-            getPOSubContractor: function(context, data, key, field) {
-                context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
-                    filter: {
-                        subContractorCode: key
-                    }
-                });
-                context.actions.makeOptionsFields(context, context.form.fields['poNo']);
-            },
-            updateDCSubContractor: function(context) {
-                var dcSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
-                var grnQty = 0;
-                var dcQty = 0;
-                var qty = 0;
-                var updateDC = true;
-                dcSubContractor.status = 1;
-                for (var i in context.data.mapping) {
-                    dcQty = context.actions.getDCQty(context, context.data.mapping[i]);
-                    grnQty = parseInt(context.grnQty[context.data['dcNo'] + '-' + context.data.mapping[i].id]) || 0;
-                    qty = parseInt(context.data.mapping[i].acceptedQty) + grnQty;
-                    if (parseInt(dcQty) > parseInt(qty)) {
-                        updateDC = false;
-                    }
-                }
-                if (updateDC) {
-                    context.actions.updateData('store.dcSubContractor', dcSubContractor);
-                }
-
-            },
-            callBackChangeMapping: function(context) {
-                context.actions.getSCStock(context).then(function() {
-                    if (orgItemVal) {
-                        for (var i in orgItemVal.mapping) {
-                            var scStockMap = orgItemVal.mapping[i].id + '-' + orgItemVal.mapping[i].operationFrom;
-                            if (context.partStock[scStockMap]) {
-                                context.partStock[scStockMap].partStockQty = parseInt(context.partStock[scStockMap].partStockQty) + parseInt(orgItemVal.mapping[i].acceptedQty);
+        },
+        getDCQty: function(context, partNo) {
+            var dcQtyTag;
+            var dcQty;
+            context.dcQty = [];
+            return context.methods.getData('store.dcSubContractor').then(function(res) {
+                var listViewData = res.data;
+                for (var i in listViewData) {
+                    if (context.data.poNo === listViewData[i].poNo && (!orgItemVal || listViewData[i].id !== orgItemVal.id)) {
+                        for (var j in listViewData[i].mapping) {
+                            dcQtyTag = listViewData[i].poNo + '-' + listViewData[i].mapping[j].id;
+                            if (partNo === undefined || listViewData[i].mapping[j].id === partNo) {
+                                dcQty = parseInt(listViewData[i].mapping[j].acceptedQty);
                             }
+                            context.dcQty[dcQtyTag] = context.dcQty[dcQtyTag] === undefined ? dcQty : parseInt(context.dcQty[dcQtyTag]) + dcQty;
                         }
-                    }
-                });
-                context.actions.getGrnQty(context);
-            },
-            callBackUpdatePartTotal: function(context, data, newValue, field, fieldMapKey) {
-                var qty = parseInt(data.acceptedQty),
-                    dcQty = parseInt(context.actions.getDCQty(context, data)),
-                    grnQty = context.grnQty[context.data['dcNo'] + '-' + data.id] || 0;
-
-                qty += parseInt(grnQty);
-                if (dcQty < qty) {
-                    data.acceptedQty = null;
-                }
-                context.actions.updatePOTotalAmount(context);
-            },
-            getDCQty: function(context, data) {
-                var dcSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
-                var dcQty = 0;
-                var poNo = context.data.poNo;
-
-                for (var i in dcSubContractor.mapping) {
-                    if (data && data.id) {
-                        if (dcSubContractor.mapping[i].id === data.id) {
-                            dcQty += parseInt(dcSubContractor.mapping[i].acceptedQty);
-                        }
-                    } else {
-                        dcQty += parseInt(dcSubContractor.mapping[i].acceptedQty);
                     }
                 }
                 return dcQty;
-            },
-            getGrnQty: function(context, partNo) {
-                var grnQtyTag;
-                var grnQty;
-                context.grnQty = [];
+            });
+        },
+        callBackSubmit: function(context) {
+            var acceptedQty;
+            for (var i in context.data.mapping) {
+                var data = angular.copy(context.data.mapping[i]);
+                var newContext = angular.copy(context);
+                data.partNo = data.id;
+                data.subContractorCode = context.data.subContractorCode;
+                if (orgItemVal && orgItemVal.mapping[i] && orgItemVal.mapping[i].acceptedQty) {
+                    acceptedQty = parseInt(data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
+                    data.acceptedQty = acceptedQty;
+                }
+                newContext.data = data;
+                context.methods.updateSCStock(newContext);
+                newContext.updateCurStock = false;
+                context.methods.updatePartStock(newContext);
+            }
+            context.methods.updatePoSubContractor(context);
+        },
+        callBeforeDelete: function(context, id, item) {
+            var acceptedQty;
+            var poSubContractor = context.form.fields['poNo'].allOptions[item.poNo];
+            for (var i in item.mapping) {
+                var data = angular.copy(item.mapping[i]);
+                var newContext = angular.copy(context);
+                data.partNo = data.id;
+                data.subContractorCode = item.subContractorCode;
+                acceptedQty = 0 - parseInt(data.acceptedQty);
+                data.acceptedQty = acceptedQty;
 
-                return context.actions.getData('store.grnSubContractor').then(function(res) {
-                    var listViewData = res.data;
-                    for (var i in listViewData) {
-                        if (context.data.dcNo === listViewData[i].dcNo) {
-                            for (var j in listViewData[i].mapping) {
-                                if (listViewData[i].mapping[j].id !== orgItemVal.mapping[j].id) {
-                                    grnQtyTag = listViewData[i].dcNo + '-' + listViewData[i].mapping[j].id;
-                                    if (partNo === undefined || listViewData[i].mapping[j].id === partNo) {
-                                        grnQty = parseInt(listViewData[i].mapping[j].acceptedQty);
-                                    }
-                                    context.grnQty[grnQtyTag] = context.grnQty[grnQtyTag] === undefined ? grnQty : parseInt(context.grnQty[grnQtyTag]) + grnQty;
+                newContext.data = data;
+                context.methods.updateSCStock(newContext);
+                newContext.updateCurStock = false;
+                context.methods.updatePartStock(newContext);
+            }
+            poSubContractor.status = 0;
+            context.methods.updateData('purchase.poSubContractor', poSubContractor);
+        }
+    };
+};
+erpConfig.moduleFiles.grnGeneralSupplier = function() {
+    var orgItemVal = null;
+    return {
+        getPOGeneralSupplier: function(context, data, key, field) {
+            context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
+                dataFrom: 'purchase.poGeneralSupplier',
+                replaceName: 'poNo',
+                filter: {
+                    generalSupplierCode: key,
+                    status: 0
+                }
+            });
+            context.methods.makeOptionsFields(context, context.form.fields['poNo']);
+        },
+        updatePTTotal: function(context, data, updateValue) {
+            var total = 0;
+            var qty = updateValue || 0;
+            total = qty * data.rate;
+            data.total = parseFloat(total).toFixed(2);
+            context.methods.updatePOTotalAmount(context);
+        },
+        callBackAdd: function(context) {
+            orgItemVal = null;
+        },
+        callBackEdit: function(context, key) {
+            context.form.mapping.actions.delete = false;
+            orgItemVal = angular.copy(context.data);
+            context.data['generalSupplierInvoiceDate'] = new Date(context.data['generalSupplierInvoiceDate']);
+        },
+        updatePoGeneralSupplier: function(context) {
+            context.methods.getData('purchase.poGeneralSupplier', context.data.poNo).then(function(res) {
+                var poGeneralSupplierData = res.data;
+                poGeneralSupplierData.status = 1;
+                poGeneralSupplierData.id = context.data.poNo;
+                context.methods.updateData('purchase.poGeneralSupplier', poGeneralSupplierData);
+            });
+        },
+        callBackSubmit: function(context) {
+            var newQty;
+            var acceptedQty;
+            for (var i in context.data.mapping) {
+                var data = angular.copy(context.data.mapping[i]);
+                var newContext = angular.copy(context);
+                data.partNo = data.id;
+                data.operationTo = context.erpAppConfig.finalStageOpp;
+                newContext.data = data;
+                newContext.updatePrevStock = false;
+                if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
+                    acceptedQty = parseInt(newContext.data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
+                    newContext.data.acceptedQty = acceptedQty;
+                }
+                context.methods.updatePartStock(newContext);
+
+            }
+            context.methods.updatePoGeneralSupplier(context);
+        }
+    };
+};
+erpConfig.moduleFiles.grnSubContractor = function() {
+    var orgItemVal = null
+    return {
+        callBackAdd: function(context) {
+            orgItemVal = null;
+        },
+        callBackEdit: function(context) {
+            context.form.mapping.actions.delete = false;
+            orgItemVal = angular.copy(context.data);
+            context.data['subContractorDCDate'] = new Date(context.data['subContractorDCDate']);
+        },
+        callBackList: function(context) {
+            context.grnSC = true;
+        },
+        getDCSubContractor: function(context, data, key, field) {
+            context.form.fields['dcNo'] = angular.extend(context.form.fields['dcNo'], {
+                filter: {
+                    poNo: key,
+                    status: 0
+                }
+            });
+            context.methods.makeOptionsFields(context, context.form.fields['dcNo']);
+        },
+        getPOSubContractor: function(context, data, key, field) {
+            context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
+                filter: {
+                    subContractorCode: key
+                }
+            });
+            context.methods.makeOptionsFields(context, context.form.fields['poNo']);
+        },
+        updateDCSubContractor: function(context) {
+            var dcSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
+            var grnQty = 0;
+            var dcQty = 0;
+            var qty = 0;
+            var updateDC = true;
+            dcSubContractor.status = 1;
+            for (var i in context.data.mapping) {
+                dcQty = context.methods.getDCQty(context, context.data.mapping[i]);
+                grnQty = parseInt(context.grnQty[context.data['dcNo'] + '-' + context.data.mapping[i].id]) || 0;
+                qty = parseInt(context.data.mapping[i].acceptedQty) + grnQty;
+                if (parseInt(dcQty) > parseInt(qty)) {
+                    updateDC = false;
+                }
+            }
+            if (updateDC) {
+                context.methods.updateData('store.dcSubContractor', dcSubContractor);
+            }
+
+        },
+        callBackChangeMapping: function(context) {
+            context.methods.getSCStock(context).then(function() {
+                if (orgItemVal) {
+                    for (var i in orgItemVal.mapping) {
+                        var scStockMap = orgItemVal.mapping[i].id + '-' + orgItemVal.mapping[i].operationFrom;
+                        if (context.partStock[scStockMap]) {
+                            context.partStock[scStockMap].partStockQty = parseInt(context.partStock[scStockMap].partStockQty) + parseInt(orgItemVal.mapping[i].acceptedQty);
+                        }
+                    }
+                }
+            });
+            context.methods.getGrnQty(context);
+        },
+        callBackUpdatePartTotal: function(context, data, newValue, field, fieldMapKey) {
+            var qty = parseInt(data.acceptedQty),
+                dcQty = parseInt(context.methods.getDCQty(context, data)),
+                grnQty = context.grnQty[context.data['dcNo'] + '-' + data.id] || 0;
+
+            qty += parseInt(grnQty);
+            if (dcQty < qty) {
+                data.acceptedQty = null;
+            }
+            context.methods.updatePOTotalAmount(context);
+        },
+        getDCQty: function(context, data) {
+            var dcSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
+            var dcQty = 0;
+            var poNo = context.data.poNo;
+
+            for (var i in dcSubContractor.mapping) {
+                if (data && data.id) {
+                    if (dcSubContractor.mapping[i].id === data.id) {
+                        dcQty += parseInt(dcSubContractor.mapping[i].acceptedQty);
+                    }
+                } else {
+                    dcQty += parseInt(dcSubContractor.mapping[i].acceptedQty);
+                }
+            }
+            return dcQty;
+        },
+        getGrnQty: function(context, partNo) {
+            var grnQtyTag;
+            var grnQty;
+            context.grnQty = [];
+
+            return context.methods.getData('store.grnSubContractor').then(function(res) {
+                var listViewData = res.data;
+                for (var i in listViewData) {
+                    if (context.data.dcNo === listViewData[i].dcNo) {
+                        for (var j in listViewData[i].mapping) {
+                            if (listViewData[i].mapping[j].id !== orgItemVal.mapping[j].id) {
+                                grnQtyTag = listViewData[i].dcNo + '-' + listViewData[i].mapping[j].id;
+                                if (partNo === undefined || listViewData[i].mapping[j].id === partNo) {
+                                    grnQty = parseInt(listViewData[i].mapping[j].acceptedQty);
                                 }
+                                context.grnQty[grnQtyTag] = context.grnQty[grnQtyTag] === undefined ? grnQty : parseInt(context.grnQty[grnQtyTag]) + grnQty;
                             }
                         }
                     }
-                    return grnQty;
-                });
-            },
-            callBackSubmit: function(context) {
-                var newQty;
-                var acceptedQty;
-                for (var i in context.data.mapping) {
-                    var data = angular.copy(context.data.mapping[i]);
-                    var newContext = angular.copy(context);
-                    data.partNo = data.id;
-                    newContext.data = data;
-                    newContext.updatePrevStock = false;
-                    if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
-                        acceptedQty = parseInt(newContext.data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
-                        newContext.data.acceptedQty = acceptedQty;
-                    }
-                    context.actions.updatePartStock(newContext);
-                    var scData = angular.copy(data);
-                    var newScContext = angular.copy(context);
-                    scData.subContractorCode = context.data.subContractorCode;
-                    scData.acceptedQty = 0 - scData.acceptedQty;
-                    newScContext.data = scData;
-                    context.actions.updateSCStock(newScContext);
                 }
-                context.actions.updateDCSubContractor(context);
+                return grnQty;
+            });
+        },
+        callBackSubmit: function(context) {
+            var newQty;
+            var acceptedQty;
+            for (var i in context.data.mapping) {
+                var data = angular.copy(context.data.mapping[i]);
+                var newContext = angular.copy(context);
+                data.partNo = data.id;
+                newContext.data = data;
+                newContext.updatePrevStock = false;
+                if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
+                    acceptedQty = parseInt(newContext.data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
+                    newContext.data.acceptedQty = acceptedQty;
+                }
+                context.methods.updatePartStock(newContext);
+                var scData = angular.copy(data);
+                var newScContext = angular.copy(context);
+                scData.subContractorCode = context.data.subContractorCode;
+                scData.acceptedQty = 0 - scData.acceptedQty;
+                newScContext.data = scData;
+                context.methods.updateSCStock(newScContext);
             }
-        };
+            context.methods.updateDCSubContractor(context);
+        }
+    };
+};
+erpConfig.moduleFiles.grnSupplier = function() {
+    var orgItemVal = null;
+    return {
+        getPOSupplier: function(context, data, key, field) {
+            context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
+                dataFrom: 'purchase.poSupplier',
+                replaceName: 'poNo',
+                filter: {
+                    supplierCode: key,
+                    status: 0
+                }
+            });
+            context.methods.makeOptionsFields(context, context.form.fields['poNo']);
+        },
+        updateRmTotal: function(context, data, updateValue) {
+            var total = 0;
+            var qty = updateValue || 0;
+            total = qty * data.rate;
+            data.total = parseFloat(total).toFixed(2);
+            context.methods.updatePOTotalAmount(context);
+        },
+        callBackAdd: function(context) {
+            orgItemVal = null;
+        },
+        callBackEdit: function(context, key) {
+            context.form.mapping.actions.delete = false;
+            orgItemVal = angular.copy(context.data);
+            context.data['supplierInvoiceDate'] = new Date(context.data['supplierInvoiceDate']);
+        },
+        updateRMStockQty: function(context) {
+            context.methods.getData('report.rmStock').then(function(res) {
+                var rmStockData = res.data,
+                    rmStock = {};
+                var existingStock;
+                var qty;
+                var oldQty;
+                var rmStockQty;
+                var data;
+                for (var i in rmStockData) {
+                    rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
+                }
 
-    commonFact.initCtrl($scope, 'store.grnSubContractor', actions);
-
-}]);
-erpApp.controller('grnSupplierCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var orgItemVal = null,
-        actions = {
-            getPOSupplier: function(context, data, key, field) {
-                context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
-                    dataFrom: 'purchase.poSupplier',
-                    replaceName: 'poNo',
-                    filter: {
-                        supplierCode: key,
-                        status: 0
+                for (var i in context.data.mapping) {
+                    existingStock = rmStock[context.data.mapping[i].id];
+                    qty = context.data.mapping[i].acceptedQty || context.data.mapping[i].receivedQty;
+                    if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
+                        oldQty = orgItemVal.mapping[i].acceptedQty || orgItemVal.mapping[i].receivedQty;
+                        qty = parseInt(qty) - parseInt(oldQty);
                     }
-                });
-                context.actions.makeOptionsFields(context, context.form.fields['poNo']);
-            },
-            updateRmTotal: function(context, data, updateValue) {
-                var total = 0;
-                var qty = updateValue || 0;
-                total = qty * data.rate;
-                data.total = parseFloat(total).toFixed(2);
-                context.actions.updatePOTotalAmount(context);
-            },
-            callBackAdd: function(context) {
-                orgItemVal = null;
-            },
-            callBackEdit: function(context, key) {
-                context.form.mapping.actions.delete = false;
-                orgItemVal = angular.copy(context.data);
-                context.data['supplierInvoiceDate'] = new Date(context.data['supplierInvoiceDate']);
-            },
-            updateRMStockQty: function(context) {
-                context.actions.getData('report.rmStock').then(function(res) {
-                    var rmStockData = res.data,
-                        rmStock = {};
-                    var existingStock;
-                    var qty;
-                    var oldQty;
-                    var rmStockQty;
-                    var data;
-                    for (var i in rmStockData) {
-                        rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
+                    rmStockQty = existingStock && parseInt(existingStock.rmStockQty) + parseInt(qty) || parseInt(qty);
+                    data = {
+                        id: existingStock && existingStock.id || undefined,
+                        rmCode: context.data.mapping[i].id,
+                        rmStockQty: rmStockQty,
+                        uomCode: context.data.mapping[i].uomCode
                     }
-
-                    for (var i in context.data.mapping) {
-                        existingStock = rmStock[context.data.mapping[i].id];
-                        qty = context.data.mapping[i].acceptedQty || context.data.mapping[i].receivedQty;
-                        if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
-                            oldQty = orgItemVal.mapping[i].acceptedQty || orgItemVal.mapping[i].receivedQty;
-                            qty = parseInt(qty) - parseInt(oldQty);
-                        }
-                        rmStockQty = existingStock && parseInt(existingStock.rmStockQty) + parseInt(qty) || parseInt(qty);
-                        data = {
-                            id: existingStock && existingStock.id || undefined,
-                            rmCode: context.data.mapping[i].id,
-                            rmStockQty: rmStockQty,
-                            uomCode: context.data.mapping[i].uomCode
-                        }
-                        context.actions.updateData('report.rmStock', data);
-                    }
-                });
-            },
-            updatePoSupplier: function(context) {
-                context.actions.getData('purchase.poSupplier', context.data.poNo).then(function(res) {
-                    var poSupplierData = res.data;
-                    poSupplierData.status = 1;
-                    poSupplierData.id = context.data.poNo;
-                    context.actions.updateData('purchase.poSupplier', poSupplierData);
-                });
-            },
-            callBackSubmit: function(context) {
-                context.actions.updateRMStockQty(context);
-                context.actions.updatePoSupplier(context);
-            }
-        };
-
-    commonFact.initCtrl($scope, 'store.grnSupplier', actions);
-
-}]);
+                    context.methods.updateData('report.rmStock', data);
+                }
+            });
+        },
+        updatePoSupplier: function(context) {
+            context.methods.getData('purchase.poSupplier', context.data.poNo).then(function(res) {
+                var poSupplierData = res.data;
+                poSupplierData.status = 1;
+                poSupplierData.id = context.data.poNo;
+                context.methods.updateData('purchase.poSupplier', poSupplierData);
+            });
+        },
+        callBackSubmit: function(context) {
+            context.methods.updateRMStockQty(context);
+            context.methods.updatePoSupplier(context);
+        }
+    };
+};
 (function(module) {
 try {
   module = angular.module('erpApp');
@@ -3179,7 +3032,7 @@ module.run(['$templateCache', function($templateCache) {
     '                <div class="card-header hide-print">\n' +
     '                    <b ng-if="!context.page.printView">{{context.form.title||\'Add/Edit\'}}</b>\n' +
     '                    <a ng-if="context.page.printView" class="fa fa-print" href=\'javascript: void();\' onclick="window.print()"><b>Print View</b></a>\n' +
-    '                    <button type="button" class="close float-right" aria-label="Close" ng-click="context.actions.cancel(context)">\n' +
+    '                    <button type="button" class="close float-right" aria-label="Close" ng-click="context.methods.cancel()">\n' +
     '                        <span aria-hidden="true">&times;</span>\n' +
     '                    </button>\n' +
     '                </div>\n' +
@@ -3231,7 +3084,6 @@ try {
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/components/alertRol.html',
     '<div>\n' +
-    '\n' +
     '    <div class="modal fade" id="RolModal" role="dialog">\n' +
     '        <div class="modal-dialog modal-lg">\n' +
     '            <div class="modal-content">\n' +
@@ -3292,13 +3144,13 @@ module.run(['$templateCache', function($templateCache) {
     '            </div>\n' +
     '            <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>\n' +
     '            <div ng-switch-when="input" class="col-6">\n' +
-    '                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, context.data, context.data[field.id], field)"\n' +
+    '                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.methods[field.action] && context.methods[field.action](context.data, context.data[field.id], field)"\n' +
     '                    max="{{field.max}}" ng-disabled="field.isDisable || (field.isEditDisable && context.data[context.form.disableByField])" />\n' +
     '            </div>\n' +
     '            <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>\n' +
     '            <div ng-switch-when="select" class="col-6">\n' +
-    '                <select id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, context.data, context.data[field.id], field)"\n' +
-    '                    ng-options="option.optionId as option.optionName for option in field.options" ng-disabled="field.isDisable || (field.isEditDisable && context.data[context.form.disableByField])">\n' +
+    '                <select id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.methods[field.action] && context.methods[field.action](context.data, context.data[field.id], field)" ng-options="option.optionId as option.optionName for option in field.options"\n' +
+    '                    ng-disabled="field.isDisable || (field.isEditDisable && context.data[context.form.disableByField])">\n' +
     '                    <option value="">--Select--</option>\n' +
     '                </select>\n' +
     '            </div>\n' +
@@ -3309,7 +3161,7 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="form-group row" ng-repeat="field in context.form.fields" ng-if="context.page.printView && !field.afterMapping">\n' +
     '            <label for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>\n' +
     '            <div class="col-10">\n' +
-    '                <span id="{{field.id}}" ng-bind="context.actions.replaceFieldVal(context.printData[field.id], field)"></span>\n' +
+    '                <span id="{{field.id}}" ng-bind="context.methods.replaceFieldVal(context.printData[field.id], field)"></span>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '        <div class="form-group row" ng-if="context.form.mapping">\n' +
@@ -3324,13 +3176,13 @@ module.run(['$templateCache', function($templateCache) {
     '            </div>\n' +
     '            <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>\n' +
     '            <div ng-switch-when="input" class="col-6">\n' +
-    '                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, context.data, context.data[field.id], field)"\n' +
+    '                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.methods[field.action] && context.methods[field.action](context.data, context.data[field.id], field)"\n' +
     '                    max="{{field.max}}" ng-disabled="field.isDisable || (field.isEditDisable && context.data[context.form.disableByField])" />\n' +
     '            </div>\n' +
     '            <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>\n' +
     '            <div ng-switch-when="select" class="col-6">\n' +
-    '                <select id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, context.data, context.data[field.id], field)"\n' +
-    '                    ng-options="option.optionId as option.optionName for option in field.options" ng-disabled="field.isDisable || (field.isEditDisable && context.data[context.form.disableByField])">\n' +
+    '                <select id="{{field.id}}" class="form-control" ng-model="context.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.methods[field.action] && context.methods[field.action](context.data, context.data[field.id], field)" ng-options="option.optionId as option.optionName for option in field.options"\n' +
+    '                    ng-disabled="field.isDisable || (field.isEditDisable && context.data[context.form.disableByField])">\n' +
     '                    <option value="">--Select--</option>\n' +
     '                </select>\n' +
     '            </div>\n' +
@@ -3341,16 +3193,16 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="form-group row" ng-repeat="field in context.form.fields" ng-if="context.page.printView && field.afterMapping">\n' +
     '            <label for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>\n' +
     '            <div class="col-10">\n' +
-    '                <span id="{{field.id}}" ng-bind="context.actions.replaceFieldVal(context.printData[field.id], field)"></span>\n' +
+    '                <span id="{{field.id}}" ng-bind="context.methods.replaceFieldVal(context.printData[field.id], field)"></span>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '        <div class="form-group row" ng-if="!context.page.printView">\n' +
     '            <div class="col-2">\n' +
     '            </div>\n' +
     '            <div class="col-10">\n' +
-    '                <button ng-if="context.form.actions.submit === undefined || context.form.actions.submit" type="button" class="btn btn-primary" id="submit" ng-click="context.form.actions.customSubmit && context.actions[context.form.actions.customSubmit](context) || context.actions.submit(context)"\n' +
+    '                <button ng-if="context.form.actions.submit === undefined || context.form.actions.submit" type="button" class="btn btn-primary" id="submit" ng-click="context.form.actions.customSubmit && context.methods[context.form.actions.customSubmit]() || context.methods.submit()"\n' +
     '                    ng-disabled="customForm.$invalid">Submit</button>\n' +
-    '                <button ng-if="context.form.actions.cancel === undefined || context.form.actions.cancel" type="button" class="btn btn-primary" id="cancel" ng-click="context.actions.cancel(context)">Cancel</button>\n' +
+    '                <button ng-if="context.form.actions.cancel === undefined || context.form.actions.cancel" type="button" class="btn btn-primary" id="cancel" ng-click="context.methods.cancel()">Cancel</button>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '    </form>\n' +
@@ -3378,18 +3230,18 @@ module.run(['$templateCache', function($templateCache) {
     '                    <td align="right"><b>{{context.form.fields.date.name}}</b></td>\n' +
     '                    <td colspan="2">\n' +
     '                        <input ng-if="!context.page.printView" type="date" id="{{context.form.fields.date.id}}" class="form-control" ng-model="context.data[context.form.fields.date.id]" ng-required="{{context.form.fields.date.required}}" />\n' +
-    '                        <span ng-if="context.page.printView" id="{{context.form.fields.date.id}}" ng-bind="context.actions.replaceFieldVal(context.data[context.form.fields.date.id], context.form.fields.date)">{{context.data[context.form.fields.date.id]}}</span>\n' +
+    '                        <span ng-if="context.page.printView" id="{{context.form.fields.date.id}}" ng-bind="context.methods.replaceFieldVal(context.data[context.form.fields.date.id], context.form.fields.date)">{{context.data[context.form.fields.date.id]}}</span>\n' +
     '                    </td>\n' +
     '                </tr>\n' +
     '                <tr>\n' +
     '                    <td><b>{{context.form.fields.customerCode.name}}</b></td>\n' +
     '                    <td colspan="6">\n' +
-    '                        <select ng-if="!context.page.printView" id="{{context.form.fields.customerCode.id}}" class="form-control" ng-model="context.data[context.form.fields.customerCode.id]" ng-required="{{context.form.fields.customerCode.required}}" ng-change="context.form.fields.customerCode.action && context.actions[context.form.fields.customerCode.action] && context.actions[context.form.fields.customerCode.action](context, context.data, context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)"\n' +
+    '                        <select ng-if="!context.page.printView" id="{{context.form.fields.customerCode.id}}" class="form-control" ng-model="context.data[context.form.fields.customerCode.id]" ng-required="{{context.form.fields.customerCode.required}}" ng-change="context.form.fields.customerCode.action && context.methods[context.form.fields.customerCode.action] && context.methods[context.form.fields.customerCode.action](context.data, context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)"\n' +
     '                            ng-options="option.optionId as option.optionName for option in context.form.fields.customerCode.options" ng-disabled="context.form.fields.customerCode.isDisable || (context.form.fields.customerCode.isEditDisable && context.data[context.form.disableByField])"\n' +
     '                            ng-required="{{context.form.fields.customerCode.required}}">\n' +
     '                            <option value="">--Select--</option>\n' +
     '                        </select>\n' +
-    '                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}" ng-bind="context.actions.replaceFieldVal(context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)"></span>\n' +
+    '                        <span ng-if="context.page.printView" id="{{context.form.fields.customerCode.id}}" ng-bind="context.methods.replaceFieldVal(context.data[context.form.fields.customerCode.id], context.form.fields.customerCode)"></span>\n' +
     '\n' +
     '                        <span id="{{context.form.fields.address.id}}">, {{context.data[context.form.fields.address.id]}}</span>\n' +
     '\n' +
@@ -3411,20 +3263,20 @@ module.run(['$templateCache', function($templateCache) {
     '                <tr ng-repeat="(key, map) in context.data.mapping" ng-if="!context.page.printView">\n' +
     '                    <td ng-switch="field.type" ng-repeat="field in context.form.mapping.fields">\n' +
     '                        <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>\n' +
-    '                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field, key)"\n' +
+    '                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.methods[field.action] && context.methods[field.action](map, map[field.id], field, key)"\n' +
     '                            ng-required="{{field.required}}" />\n' +
-    '                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field, key)" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options"\n' +
+    '                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="field.action && context.methods[field.action] && context.methods[field.action](map, map[field.id], field, key)" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options"\n' +
     '                            ng-required="{{field.required}}" ng-disabled="field.isDisable">\n' +
     '                            <option value="">--Select--</option>\n' +
     '                        </select>\n' +
     '                    </td>\n' +
     '                    <td>\n' +
-    '                        <a ng-if="context.form.mapping.actions.delete || context.form.mapping.actions.delete===undefined" class="fa fa-fw fa-times" href="javascript: void(0);" ng-click="context.actions.removeMapping(context, context.data.mapping, key)"> </a>\n' +
+    '                        <a ng-if="context.form.mapping.actions.delete || context.form.mapping.actions.delete===undefined" class="fa fa-fw fa-times" href="javascript: void(0);" ng-click="context.methods.removeMapping(context.data.mapping, key)"> </a>\n' +
     '                    </td>\n' +
     '                </tr>\n' +
     '                <tr ng-repeat="(key, map) in context.data.mapping" ng-if="context.page.printView">\n' +
     '                    <td ng-repeat="field in context.form.mapping.fields">\n' +
-    '                        <span id="{{field.id}}-{{key}}" ng-bind="context.actions.replaceFieldVal(map[field.id], field)"></span>\n' +
+    '                        <span id="{{field.id}}-{{key}}" ng-bind="context.methods.replaceFieldVal(map[field.id], field)"></span>\n' +
     '                    </td>\n' +
     '                </tr>\n' +
     '\n' +
@@ -3434,7 +3286,7 @@ module.run(['$templateCache', function($templateCache) {
     '                </tr>\n' +
     '                <tr ng-if="context.cashBill">\n' +
     '                    <td colspan="4" align="right"><b>Previous Balance:</b></td>\n' +
-    '                    <td colspan="2"><input ng-if="!context.page.printView" type="text" id="{{context.form.fields.preBalance.id}}" class="form-control" ng-model="context.data[context.form.fields.preBalance.id]" ng-change="context.form.fields.preBalance.action && context.actions[context.form.fields.preBalance.action] && context.actions[context.form.fields.preBalance.action](context, map, map[context.form.fields.preBalance.id], field)"\n' +
+    '                    <td colspan="2"><input ng-if="!context.page.printView" type="text" id="{{context.form.fields.preBalance.id}}" class="form-control" ng-model="context.data[context.form.fields.preBalance.id]" ng-change="context.form.fields.preBalance.action && context.methods[context.form.fields.preBalance.action] && context.methods[context.form.fields.preBalance.action](map, map[context.form.fields.preBalance.id], field)"\n' +
     '                        />\n' +
     '                        <span ng-if="context.page.printView" id="{{context.form.fields.preBalance.id}}">{{context.data[context.form.fields.preBalance.id]}}</span></td>\n' +
     '                </tr>\n' +
@@ -3465,8 +3317,8 @@ module.run(['$templateCache', function($templateCache) {
     '            <div class="col-2">\n' +
     '            </div>\n' +
     '            <div class="col-10">\n' +
-    '                <button type="button" class="btn btn-primary" id="submit" ng-click="context.actions.submit(context)" ng-disabled="entryInvoice.$invalid">Submit</button>\n' +
-    '                <button type="button" class="btn btn-primary" id="cancel" ng-click="context.actions.cancel(context)">Cancel</button>\n' +
+    '                <button type="button" class="btn btn-primary" id="submit" ng-click="context.methods.submit()" ng-disabled="entryInvoice.$invalid">Submit</button>\n' +
+    '                <button type="button" class="btn btn-primary" id="cancel" ng-click="context.methods.cancel()">Cancel</button>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '    </form>\n' +
@@ -3485,20 +3337,20 @@ module.run(['$templateCache', function($templateCache) {
     '<div>\n' +
     '    <h3>{{context.filterView.title}}\n' +
     '        <div ng-if="context.page.downloadTableData" class="pull-right">\n' +
-    '            <a href="javascript: void(0);" ng-click="context.page.downloadTableData === true && context.actions.downloadTableData(context) || context.actions[context.page.downloadTableData](context)" title="Download Table Data" class="fa fa-fw fa-download"></a>\n' +
+    '            <a href="javascript: void(0);" ng-click="context.page.downloadTableData === true && context.methods.downloadTableData() || context.methods[context.page.downloadTableData]()" title="Download Table Data" class="fa fa-fw fa-download"></a>\n' +
     '        </div>\n' +
     '        <div ng-if="context.page.downloadExcel" class="pull-right">\n' +
-    '            <a href="javascript: void(0);" ng-click="context.actions.downloadExcel(context, \'listView\')" title="Download Excel" class="fa fa-fw fa-file-excel-o"></a>\n' +
+    '            <a href="javascript: void(0);" ng-click="context.methods.downloadExcel(\'listView\')" title="Download Excel" class="fa fa-fw fa-file-excel-o"></a>\n' +
     '        </div>\n' +
     '    </h3>\n' +
     '    <table class="table table-bordered">\n' +
     '        <thead>\n' +
     '            <tr>\n' +
     '                <th ng-repeat="(key, list) in context.filterView.fields">\n' +
-    '                    {{list.title}}:<select ng-if="list.type===\'select\'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="context.filterView.data[list.id]" ng-change="context.actions[list.action] && context.actions[list.action](context, list) || context.actions[\'list\'](context)"\n' +
+    '                    {{list.title}}:<select ng-if="list.type===\'select\'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="context.filterView.data[list.id]" ng-change="context.methods[list.action] && context.methods[list.action](list) || context.methods[\'list\']()"\n' +
     '                        ng-options="option.optionId as option.optionName for option in list.options">\n' +
     '                        <option value="">--Select--</option>\n' +
-    '                    </select> <input ng-if="list.type===\'input\'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="context.filterView.data[list.id]" ng-change="context.actions[list.action] && context.actions[list.action](context, list) || context.actions[\'list\'](context)"\n' +
+    '                    </select> <input ng-if="list.type===\'input\'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="context.filterView.data[list.id]" ng-change="context.methods[list.action] && context.methods[list.action](list) || context.methods[\'list\']()"\n' +
     '                    />\n' +
     '                </th>\n' +
     '            </tr>\n' +
@@ -3515,7 +3367,7 @@ module.run(['$templateCache', function($templateCache) {
     '        <tbody>\n' +
     '            <tr ng-repeat="dataList in context.listViewData">\n' +
     '                <td ng-repeat="(key, list) in context.listView">\n' +
-    '                    <div ng-if="!list.actions" ng-bind="context.actions.replaceFieldVal(dataList[list.id], list)"></div>\n' +
+    '                    <div ng-if="!list.actions" ng-bind="context.methods.replaceFieldVal(dataList[list.id], list)"></div>\n' +
     '                </td>\n' +
     '            </tr>\n' +
     '        </tbody>\n' +
@@ -3534,10 +3386,10 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/components/header.html',
     '<div>\n' +
     '    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top  hide-print" id="mainNav">\n' +
-    '        <a class="navbar-brand" href="#/">{{headerContext.appName}}</a>\n' +
-    '        <div ng-if="headerContext.isLogin" class="collapse navbar-collapse" id="navbarSupportedContent">\n' +
+    '        <a class="navbar-brand" href="#/">{{context.erpAppConfig.appName}}</a>\n' +
+    '        <div ng-if="context.methods.isLogin()" class="collapse navbar-collapse" id="navbarSupportedContent">\n' +
     '            <ul class="navbar-nav mr-auto">\n' +
-    '                <li ng-if="!module.disableMenu && !module.disable" class="nav-item dropdown" ng-repeat="(key, module) in headerContext.modules">\n' +
+    '                <li ng-if="context.methods.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">\n' +
     '                    <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">\n' +
     '                        <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
     '                        <span class="nav-link-text">{{module.title}}</span>\n' +
@@ -3547,39 +3399,39 @@ module.run(['$templateCache', function($templateCache) {
     '                        <span class="nav-link-text">{{module.title}}</span>\n' +
     '                    </a>\n' +
     '                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">\n' +
-    '                        <div ng-repeat="(subKey, subModule) in headerContext.actions.showSubModule(module)">\n' +
-    '                            <a ng-if="!subModule.disableMenu && !subModule.disable" class="dropdown-item" href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
-    '                            <div ng-if="!subModule.disableMenu && !subModule.disable" class="dropdown-divider"></div>\n' +
+    '                        <div ng-repeat="(subKey, subModule) in context.methods.showSubModule(module)">\n' +
+    '                            <a ng-if="context.methods.isShowMenu(subModule)" class="dropdown-item" href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
+    '                            <div ng-if="context.methods.isShowMenu(subModule)" class="dropdown-divider"></div>\n' +
     '                        </div>\n' +
     '                    </div>\n' +
     '                </li>\n' +
     '            </ul>\n' +
-    '            <ul ng-if="headerContext.modules" class="navbar-nav ml-auto">\n' +
+    '            <ul ng-if="context.erpAppConfig.modules.controllers && !context.methods.isSuperAdmin()" class="nav-item dropdown" class="navbar-nav ml-auto">\n' +
     '                <li class="nav-item dropdown">\n' +
     '                </li>\n' +
-    '                <li ng-if="!headerContext.modules[\'calendarYear\'].disable" class="nav-item">\n' +
-    '                    <select class="form-control" id="calendarYear" ng-change="headerContext.actions.changeCalendarYear(headerContext)" ng-model="headerContext.calendarYear" ng-options="option.optionId as option.optionName for option in headerContext.calendarYearList">\n' +
+    '                <li ng-if="!context.erpAppConfig.modules.controllers[\'calendarYear\'].disable" class="nav-item">\n' +
+    '                    <select class="form-control" id="calendarYear" ng-change="context.methods.changeCalendarYear()" ng-model="context.erpAppConfig.calendarYear" ng-options="option.optionId as option.optionName for option in context.calendarYearList">\n' +
     '                        <option value="">--Select--</option>\n' +
     '                    </select>\n' +
     '                </li>\n' +
-    '                <li ng-if="!headerContext.modules[\'databaseUpload\'].disable" class="nav-item">\n' +
-    '                    <a class="nav-link" title="Import data" href="#!{{headerContext.modules[\'databaseUpload\'].page.link}}">\n' +
+    '                <li ng-if="!context.erpAppConfig.modules.controllers[\'databaseUpload\'].disable" class="nav-item">\n' +
+    '                    <a class="nav-link" title="Import data" href="#!{{context.erpAppConfig.modules.controllers[\'databaseUpload\'].page.link}}">\n' +
     '                        <i class="fa fa-fw fa-upload"></i>\n' +
     '                    </a>\n' +
     '                </li>\n' +
-    '                <li ng-if="!headerContext.modules[\'databaseDownload\'].disable" class="nav-item">\n' +
-    '                    <a class="nav-link" title="Download data" href="#" ng-click="headerContext.actions.downloadData(headerContext)">\n' +
+    '                <li ng-if="!context.erpAppConfig.modules.controllers[\'databaseDownload\'].disable" class="nav-item">\n' +
+    '                    <a class="nav-link" title="Download data" href="#" ng-click="context.methods.downloadData()">\n' +
     '                        <i class="fa fa-fw fa-download"></i>\n' +
     '                    </a>\n' +
     '\n' +
     '                </li>\n' +
     '            </ul>\n' +
-    '            <ul ng-if="headerContext.modules" class="navbar-nav ml-auto">\n' +
+    '            <ul ng-if="context.erpAppConfig.modules.controllers" class="navbar-nav ml-auto">\n' +
     '                <li class="nav-item">\n' +
-    '                    <a title="Logout" class="nav-link" href="#!{{headerContext.modules[\'login\'].page.link}}?type=logout">\n' +
+    '                    <a title="Logout" class="nav-link" href="#!{{context.erpAppConfig.modules.controllers[\'login\'].page.link}}?type=logout">\n' +
     '                        <i class="fa fa-fw fa-sign-out"></i>\n' +
     '                    </a>\n' +
-    '                    <a ng-if="!headerContext.isLogin" title="Login" class="nav-link" href="#!{{headerContext.modules[\'login\'].page.link}}">\n' +
+    '                    <a ng-if="!context.methods.isLogin" title="Login" class="nav-link" href="#!{{context.erpAppConfig.modules.controllers[\'login\'].page.link}}">\n' +
     '                        <i class="fa fa-fw fa-sign-in"></i>\n' +
     '                    </a>\n' +
     '                </li>\n' +
@@ -3596,8 +3448,8 @@ module.run(['$templateCache', function($templateCache) {
     '                        <button type="button" class="close" data-dismiss="modal">&times;</button>\n' +
     '                    </div>\n' +
     '                    <div class="modal-body modal-Scroll">\n' +
-    '                        <a href="{{headerContext.modules[\'databaseDownload\'].page.link}}" download="master_database.json"> Master database</a> ||\n' +
-    '                        <a href="YEAR-{{headerContext.calendarYear}}/{{headerContext.modules[\'databaseDownload\'].page.link}}" download="database_{{headerContext.downloadDbName}}.json"> Current Year database</a>\n' +
+    '                        <a href="{{context.erpAppConfig.modules.controllers[\'databaseDownload\'].page.link}}" download="master_database.json"> Master database</a> ||\n' +
+    '                        <a href="YEAR-{{context.calendarYear}}/{{context.erpAppConfig.modules.controllers[\'databaseDownload\'].page.link}}" download="database_{{context.downloadDbName}}.json"> Current Year database</a>\n' +
     '                    </div>\n' +
     '                </div>\n' +
     '            </div>\n' +
@@ -3623,34 +3475,34 @@ module.run(['$templateCache', function($templateCache) {
     '                <th ng-repeat="(key, list) in context.listView">\n' +
     '                    <div ng-if="!list.action && list.isFilterBy===undefined">{{list.title}}</div>\n' +
     '                    <div ng-if="list.isFilterBy">\n' +
-    '                        <select ng-if="list.type===\'select\'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.actions.viewFilterBy(context, list)" ng-options="option.optionId as option.optionName for option in list.options">\n' +
+    '                        <select ng-if="list.type===\'select\'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.methods.viewFilterBy(list)" ng-options="option.optionId as option.optionName for option in list.options">\n' +
     '                            <option value="">{{list.title}}</option>\n' +
     '                        </select>\n' +
-    '                        <input ng-if="list.type===\'input\'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.actions.viewFilterBy(context, list)" />\n' +
+    '                        <input ng-if="list.type===\'input\'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.methods.viewFilterBy(list)" />\n' +
     '                    </div>\n' +
     '                </th>\n' +
     '                <th>\n' +
-    '                    <div ng-if="context.page.actions.add" class="pull-right"><a href="javascript: void(0);" ng-click="context.actions.add(context)" class="fa fa-fw fa-plus-square-o">Add</a></div>\n' +
+    '                    <div ng-if="context.page.actions.add" class="pull-right"><a href="javascript: void(0);" ng-click="context.methods.add()" class="fa fa-fw fa-plus-square-o">Add</a></div>\n' +
     '                </th>\n' +
     '            </tr>\n' +
     '        </thead>\n' +
     '        <tbody>\n' +
     '            <tr ng-repeat="(dataKey, dataList) in context.listViewData | orderBy:context.orderByProperty: true  | filter:context.filterBy:true | startFrom:context.currentPage*context.pageSize | limitTo:context.pageSize">\n' +
-    '                <td ng-if="context.page.downloadTableData"><input type="checkbox" ng-model="dataList.isExported" ng-change="context.actions.selectListData(context, dataList)"></td>\n' +
+    '                <td ng-if="context.page.downloadTableData"><input type="checkbox" ng-model="dataList.isExported" ng-change="context.methods.selectListData(dataList)"></td>\n' +
     '                <td ng-repeat="(key, list) in context.listView">\n' +
-    '                    <div ng-if="!list.actions" ng-bind="context.actions.replaceFieldVal(dataList[list.id], list)"></div>\n' +
+    '                    <div ng-if="!list.actions" ng-bind="context.methods.replaceFieldVal(dataList[list.id], list)"></div>\n' +
     '                </td>\n' +
     '                <td>\n' +
     '                    <div class="row">\n' +
     '                        <div ng-if="context.page.actions.print" class="col">\n' +
-    '                            <a href="javascript: void(0);" ng-click="context.actions.printView(context, dataList.id, true)" title="Print View" class="fa fa-fw fa-print">\n' +
+    '                            <a href="javascript: void(0);" ng-click="context.methods.printView(dataList.id, true)" title="Print View" class="fa fa-fw fa-print">\n' +
     '                            </a>\n' +
     '                        </div>\n' +
     '                        <div class="col" ng-if="context.page.actions.edit">\n' +
-    '                            <a href="javascript: void(0);" ng-click="context.actions.edit(context, dataList.id)" title="Edit" class="fa fa-fw fa-edit"> </a>\n' +
+    '                            <a href="javascript: void(0);" ng-click="context.methods.edit(dataList.id)" title="Edit" class="fa fa-fw fa-edit"> </a>\n' +
     '                        </div>\n' +
     '                        <div class="col" ng-if="context.page.actions.delete">\n' +
-    '                            <a href="javascript: void(0);" title="Delete" ng-click="context.actions.delete(context, dataList.id, dataList)" class="fa fa-fw fa-times"> </a>\n' +
+    '                            <a href="javascript: void(0);" title="Delete" ng-click="context.methods.delete(dataList.id, dataList)" class="fa fa-fw fa-times"> </a>\n' +
     '                        </div>\n' +
     '                    </div>\n' +
     '                </td>\n' +
@@ -3659,8 +3511,8 @@ module.run(['$templateCache', function($templateCache) {
     '                <td colspan="{{context.listView.length + 1}}" align="center">\n' +
     '                    <button ng-disabled="context.currentPage == 0" class="btn btn-primary" ng-click="context.currentPage=context.currentPage-1">\n' +
     '                        Previous\n' +
-    '                    </button> {{context.currentPage+1}}/{{context.actions.numberOfPages(context)}}\n' +
-    '                    <button ng-disabled="context.currentPage >= context.actions.getPageData(context).length/context.pageSize - 1" ng-click="context.currentPage=context.currentPage+1" class="btn btn-primary">\n' +
+    '                    </button> {{context.currentPage+1}}/{{context.methods.numberOfPages()}}\n' +
+    '                    <button ng-disabled="context.currentPage >= context.methods.getPageData().length/context.pageSize - 1" ng-click="context.currentPage=context.currentPage+1" class="btn btn-primary">\n' +
     '                        Next\n' +
     '                    </button>\n' +
     '                </td>\n' +
@@ -3699,28 +3551,28 @@ module.run(['$templateCache', function($templateCache) {
     '            <tbody>\n' +
     '                <tr ng-repeat="(key, map) in context.printData.mapping" ng-if="context.page.printView || context.page.printViewMapping">\n' +
     '                    <td ng-repeat="field in context.form.mapping.fields">\n' +
-    '                        <span id="{{field.id}}-{{key}}" ng-bind="context.actions.replaceFieldVal(map[field.id], field)">{{map[field.id]}}</span>\n' +
+    '                        <span id="{{field.id}}-{{key}}" ng-bind="context.methods.replaceFieldVal(map[field.id], field)">{{map[field.id]}}</span>\n' +
     '                    </td>\n' +
     '                </tr>\n' +
     '                <tr ng-repeat="(key, map) in context.data.mapping" ng-if="(!context.page.printView && (!context.page.printViewMapping || (context.page.printViewMapping && ((context.data.mapping.length-1)===key))))">\n' +
     '                    <td ng-switch="field.type" ng-repeat="field in context.form.mapping.fields">\n' +
     '                        <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>\n' +
-    '                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field, key)"\n' +
+    '                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.methods[field.action] && context.methods[field.action](map, map[field.id], field, key)"\n' +
     '                            ng-required="{{field.required}}" max="{{field.max}}" ng-disabled="field.isDisable" />\n' +
-    '                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-focus="field.focusAction && context.actions[field.focusAction] && context.actions[field.focusAction](context, map, map[field.id], field, key)" ng-change="field.action && context.actions[field.action] && context.actions[field.action](context, map, map[field.id], field, key)"\n' +
+    '                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-focus="field.focusAction && context.methods[field.focusAction] && context.methods[field.focusAction](map, map[field.id], field, key)" ng-change="field.action && context.methods[field.action] && context.methods[field.action](map, map[field.id], field, key)"\n' +
     '                            ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}" ng-disabled="field.isDisable">\n' +
     '                            <option value="">--Select--</option>\n' +
     '                        </select>\n' +
     '                    </td>\n' +
     '                    <td ng-if="context.form.mapping.actions.delete || context.form.mapping.actions.delete===undefined">\n' +
-    '                        <a class="fa fa-fw fa-times" href="javascript: void(0);" ng-click="context.actions.removeMapping(context, context.data.mapping, key)"> </a>\n' +
+    '                        <a class="fa fa-fw fa-times" href="javascript: void(0);" ng-click="context.methods.removeMapping(context.data.mapping, key)"> </a>\n' +
     '                    </td>\n' +
     '                </tr>\n' +
     '            </tbody>\n' +
     '        </table>\n' +
     '        <div class="row" ng-if="!context.page.printView && (context.form.mapping.actions.add || context.form.mapping.actions.add==undefined)">\n' +
     '            <div class="col">\n' +
-    '                <a class="fa fa-fw fa-plus-square-o" href="javascript: void(0);" ng-click="context.actions.addMapping(context.data.mapping)"> </a>\n' +
+    '                <a class="fa fa-fw fa-plus-square-o" href="javascript: void(0);" ng-click="context.methods.addMapping(context.data.mapping)"> </a>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
@@ -3748,7 +3600,7 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="mb-3">\n' +
     '        <h3>{{context.title}}</h3>\n' +
     '        <ul class="navbar-nav">\n' +
-    '            <li ng-if="!module.disableMenu && !module.disable" ng-repeat="(key, module) in headerContext.modules">\n' +
+    '            <li ng-if="context.methods.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">\n' +
     '                <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">\n' +
     '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
     '                    <span class="nav-link-text">{{module.title}}</span>\n' +
@@ -3758,7 +3610,7 @@ module.run(['$templateCache', function($templateCache) {
     '                    <span class="nav-link-text">{{module.title}}</span>\n' +
     '                </a>\n' +
     '                <ul>\n' +
-    '                    <li ng-if="!subModule.disableMenu && !subModule.disable" ng-repeat="subModule in headerContext.actions.showSubModule(module)">\n' +
+    '                    <li ng-if="context.methods.isShowMenu(subModule)" ng-repeat="subModule in context.methods.showSubModule(module)">\n' +
     '                        <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
     '                    </li>\n' +
     '                </ul>\n' +
@@ -3801,7 +3653,7 @@ module.run(['$templateCache', function($templateCache) {
     '                    <form name="customForm">\n' +
     '                        <input type="file" file-model="context.data.databaseUpload" class="form-control" />\n' +
     '\n' +
-    '                        <button ng-click="context.actions.uploadDatabase(context)" class="btn btn-primary">Submit</button>\n' +
+    '                        <button ng-click="context.methods.uploadDatabase()" class="btn btn-primary">Submit</button>\n' +
     '                    </form>\n' +
     '                </div>\n' +
     '            </div>\n' +
@@ -3835,7 +3687,7 @@ module.run(['$templateCache', function($templateCache) {
     '                <div class="card-header hide-print">\n' +
     '                    <b ng-if="!context.page.printView">Add/Edit</b>\n' +
     '                    <a ng-if="context.page.printView" class="fa fa-print" href=\'javascript: void();\' onclick="window.print()"><b>Print View</b></a>\n' +
-    '                    <button type="button" class="close float-right" aria-label="Close" ng-click="context.actions.cancel(context)">\n' +
+    '                    <button type="button" class="close float-right" aria-label="Close" ng-click="context.methods.cancel()">\n' +
     '                        <span aria-hidden="true">&times;</span>\n' +
     '                    </button>\n' +
     '                </div>\n' +

@@ -1,11 +1,11 @@
-erpApp.controller('databaseUploadCtrl', ['$scope', 'commonFact', 'serviceApi', function($scope, commonFact, serviceApi) {
-    var actions = {
-        uploadDatabase: function(context) {
+erpConfig.moduleFiles.databaseUpload = function(context) {
+    return {
+        uploadDatabase: function() {
             if (context.data && context.data.databaseUpload && context.data.databaseUpload) {
-                context.actions.updateData(context.module, context.data.databaseUpload).then(function() {
+                context.methods.updateData(context, context.data.databaseUpload).then(function() {
                     context.message = 'Successfully uploded...';
                     context.alertMessage = undefined;
-                    context.actions.goToPage(context.erpAppConfig.modules.dashboard.page.link, true);
+                    context.methods.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link, true);
                 });
             } else {
                 context.alertMessage = 'Failed uploded...';
@@ -14,5 +14,4 @@ erpApp.controller('databaseUploadCtrl', ['$scope', 'commonFact', 'serviceApi', f
 
         }
     };
-    commonFact.initCtrl($scope, 'databaseUpload', actions);
-}]);
+};

@@ -1,15 +1,15 @@
-erpApp.controller('partStockCtrl', ['$scope', 'commonFact', '$location', 'serviceApi', function($scope, commonFact, $location, serviceApi) {
-    var actions = {
+erpConfig.moduleFiles.partStock = function() {
+    return {
         callBackList: function(context) {
             var newList = angular.copy(context.listViewData);
-            if ($location.search() && $location.search()['showall'] === 'no') {
+            if (context.methods.location.search() && context.methods.location.search()['showall'] === 'no') {
                 newList = context.listViewData.filter(function(data) {
                     return data.partStockQty > 0;
                 });
                 context.listViewData = newList
             }
 
-            context.actions.getData('marketing.partMaster').then(function(res) {
+            context.methods.getData('marketing.partMaster').then(function(res) {
                 var listViewData = angular.copy(context.listViewDataMaster);
                 for (var i in listViewData) {
                     var stockData = context.listViewData[i];
@@ -25,7 +25,7 @@ erpApp.controller('partStockCtrl', ['$scope', 'commonFact', '$location', 'servic
                 var restriction = {
                     partNo: context.data.partNo
                 };
-                context.actions.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
+                context.methods.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
             }
         },
         updateOperationTo: function(context, data, key, field) {
@@ -42,26 +42,23 @@ erpApp.controller('partStockCtrl', ['$scope', 'commonFact', '$location', 'servic
                     });
                 }
 
-                context.actions.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
+                context.methods.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
             }
         },
         submit: function(context) {
             var submitService;
             if (context.data.id) {
-                submitService = context.actions.updateData(context.module, context.data)
+                submitService = context.methods.updateData(context, context.data)
             } else {
                 context.updatePrevStock = false;
                 context.data.acceptedQty = context.data.partStockQty;
-                submitService = context.actions.updatePartStock(context);
+                submitService = context.methods.updatePartStock(context);
             }
 
             submitService.then(function() {
                 context.page.name = 'list';
-                context.actions.list(context);
+                context.methods.list(context);
             });
         }
     };
-
-    commonFact.initCtrl($scope, 'report.partStock', actions);
-
-}]);
+};
