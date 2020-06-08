@@ -1,32 +1,32 @@
-erpConfig.moduleFiles.dcSubContractor = function() {
+erpConfig.moduleFiles.dcSubContractor = function(context) {
     var orgItemVal = null;
     return {
-        callBackList: function(context) {
-            context.methods.getPartStock(context);
+        callBackList: function() {
+            context.commonFact.getPartStock();
         },
-        callBackEdit: function(context) {
+        callBackEdit: function() {
             context.form.mapping.actions.delete = false;
             orgItemVal = angular.copy(context.data);
-            context.methods.getDCQty(context);
+            context.methods.getDCQty();
         },
-        getPOSubContractor: function(context, data, key, field) {
+        getPOSubContractor: function(data, key, field) {
             context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
                 filter: {
                     subContractorCode: key,
                     status: 0
                 }
             });
-            context.methods.makeOptionsFields(context, context.form.fields['poNo']);
-            context.methods.changeMapping(context, context.data, context.data['subContractorCode'], context.form.fields['subContractorCode']);
+            context.commonFact.makeOptionsFields(context.form.fields['poNo']);
+            context.commonFact.changeMapping(context.data, context.data['subContractorCode'], context.form.fields['subContractorCode']);
         },
-        callBackChangeMapping: function(context) {
-            context.methods.checkAcceptedQty(context);
-            context.methods.getDCQty(context);
+        callBackChangeMapping: function() {
+            context.methods.checkAcceptedQty();
+            context.methods.getDCQty();
         },
-        checkAcceptedQty: function(context) {
+        checkAcceptedQty: function() {
             var partNo,
                 operationFrom;
-            context.methods.getData('production.flowMaster').then(function(res) {
+            context.commonFact.getData('production.flowMaster').then(function(res) {
                 var flowMasterData = res.data,
                     prevOpp,
                     qty;
@@ -56,18 +56,18 @@ erpConfig.moduleFiles.dcSubContractor = function() {
                 }
             });
         },
-        callBackUpdatePartTotal: function(context, data) {
+        callBackUpdatePartTotal: function(data) {
             var qty = parseInt(data.acceptedQty),
-                poQty = parseInt(context.methods.getPOQty(context, data)),
+                poQty = parseInt(context.methods.getPOQty(data)),
                 dcQty = context.dcQty && context.dcQty[context.data['poNo'] + '-' + data.id] || 0;
 
             qty += parseInt(dcQty);
             if (poQty < qty) {
                 data.acceptedQty = null;
             }
-            context.methods.updatePOTotalAmount(context);
+            context.commonFact.updatePOTotalAmount();
         },
-        getPOQty: function(context, data) {
+        getPOQty: function(data) {
             var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
             var poQty = 0;
             var poNo = context.data.poNo;
@@ -83,14 +83,14 @@ erpConfig.moduleFiles.dcSubContractor = function() {
             }
             return poQty;
         },
-        updatePoSubContractor: function(context) {
+        updatePoSubContractor: function() {
             var poSubContractor = context.form.fields['poNo'].options[context.data.poNo];
             var poQty = 0;
             var dcQty = 0;
             var qty = 0;
             poSubContractor.status = 1;
             for (var i in context.data.mapping) {
-                poQty = context.methods.getPOQty(context, context.data.mapping[i]);
+                poQty = context.methods.getPOQty(context.data.mapping[i]);
                 dcQty = parseInt(context.dcQty[context.data['poNo'] + '-' + context.data.mapping[i].id]) || 0;
                 qty = parseInt(context.data.mapping[i].acceptedQty) + dcQty;
                 if (parseInt(poQty) > parseInt(qty)) {
@@ -98,14 +98,14 @@ erpConfig.moduleFiles.dcSubContractor = function() {
                 }
             }
 
-            context.methods.updateData('purchase.poSubContractor', poSubContractor);
+            context.commonFact.updateData('purchase.poSubContractor', poSubContractor);
 
         },
-        getDCQty: function(context, partNo) {
+        getDCQty: function(partNo) {
             var dcQtyTag;
             var dcQty;
             context.dcQty = [];
-            return context.methods.getData('store.dcSubContractor').then(function(res) {
+            return context.commonFact.getData('store.dcSubContractor').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     if (context.data.poNo === listViewData[i].poNo && (!orgItemVal || listViewData[i].id !== orgItemVal.id)) {
@@ -121,7 +121,7 @@ erpConfig.moduleFiles.dcSubContractor = function() {
                 return dcQty;
             });
         },
-        callBackSubmit: function(context) {
+        callBackSubmit: function() {
             var acceptedQty;
             for (var i in context.data.mapping) {
                 var data = angular.copy(context.data.mapping[i]);
@@ -133,13 +133,13 @@ erpConfig.moduleFiles.dcSubContractor = function() {
                     data.acceptedQty = acceptedQty;
                 }
                 newContext.data = data;
-                context.methods.updateSCStock(newContext);
+                context.commonFact.updateSCStock(newContext);
                 newContext.updateCurStock = false;
-                context.methods.updatePartStock(newContext);
+                context.commonFact.updatePartStock(newContext);
             }
-            context.methods.updatePoSubContractor(context);
+            context.methods.updatePoSubContractor();
         },
-        callBeforeDelete: function(context, id, item) {
+        callBeforeDelete: function(id, item) {
             var acceptedQty;
             var poSubContractor = context.form.fields['poNo'].allOptions[item.poNo];
             for (var i in item.mapping) {
@@ -151,12 +151,12 @@ erpConfig.moduleFiles.dcSubContractor = function() {
                 data.acceptedQty = acceptedQty;
 
                 newContext.data = data;
-                context.methods.updateSCStock(newContext);
+                context.commonFact.updateSCStock(newContext);
                 newContext.updateCurStock = false;
-                context.methods.updatePartStock(newContext);
+                context.commonFact.updatePartStock(newContext);
             }
             poSubContractor.status = 0;
-            context.methods.updateData('purchase.poSubContractor', poSubContractor);
+            context.commonFact.updateData('purchase.poSubContractor', poSubContractor);
         }
     };
 };

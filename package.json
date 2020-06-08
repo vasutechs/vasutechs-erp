@@ -12,7 +12,8 @@
         "app-build": "node_modules\\.bin\\gulp build",
         "app-qa": "node_modules\\.bin\\gulp build-minify",
         "app-server": "node_modules\\.bin\\gulp server",
-        "app-start-node": "npm run app-update && node build_tasks\\server.js --run"
+        "app-node-server": "node build_tasks\\app.js --run",
+        "app-start-node": "npm run app-update && npm run app-node-server"
     },
     "author": "",
     "license": "ISC",
@@ -20,21 +21,20 @@
         "adm-zip": "^0.4.13",
         "angular": "^1.7.9",
         "angular-route": "^1.7.9",
-        "bcryptjs": "^2.4.3",
         "bootstrap": "^4.3.1",
-        "connect": "^3.6.6",
+        "cookie-parser": "^1.4.4",
+        "cryptr": "^6.0.2",
         "del": "^3.0.0",
+        "express": "^4.16.1",
+        "express-session": "^1.16.2",
         "font-awesome": "^4.7.0",
-        "glob": "^7.1.2",
         "gulp": "^4.0.0",
         "gulp-concat": "^2.6.1",
         "gulp-ng-html2js": "^0.2.3",
         "gulp-replace": "^1.0.0",
         "gulp-uglify": "^3.0.0",
-        "http": "^0.0.0",
         "jquery": "^3.4.0",
         "node-json-db": "^0.7.5",
-        "open": "^6.0.0",
-        "serve-static": "^1.13.2"
+        "open": "^6.0.0"
     }
 }

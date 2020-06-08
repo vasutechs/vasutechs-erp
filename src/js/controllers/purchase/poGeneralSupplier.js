@@ -1,7 +1,7 @@
-erpConfig.moduleFiles.poGeneralSupplier = function() {
+erpConfig.moduleFiles.poGeneralSupplier = function(context) {
     return {
         updatePartDetails: function(mapping) {
-            context.methods.getData('marketing.partMaster', mapping.id).then(function(res) {
+            context.commonFact.getData('marketing.partMaster', mapping.id).then(function(res) {
                 var partData = res.data;
                 for (var mapKey in rmData) {
                     if (mapping[mapKey] === null || mapping[mapKey] === '') {

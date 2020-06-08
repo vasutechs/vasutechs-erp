@@ -4,7 +4,10 @@
     "calendarYear": "",
     "finalStageOpp": 9,
     "yearChangeMonth": 3,
-    "httpCache": true,
+    "httpCache": false,
+    "serverApiUri": "api",
+    "serverDataUri": "data",
+    "serverAuth": "auth",
     "modules": {
         "controllers": {
             "login": {
@@ -37,13 +40,21 @@
                         }
                     },
                     "actions": {
-                        "cancel": false
+                        "cancel": false,
+                        "customSubmit": "loginSubmit"
                     }
                 },
                 "page": {
                     "link": "login",
                     "name": "add",
                     "actions": false
+                },
+                "services": {
+                    "list": {
+                        "notDataUri": true,
+                        "method": "POST",
+                        "cache": false
+                    }
                 }
             },
             "databaseUpload": {
@@ -5375,7 +5386,6 @@
                 "name": "Admin",
                 "title": "Admin",
                 "icon": "cog",
-                "restricked": true,
                 "defaultRelease": true,
                 "settings": {
                     "id": "settings",
@@ -5598,8 +5608,60 @@
                     },
                     "services": {
                         "list": {
-                            "url": "api/users",
-                            "method": "GET"
+                            "url": "auth",
+                            "method": "POST"
+                        }
+                    }
+                }
+            },
+            "superAdmin": {
+                "id": "superAdmin",
+                "name": "Super Admin",
+                "title": "Super Admin",
+                "icon": "cog",
+                "restricked": true,
+                "defaultRelease": true,
+                "users": {
+                    "id": "users",
+                    "title": "Users",
+                    "restricked": true,
+                    "masterData": {
+                        "userName": null,
+                        "password": null,
+                        "userType": "SUPERADMIN"
+                    },
+                    "form": {
+                        "name": "Users",
+                        "id": "Users",
+                        "fields": {
+                            "userName": {
+                                "name": "User Name",
+                                "id": "userName",
+                                "type": "input",
+                                "inputType": "text",
+                                "required": true
+                            },
+                            "password": {
+                                "name": "Password",
+                                "id": "password",
+                                "type": "input",
+                                "inputType": "password",
+                                "required": true
+                            }
+                        }
+                    },
+                    "listView": [{
+                        "title": "User Name",
+                        "id": "userName"
+                    }],
+                    "page": {
+                        "link": "superAdmin/users/list",
+                        "name": "list"
+                    },
+                    "services": {
+                        "list": {
+                            "dataUri": "restrict",
+                            "method": "POST"
                         }
                     }
                 },
@@ -5611,8 +5673,6 @@
                     "masterData": {
                         "companyName": null,
                         "address": null,
-                        "username": null,
-                        "password": null,
                         "mapping": [{
                             "module": null
                         }]
@@ -5634,20 +5694,6 @@
                                 "type": "input",
                                 "inputType": "text",
                                 "required": true
-                            },
-                            "userName": {
-                                "name": "User name",
-                                "id": "userName",
-                                "type": "input",
-                                "inputType": "text",
-                                "required": true
-                            },
-                            "password": {
-                                "name": "Password",
-                                "id": "password",
-                                "type": "input",
-                                "inputType": "password",
-                                "required": true
                             }
                         },
                         "mapping": {
@@ -5661,9 +5707,6 @@
                                     "makeFieldOptions": false
                                 }
                             }
-                        },
-                        "actions": {
-                            "customSubmit": "releaseSubmit"
                         }
                     },
                     "listView": [{
@@ -5672,12 +5715,19 @@
                     }],
                     "page": {
                         "link": "appCustomers/list",
-                        "name": "list"
+                        "name": "list",
+                        "custumActions": {
+                            "downloadZip": {
+                                "title": "Download app",
+                                "class": "download",
+                                "method": "downloadAppCustomer"
+                            }
+                        }
                     },
                     "services": {
                         "list": {
-                            "url": "api/appCustomers",
-                            "method": "GET"
+                            "dataUri": "restrict",
+                            "method": "POST"
                         }
                     }
                 }

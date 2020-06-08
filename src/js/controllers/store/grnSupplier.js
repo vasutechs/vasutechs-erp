@@ -1,7 +1,7 @@
-erpConfig.moduleFiles.grnSupplier = function() {
+erpConfig.moduleFiles.grnSupplier = function(context) {
     var orgItemVal = null;
     return {
-        getPOSupplier: function(context, data, key, field) {
+        getPOSupplier: function(data, key, field) {
             context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
                 dataFrom: 'purchase.poSupplier',
                 replaceName: 'poNo',
@@ -10,25 +10,25 @@ erpConfig.moduleFiles.grnSupplier = function() {
                     status: 0
                 }
             });
-            context.methods.makeOptionsFields(context, context.form.fields['poNo']);
+            context.commonFact.makeOptionsFields(context.form.fields['poNo']);
         },
-        updateRmTotal: function(context, data, updateValue) {
+        updateRmTotal: function(data, updateValue) {
             var total = 0;
             var qty = updateValue || 0;
             total = qty * data.rate;
             data.total = parseFloat(total).toFixed(2);
-            context.methods.updatePOTotalAmount(context);
+            context.commonFact.updatePOTotalAmount();
         },
-        callBackAdd: function(context) {
+        callBackAdd: function() {
             orgItemVal = null;
         },
-        callBackEdit: function(context, key) {
+        callBackEdit: function(key) {
             context.form.mapping.actions.delete = false;
             orgItemVal = angular.copy(context.data);
             context.data['supplierInvoiceDate'] = new Date(context.data['supplierInvoiceDate']);
         },
-        updateRMStockQty: function(context) {
-            context.methods.getData('report.rmStock').then(function(res) {
+        updateRMStockQty: function() {
+            context.commonFact.getData('report.rmStock').then(function(res) {
                 var rmStockData = res.data,
                     rmStock = {};
                 var existingStock;
@@ -54,21 +54,21 @@ erpConfig.moduleFiles.grnSupplier = function() {
                         rmStockQty: rmStockQty,
                         uomCode: context.data.mapping[i].uomCode
                     }
-                    context.methods.updateData('report.rmStock', data);
+                    context.commonFact.updateData('report.rmStock', data);
                 }
             });
         },
-        updatePoSupplier: function(context) {
-            context.methods.getData('purchase.poSupplier', context.data.poNo).then(function(res) {
+        updatePoSupplier: function() {
+            context.commonFact.getData('purchase.poSupplier', context.data.poNo).then(function(res) {
                 var poSupplierData = res.data;
                 poSupplierData.status = 1;
                 poSupplierData.id = context.data.poNo;
-                context.methods.updateData('purchase.poSupplier', poSupplierData);
+                context.commonFact.updateData('purchase.poSupplier', poSupplierData);
             });
         },
-        callBackSubmit: function(context) {
-            context.methods.updateRMStockQty(context);
-            context.methods.updatePoSupplier(context);
+        callBackSubmit: function() {
+            context.methods.updateRMStockQty();
+            context.methods.updatePoSupplier();
         }
     };
 };

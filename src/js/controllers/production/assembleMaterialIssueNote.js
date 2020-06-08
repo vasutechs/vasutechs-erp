@@ -1,14 +1,14 @@
-erpConfig.moduleFiles.assembleMaterialIssueNote = function() {
+erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
     var orgItemVal = null;
     return {
-        callBackEdit: function(context) {
+        callBackEdit: function() {
             orgItemVal = angular.copy(context.data);
         },
-        callBackAdd: function(context) {
+        callBackAdd: function() {
             orgItemVal = angular.copy(context.data);
         },
-        callBackList: function(context) {
-            context.methods.getPartStock(context);
+        callBackList: function() {
+            context.commonFact.getPartStock();
             orgItemVal = null;
             var listViewData = angular.copy(context.listViewDataMaster);
             var partDetailList = [];
@@ -20,8 +20,8 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function() {
             }
             context.listViewData = partDetailList;
         },
-        getSubParts: function(context) {
-            context.methods.getData('production.bomAssemblePart').then(function(res) {
+        getSubParts: function() {
+            context.commonFact.getData('production.bomAssemblePart').then(function(res) {
                 var bomData = res.data;
                 for (var i in bomData) {
                     if (bomData[i].partNo === context.data.partNo) {
@@ -30,7 +30,7 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function() {
                 }
             });
         },
-        updateQtyMake: function(context, mappingData, value, field, fieldMapkey) {
+        updateQtyMake: function(mappingData, value, field, fieldMapkey) {
             if (mappingData.id) {
                 var partStockVal = context.partStock[mappingData.id + '-' + context.erpAppConfig.finalStageOpp];
                 if (partStockVal) {
@@ -50,9 +50,9 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function() {
                 }
 
             }
-            context.methods.updateTotalQtyMake(context);
+            context.methods.updateTotalQtyMake();
         },
-        updateTotalQtyMake: function(context) {
+        updateTotalQtyMake: function() {
             var subPartsLength = context.data.mapping.length;
             var totalQtyMake = 0;
             var qtyCanMake;
@@ -77,7 +77,7 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function() {
             }
 
         },
-        updateSubPartStock: function(context) {
+        updateSubPartStock: function() {
             var mapStockUpdate = function(map, key, del) {
                 var data = angular.copy(map);
                 var newContext = angular.copy(context);
@@ -93,29 +93,29 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function() {
                 }
                 newContext.data = data;
                 newContext.updatePrevStock = false;
-                context.methods.updatePartStock(newContext);
+                context.commonFact.updatePartStock(newContext);
             };
             for (var i in context.data.mapping) {
                 mapStockUpdate(context.data.mapping[i], i, false);
             }
         },
-        callBackSubmit: function(context) {
+        callBackSubmit: function() {
             var qtyCanMake;
-            context.methods.updateSubPartStock(context);
+            context.methods.updateSubPartStock();
             if (orgItemVal && orgItemVal.qtyCanMake) {
                 qtyCanMake = parseInt(context.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
                 context.data.acceptedQty = qtyCanMake;
             } else {
                 context.data.acceptedQty = context.data.qtyCanMake;
             }
-            context.methods.updatePartStock(context);
+            context.commonFact.updatePartStock();
         },
-        callBeforeDelete: function(context, id, item) {
+        callBeforeDelete: function(id, item) {
             var qtyCanMake;
             context.data = item;
-            context.methods.updateSubPartStock(context, true);
+            context.methods.updateSubPartStock(true);
             context.data.acceptedQty = 0 - parseInt(context.data.qtyCanMake);
-            context.methods.updatePartStock(context);
+            context.commonFact.updatePartStock();
         }
     };
 };

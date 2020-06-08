@@ -1,6 +1,6 @@
-erpConfig.moduleFiles.subContractorStock = function() {
+erpConfig.moduleFiles.subContractorStock = function(context) {
     return {
-        callBackList: function(context) {
+        callBackList: function() {
             var newList = angular.copy(context.listViewData);
             if ($location.search() && $location.search()['showall'] === 'no') {
                 newList = context.listViewData.filter(function(data) {
@@ -8,7 +8,7 @@ erpConfig.moduleFiles.subContractorStock = function() {
                 });
                 context.listViewData = newList
             }
-            context.methods.getData('marketing.partMaster').then(function(res) {
+            context.commonFact.getData('marketing.partMaster').then(function(res) {
                 var listViewData = angular.copy(context.listViewDataMaster);
                 for (var i in listViewData) {
                     var stockData = context.listViewData[i];
@@ -18,18 +18,18 @@ erpConfig.moduleFiles.subContractorStock = function() {
                     stockData.totalAmount = stockData.rate && (stockData.rate * stockData.partStockQty);
                 }
             });
-            context.methods.getFlowMaster(context);
+            context.commonFact.getFlowMaster();
         },
-        callBackEdit: function(context) {
+        callBackEdit: function() {
             setTimeout(function() {
-                context.methods.updateOperationFrom(context);
-                context.methods.updateOperationTo(context);
+                context.methods.updateOperationFrom();
+                context.methods.updateOperationTo();
             }, 1000);
         },
-        getPartNos: function(context) {
+        getPartNos: function() {
             var partNos = [];
             if (context.data.subContractorCode) {
-                context.methods.getData('purchase.subContractorMaster', context.data.subContractorCode).then(function(res) {
+                context.commonFact.getData('purchase.subContractorMaster', context.data.subContractorCode).then(function(res) {
                     var data = res.data;
                     for (var i in data.mapping) {
                         partNos.push(data.mapping[i].id);
@@ -37,11 +37,11 @@ erpConfig.moduleFiles.subContractorStock = function() {
                     context.form.fields['partNo'].filter = {
                         id: partNos
                     };
-                    context.methods.makeOptionsFields(context, context.form.fields['partNo']);
+                    context.commonFact.makeOptionsFields(context.form.fields['partNo']);
                 });
             }
         },
-        updateOperationFrom: function(context, data, key, field) {
+        updateOperationFrom: function() {
             var prevOpp;
             var operationFrom;
             if (context.data && context.data.partNo) {
@@ -61,10 +61,10 @@ erpConfig.moduleFiles.subContractorStock = function() {
                 restriction.filter = {
                     id: operationFrom
                 }
-                context.methods.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
+                context.commonFact.getOperationFromFlow(context.form.fields['operationFrom'], restriction);
             }
         },
-        updateOperationTo: function(context, data, key, field) {
+        updateOperationTo: function() {
             if (context.data && context.data.partNo) {
                 var partNo = context.data.partNo,
                     restriction = {
@@ -78,21 +78,21 @@ erpConfig.moduleFiles.subContractorStock = function() {
                     });
                 }
 
-                context.methods.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
+                context.commonFact.getOperationFromFlow(context.form.fields['operationTo'], restriction);
             }
         },
-        submit: function(context) {
+        submit: function() {
             var submitService;
             if (context.data.id) {
-                submitService = context.methods.updateData(context, context.data)
+                submitService = context.commonFact.updateData(context, context.data)
             } else {
                 context.data.acceptedQty = context.data.partStockQty;
-                submitService = context.methods.updateSCStock(context);
+                submitService = context.commonFact.updateSCStock();
             }
 
             submitService.then(function() {
                 context.page.name = 'list';
-                context.methods.list(context);
+                context.commonFact.list();
             });
         }
     };

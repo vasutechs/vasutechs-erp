@@ -1,14 +1,14 @@
-erpConfig.moduleFiles.flowMaster = function() {
+erpConfig.moduleFiles.flowMaster = function(context) {
     return {
-        updateCostAnalysis: function(context, mappingData, value, field, fieldMapkey) {
+        updateCostAnalysis: function(mappingData, value, field, fieldMapkey) {
             var machineDetails = context.form.mapping.fields.machineNo.options[mappingData.machineNo];
             var costAnalysis = 0;
 
             costAnalysis = machineDetails && (machineDetails.machineShiftRate / machineDetails.shiftHrs);
             mappingData.costAnalysis = costAnalysis > 0 && mappingData.palnQtyPerHr > 0 && (costAnalysis / mappingData.palnQtyPerHr) || 0;
-            context.methods.updateTotalCost(context);
+            context.methods.updateTotalCost();
         },
-        updateTotalCost: function(context) {
+        updateTotalCost: function() {
             var totalCost = 0;
             for (var i in context.data.mapping) {
                 var mappingData = context.data.mapping[i];

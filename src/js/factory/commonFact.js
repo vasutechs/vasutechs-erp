@@ -1,18 +1,18 @@
-erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $window, $http) {
+erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) {
     return function(context) {
         return {
             add: function() {
                 context.page.name = 'add';
                 context.data = angular.copy(context.masterData);
                 if (context.form.autoGenKey) {
-                    context.methods.setAutoGenKey();
+                    context.commonFact.setAutoGenKey();
                 }
                 if (context.data.date === null) {
                     context.data.date = new Date();
                 }
                 context.page.editKey = undefined;
                 context.page.printView = undefined;
-                return context.methods.formRender().then(function() {
+                return context.commonFact.formRender().then(function() {
                     context.methods.callBackAdd && context.methods.callBackAdd();
                     return true;
                 });
@@ -21,10 +21,10 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 context.page.name = 'edit';
                 context.page.printView = printView;
                 context.page.editKey = key;
-                context.existEditData = context.page.editKey && context.methods.findObjectByKey(context.listViewDataMaster, 'id', context.page.editKey);
+                context.existEditData = context.page.editKey && context.commonFact.findObjectByKey(context.listViewDataMaster, 'id', context.page.editKey);
 
-                return context.methods.formRender().then(function() {
-                    return context.methods.getData(context, key).then(function(res) {
+                return context.commonFact.formRender().then(function() {
+                    return context.commonFact.getData(context, key).then(function(res) {
                         context.data = res.data;
                         context.printData = angular.copy(context.data);
                         if (context.data['date']) {
@@ -43,19 +43,19 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
 
             },
             printView: function(key, printView) {
-                context.methods.edit(key, printView);
+                context.commonFact.edit(key, printView);
             },
             disable: function(id, item) {
                 context.methods.callBeforeDelete && context.methods.callBeforeDelete(item);
                 context.listViewDataMaster[id]['disabled'] = true;
-                context.methods.updateData(context, context.listViewData[id]);
-                context.methods.list();
+                context.commonFact.updateData(context, context.listViewData[id]);
+                context.commonFact.list();
                 context.methods.callBackDelete && context.methods.callBackDelete(id, item);
             },
             delete: function(id, item) {
                 context.methods.callBeforeDelete && context.methods.callBeforeDelete(id, item);
-                context.methods.updateData(context, { key: id, delete: 'yes' });
-                context.methods.list();
+                context.commonFact.updateData(context, { id: id, delete: 'yes' });
+                context.commonFact.list();
                 context.methods.callBackDelete && context.methods.callBackDelete(id, item);
             },
             list: function() {
@@ -65,8 +65,8 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 context.filterBy = context.services.list.filter || {};
                 context.listViewData = [];
                 context.orderByProperty = 'updated';
-                context.methods.pageActionsAccess();
-                return context.methods.getData(context).then(function(res) {
+                context.commonFact.pageActionsAccess();
+                return context.commonFact.getData().then(function(res) {
                     var listViewData = res.data;
                     for (var x in listViewData) {
                         listViewData.hasOwnProperty(x) && !listViewData[x].disabled && context.listViewData.push(listViewData[x])
@@ -78,9 +78,9 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 });
             },
             formRender: function() {
-                return context.methods.updateFields(context.form.fields).then(function() {
+                return context.commonFact.updateFields(context.form.fields).then(function() {
                     if (context.form.mapping) {
-                        return context.methods.updateFields(context.form.mapping.fields);
+                        return context.commonFact.updateFields(context.form.mapping.fields);
                     }
                     return context;
                 });
@@ -90,30 +90,34 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 return $filter('filter')(context.listViewData, context.filterBy, true) || [];
             },
             numberOfPages: function() {
-                return Math.ceil(context.methods.getPageData(context).length / context.pageSize);
+                return Math.ceil(context.commonFact.getPageData().length / context.pageSize);
             },
             submit: function() {
-                var userDetails = authFact.getUserDetail();
-                context.data.updatedUserId = userDetails && userDetails.id || null;
-                return context.methods.updateData(context, context.data).then(function(res) {
-                    context.methods.list();
+                return context.commonFact.updateData(context, context.data).then(function(res) {
+                    context.commonFact.list();
                     context.methods.callBackSubmit && context.methods.callBackSubmit(res.data);
                     return context;
                 });
 
             },
             cancel: function() {
-                context.methods.list();
+                context.commonFact.list();
             },
-            getData: function(module, id) {
-                var serviceConf = this.getServiceConfig(module, 'GET', id);
+            getData: function(module, data) {
+                var ctrl = angular.copy(module || context);
+                var serviceConf = context.commonFact.getServiceConfig(ctrl, 'GET');
+                var params = data && typeof(data) !== 'object' ? { id: data } : data;
+                serviceConf.params = angular.extend(serviceConf.params, params);
                 //Get Part master data
-                return serviceApi.callServiceApi(serviceConf);
+                return context.serviceApi.callServiceApi(serviceConf);
             },
-            updateData: function(module, data, id) {
-                var serviceConf = context.methods.getServiceConfig(module, 'POST', id);
+            updateData: function(module, data) {
+                var ctrl = module || context;
+                var userDetails = context.authFact.getUserDetail();
+                var serviceConf = context.commonFact.getServiceConfig(ctrl, 'POST');
+                data.updatedUserId = userDetails && context.commonFact.isSuperAdmin() ? context.commonFact.isSuperAdmin() + '-' + userDetails.id : userDetails.id || null;
                 //Get Part master data
-                return serviceApi.callServiceApi(serviceConf, data);
+                return context.serviceApi.callServiceApi(serviceConf, data);
             },
             replaceFieldVal: function(viewData, field) {
                 var list,
@@ -124,7 +128,7 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                         fieldData = (fieldData && list && list[orgViewDataFieldId] && field.replaceName) ? list[orgViewDataFieldId][field.replaceName] : fieldData;
                         fieldData = field.valuePrefix ? field.valuePrefix + fieldData : fieldData;
                         fieldData = field.valuePrefixData ? list[orgViewDataFieldId][field.valuePrefixData] + ' - ' + fieldData : fieldData;
-                        if (self.isFloat(fieldData)) {
+                        if (context.commonFact.isFloat(fieldData)) {
                             fieldData = parseFloat(fieldData).toFixed(2);
                         }
                         return fieldData;
@@ -133,7 +137,7 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 if (field.type === 'select' || field.dataFrom) {
                     viewData = field.options && field.options[viewData] && field.options[viewData].optionName || (field.allOptions && field.allOptions[viewData]) && field.allOptions[viewData].optionName || viewData;
                 } else if (field.type === 'date' || field.inputType === 'date') {
-                    viewData = viewData && self.dateFormatChange(viewData) || '';
+                    viewData = viewData && context.commonFact.dateFormatChange(viewData) || '';
                 } else if (field.inputType === 'password') {
                     viewData = 'XXX';
                 } else {
@@ -164,7 +168,7 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 field.options = {};
                 field.allOptions = {};
 
-                return context.methods.getData(field.dataFrom).then(function(res) {
+                return context.commonFact.getData(field.dataFrom).then(function(res) {
                     list = res.data;
                     for (var i in list) {
                         var optionVal = field.optionId && list[i][field.optionId] || list[i]['id'];
@@ -173,11 +177,11 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                         var editOption = context.existEditData && optionIdVal === context.existEditData[field.id] || false;
                         optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
                         optionNameVal += list[i][field.replaceName] || '';
-                        var isCheckExistVal = field.existingCheck && context.listViewDataMaster && context.methods.findObjectByKey(context.listViewDataMaster, field.id, optionIdVal) || false;
+                        var isCheckExistVal = field.existingCheck && context.listViewDataMaster && context.commonFact.findObjectByKey(context.listViewDataMaster, field.id, optionIdVal) || false;
                         field.allOptions[optionVal] = list[i];
                         field.allOptions[optionVal]['optionName'] = optionNameVal;
                         field.allOptions[optionVal]['optionId'] = optionIdVal;
-                        if ((field.filter === undefined || self.matchFilter(field, list[i], context) === true) &&
+                        if ((field.filter === undefined || context.commonFact.matchFilter(field, list[i], context) === true) &&
                             (!isCheckExistVal || editOption)) {
                             field.options[optionVal] = field.allOptions[optionVal];
                         }
@@ -212,9 +216,9 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                                         data[dataKey][mapKey] = angular.extend(copyDataMapKey, field.options[key][dataKey][mapKey]);
                                         for (var mapFieldKey in context.form.mapping.fields) {
                                             var mapfield = context.form.mapping.fields[mapFieldKey];
-                                            if (mapfield.action && context.methods[mapfield.action]) {
+                                            if (mapfield.action) {
                                                 if (mapfield.type === 'select') {
-                                                    context.methods[mapfield.action](data[dataKey][mapKey], data[dataKey][mapKey][mapfield.id], mapfield, mapKey);
+                                                    context.commonFact.callActions(mapfield.action, [data[dataKey][mapKey], data[dataKey][mapKey][mapfield.id], mapfield, mapKey]);
                                                 }
                                             }
                                         }
@@ -247,22 +251,22 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 var returnPromise = [];
                 var partStockPromise;
                 if (partNo) {
-                    context.methods.makeOptionsFields(field);
+                    context.commonFact.makeOptionsFields(field);
                     var localOptions = field.options;
-                    partStockPromise = context.methods.getData('production.flowMaster').then(function(res) {
+                    partStockPromise = context.commonFact.getData('production.flowMaster').then(function(res) {
                         var flowMasterData = res.data,
                             flowMasterVal;
                         field.options = {};
                         for (var i in flowMasterData) {
                             if (flowMasterData[i].partNo === partNo) {
-                                var flowMapPromise = context.methods.mergeOprFlowMap(flowMasterData[i].mapping).then(function(flowMasterMap) {
-                                    var startWith = context.methods.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
-                                    flowMasterMap = context.methods.objectSort(flowMasterMap, 'opCode');
+                                var flowMapPromise = context.commonFact.mergeOprFlowMap(flowMasterData[i].mapping).then(function(flowMasterMap) {
+                                    var startWith = context.commonFact.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
+                                    flowMasterMap = context.commonFact.objectSort(flowMasterMap, 'opCode');
                                     for (var j in flowMasterMap) {
                                         flowMasterVal = flowMasterMap[j];
                                         if ((!restriction.limit || limit < restriction.limit) &&
                                             (!restriction.startWith || (startWith.opCode < flowMasterVal.opCode)) &&
-                                            (restriction.filter === undefined || self.matchFilter(restriction, flowMasterVal) === true)) {
+                                            (restriction.filter === undefined || context.commonFact.matchFilter(restriction, flowMasterVal) === true)) {
                                             limit++;
                                             field.options[' ' + flowMasterVal.id] = localOptions[flowMasterVal.id];
                                         }
@@ -279,47 +283,48 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
 
                 return Promise.all(returnPromise);
             },
-            updatePartStock: function() {
+            updatePartStock: function(newContext) {
                 var self = this;
+                var localContext = newContext || context;
                 var returnPromise = [];
-                var partStockPromise = context.methods.getData('report.partStock').then(function(res) {
+                var partStockPromise = context.commonFact.getData('report.partStock').then(function(res) {
                     var partStockData = res.data,
                         partStock = {};
                     for (var i in partStockData) {
                         partStock[partStockData[i].partNo + '-' + partStockData[i].operationFrom + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                         partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                     }
-                    var existingStock = partStock[context.data.partNo + '-' + context.data.operationFrom + '-' + context.data.operationTo];
-                    var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) : parseInt(context.data.acceptedQty);
-                    if (context.updateCurStock === undefined || context.updateCurStock) {
+                    var existingStock = partStock[localContext.data.partNo + '-' + localContext.data.operationFrom + '-' + localContext.data.operationTo];
+                    var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(localContext.data.acceptedQty) : parseInt(localContext.data.acceptedQty);
+                    if (localContext.updateCurStock === undefined || localContext.updateCurStock) {
                         var data = {
                             id: existingStock && existingStock.id || undefined,
-                            partNo: context.data.partNo,
+                            partNo: localContext.data.partNo,
                             partStockQty: partStockQty,
-                            operationFrom: context.data.operationFrom,
-                            operationTo: context.data.operationTo
+                            operationFrom: localContext.data.operationFrom,
+                            operationTo: localContext.data.operationTo
                         }
-                        returnPromise.push(context.methods.updateData('report.partStock', data).then(function() {
-                            context.methods.getPartStock();
+                        returnPromise.push(context.commonFact.updateData('report.partStock', data).then(function() {
+                            context.commonFact.getPartStock();
                         }));
                     }
 
-                    var existingPrevStock = partStock[context.data.partNo + '-' + context.data.operationFrom];
-                    if (existingPrevStock && (context.updatePrevStock === undefined || context.updatePrevStock)) {
-                        var existPartStockQty = parseInt(context.data.acceptedQty);
-                        existPartStockQty += parseInt(context.data.rejectionQty) || 0;
-                        existPartStockQty += parseInt(context.data.rwQty) || 0;
+                    var existingPrevStock = partStock[localContext.data.partNo + '-' + localContext.data.operationFrom];
+                    if (existingPrevStock && (localContext.updatePrevStock === undefined || localContext.updatePrevStock)) {
+                        var existPartStockQty = parseInt(localContext.data.acceptedQty);
+                        existPartStockQty += parseInt(localContext.data.rejectionQty) || 0;
+                        existPartStockQty += parseInt(localContext.data.rwQty) || 0;
                         existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
                         data = {
                             id: existingPrevStock.id,
-                            partNo: context.data.partNo,
+                            partNo: localContext.data.partNo,
                             partStockQty: existPartStockQty,
                             operationFrom: existingPrevStock.operationFrom,
                             operationTo: existingPrevStock.operationTo
                         }
 
-                        returnPromise.push(context.methods.updateData('report.partStock', data).then(function() {
-                            context.methods.getPartStock();
+                        returnPromise.push(context.commonFact.updateData('report.partStock', data).then(function() {
+                            context.commonFact.getPartStock();
                         }));
                     }
                 });
@@ -327,27 +332,28 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
 
                 return Promise.all(returnPromise);
             },
-            updateSCStock: function() {
+            updateSCStock: function(newContext) {
                 var self = this;
+                var localContext = newContext || context;
                 var returnPromise = [];
-                var partStockPromise = context.methods.getData('report.subContractorStock').then(function(res) {
+                var partStockPromise = context.commonFact.getData('report.subContractorStock').then(function(res) {
                     var scStockData = res.data,
                         scStock = {};
                     for (var i in scStockData) {
                         scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
                         scStock[scStockData[i].partNo + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
                     }
-                    var existingStock = scStock[context.data.partNo + '-' + context.data.operationFrom + '-' + context.data.operationTo];
-                    var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(context.data.acceptedQty) : parseInt(context.data.acceptedQty);
+                    var existingStock = scStock[newContext.data.partNo + '-' + newContext.data.operationFrom + '-' + newContext.data.operationTo];
+                    var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(newContext.data.acceptedQty) : parseInt(newContext.data.acceptedQty);
                     var data = {
                         id: existingStock && existingStock.id || undefined,
-                        partNo: context.data.partNo,
-                        subContractorCode: context.data.subContractorCode,
+                        partNo: newContext.data.partNo,
+                        subContractorCode: newContext.data.subContractorCode,
                         partStockQty: partStockQty,
-                        operationFrom: context.data.operationFrom,
-                        operationTo: context.data.operationTo
+                        operationFrom: newContext.data.operationFrom,
+                        operationTo: newContext.data.operationTo
                     }
-                    returnPromise.push(context.methods.updateData('report.subContractorStock', data));
+                    returnPromise.push(context.commonFact.updateData('report.subContractorStock', data));
                 });
 
                 returnPromise.push(partStockPromise);
@@ -371,25 +377,36 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 context.methods.callBackUpdatePartTotal && context.methods.callBackUpdatePartTotal(data, newValue, field, fieldMapKey);
 
             },
-            getServiceConfig: function(module, replaceMethod, appendValue) {
+            getServiceConfig: function(ctrl, replaceMethod) {
                 var currentYear = new Date().getMonth() >= context.erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
-                var serviceConfig = module;
-                if (typeof(module) !== 'object') {
-                    serviceConfig = context.methods.getDeepProp(context.erpAppConfig.modules.controllers, module + '.services.list')
-                } else if (module.id) {
-                    serviceConfig = module.services.list;
+                var serviceConfig = ctrl;
+                var genUrl = function(serviceConfig) {
+                    var url = context.erpAppConfig.serverApiUri;
+                    url += context.erpAppConfig.serverAuth ? ('/' + context.erpAppConfig.serverAuth) : '';
+                    url += !serviceConfig.notDataUri ? (serviceConfig.dataUri ? ('/' + serviceConfig.dataUri) : ('/' + context.erpAppConfig.serverDataUri)) : '';
+                    url += serviceConfig.id ? ('/' + serviceConfig.id) : '';
+                    return url;
+                };
+
+                if (typeof(ctrl) !== 'object') {
+                    ctrl = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, ctrl);
                 }
-                if (!serviceConfig) {
-                    return false;
+                if (ctrl.id) {
+                    serviceConfig = ctrl.services.list;
+                    serviceConfig.id = ctrl.id;
                 }
-                serviceConfig.url = serviceConfig.url.replace('{{YEAR}}', context.erpAppConfig.calendarYear || currentYear);
-                serviceConfig.url = appendValue ? serviceConfig.url + '/' + appendValue : serviceConfig.url;
+                serviceConfig.params = angular.extend(serviceConfig.params || {}, { appCustomer: serviceConfig.params && serviceConfig.params.appCustomer || context.commonFact.isAppCustomer() || '' })
+
+                if (serviceConfig.params.year) {
+                    serviceConfig.params.year = context.erpAppConfig.calendarYear || currentYear;
+                }
+                serviceConfig.url = genUrl(serviceConfig);
                 serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
                 serviceConfig.cache = serviceConfig.cache === undefined ? context.erpAppConfig.httpCache : serviceConfig.cache;
                 return serviceConfig;
             },
             getPartStock: function() {
-                context.methods.getData('report.partStock').then(function(res) {
+                context.commonFact.getData('report.partStock').then(function(res) {
                     var partStockData = res.data,
                         partStock = {};
                     for (var i in partStockData) {
@@ -399,7 +416,7 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 });
             },
             getSCStock: function() {
-                return context.methods.getData('report.subContractorStock').then(function(res) {
+                return context.commonFact.getData('report.subContractorStock').then(function(res) {
                     var scStockData = res.data,
                         scStock = {};
                     for (var i in scStockData) {
@@ -410,7 +427,7 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 });
             },
             getRMStock: function() {
-                context.methods.getData('report.rmStock').then(function(res) {
+                context.commonFact.getData('report.rmStock').then(function(res) {
                     var rmStockData = res.data,
                         rmStock = {};
                     for (var i in rmStockData) {
@@ -447,7 +464,7 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 context.flowMasterByPart = {};
                 context.flowMasterByPartOpr = {};
 
-                return context.methods.getData('production.flowMaster').then(function(res) {
+                return context.commonFact.getData('production.flowMaster').then(function(res) {
                     var flowMasterData = res.data,
                         prevOpp;
 
@@ -467,7 +484,7 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                     optionsPromiseResolve = resolve;
                 });
 
-                context.methods.getData('production.operationMaster').then(function(res) {
+                context.commonFact.getData('production.operationMaster').then(function(res) {
                     for (var i in flowMap) {
                         flowMap[i] = res.data[flowMap[i].id];
                         flowMap[i].opCode = parseInt(res.data[flowMap[i].id].opCode);
@@ -479,13 +496,13 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
             getOperations: function() {
                 context.operationsData = {};
 
-                context.methods.getData('production.operationMaster').then(function(res) {
+                context.commonFact.getData('production.operationMaster').then(function(res) {
                     context.operationsData = res.data;
                 });
 
             },
             isCheckExistField: function(data, value, field) {
-                if (context.listViewData && context.methods.findObjectByKey(context.listViewData, field.id, value)) {
+                if (context.listViewData && context.commonFact.findObjectByKey(context.listViewData, field.id, value)) {
                     data[field.id] = null;
                 }
             },
@@ -517,15 +534,15 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                         data[sgstField.id] = 0;
                     }
                 }
-                context.methods.updatePartTotal(data, data[acceptedQtyField.id], acceptedQtyField, fieldMapKey);
+                context.commonFact.updatePartTotal(data, data[acceptedQtyField.id], acceptedQtyField, fieldMapKey);
             },
             updateFields: function(fields) {
                 var returnPromise = [];
                 for (var i in fields) {
-                    if (fields[i].dataFrom && context.methods.getDeepProp(context.erpAppConfig.modules.controllers, fields[i].dataFrom) && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
-                        returnPromise.push(context.methods.makeOptionsFields(fields[i]));
+                    if (fields[i].dataFrom && context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, fields[i].dataFrom) && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
+                        returnPromise.push(context.commonFact.makeOptionsFields(fields[i]));
                     }
-                    if (fields[i].dataFrom && !context.methods.getDeepProp(context.erpAppConfig.modules.controllers, fields[i].dataFrom)) {
+                    if (fields[i].dataFrom && !context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, fields[i].dataFrom)) {
                         delete fields[i];
                     }
                 }
@@ -580,7 +597,7 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 var qty = data['qty'] || data['acceptedQty'] || 0;
                 total = qty * data.rate;
                 data.total = parseFloat(total).toFixed(2);
-                context.methods.updatePOTotalAmount();
+                context.commonFact.updatePOTotalAmount();
 
             },
             updatePOTotalAmount: function() {
@@ -634,7 +651,7 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 delete context.selectedTableData[context.id][data.id].isExported;
             },
             downloadTableData: function() {
-                context.methods.downloadFile(context.selectedTableData, context.id + '.json');
+                context.commonFact.downloadFile(context.selectedTableData, context.id + '.json');
             },
             downloadFile: function(data, name, type) {
 
@@ -685,15 +702,15 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
             },
             location: $location,
             changeCalendarYear: function() {
-                context.methods.getData('calendarYear');
-                context.methods.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link);
+                context.commonFact.getData('calendarYear');
+                context.commonFact.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link);
             },
             downloadData: function() {
                 angular.element('#downloadModal').modal('show');
             },
             showAlertRol: function() {
                 var showROL = true;
-                var userType = context.methods.isLogin();
+                var userDetail = context.authFact.getUserDetail();
                 var alertRolContext = {
                     partRolYellow: [],
                     partRolRed: [],
@@ -701,10 +718,10 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                         showROL = false;
                     }
                 };
-                if (userType) {
-                    context.methods.getData('marketing.partMaster').then(function(res) {
+                if (userDetail && userDetail.userType) {
+                    context.commonFact.getData('marketing.partMaster').then(function(res) {
                         var partMaster = res.data;
-                        context.methods.getData('report.partStock').then(function(res1) {
+                        context.commonFact.getData('report.partStock').then(function(res1) {
                             var partStockData = res1.data,
                                 partStock = {};
                             for (var i in partStockData) {
@@ -734,26 +751,35 @@ erpConfig.moduleFiles.commonFact = function(serviceApi, $filter, $location, $win
                 return alertRolContext;
             },
             isAppUser: function() {
-                var userType = context.methods.isLogin();
-                return userType !== 'SUPERADMIN' && userType !== 'ADMIN';
+                var userDetail = context.authFact.getUserDetail();
+                return userDetail && userDetail.userType !== 'SUPERADMIN' && userDetail.userType !== 'ADMIN';
             },
             isSuperAdmin: function() {
-                var userType = context.methods.isLogin();
-                return userType === 'SUPERADMIN';
+                var userDetail = context.authFact.getUserDetail();
+                return userDetail && userDetail.userType === 'SUPERADMIN' && userDetail.userType || null;
             },
             isAppAdmin: function() {
-                var userType = context.methods.isLogin();
-                return userType === 'ADMIN';
+                var userDetail = context.authFact.getUserDetail();
+                return userDetail && userDetail.userType === 'ADMIN' && userDetail.userType || null;
             },
             isAppCustomer: function() {
-                var userDetails = context.methods.getUserDetail()();
-                return userDetails.appCustomer;
+                var userDetails = context.authFact.getUserDetail();
+                return userDetails && userDetails.appCustomer;
             },
             isShowMenu: function(menu) {
                 var disabled = menu.disableMenu || menu.disable;
-                var restricked = context.methods.isSuperAdmin() && menu.restricked || false;
-                var isAppCustomer = !menu.restricked && context.methods.isAppCustomer();
+                var restricked = context.commonFact.isSuperAdmin() && menu.restricked || false;
+                var isAppCustomer = !menu.restricked && context.commonFact.isAppCustomer();
                 return !disabled && (restricked || isAppCustomer);
+            },
+            errorHandler: function(e) {
+                context.authFact.logout();
+                context.commonFact.goToPage(context.erpAppConfig.modules.controllers.login.page.link);
+                return e;
+            },
+            callActions: function(actionName, params) {
+                var actionMethod = context.methods[actionName] || context.authFact[actionName] || context.commonFact[actionName];
+                actionMethod && actionMethod.call(this, params);
             }
         };
     };

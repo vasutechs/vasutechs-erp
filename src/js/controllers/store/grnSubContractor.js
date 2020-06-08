@@ -1,35 +1,35 @@
-erpConfig.moduleFiles.grnSubContractor = function() {
+erpConfig.moduleFiles.grnSubContractor = function(context) {
     var orgItemVal = null
     return {
-        callBackAdd: function(context) {
+        callBackAdd: function() {
             orgItemVal = null;
         },
-        callBackEdit: function(context) {
+        callBackEdit: function() {
             context.form.mapping.actions.delete = false;
             orgItemVal = angular.copy(context.data);
             context.data['subContractorDCDate'] = new Date(context.data['subContractorDCDate']);
         },
-        callBackList: function(context) {
+        callBackList: function() {
             context.grnSC = true;
         },
-        getDCSubContractor: function(context, data, key, field) {
+        getDCSubContractor: function(data, key, field) {
             context.form.fields['dcNo'] = angular.extend(context.form.fields['dcNo'], {
                 filter: {
                     poNo: key,
                     status: 0
                 }
             });
-            context.methods.makeOptionsFields(context, context.form.fields['dcNo']);
+            context.commonFact.makeOptionsFields(context.form.fields['dcNo']);
         },
-        getPOSubContractor: function(context, data, key, field) {
+        getPOSubContractor: function(data, key, field) {
             context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
                 filter: {
                     subContractorCode: key
                 }
             });
-            context.methods.makeOptionsFields(context, context.form.fields['poNo']);
+            context.commonFact.makeOptionsFields(context.form.fields['poNo']);
         },
-        updateDCSubContractor: function(context) {
+        updateDCSubContractor: function() {
             var dcSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
             var grnQty = 0;
             var dcQty = 0;
@@ -37,7 +37,7 @@ erpConfig.moduleFiles.grnSubContractor = function() {
             var updateDC = true;
             dcSubContractor.status = 1;
             for (var i in context.data.mapping) {
-                dcQty = context.methods.getDCQty(context, context.data.mapping[i]);
+                dcQty = context.methods.getDCQty(context.data.mapping[i]);
                 grnQty = parseInt(context.grnQty[context.data['dcNo'] + '-' + context.data.mapping[i].id]) || 0;
                 qty = parseInt(context.data.mapping[i].acceptedQty) + grnQty;
                 if (parseInt(dcQty) > parseInt(qty)) {
@@ -45,12 +45,12 @@ erpConfig.moduleFiles.grnSubContractor = function() {
                 }
             }
             if (updateDC) {
-                context.methods.updateData('store.dcSubContractor', dcSubContractor);
+                context.commonFact.updateData('store.dcSubContractor', dcSubContractor);
             }
 
         },
-        callBackChangeMapping: function(context) {
-            context.methods.getSCStock(context).then(function() {
+        callBackChangeMapping: function() {
+            context.commonFact.getSCStock().then(function() {
                 if (orgItemVal) {
                     for (var i in orgItemVal.mapping) {
                         var scStockMap = orgItemVal.mapping[i].id + '-' + orgItemVal.mapping[i].operationFrom;
@@ -60,20 +60,20 @@ erpConfig.moduleFiles.grnSubContractor = function() {
                     }
                 }
             });
-            context.methods.getGrnQty(context);
+            context.methods.getGrnQty();
         },
-        callBackUpdatePartTotal: function(context, data, newValue, field, fieldMapKey) {
+        callBackUpdatePartTotal: function(data, newValue, field, fieldMapKey) {
             var qty = parseInt(data.acceptedQty),
-                dcQty = parseInt(context.methods.getDCQty(context, data)),
+                dcQty = parseInt(context.methods.getDCQty(data)),
                 grnQty = context.grnQty[context.data['dcNo'] + '-' + data.id] || 0;
 
             qty += parseInt(grnQty);
             if (dcQty < qty) {
                 data.acceptedQty = null;
             }
-            context.methods.updatePOTotalAmount(context);
+            context.commonFact.updatePOTotalAmount();
         },
-        getDCQty: function(context, data) {
+        getDCQty: function(data) {
             var dcSubContractor = context.form.fields['dcNo'].options[context.data.dcNo];
             var dcQty = 0;
             var poNo = context.data.poNo;
@@ -89,12 +89,12 @@ erpConfig.moduleFiles.grnSubContractor = function() {
             }
             return dcQty;
         },
-        getGrnQty: function(context, partNo) {
+        getGrnQty: function(partNo) {
             var grnQtyTag;
             var grnQty;
             context.grnQty = [];
 
-            return context.methods.getData('store.grnSubContractor').then(function(res) {
+            return context.commonFact.getData('store.grnSubContractor').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     if (context.data.dcNo === listViewData[i].dcNo) {
@@ -112,7 +112,7 @@ erpConfig.moduleFiles.grnSubContractor = function() {
                 return grnQty;
             });
         },
-        callBackSubmit: function(context) {
+        callBackSubmit: function() {
             var newQty;
             var acceptedQty;
             for (var i in context.data.mapping) {
@@ -125,15 +125,15 @@ erpConfig.moduleFiles.grnSubContractor = function() {
                     acceptedQty = parseInt(newContext.data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
                     newContext.data.acceptedQty = acceptedQty;
                 }
-                context.methods.updatePartStock(newContext);
+                context.commonFact.updatePartStock(newContext);
                 var scData = angular.copy(data);
                 var newScContext = angular.copy(context);
                 scData.subContractorCode = context.data.subContractorCode;
                 scData.acceptedQty = 0 - scData.acceptedQty;
                 newScContext.data = scData;
-                context.methods.updateSCStock(newScContext);
+                context.commonFact.updateSCStock(newScContext);
             }
-            context.methods.updateDCSubContractor(context);
+            context.methods.updateDCSubContractor();
         }
     };
 };

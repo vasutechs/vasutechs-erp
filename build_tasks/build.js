@@ -1,13 +1,12 @@
-module.exports = function(config, gulp) {
-
+module.exports = function(config) {
+    var gulp = require('gulp');
     var gp_concat = require('gulp-concat'),
         gp_uglify = require('gulp-uglify'),
         replace = require('gulp-replace'),
         ngHtml2Js = require("gulp-ng-html2js"),
-        server = require('./server'),
         del = require('del'),
         fs = require('fs'),
-        dbApi = require('./dbApi')(),
+        dbApi = require('./dbApi')(config),
         AdmZip = require('adm-zip'),
         applyAppConfig = function() {
             appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
@@ -129,7 +128,7 @@ module.exports = function(config, gulp) {
     gulp.task('build-project', config.task.buildProject = gulp.series('build', 'build-release-files', 'build-project-zip'));
 
     gulp.task('create-api', config.task.createApi = (done) => {
-        config.httpMiddleWare.use('/releaseProject', function(req, res) {
+        config.app.use('/releaseProject', function(req, res) {
             var releaseProjectData = dbApi.dbConnect(req, res);
             var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
             config.dist.path = config.release.dist;
@@ -159,7 +158,7 @@ module.exports = function(config, gulp) {
     });
 
     gulp.task('create-server', config.task.createServer = (done) => {
-        server(config);
+        config.task.server();
         done();
     });
 

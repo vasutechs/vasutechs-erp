@@ -1,16 +1,13 @@
-erpConfig.moduleFiles.empMaster = function() {
+erpConfig.moduleFiles.empMaster = function(context) {
     return {
-        callBackChangeMapping: function(context, mappingData, key, field, fieldMapKey) {
-
-        },
-        updateStage: function(context, mappingData, key, field, _this) {
+        updateStage: function(mappingData, key, field, _this) {
             var restriction = {
                 partNo: mappingData.id
             };
             field.options = {};
-            context.methods.getOperationFromFlow(context, field, restriction);
+            context.commonFact.getOperationFromFlow(field, restriction);
         },
-        callBackEdit: function(context) {
+        callBackEdit: function() {
             context.data.mapping = !context.data.mapping && context.masterData.mapping || context.data.mapping;
         }
     };

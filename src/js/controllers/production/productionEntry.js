@@ -1,23 +1,23 @@
-erpConfig.moduleFiles.productionEntry = function() {
+erpConfig.moduleFiles.productionEntry = function(context) {
     return {
-        callBackAdd: function(context) {
+        callBackAdd: function() {
             context.page.printViewMapping = false;
             context.finalMapping = 0;
         },
-        callBackEdit: function(context) {
+        callBackEdit: function() {
             if (!context.page.printView) {
                 context.page.printViewMapping = true;
-                context.methods.addMapping(context.data.mapping);
+                context.commonFact.makeOptionsFields(context.data.mapping);
                 context.finalMapping = context.data.mapping.length - 1;
             }
         },
-        callBackList: function(context) {
-            context.methods.getPartStock(context);
-            context.methods.getPRQty(context);
-            context.methods.getFlowMaster(context);
-            context.methods.getOperations(context);
+        callBackList: function() {
+            context.commonFact.getPartStock();
+            context.methods.getPRQty();
+            context.commonFact.getFlowMaster();
+            context.commonFact.getOperations();
         },
-        checkAcceptedQty: function(context, mappingData, value, field, fieldMapkey) {
+        checkAcceptedQty: function(mappingData, value, field, fieldMapkey) {
             var qtyCanMake = 0,
                 rejectionQty = mappingData.rejectionQty || 0,
                 rwQty = mappingData.rwQty || 0,
@@ -49,11 +49,11 @@ erpConfig.moduleFiles.productionEntry = function() {
                 mappingData[field.id] = null
             }
         },
-        callBackChangeMapping: function(context, data, key, field) {
-            context.methods.updateOperationFrom(context, data, key, field);
-            context.methods.updateOperationTo(context, data, key, field);
+        callBackChangeMapping: function(data, key, field) {
+            context.methods.updateOperationFrom(data, key, field);
+            context.methods.updateOperationTo(data, key, field);
         },
-        updateOperationFrom: function(context, data, key, field) {
+        updateOperationFrom: function(data, key, field) {
             var prQtyFrmMap;
             var prQtyPrevMap;
             var prQtyToMap;
@@ -85,10 +85,10 @@ erpConfig.moduleFiles.productionEntry = function() {
                 restriction.filter = {
                     id: operation
                 }
-                context.methods.getOperationFromFlow(context, context.form.mapping.fields['operationFrom'], restriction);
+                context.commonFact.getOperationFromFlow(context.form.mapping.fields['operationFrom'], restriction);
             }
         },
-        updateOperationTo: function(context, mappingData, key, field) {
+        updateOperationTo: function(mappingData, key, field) {
             if (context.data.jobCardNo) {
                 var partNo = context.data.partNo,
                     restriction = {
@@ -105,7 +105,7 @@ erpConfig.moduleFiles.productionEntry = function() {
                     });
                 }
 
-                context.methods.getOperationFromFlow(context, context.form.mapping.fields['operationTo'], restriction).then(function() {
+                context.commonFact.getOperationFromFlow(context.form.mapping.fields['operationTo'], restriction).then(function() {
                     var options = context.form.mapping.fields['operationTo'].options;
                     var firstOption = options[Object.keys(options)[0]];
                     if (firstOption && firstOption.source === 'Sub-Contractor') {
@@ -114,25 +114,25 @@ erpConfig.moduleFiles.productionEntry = function() {
                 });
             }
         },
-        updateToolNo: function(context, mappingData) {
+        updateToolNo: function(mappingData) {
             mappingData.toolNo = context.data.partNo && mappingData.operationTo && context.flowMasterByPartOpr[context.data.partNo + '-' + mappingData.operationTo].toolNo || null;
         },
-        calculatePlanQty: function(context, mappingData) {
+        calculatePlanQty: function(mappingData) {
             var startDate = mappingData.startTime;
             var endDate = mappingData.endTime;
             var timeDiff = endDate - startDate;
             var palnQtyPerHr = context.data.partNo && mappingData.operationTo && context.flowMasterByPartOpr[context.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
             mappingData.planQty = timeDiff * palnQtyPerHr;
         },
-        updateMaterialIssue: function(context, replaceData, key) {
+        updateMaterialIssue: function() {
             var jobCard = context.form.fields['jobCardNo'].options[context.data.jobCardNo];
             var jobCardQty = jobCard && jobCard.qtyCanMake;
             jobCard.status = 1;
-            context.methods.updateData('production.materialIssueNote', jobCard);
+            context.commonFact.updateData('production.materialIssueNote', jobCard);
         },
-        getPRQty: function(context) {
+        getPRQty: function() {
             context.prQty = {};
-            return context.methods.getData('production.productionEntry').then(function(res) {
+            return context.commonFact.getData('production.productionEntry').then(function(res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     for (var j in listViewData[i].mapping) {
@@ -162,21 +162,21 @@ erpConfig.moduleFiles.productionEntry = function() {
                 return context.prQty;
             });
         },
-        callBackSubmit: function(context) {
+        callBackSubmit: function() {
             var newQty;
             var data = angular.copy(context.data.mapping[context.finalMapping]);
             var newContext = angular.copy(context);
             data.partNo = context.data.partNo;
             newContext.data = data;
-            context.methods.updatePartStock(newContext);
-            context.methods.updateMaterialIssue(context);
+            context.commonFact.updatePartStock(newContext);
+            context.methods.updateMaterialIssue();
         },
-        prodEntryDownload: function(context) {
+        prodEntryDownload: function() {
             if (!context.selectedTableData) {
                 return;
             }
             var prodData = context.selectedTableData[context.id];
-            context.methods.getData('production.materialIssueNote').then(function(res) {
+            context.commonFact.getData('production.materialIssueNote').then(function(res) {
                 var materData = res.data;
                 var jobCardNo = 1;
                 context.selectedTableData['materialIssueNote'] = {};
@@ -187,7 +187,7 @@ erpConfig.moduleFiles.productionEntry = function() {
                     prodData[i].jobCardNo = jobCardNo;
                     jobCardNo++;
                 }
-                context.methods.downloadFile(context.selectedTableData, context.id + '.json');
+                context.commonFact.downloadFile(context.selectedTableData, context.id + '.json');
             });
         }
     };

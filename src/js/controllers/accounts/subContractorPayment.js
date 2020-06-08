@@ -1,12 +1,12 @@
-erpConfig.moduleFiles.subContractorPayment = function() {
+erpConfig.moduleFiles.subContractorPayment = function(context) {
     return {
-        callBackList: function(context) {
+        callBackList: function() {
             context.form.mapping.actions = {};
         },
-        callBackAdd: function(context) {
-            context.methods.makeOptionsFields(context, context.form.fields['grnNo']);
+        callBackAdd: function() {
+            context.commonFact.makeOptionsFields(context.form.fields['grnNo']);
         },
-        callBackEdit: function(context) {
+        callBackEdit: function() {
             for (var i in context.data.mapping) {
                 context.data.mapping[i].date = new Date(context.data.mapping[i].date);
             }
@@ -14,14 +14,14 @@ erpConfig.moduleFiles.subContractorPayment = function() {
                 context.form.mapping.actions.add = false;
             }
         },
-        callBackChangeMapping: function(context, data, key, field) {
+        callBackChangeMapping: function(data, key, field) {
             var total = 0;
             var grnMap = field.options[context.data.grnNo];
             context.data.total = grnMap.total;
-            context.data.subContractorDCDate = context.methods.dateFormatChange(context.data.subContractorDCDate);
+            context.data.subContractorDCDate = context.commonFact.dateFormatChange(context.data.subContractorDCDate);
             context.data.balanceAmount = context.data.total;
         },
-        updateBalanceAmount: function(context, data, key, field) {
+        updateBalanceAmount: function() {
             var amount = 0;
             for (var i in context.data.mapping) {
                 amount += parseFloat(context.data.mapping[i].amount);

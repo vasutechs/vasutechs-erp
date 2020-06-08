@@ -1,7 +1,8 @@
 module.exports = function() {
     var config = {
+        appName: 'Vasutechs-ERP',
         arg: require('minimist')(process.argv),
-        httpMiddleWare: require('connect')(),
+        app: require("express")(),
         webServer: {
             distPath: './',
             serverPort: '9000',

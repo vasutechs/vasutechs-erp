@@ -1,36 +1,36 @@
-erpConfig.moduleFiles.invoice = function() {
+erpConfig.moduleFiles.invoice = function(context) {
     var orgItemVal = null,
         delMapItemVal = [];
     return {
-        callBackList: function(context) {
-            context.methods.getPartStock(context);
+        callBackList: function() {
+            context.commonFact.getPartStock();
             orgItemVal = null;
             delMapItemVal = [];
         },
-        callBackSetAutoGenKey: function(context) {
+        callBackSetAutoGenKey: function() {
             var year = context.erpAppConfig.calendarYear;
             context.data[context.form.autoGenKey] = context.data[context.form.autoGenKey] + '/' + year + '-' + ('' + parseInt(year + 1)).substring(2);
         },
-        callBackChangeMapping: function(context, data, key, field) {
-            context.methods.getPartStockDetail(context, data, key, field);
+        callBackChangeMapping: function(data, key, field) {
+            context.commonFact.getPartStockDetail(data, key, field);
             orgItemVal.mapping = angular.copy(context.data.mapping);
-            context.methods.updateTotalAmount(context);
+            context.methods.updateTotalAmount();
         },
-        callBackRemoveMapping: function(context, data, key) {
+        callBackRemoveMapping: function(data, key) {
             if (context.page.name === 'edit') {
                 delMapItemVal.push(orgItemVal.mapping[key]);
             }
             delete orgItemVal.mapping.splice(key, 1);
         },
-        callBackAdd: function(context) {
+        callBackAdd: function() {
             orgItemVal = angular.copy(context.data);
             delMapItemVal = [];
         },
-        callBackEdit: function(context) {
+        callBackEdit: function() {
             orgItemVal = angular.copy(context.data);
             delMapItemVal = [];
         },
-        getPartStockDetail: function(context, data, key, field) {
+        getPartStockDetail: function() {
             var newMapData = [];
             newMapData = context.data.mapping.filter(function(data) {
                 if (context.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp]) {
@@ -42,7 +42,7 @@ erpConfig.moduleFiles.invoice = function() {
             });
             context.data.mapping = newMapData;
         },
-        updateTotal: function(context, data, updateValue, field, fieldKey) {
+        updateTotal: function(data, updateValue, field, fieldKey) {
             var partDetail = context.form.mapping.fields['id'].options[data.id],
                 totalBeforTax = 0,
                 partStock = 0;
@@ -58,10 +58,10 @@ erpConfig.moduleFiles.invoice = function() {
             totalBeforTax = data.unit * data.rate;
 
             data.amount = parseFloat(totalBeforTax).toFixed(2);
-            context.methods.updateTotalAmount(context);
+            context.methods.updateTotalAmount();
 
         },
-        updateTotalAmount: function(context) {
+        updateTotalAmount: function() {
             var taxRateTotal = 0,
                 cgstTotal = 0,
                 sgstTotal = 0,
@@ -93,17 +93,17 @@ erpConfig.moduleFiles.invoice = function() {
             context.data.subTotal = parseFloat(subTotal).toFixed(2);
             context.data.total = Math.round(total);
             if (context.cashBill) {
-                context.methods.updatePreBalance(context);
+                context.methods.updatePreBalance();
             }
         },
-        updatePreBalance: function(context) {
+        updatePreBalance: function() {
             var total = parseFloat(context.data.subTotal);
             if (context.data.preBalance) {
                 total = total + parseFloat(context.data.preBalance);
             }
             context.data.total = Math.round(total);
         },
-        updateInvoicePartStock: function(context) {
+        updateInvoicePartStock: function() {
             var mapStockUpdate = function(map, key, del) {
                 var data = angular.copy(map);
                 var newContext = angular.copy(context);
@@ -119,7 +119,7 @@ erpConfig.moduleFiles.invoice = function() {
                 }
                 newContext.data = data;
                 newContext.updatePrevStock = false;
-                context.methods.updatePartStock(newContext);
+                context.commonFact.updatePartStock(newContext);
             };
             for (var i in context.data.mapping) {
                 mapStockUpdate(context.data.mapping[i], i, false);
@@ -129,12 +129,12 @@ erpConfig.moduleFiles.invoice = function() {
             }
 
         },
-        callBackSubmit: function(context) {
-            context.methods.updateInvoicePartStock(context);
+        callBackSubmit: function() {
+            context.methods.updateInvoicePartStock();
         },
-        callBeforeDelete: function(context, id, item) {
+        callBeforeDelete: function(id, item) {
             context.data = item;
-            context.methods.updateInvoicePartStock(context);
+            context.methods.updateInvoicePartStock();
         }
     };
 };

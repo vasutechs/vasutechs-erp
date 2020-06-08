@@ -1,50 +1,56 @@
-erpConfig.moduleFiles.authFact = function(serviceApi, $window) {
-    var login = function(context) {
-        var usersService = angular.copy(context.erpAppConfig.modules.controllers.admin.users.services.list);
-        return serviceApi.callServiceApi(usersService).then(function(res) {
-            var data = res.data;
-            var userDetail;
-            for (var i in data) {
-                if (data[i].userName === context.data.userName && data[i].password === context.data.password) {
-                    userDetail = {
-                        id: data[i].id,
-                        userName: data[i].userName,
-                        userType: data[i].userType
-                    };
-                }
-            }
-            setUserDetail(userDetail);
-            return userDetail;
-        });
-    };
-    var setUserDetail = function(userDetail) {
-        $window.sessionStorage.setItem('erpUserDetail', JSON.stringify(userDetail));
-        return userDetail;
-    };
-    var getUserDetail = function() {
-        var userDetail = $window.sessionStorage.getItem('erpUserDetail');
-        if (userDetail !== 'undefined') {
-            userDetail = JSON.parse(userDetail);
-        }
-        return userDetail;
-    };
-    var isLogin = function() {
-        var userDetail = getUserDetail();
-        if (userDetail) {
-            return userDetail.userType;
-        }
-        return false;
-    };
-    var logout = function() {
-        setUserDetail();
-    };
+erpConfig.moduleFiles.authFact = function($window) {
+    return function(context) {
+        var erpUserDetails = null;
+        var login = function() {
+            return context.commonFact.updateData(context, context.data).then(function(res) {
+                var data = res.data;
 
-    return {
-        login: login,
-        logout: logout,
-        setUserDetail: setUserDetail,
-        getUserDetail: getUserDetail,
-        isLogin: isLogin
+                if (data.userName === context.data.userName) {
+                    setUserDetail(data);
+                }
+
+                return data;
+            });
+        };
+        var setUserDetail = function(userDetail) {
+            erpUserDetails = JSON.stringify(userDetail);
+            !context.erpAppConfig.serverAuth && $window.sessionStorage.setItem(context.erpAppConfig.appName, erpUserDetails);
+            return userDetail;
+        };
+        var getUserDetail = function() {
+            var userDetail = erpUserDetails || !context.erpAppConfig.serverAuth && $window.sessionStorage.getItem(context.erpAppConfig.appName);
+            if (userDetail !== 'undefined') {
+                userDetail = JSON.parse(userDetail);
+            }
+            return userDetail;
+        };
+
+        var logout = function() {
+            setUserDetail();
+            erpUserDetails = null;
+            return context.commonFact.getData({
+                dataUri: 'logout',
+                cache: false
+            });
+
+        };
+
+        var isLogged = function() {
+            var userDetail = getUserDetail();
+            if (userDetail && userDetail.userType) {
+                return true;
+            }
+            return false;
+        };
+
+
+        return {
+            login: login,
+            logout: logout,
+            setUserDetail: setUserDetail,
+            getUserDetail: getUserDetail,
+            isLogged: isLogged
+        };
     };
 };
 

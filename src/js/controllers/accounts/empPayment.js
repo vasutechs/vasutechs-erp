@@ -1,14 +1,14 @@
-erpConfig.moduleFiles.empPayment = function() {
+erpConfig.moduleFiles.empPayment = function(context) {
     return {
-        callBackAdd: function(context) {
+        callBackAdd: function() {
             context.data['toDate'] = new Date();
         },
-        getProductionEntry: function(context) {
+        getProductionEntry: function() {
             var frmDate = context.data.frmDate;
             var toDate = context.data.toDate;
             var filterOperator = context.data.employeeCode;
-            var empPaidList = context.methods.getEmpPaymentPaid(context);
-            return context.methods.getData('report.productionEntryReport').then(function(res) {
+            var empPaidList = context.methods.getEmpPaymentPaid();
+            return context.commonFact.getData('report.productionEntryReport').then(function(res) {
                 var productionEntry = res.data;
                 var productionEntryList = {};
                 for (var i in productionEntry) {
@@ -44,7 +44,7 @@ erpConfig.moduleFiles.empPayment = function() {
             });
 
         },
-        getEmpPaymentPaid: function(context) {
+        getEmpPaymentPaid: function() {
             var listViewData = angular.copy(context.listViewDataMaster);
             var filterOperator = context.data.employeeCode;
             var empPaidList = {};
@@ -59,7 +59,7 @@ erpConfig.moduleFiles.empPayment = function() {
             }
             return empPaidList;
         },
-        callBackEdit: function(context) {
+        callBackEdit: function() {
             for (var i in context.data.mapping) {
                 context.data.mapping[i].date = new Date(context.data.mapping[i].date);
             }
@@ -67,15 +67,15 @@ erpConfig.moduleFiles.empPayment = function() {
                 context.form.mapping.actions.add = false;
             }
         },
-        addPartMap: function(context, data) {
-            context.methods.changeMapping(context, data, data.employeeCode, context.form.fields['employeeCode']);
+        addPartMap: function(data) {
+            context.commonFact.changeMapping(data, data.employeeCode, context.form.fields['employeeCode']);
         },
-        callBackChangeMapping: function(context, data, key, field, fieldMapKey) {
-            context.methods.updatePartMap(context, data, key, field, fieldMapKey);
+        callBackChangeMapping: function(data, key, field, fieldMapKey) {
+            context.methods.updatePartMap(data, key, field, fieldMapKey);
         },
-        updatePartMap: function(context, data, key, field, fieldMapKey) {
+        updatePartMap: function() {
 
-            context.methods.getProductionEntry(context).then(function(productionEntryList) {
+            context.methods.getProductionEntry().then(function(productionEntryList) {
                 var total = 0;
                 var employeeCode = context.data.employeeCode;
                 var newMapData = [];
@@ -94,7 +94,7 @@ erpConfig.moduleFiles.empPayment = function() {
             });
 
         },
-        updateBalanceAmount: function(context, data, key, field) {
+        updateBalanceAmount: function(data) {
             var amount = context.data.balanceAmount;
             if (data.paidStatus) {
                 amount -= parseInt(data.totalLaborCost);

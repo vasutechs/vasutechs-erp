@@ -1,67 +1,61 @@
-module.exports = function() {
+module.exports = function(config) {
     var JsonDB = require('node-json-db');
     var fs = require('fs');
-    var masterDb = new JsonDB("data/database", true, true);
-    var currentDb;
-    var databaseType;
-    var calendarYear = new Date().getMonth() >= 3 ? new Date().getFullYear() : new Date().getFullYear() - 1;
-    var currentYearDb = new JsonDB("data/" + calendarYear + "/database", true, true);
-    const bcrypt = require("bcryptjs");
-    // bcrypt.hash("thisismypassword", 8)
-    //   .then(password => {
-    //     console.log(password); // hashed password
-    // });
-    var getTableData = function(dataPath) {
+    var cryptr = new(require('cryptr'))(config.appName);
+
+    config.currentDb = {};
+
+    config.task.getTableData = function(table) {
         var data;
         try {
-            data = dataPath && currentDb.getData('/tables' + dataPath) || currentDb.getData('/');
+            data = table && config.currentDb.getData('/tables' + table) || config.currentDb.getData('/');
+            if (data.password) {
+                data.password = '';
+            }
         } catch (error) {
             data = {};
         };
         return data;
     };
 
-    var setCurrentDb = function(year) {
-        if (year && year[1]) {
-            currentDb = currentYearDb = calendarYear === year[1] && currentYearDb || new JsonDB("data/" + year[1] + "/database", true, true);
-            databaseType = "yearly-" + year[1];
-        } else {
-            currentDb = masterDb;
-            databaseType = "master";
-        }
-    };
 
-    var setTableData = function(dataPath, inputData) {
+    config.task.setTableData = function(table, inputData) {
         var lastData,
             newId,
             id = '';
-        inputData = JSON.parse(inputData);
+        var data;
+        if (inputData.password) {
+            inputData.password = cryptr.encrypt(inputData.password);
+        }
         if (!inputData.id && !inputData.delete) {
             try {
-                lastData = currentDb.getData('/tables' + dataPath);
+                lastData = config.currentDb.getData('/tables' + table);
             } catch (error) {
-                currentDb.push('/tables' + dataPath, {}, true);
-                lastData = currentDb.getData('/tables' + dataPath);
+                config.currentDb.push('/tables' + table, {}, true);
+                lastData = config.currentDb.getData('/tables' + table);
             };
             lastData = lastData && lastData[Object.keys(lastData)[Object.keys(lastData).length - 1]];
             newId = lastData && lastData.id && parseInt(lastData.id) + 1 || 1;
             inputData['id'] = newId;
             inputData['added'] = new Date();
+            table += '/' + newId;
         }
         try {
-            currentDb.push('/type', databaseType, true);
-            currentDb.push('/updated', new Date(), true);
+            config.databaseType && config.currentDb.push('/type', config.databaseType, true);
+            config.appCustomer && config.currentDb.push('/appCustomer', config.appCustomer, true);
+            config.currentDb.push('/updated', new Date(), true);
+            config.currentDb.push('/updatedUserId', inputData.updatedUserId, true);
             if (inputData.delete) {
-                currentDb.delete('/tables' + dataPath + '/' + inputData.key);
-                data = currentDb.getData('/tables' + dataPath);
+                config.currentDb.delete('/tables' + table);
+                data = config.currentDb.getData('/tables' + table);
             } else {
-                id = '/' + inputData.id;
                 inputData['updated'] = new Date();
-                currentDb.push('/tables' + dataPath + id, inputData, true);
-                data = currentDb.getData('/tables' + dataPath + id);
+                config.currentDb.push('/tables' + table, inputData, true);
+                data = config.currentDb.getData('/tables' + table);
             }
 
         } catch (error) {
+            console.log(error);
             data = {};
         };
         return data;
@@ -69,14 +63,13 @@ module.exports = function() {
 
     var uploadTableData = function(inputData) {
         var inputVal = JSON.parse(inputData);
-        currentDb = currentYearDb;
-        databaseType = "yearly-" + new Date().getFullYear();
+        config.databaseType = "yearly-" + new Date().getFullYear();
         for (var table in inputVal) {
             for (var data in inputVal[table]) {
-                setTableData('/' + table, JSON.stringify(inputVal[table][data]));
+                config.task.setTableData('/' + table, JSON.stringify(inputVal[table][data]));
             }
         }
-        return currentDb.getData('/tables');
+        return currentYearDb.getData('/tables');
     };
 
     var uploadDb = function(inputData) {
@@ -114,30 +107,93 @@ module.exports = function() {
         return listDbYears;
     };
 
-    var dbConnect = function(req, res, inputData) {
-        var apiUrl = req.originalUrl;
-        var apiPath = apiUrl.split('/api');
-        var year = apiUrl.match(new RegExp("YEAR-(.*)/api"));
-        var data;
+    config.task.updateDataId = function(params, inputData, query) {
+        var table = '/' + params.table;
+        var id = inputData.id || query.id
+        table += id ? ('/' + id) : '';
+        return table;
+    };
 
-        setCurrentDb(year);
-        if (apiPath[1] === '/download') {
-            data = getTableData();
-        } else if (apiPath[1] === '/getDatabases') {
-            data = { list: getListDb() };
-        } else if (apiPath[1] === '/upload') {
-            data = uploadDb(inputData);
-        } else if (apiPath[1] === '/calendarYear') {
-            setCurrentDb(year);
-        } else if (req.method === 'POST') {
-            data = setTableData(apiPath[1], inputData);
-        } else {
-            data = getTableData(apiPath[1] || apiUrl);
+    config.task.dbData = function(req, res) {
+        var data = {};
+        var inputData = req.body;
+        var params = req.params;
+        var query = req.query;
+        var table = config.task.updateDataId(params, inputData, query);
+        if (config.task.setCustomerCurrentDb(query, inputData.appCustomer || query.appCustomer)) {
+            if (table === 'download') {
+                data = config.task.getTableData(inputData);
+            } else if (table === 'getDatabases') {
+                data = { list: getListDb(inputData) };
+            } else if (table === 'upload') {
+                data = uploadDb(inputData);
+            } else if (req.method === 'POST') {
+                data = config.task.setTableData(table, inputData);
+            } else {
+                data = config.task.getTableData(table);
+            }
+
         }
         return data;
     };
 
-    return {
-        dbConnect: dbConnect
-    }
+    config.task.setCustomerCurrentDb = function(query, appCustomer) {
+        var year = query.year;
+
+        if (appCustomer) {
+            if (year && year[1]) {
+                config.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/" + year[1] + "/database", true, true);
+                config.databaseType = "yearly-" + year[1];
+            } else {
+                config.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/database", true, true);
+                config.databaseType = "appCustomerMaster";
+                config.appCustomer = appCustomer;
+            }
+            return true;
+        } else {
+            config.currentDb = {};
+            config.databaseType = undefined;
+            config.appCustomer = undefined;
+            return false;
+        }
+    };
+
+    config.task.login = function(req, loginDb) {
+        var data = {};
+        var inputData = req.body;
+        var query = req.query;
+
+        loginDb = loginDb || config.task.setCustomerCurrentDb(query, inputData.appCustomer || query.appCustomer);
+        if (loginDb) {
+            var users = loginDb.getData('/tables/users');
+            for (var i in users) {
+                if (users[i].userName === inputData.userName && inputData.password === cryptr.decrypt(users[i].password)) {
+                    data = {
+                        id: users[i].id,
+                        userName: users[i].userName,
+                        userType: users[i].userType,
+                        appCustomer: config.appCustomer,
+                        loggedIn: true
+                    };
+                }
+            }
+        }
+        return data;
+    };
+
+    // respond to all requests
+    config.app.use('/api/data/:table', function(req, res) {
+        var data = config.task.dbData(req);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(data));
+
+    });
+
+    config.app.use('/api/login', function(req, res) {
+        var data = config.task.dbData(req, res);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(data));
+
+    });
+
 };

@@ -14,12 +14,12 @@
             <div class="card">
                 <div class="card-header hide-print">
                     <b ng-if="!context.page.printView">{{context.form.title||'Add/Edit'}}</b>
-                    <a ng-if="context.page.printView" class="fa fa-print" href='javascript: void();' onclick="window.print()"><b>Print View</b></a>
-                    <button type="button" class="close float-right" aria-label="Close" ng-click="context.methods.cancel()">
+                    <a ng-if="context.page.printView && context.commonFact.isAppCustomer()" class="fa fa-print" href='javascript: void();' onclick="window.print()"><b>Print View</b></a>
+                    <button type="button" class="close float-right" aria-label="Close" ng-click="context.commonFact.cancel()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div ng-if="context.page.printView" class="row">
+                <div ng-if="context.page.printView && context.commonFact.isAppCustomer()" class="row">
                     <div class="col-8">
                         <img ng-if="context.erpAppConfig.companyLogoUrl" class="logo" title="{{context.erpAppConfig.companyName}}" ng-src="{{context.erpAppConfig.companyLogoUrl}}" />
                         <h1 ng-if="!context.erpAppConfig.companyLogoUrl" class="logo">{{context.erpAppConfig.companyName}}</h1>
@@ -34,7 +34,7 @@
                 <div class="card-body">
                     <custom-form></custom-form>
                 </div>
-                <div ng-if="context.page.printView" class="row">
+                <div ng-if="context.page.printView && context.commonFact.isAppCustomer()" class="row">
                     <div class="col-8"></div>
                     <div class="col-4">
                         <p class="text-center font-italic"><b>For {{context.companyDetail.name}}</b></p>

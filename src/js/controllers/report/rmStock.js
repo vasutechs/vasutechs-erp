@@ -1,6 +1,6 @@
-erpConfig.moduleFiles.rmStock = function() {
+erpConfig.moduleFiles.rmStock = function(context) {
     return {
-        callBackList: function(context) {
+        callBackList: function() {
             var newList = angular.copy(context.listViewData);
             if ($location.search() && $location.search()['showall'] === 'no') {
                 newList = context.listViewData.filter(function(data) {
@@ -8,7 +8,7 @@ erpConfig.moduleFiles.rmStock = function() {
                 });
                 context.listViewData = newList
             }
-            context.methods.getData('purchase.rmMaster').then(function(res) {
+            context.commonFact.getData('purchase.rmMaster').then(function(res) {
                 var listViewData = angular.copy(context.listViewDataMaster);
                 for (var i in listViewData) {
                     var stockData = context.listViewData[i];
@@ -19,9 +19,9 @@ erpConfig.moduleFiles.rmStock = function() {
                 }
             });
         },
-        submit: function(context) {
+        submit: function() {
             var stockData;
-            context.methods.getData('report.rmStock').then(function(res) {
+            context.commonFact.getData('report.rmStock').then(function(res) {
                 stockData = res.data;
                 for (var i in stockData) {
                     if (!context.data.id && stockData[i].rmCode === context.data.rmCode) {
@@ -29,7 +29,7 @@ erpConfig.moduleFiles.rmStock = function() {
                         context.data.rmStockQty = parseInt(context.data.rmStockQty) + parseInt(stockData[i].rmStockQty);
                     }
                 }
-                commonFact.submit(context);
+                commonFact.submit();
             });
 
         }

@@ -1,8 +1,8 @@
-erpConfig.moduleFiles.costAnalysis = function() {
+erpConfig.moduleFiles.costAnalysis = function(context) {
     return {
-        callBackList: function(context) {
-            context.methods.getFlowMaster(context).then(function() {
-                context.methods.getData('purchase.rmMaster').then(function(res) {
+        callBackList: function() {
+            context.commonFact.getFlowMaster().then(function() {
+                context.commonFact.getData('purchase.rmMaster').then(function(res) {
 
                     for (var i in context.listViewData) {
                         var partDetails = context.listViewData[i];

@@ -1,13 +1,13 @@
-erpConfig.moduleFiles.customerPaymentInvoice = function() {
+erpConfig.moduleFiles.customerPaymentInvoice = function(context) {
     return {
-        callBackList: function(context) {
+        callBackList: function() {
             context.form.mapping.actions = {};
         },
-        callBackAdd: function(context) {
-            context.methods.makeOptionsFields(context, context.form.fields['invoiceNo']);
+        callBackAdd: function() {
+            context.commonFact.makeOptionsFields(context.form.fields['invoiceNo']);
             context.data['date'] = null;
         },
-        callBackEdit: function(context) {
+        callBackEdit: function() {
             for (var i in context.data.mapping) {
                 context.data.mapping[i].date = new Date(context.data.mapping[i].date);
             }
@@ -15,11 +15,11 @@ erpConfig.moduleFiles.customerPaymentInvoice = function() {
                 context.form.mapping.actions.add = false;
             }
         },
-        callBackChangeMapping: function(context, data, key, field) {
+        callBackChangeMapping: function() {
             context.data.balanceAmount = context.data.total;
-            context.data['date'] = context.methods.dateFormatChange(context.data['date']);
+            context.data['date'] = context.commonFact.dateFormatChange(context.data['date']);
         },
-        updateBalanceAmount: function(context, data, key, field) {
+        updateBalanceAmount: function() {
             var amount = 0;
             for (var i in context.data.mapping) {
                 amount += parseFloat(context.data.mapping[i].amount);

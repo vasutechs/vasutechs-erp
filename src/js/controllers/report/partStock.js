@@ -1,15 +1,15 @@
-erpConfig.moduleFiles.partStock = function() {
+erpConfig.moduleFiles.partStock = function(context) {
     return {
-        callBackList: function(context) {
+        callBackList: function() {
             var newList = angular.copy(context.listViewData);
-            if (context.methods.location.search() && context.methods.location.search()['showall'] === 'no') {
+            if (context.commonFact.location.search() && context.commonFact.location.search()['showall'] === 'no') {
                 newList = context.listViewData.filter(function(data) {
                     return data.partStockQty > 0;
                 });
                 context.listViewData = newList
             }
 
-            context.methods.getData('marketing.partMaster').then(function(res) {
+            context.commonFact.getData('marketing.partMaster').then(function(res) {
                 var listViewData = angular.copy(context.listViewDataMaster);
                 for (var i in listViewData) {
                     var stockData = context.listViewData[i];
@@ -20,15 +20,15 @@ erpConfig.moduleFiles.partStock = function() {
                 }
             });
         },
-        updateOperationFrom: function(context, data, key, field) {
+        updateOperationFrom: function() {
             if (context.data.partNo) {
                 var restriction = {
                     partNo: context.data.partNo
                 };
-                context.methods.getOperationFromFlow(context, context.form.fields['operationFrom'], restriction);
+                context.commonFact.getOperationFromFlow(context.form.fields['operationFrom'], restriction);
             }
         },
-        updateOperationTo: function(context, data, key, field) {
+        updateOperationTo: function(data, key, field) {
             if (context.data.partNo) {
                 var partNo = context.data.partNo,
                     restriction = {
@@ -42,22 +42,22 @@ erpConfig.moduleFiles.partStock = function() {
                     });
                 }
 
-                context.methods.getOperationFromFlow(context, context.form.fields['operationTo'], restriction);
+                context.commonFact.getOperationFromFlow(context.form.fields['operationTo'], restriction);
             }
         },
-        submit: function(context) {
+        submit: function() {
             var submitService;
             if (context.data.id) {
-                submitService = context.methods.updateData(context, context.data)
+                submitService = context.commonFact.updateData(context, context.data)
             } else {
                 context.updatePrevStock = false;
                 context.data.acceptedQty = context.data.partStockQty;
-                submitService = context.methods.updatePartStock(context);
+                submitService = context.commonFact.updatePartStock();
             }
 
             submitService.then(function() {
                 context.page.name = 'list';
-                context.methods.list(context);
+                context.commonFact.list();
             });
         }
     };

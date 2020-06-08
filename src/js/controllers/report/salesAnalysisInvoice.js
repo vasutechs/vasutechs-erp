@@ -1,7 +1,7 @@
-erpConfig.moduleFiles.salesAnalysisInvoice = function() {
+erpConfig.moduleFiles.salesAnalysisInvoice = function(context) {
     var cashBill = false;
     return {
-        callBackList: function(context) {
+        callBackList: function() {
             var partDetailList = [];
             var listViewData = angular.copy(context.listViewDataMaster);
             for (var i in listViewData) {
@@ -22,14 +22,14 @@ erpConfig.moduleFiles.salesAnalysisInvoice = function() {
                             taxRate: listViewData[i].taxRate || listViewData[i].igst,
                             unit: listViewData[i].mapping[j].unit,
                             customerCode: listViewData[i]['customerCode'],
-                            dates: context.methods.dateFormatChange(date),
+                            dates: context.commonFact.dateFormatChange(date),
                             invoiceNos: !cashBill ? 'H-' + listViewData[i]['invoiceNo'] : listViewData[i]['invoiceNo']
                         };
 
                         if (!cashBill) {
                             partDetail.amount = parseFloat(partDetail.amount) + (parseFloat(partDetail.amount) * parseFloat(partDetail.taxRate / 100));
                         }
-                        var isPartExist = context.methods.findObjectByKey(partDetailList, 'partNo', partDetail['partNo']);
+                        var isPartExist = context.commonFact.findObjectByKey(partDetailList, 'partNo', partDetail['partNo']);
                         if (isPartExist && isPartExist.customerCode === partDetail.customerCode) {
                             isPartExist.amount = parseFloat(isPartExist.amount) + parseFloat(partDetail.amount);
                             isPartExist.unit = parseFloat(isPartExist.unit) + parseFloat(partDetail.unit);

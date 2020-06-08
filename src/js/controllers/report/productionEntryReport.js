@@ -1,16 +1,16 @@
-erpConfig.moduleFiles.productionEntryReport = function() {
+erpConfig.moduleFiles.productionEntryReport = function(context) {
     return {
-        callBackList: function(context) {
-            if (context.methods.location.search() && context.methods.location.search()['type']) {
-                context.methods[context.methods.location.search()['type']](context);
+        callBackList: function() {
+            if (context.commonFact.location.search() && context.commonFact.location.search()['type']) {
+                context.methods[context.commonFact.location.search()['type']]();
             } else {
-                context.methods.productionEntryReport(context);
+                context.methods.productionEntryReport();
             }
         },
-        toolHistoryCard: function(context) {
+        toolHistoryCard: function() {
             var list = [];
             context.listViewData = [];
-            context.methods.getAllYearData(context).then(function(listViewYearData) {
+            context.methods.getAllYearData().then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
                     for (var i in listViewData) {
@@ -33,7 +33,7 @@ erpConfig.moduleFiles.productionEntryReport = function() {
                                     cummulativeQty: parseInt(listViewData[i].mapping[j].acceptedQty)
                                 };
 
-                                var isPartExist = context.methods.findObjectByKey(list, { toolNo: details.toolNo, partNo: details.partNo });
+                                var isPartExist = context.commonFact.findObjectByKey(list, { toolNo: details.toolNo, partNo: details.partNo });
                                 if (isPartExist) {
                                     details.cummulativeQty += parseInt(isPartExist.cummulativeQty);
                                 }
@@ -46,10 +46,10 @@ erpConfig.moduleFiles.productionEntryReport = function() {
             });
 
         },
-        machineRunningTime: function(context) {
+        machineRunningTime: function() {
             var list = [];
             context.listViewData = [];
-            context.methods.getAllYearData(context).then(function(listViewYearData) {
+            context.methods.getAllYearData().then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
                     for (var i in listViewData) {
@@ -69,7 +69,7 @@ erpConfig.moduleFiles.productionEntryReport = function() {
                                 };
 
                                 details.runningTime = details.cumRunningTime = parseFloat(details.endTime) - parseFloat(details.startTime);
-                                var isExist = context.methods.findObjectByKey(list, { machineNo: details.machineNo });
+                                var isExist = context.commonFact.findObjectByKey(list, { machineNo: details.machineNo });
                                 if (isExist) {
                                     details.cumRunningTime += parseFloat(isExist.cumRunningTime);
                                 }
@@ -82,7 +82,7 @@ erpConfig.moduleFiles.productionEntryReport = function() {
             });
 
         },
-        empPerformanceReport: function(context) {
+        empPerformanceReport: function() {
             var list = [];
             var listViewData = angular.copy(context.listViewDataMaster);
             for (var i in listViewData) {
@@ -112,7 +112,7 @@ erpConfig.moduleFiles.productionEntryReport = function() {
             }
             context.listViewData = list;
         },
-        productionEntryReport: function(context) {
+        productionEntryReport: function() {
             var list = [];
             var listViewData = angular.copy(context.listViewDataMaster);
 
@@ -146,20 +146,27 @@ erpConfig.moduleFiles.productionEntryReport = function() {
             }
             context.listViewData = list;
         },
-        getAllYearData: function(context) {
+        getAllYearData: function() {
             var listOfDbsConfig = {
-                url: 'api/getDatabases',
-                method: 'GET'
+                id: 'getDatabases',
+                services: {
+                    list: {
+                        method: 'GET',
+                        params: {
+                            year: true
+                        }
+                    }
+                }
             };
             var prodTabConfig = context.erpAppConfig.modules.controllers.report.productionEntryReport.services.list;
             var dataList = [];
-            return context.methods.getData(listOfDbsConfig).then(function(res) {
+            return context.commonFact.getData(listOfDbsConfig).then(function(res) {
                 var listOfDbs = res.data.list;
                 var listOfDbsProm = [];
                 for (var i in listOfDbs) {
                     var serConf = angular.copy(prodTabConfig);
-                    serConf.url = prodTabConfig.url.replace('{{YEAR}}', listOfDbs[i]);
-                    listOfDbsProm.push(context.methods.getData(serConf).then(function(prodRes) {
+                    serConf.services.list.params.year = listOfDbs[i];
+                    listOfDbsProm.push(context.commonFact.getData(serConf).then(function(prodRes) {
                         dataList.push(prodRes.data);
                     }));
                 }
