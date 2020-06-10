@@ -19,18 +19,16 @@ module.exports = function(config) {
 
     config.task.authLogout = function(req, res, next) {
         req.session.destroy();
-        res.status(200).send({ succuss: false });
+        res.status(200).send({});
     };
 
-    config.task.authLogin = function(req, res, next) {
-        var currentDb = config.task.setCustomerCurrentDb(req.query, req.body.appCustomer) || masterDb;
-        var data = config.task.login(req, currentDb) || {};
+    config.task.authLogin = function(req, res) {
+        var data = config.task.login(req, masterDb) || config.task.login(req) || {};
         if (data.userName) {
             setAuthSession(req, data);
-            config.currentDb = {};
             res.status(200).send(data);
         } else {
-            res.status(200).send({ succuss: false });
+            res.status(200).send({});
         }
     };
 
@@ -47,37 +45,33 @@ module.exports = function(config) {
         }
     };
 
+
     var restrictedDbData = function(req, res) {
         var data = {};
-        var inputData = req.body;
-        var params = req.params;
         var query = req.query;
-        var table = config.task.updateDataId(params, inputData, query);
         if (checkUser(req)) {
-            if (!config.task.setCustomerCurrentDb(query, query.appCustomer)) {
-                config.currentDb = masterDb;
-            }
-
-            if (req.method === 'POST') {
-                data = config.task.setTableData(table, inputData);
-            } else {
-                data = config.task.getTableData(table);
-            }
+            data = config.task.dbData(req, res, !query.appCustomer && masterDb);
             res.status(200).send(data);
         } else {
             res.status(401).send(data);
         }
-
-
         return data;
     };
 
     var removeAppCustomer = function(req, res) {
         var query = req.query;
         if (query.appCustomer) {
-            console.log(query.appCustomer);
             del(["./data/appCustomer-" + query.appCustomer]);
+            res.status(200).send({});
+        } else {
+            res.status(401).send({});
         }
+    };
+
+    var getAppCustomer = function(req, res) {
+        var data;
+        data = masterDb.getData('/tables/appCustomers');
+        res.status(200).send(data);
     };
 
     config.task.checkLoggedIn = function(req, res) {
@@ -92,12 +86,10 @@ module.exports = function(config) {
     config.app.use(express.urlencoded({ extended: false }));
 
     // redirect to login form
-    config.app.use('/api/auth/data/:table', function(req, res) {
-        var data = {};
+    config.app.use('/api/auth/data/:table', function(req, res, next) {
         if (req.session.auth && req.session.auth.loggedIn) {
-            data = config.task.dbData(req, res);
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(data));
+            var data = config.task.dbData(req);
+            res.status(200).send(data);
         } else {
             res.status(401).send({});
         }
@@ -107,5 +99,6 @@ module.exports = function(config) {
     config.app.use('/api/auth/login', config.task.authLogin);
     config.app.use("/api/auth/checkLoggedIn", config.task.checkLoggedIn);
     config.app.use("/api/auth/removeAppCustomer", removeAppCustomer);
+    config.app.use("/api/auth/getAppCustomer", getAppCustomer);
     config.app.use("/api/auth/restrict/:table", restrictedDbData);
 };
