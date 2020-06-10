@@ -4,7 +4,7 @@
     "calendarYear": "",
     "finalStageOpp": 9,
     "yearChangeMonth": 3,
-    "httpCache": false,
+    "httpCache": true,
     "serverApiUri": "api",
     "serverDataUri": "data",
     "serverAuth": "auth",
@@ -37,6 +37,14 @@
                             "type": "input",
                             "inputType": "password",
                             "required": true
+                        },
+                        "appCustomer": {
+                            "name": "App Customers",
+                            "id": "appCustomer",
+                            "type": "select",
+                            "options": {},
+                            "dataFrom": { "dataUri": "getAppCustomer" },
+                            "replaceName": "companyName"
                         }
                     },
                     "actions": {
@@ -52,7 +60,6 @@
                 "services": {
                     "list": {
                         "notDataUri": true,
-                        "method": "POST",
                         "cache": false
                     }
                 }
@@ -70,12 +77,6 @@
                     "link": "databaseUpload",
                     "name": "databaseUpload",
                     "templateUrl": "template/controllers/databaseUpload.html"
-                },
-                "services": {
-                    "list": {
-                        "url": "api/upload",
-                        "method": "POST"
-                    }
                 }
             },
             "databaseDownload": {
@@ -101,8 +102,10 @@
                 },
                 "services": {
                     "list": {
-                        "url": "YEAR-{{YEAR}}/api/calendarYear",
-                        "method": "GET"
+                        "params": {
+                            "year": true
+                        }
+
                     }
                 }
             },
@@ -292,12 +295,6 @@
                     "page": {
                         "link": "marketing/partMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/partMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "customerMaster": {
@@ -429,12 +426,6 @@
                     "page": {
                         "link": "marketing/customerMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/customerMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "empMaster": {
@@ -601,12 +592,6 @@
                     "page": {
                         "link": "marketing/empMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/empMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "uomMaster": {
@@ -650,12 +635,6 @@
                     "page": {
                         "link": "marketing/uomMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/uomMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "invoice": {
@@ -847,8 +826,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/invoice",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -888,8 +868,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/cashBill",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 }
@@ -1005,12 +986,6 @@
                         "link": "purchase/rmMaster/list",
                         "name": "list",
                         "templateUrl": "template/defaultView.html"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/rmMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "supplierMaster": {
@@ -1137,12 +1112,6 @@
                     "page": {
                         "link": "purchase/supplierMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/supplierMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "poSupplier": {
@@ -1307,8 +1276,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/poSupplier",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -1440,12 +1410,6 @@
                     "page": {
                         "link": "purchase/generalSupplierMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/generalSupplierMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "poGeneralSupplier": {
@@ -1609,8 +1573,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/poGeneralSupplier",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -1750,12 +1715,6 @@
                     "page": {
                         "link": "purchase/subContractorMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/subContractorMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "poSubContractor": {
@@ -1917,8 +1876,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/poSubContractor",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 }
@@ -2124,8 +2084,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/grnSupplier",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -2325,8 +2286,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/grnGeneralSupplier",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -2527,8 +2489,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/dcSubContractor",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -2754,8 +2717,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/grnSubContractor",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 }
@@ -2831,12 +2795,6 @@
                     "page": {
                         "link": "production/operationMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/operationMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "bom": {
@@ -2909,12 +2867,6 @@
                     "page": {
                         "link": "production/bom/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/bom",
-                            "method": "GET"
-                        }
                     }
                 },
                 "bomAssemblePart": {
@@ -2999,12 +2951,6 @@
                     "page": {
                         "link": "production/bomAssemblePart/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/bomAssemblePart",
-                            "method": "GET"
-                        }
                     }
                 },
                 "machineMaster": {
@@ -3109,12 +3055,6 @@
                     "page": {
                         "link": "production/machineMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/machineMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "flowMaster": {
@@ -3241,12 +3181,6 @@
                     "page": {
                         "link": "store/flowMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/flowMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "toolMaster": {
@@ -3334,12 +3268,6 @@
                     "page": {
                         "link": "production/toolMaster/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/toolMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "materialIssueNote": {
@@ -3469,8 +3397,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/materialIssueNote",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -3628,14 +3557,15 @@
                     ],
                     "page": {
                         "link": "production/assembleMaterialIssueNote/list",
-                        "name": "list"
+                        "name": "list",
+                        "filter": {
+                            "isAssemblePart": 1
+                        }
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/materialIssueNote",
-                            "method": "GET",
-                            "filter": {
-                                "isAssemblePart": 1
+                            "params": {
+                                "year": true
                             }
                         }
                     }
@@ -3835,8 +3765,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/productionEntry",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 }
@@ -3937,8 +3868,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/rmStock",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -4048,8 +3980,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/partStock",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -4178,8 +4111,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/subContractorStock",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -4257,8 +4191,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/invoice",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -4275,8 +4210,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/cashBill",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -4361,12 +4297,6 @@
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/partMaster",
-                            "method": "GET"
-                        }
                     }
                 },
                 "productionEntryReport": {
@@ -4465,8 +4395,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/productionEntry",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -4553,8 +4484,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/productionEntry",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -4634,8 +4566,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/productionEntry",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -4730,8 +4663,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/productionEntry",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 }
@@ -4862,8 +4796,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/customerPaymentInvoice",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -4906,8 +4841,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/customerPaymentCashBill",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -5055,8 +4991,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/suppilerPayment",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -5203,8 +5140,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/subContractorPayment",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 },
@@ -5375,8 +5313,9 @@
                     },
                     "services": {
                         "list": {
-                            "url": "YEAR-{{YEAR}}/api/empPayment",
-                            "method": "GET"
+                            "params": {
+                                "year": true
+                            }
                         }
                     }
                 }
@@ -5464,7 +5403,7 @@
                             }
                         },
                         "mapping": {
-                            "name": "Restrict Mapping",
+                            "name": "Restrict User Modules",
                             "fields": {
                                 "module": {
                                     "name": "Page name",
@@ -5513,12 +5452,6 @@
                         "actions": {
                             "edit": true
                         }
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/settings",
-                            "method": "GET"
-                        }
                     }
                 },
                 "userTypes": {
@@ -5555,12 +5488,6 @@
                     "page": {
                         "link": "admin/userTypes/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "api/userTypes",
-                            "method": "GET"
-                        }
                     }
                 },
                 "users": {
@@ -5605,12 +5532,6 @@
                     "page": {
                         "link": "admin/users/list",
                         "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "url": "auth",
-                            "method": "POST"
-                        }
                     }
                 }
             },
@@ -5660,8 +5581,7 @@
                     },
                     "services": {
                         "list": {
-                            "dataUri": "restrict",
-                            "method": "POST"
+                            "dataUri": "restrict"
                         }
                     }
                 },
@@ -5726,8 +5646,7 @@
                     },
                     "services": {
                         "list": {
-                            "dataUri": "restrict",
-                            "method": "POST"
+                            "dataUri": "restrict"
                         }
                     }
                 }

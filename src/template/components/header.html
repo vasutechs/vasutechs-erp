@@ -20,7 +20,7 @@
                     </div>
                 </li>
             </ul>
-            <ul ng-if="context.erpAppConfig.modules.controllers && !context.commonFact.isSuperAdmin()" class="nav-item dropdown" class="navbar-nav ml-auto">
+            <ul ng-if="context.erpAppConfig.modules.controllers && context.commonFact.isAppCustomer()" class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                 </li>
                 <li ng-if="!context.erpAppConfig.modules.controllers['calendarYear'].disable" class="nav-item">

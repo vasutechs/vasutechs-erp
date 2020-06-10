@@ -2,15 +2,15 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
     var orgItemVal = null;
     return {
         callBackEdit: function() {
-            orgItemVal = angular.copy(context.data);
+            orgItemVal = angular.copy(context.controller.data);
         },
         callBackAdd: function() {
-            orgItemVal = angular.copy(context.data);
+            orgItemVal = angular.copy(context.controller.data);
         },
         callBackList: function() {
             context.commonFact.getPartStock();
             orgItemVal = null;
-            var listViewData = angular.copy(context.listViewDataMaster);
+            var listViewData = angular.copy(context.controller.listViewDataMaster);
             var partDetailList = [];
             for (var i in listViewData) {
                 if (listViewData[i].isAssemblePart === 1) {
@@ -18,23 +18,23 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
                 }
 
             }
-            context.listViewData = partDetailList;
+            context.controller.listViewData = partDetailList;
         },
         getSubParts: function() {
             context.commonFact.getData('production.bomAssemblePart').then(function(res) {
                 var bomData = res.data;
                 for (var i in bomData) {
-                    if (bomData[i].partNo === context.data.partNo) {
-                        context.data.mapping = angular.extend(context.data.mapping, bomData[i].mapping);
+                    if (bomData[i].partNo === context.controller.data.partNo) {
+                        context.controller.data.mapping = angular.extend(context.controller.data.mapping, bomData[i].mapping);
                     }
                 }
             });
         },
         updateQtyMake: function(mappingData, value, field, fieldMapkey) {
             if (mappingData.id) {
-                var partStockVal = context.partStock[mappingData.id + '-' + context.erpAppConfig.finalStageOpp];
+                var partStockVal = context.controller.partStock[mappingData.id + '-' + context.erpAppConfig.finalStageOpp];
                 if (partStockVal) {
-                    if (context.page.name === 'edit' && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[fieldMapkey].issueQty) {
+                    if (context.controller.page.name === 'edit' && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[fieldMapkey].issueQty) {
                         field.max = parseInt(orgItemVal.mapping[fieldMapkey].issueQty) + parseInt(partStockVal.partStockQty);
                     } else {
                         field.max = partStockVal.partStockQty;
@@ -50,30 +50,30 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
                 }
 
             }
-            context.methods.updateTotalQtyMake();
+            context.controller.methods.updateTotalQtyMake();
         },
         updateTotalQtyMake: function() {
-            var subPartsLength = context.data.mapping.length;
+            var subPartsLength = context.controller.data.mapping.length;
             var totalQtyMake = 0;
             var qtyCanMake;
             var prevCanMake;
             var isValid = false;
-            for (var i in context.data.mapping) {
-                if (context.data.mapping[i].qtyCanMake) {
-                    totalQtyMake += context.data.mapping[i].qtyCanMake;
+            for (var i in context.controller.data.mapping) {
+                if (context.controller.data.mapping[i].qtyCanMake) {
+                    totalQtyMake += context.controller.data.mapping[i].qtyCanMake;
                 }
-                if (!prevCanMake || prevCanMake === context.data.mapping[i].qtyCanMake) {
+                if (!prevCanMake || prevCanMake === context.controller.data.mapping[i].qtyCanMake) {
                     isValid = true;
                 } else {
                     isValid = false;
                 }
-                prevCanMake = context.data.mapping[i].qtyCanMake;
+                prevCanMake = context.controller.data.mapping[i].qtyCanMake;
             }
             qtyCanMake = totalQtyMake / subPartsLength;
             if (Number.isInteger(qtyCanMake) && isValid) {
-                context.data.qtyCanMake = qtyCanMake;
+                context.controller.data.qtyCanMake = qtyCanMake;
             } else {
-                context.data.qtyCanMake = null;
+                context.controller.data.qtyCanMake = null;
             }
 
         },
@@ -91,30 +91,30 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
                 } else {
                     data.acceptedQty = parseInt(map.qtyCanMake);
                 }
-                newContext.data = data;
+                newContext.controller.data = data;
                 newContext.updatePrevStock = false;
                 context.commonFact.updatePartStock(newContext);
             };
-            for (var i in context.data.mapping) {
-                mapStockUpdate(context.data.mapping[i], i, false);
+            for (var i in context.controller.data.mapping) {
+                mapStockUpdate(context.controller.data.mapping[i], i, false);
             }
         },
         callBackSubmit: function() {
             var qtyCanMake;
-            context.methods.updateSubPartStock();
+            context.controller.methods.updateSubPartStock();
             if (orgItemVal && orgItemVal.qtyCanMake) {
-                qtyCanMake = parseInt(context.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
-                context.data.acceptedQty = qtyCanMake;
+                qtyCanMake = parseInt(context.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
+                context.controller.data.acceptedQty = qtyCanMake;
             } else {
-                context.data.acceptedQty = context.data.qtyCanMake;
+                context.controller.data.acceptedQty = context.controller.data.qtyCanMake;
             }
             context.commonFact.updatePartStock();
         },
         callBeforeDelete: function(id, item) {
             var qtyCanMake;
-            context.data = item;
-            context.methods.updateSubPartStock(true);
-            context.data.acceptedQty = 0 - parseInt(context.data.qtyCanMake);
+            context.controller.data = item;
+            context.controller.methods.updateSubPartStock(true);
+            context.controller.data.acceptedQty = 0 - parseInt(context.controller.data.qtyCanMake);
             context.commonFact.updatePartStock();
         }
     };

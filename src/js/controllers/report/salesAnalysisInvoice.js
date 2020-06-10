@@ -3,7 +3,7 @@ erpConfig.moduleFiles.salesAnalysisInvoice = function(context) {
     return {
         callBackList: function() {
             var partDetailList = [];
-            var listViewData = angular.copy(context.listViewDataMaster);
+            var listViewData = angular.copy(context.controller.listViewDataMaster);
             for (var i in listViewData) {
                 var frmDate = context.filterView.data['frmDate'];
                 var toDate = context.filterView.data['toDate'];
@@ -42,7 +42,7 @@ erpConfig.moduleFiles.salesAnalysisInvoice = function(context) {
                     }
                 }
             }
-            context.listViewData = partDetailList;
+            context.controller.listViewData = partDetailList;
         }
     };
 };

@@ -2,10 +2,10 @@ erpConfig.moduleFiles.authFact = function($window) {
     return function(context) {
         var erpUserDetails = null;
         var login = function() {
-            return context.commonFact.updateData(context, context.data).then(function(res) {
+            return context.commonFact.updateData(context.controller, context.controller.data).then(function(res) {
                 var data = res.data;
 
-                if (data.userName === context.data.userName) {
+                if (data.userName === context.controller.data.userName) {
                     setUserDetail(data);
                 }
 

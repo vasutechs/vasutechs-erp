@@ -2,15 +2,15 @@ erpConfig.moduleFiles.productionEntryReport = function(context) {
     return {
         callBackList: function() {
             if (context.commonFact.location.search() && context.commonFact.location.search()['type']) {
-                context.methods[context.commonFact.location.search()['type']]();
+                context.controller.methods[context.commonFact.location.search()['type']]();
             } else {
-                context.methods.productionEntryReport();
+                context.controller.methods.productionEntryReport();
             }
         },
         toolHistoryCard: function() {
             var list = [];
-            context.listViewData = [];
-            context.methods.getAllYearData().then(function(listViewYearData) {
+            context.controller.listViewData = [];
+            context.controller.methods.getAllYearData().then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
                     for (var i in listViewData) {
@@ -42,14 +42,14 @@ erpConfig.moduleFiles.productionEntryReport = function(context) {
                         }
                     }
                 }
-                context.listViewData = list;
+                context.controller.listViewData = list;
             });
 
         },
         machineRunningTime: function() {
             var list = [];
-            context.listViewData = [];
-            context.methods.getAllYearData().then(function(listViewYearData) {
+            context.controller.listViewData = [];
+            context.controller.methods.getAllYearData().then(function(listViewYearData) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
                     for (var i in listViewData) {
@@ -78,13 +78,13 @@ erpConfig.moduleFiles.productionEntryReport = function(context) {
                         }
                     }
                 }
-                context.listViewData = list;
+                context.controller.listViewData = list;
             });
 
         },
         empPerformanceReport: function() {
             var list = [];
-            var listViewData = angular.copy(context.listViewDataMaster);
+            var listViewData = angular.copy(context.controller.listViewDataMaster);
             for (var i in listViewData) {
                 var frmDate = context.filterView.data['frmDate'];
                 var toDate = context.filterView.data['toDate'];
@@ -110,11 +110,11 @@ erpConfig.moduleFiles.productionEntryReport = function(context) {
                     }
                 }
             }
-            context.listViewData = list;
+            context.controller.listViewData = list;
         },
         productionEntryReport: function() {
             var list = [];
-            var listViewData = angular.copy(context.listViewDataMaster);
+            var listViewData = angular.copy(context.controller.listViewDataMaster);
 
             for (var i in listViewData) {
                 var frmDate = context.filterView.data['frmDate'];
@@ -144,7 +144,7 @@ erpConfig.moduleFiles.productionEntryReport = function(context) {
                     }
                 }
             }
-            context.listViewData = list;
+            context.controller.listViewData = list;
         },
         getAllYearData: function() {
             var listOfDbsConfig = {

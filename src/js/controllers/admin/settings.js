@@ -1,21 +1,21 @@
 erpConfig.moduleFiles.settings = function(context) {
     return {
         callBackList: function() {
-            var moduleField = context.form.mapping.fields['module'];
+            var moduleField = context.controller.form.mapping.fields['module'];
             moduleField.options = {};
             moduleField.allOptions = {};
-            context.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
+            context.controller.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
             var adminOption = {
                 userType: 'ADMIN',
                 desc: 'ADMIN',
                 optionName: 'ADMIN',
                 optionId: 'ADMIN'
             };
-            context.form.mapping.fields['restrictUser'].options['ADMIN'] = adminOption;
-            if (context.lastData === undefined) {
+            context.controller.form.mapping.fields['restrictUser'].options['ADMIN'] = adminOption;
+            if (context.controller.lastData === undefined) {
                 context.commonFact.add();
             } else {
-                context.commonFact.edit(context.lastData.id);
+                context.commonFact.edit(context.controller.lastData.id);
             }
         },
         makeModuleOptions: function(modules, field, parentModule) {
@@ -30,7 +30,7 @@ erpConfig.moduleFiles.settings = function(context) {
                     field.options[optionIdVal] = field.allOptions[optionIdVal];
 
                     if (!module.page) {
-                        context.methods.makeModuleOptions(context.commonFact.showSubModule(modules[i]), field, modules[i]);
+                        context.controller.methods.makeModuleOptions(context.commonFact.showSubModule(modules[i]), field, modules[i]);
                     }
                 }
             }

@@ -11,7 +11,7 @@ erpConfig.moduleFiles.subContractorMaster = function(context) {
                         }
                     }
                 }
-                context.form.mapping.fields['id'].filter = {
+                context.controller.form.mapping.fields['id'].filter = {
                     id: partNos
                 };
             });

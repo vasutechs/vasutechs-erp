@@ -2,7 +2,7 @@ erpConfig.moduleFiles.grnGeneralSupplier = function(context) {
     var orgItemVal = null;
     return {
         getPOGeneralSupplier: function(data, key, field) {
-            context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
+            context.controller.form.fields['poNo'] = angular.extend(context.controller.form.fields['poNo'], {
                 dataFrom: 'purchase.poGeneralSupplier',
                 replaceName: 'poNo',
                 filter: {
@@ -10,7 +10,7 @@ erpConfig.moduleFiles.grnGeneralSupplier = function(context) {
                     status: 0
                 }
             });
-            context.commonFact.makeOptionsFields(context.form.fields['poNo']);
+            context.commonFact.makeOptionsFields(context.controller.form.fields['poNo']);
         },
         updatePTTotal: function(data, updateValue) {
             var total = 0;
@@ -23,36 +23,36 @@ erpConfig.moduleFiles.grnGeneralSupplier = function(context) {
             orgItemVal = null;
         },
         callBackEdit: function(key) {
-            context.form.mapping.actions.delete = false;
-            orgItemVal = angular.copy(context.data);
-            context.data['generalSupplierInvoiceDate'] = new Date(context.data['generalSupplierInvoiceDate']);
+            context.controller.form.mapping.actions.delete = false;
+            orgItemVal = angular.copy(context.controller.data);
+            context.controller.data['generalSupplierInvoiceDate'] = new Date(context.controller.data['generalSupplierInvoiceDate']);
         },
         updatePoGeneralSupplier: function() {
-            context.commonFact.getData('purchase.poGeneralSupplier', context.data.poNo).then(function(res) {
+            context.commonFact.getData('purchase.poGeneralSupplier', context.controller.data.poNo).then(function(res) {
                 var poGeneralSupplierData = res.data;
                 poGeneralSupplierData.status = 1;
-                poGeneralSupplierData.id = context.data.poNo;
+                poGeneralSupplierData.id = context.controller.data.poNo;
                 context.commonFact.updateData('purchase.poGeneralSupplier', poGeneralSupplierData);
             });
         },
         callBackSubmit: function() {
             var newQty;
             var acceptedQty;
-            for (var i in context.data.mapping) {
-                var data = angular.copy(context.data.mapping[i]);
+            for (var i in context.controller.data.mapping) {
+                var data = angular.copy(context.controller.data.mapping[i]);
                 var newContext = angular.copy(context);
                 data.partNo = data.id;
                 data.operationTo = context.erpAppConfig.finalStageOpp;
-                newContext.data = data;
+                newContext.controller.data = data;
                 newContext.updatePrevStock = false;
                 if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
-                    acceptedQty = parseInt(newContext.data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
-                    newContext.data.acceptedQty = acceptedQty;
+                    acceptedQty = parseInt(newContext.controller.data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
+                    newContext.controller.data.acceptedQty = acceptedQty;
                 }
                 context.commonFact.updatePartStock(newContext);
 
             }
-            context.methods.updatePoGeneralSupplier();
+            context.controller.methods.updatePoGeneralSupplier();
         }
     };
 };

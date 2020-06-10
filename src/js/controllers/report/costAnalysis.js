@@ -4,11 +4,11 @@ erpConfig.moduleFiles.costAnalysis = function(context) {
             context.commonFact.getFlowMaster().then(function() {
                 context.commonFact.getData('purchase.rmMaster').then(function(res) {
 
-                    for (var i in context.listViewData) {
-                        var partDetails = context.listViewData[i];
-                        var rmCode = context.listViewData[i].rmCode;
+                    for (var i in context.controller.listViewData) {
+                        var partDetails = context.controller.listViewData[i];
+                        var rmCode = context.controller.listViewData[i].rmCode;
                         var rmDetails = rmCode && res.data[rmCode];
-                        var flowMasterDetails = context.flowMasterByPart[partDetails.id];
+                        var flowMasterDetails = context.controller.flowMasterByPart[partDetails.id];
                         var materialCost;
                         var conversionCost;
                         var subTotal;

@@ -1,18 +1,18 @@
 erpConfig.moduleFiles.partStock = function(context) {
     return {
         callBackList: function() {
-            var newList = angular.copy(context.listViewData);
+            var newList = angular.copy(context.controller.listViewData);
             if (context.commonFact.location.search() && context.commonFact.location.search()['showall'] === 'no') {
-                newList = context.listViewData.filter(function(data) {
+                newList = context.controller.listViewData.filter(function(data) {
                     return data.partStockQty > 0;
                 });
-                context.listViewData = newList
+                context.controller.listViewData = newList
             }
 
             context.commonFact.getData('marketing.partMaster').then(function(res) {
-                var listViewData = angular.copy(context.listViewDataMaster);
+                var listViewData = angular.copy(context.controller.listViewDataMaster);
                 for (var i in listViewData) {
-                    var stockData = context.listViewData[i];
+                    var stockData = context.controller.listViewData[i];
                     var partNo = stockData.partNo;
                     var partDetails = partNo && res.data[partNo];
                     stockData.rate = partDetails && partDetails.rate;
@@ -21,16 +21,16 @@ erpConfig.moduleFiles.partStock = function(context) {
             });
         },
         updateOperationFrom: function() {
-            if (context.data.partNo) {
+            if (context.controller.data.partNo) {
                 var restriction = {
-                    partNo: context.data.partNo
+                    partNo: context.controller.data.partNo
                 };
-                context.commonFact.getOperationFromFlow(context.form.fields['operationFrom'], restriction);
+                context.commonFact.getOperationFromFlow(context.controller.form.fields['operationFrom'], restriction);
             }
         },
         updateOperationTo: function(data, key, field) {
-            if (context.data.partNo) {
-                var partNo = context.data.partNo,
+            if (context.controller.data.partNo) {
+                var partNo = context.controller.data.partNo,
                     restriction = {
                         partNo: partNo
                     };
@@ -42,21 +42,21 @@ erpConfig.moduleFiles.partStock = function(context) {
                     });
                 }
 
-                context.commonFact.getOperationFromFlow(context.form.fields['operationTo'], restriction);
+                context.commonFact.getOperationFromFlow(context.controller.form.fields['operationTo'], restriction);
             }
         },
         submit: function() {
             var submitService;
-            if (context.data.id) {
-                submitService = context.commonFact.updateData(context, context.data)
+            if (context.controller.data.id) {
+                submitService = context.commonFact.updateData(context.controller, context.controller.data)
             } else {
                 context.updatePrevStock = false;
-                context.data.acceptedQty = context.data.partStockQty;
+                context.controller.data.acceptedQty = context.controller.data.partStockQty;
                 submitService = context.commonFact.updatePartStock();
             }
 
             submitService.then(function() {
-                context.page.name = 'list';
+                context.controller.page.name = 'list';
                 context.commonFact.list();
             });
         }

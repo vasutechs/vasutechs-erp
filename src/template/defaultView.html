@@ -1,25 +1,25 @@
 <div class="container-fluid">
-    <h1 class="align-center show-print logo-title">{{appName}}</h1>
+    <h1 class="align-center show-print logo-title">{{context.erpAppConfig.appName}}</h1>
     <!-- Breadcrumbs-->
     <ol class="breadcrumb hide-print">
         <li class="breadcrumb-item">
             <a href="#/">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">{{context.title}}</li>
+        <li class="breadcrumb-item active">{{context.controller.title}}</li>
     </ol>
     <alert-rol></alert-rol>
     <div class="mb-3">
-        <h3>{{context.title}}</h3>
-        <div ng-if="context.page.name=='add' || context.page.name=='edit'">
+        <h3>{{context.controller.title}}</h3>
+        <div ng-if="context.controller.page.name=='add' || context.controller.page.name=='edit'">
             <div class="card">
                 <div class="card-header hide-print">
-                    <b ng-if="!context.page.printView">{{context.form.title||'Add/Edit'}}</b>
-                    <a ng-if="context.page.printView && context.commonFact.isAppCustomer()" class="fa fa-print" href='javascript: void();' onclick="window.print()"><b>Print View</b></a>
+                    <b ng-if="!context.controller.page.printView">{{context.controller.form.title||'Add/Edit'}}</b>
+                    <a ng-if="context.controller.page.printView && context.commonFact.isAppCustomer()" class="fa fa-print" href='javascript: void();' onclick="window.print()"><b>Print View</b></a>
                     <button type="button" class="close float-right" aria-label="Close" ng-click="context.commonFact.cancel()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div ng-if="context.page.printView && context.commonFact.isAppCustomer()" class="row">
+                <div ng-if="context.controller.page.printView && context.commonFact.isAppCustomer()" class="row">
                     <div class="col-8">
                         <img ng-if="context.erpAppConfig.companyLogoUrl" class="logo" title="{{context.erpAppConfig.companyName}}" ng-src="{{context.erpAppConfig.companyLogoUrl}}" />
                         <h1 ng-if="!context.erpAppConfig.companyLogoUrl" class="logo">{{context.erpAppConfig.companyName}}</h1>
@@ -28,23 +28,23 @@
 
                         <p class="font-italic"><b>{{context.erpAppConfig.companyAddress}}</b></p>
                         <p class="font-italic"><b>Mobile:</b> {{context.erpAppConfig.companyMobile}} <b>Email:</b> {{context.erpAppConfig.companyEmail}}</p>
-                        <p class="font-italic" ng-if="!context.cashBill"><b>GSTIN:</b> {{context.erpAppConfig.companyGstin}}</p>
+                        <p class="font-italic" ng-if="!context.controller.cashBill"><b>GSTIN:</b> {{context.erpAppConfig.companyGstin}}</p>
                     </div>
                 </div>
                 <div class="card-body">
                     <custom-form></custom-form>
                 </div>
-                <div ng-if="context.page.printView && context.commonFact.isAppCustomer()" class="row">
+                <div ng-if="context.controller.page.printView && context.commonFact.isAppCustomer()" class="row">
                     <div class="col-8"></div>
                     <div class="col-4">
-                        <p class="text-center font-italic"><b>For {{context.companyDetail.name}}</b></p>
+                        <p class="text-center font-italic"><b>For {{context.erpAppConfig.companyDetail.name}}</b></p>
                         <br/>
                         <p class="text-center font-italic"><b>Authorised Signatory</b></p>
                     </div>
                 </div>
             </div>
         </div>
-        <div ng-if="context.page.name=='list'">
+        <div ng-if="context.controller.page.name=='list'">
             <filter-view></filter-view>
             <list-view></list-view>
         </div>

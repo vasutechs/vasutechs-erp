@@ -2,8 +2,8 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th ng-if="context.page.downloadTableData"></th>
-                <th ng-repeat="(key, list) in context.listView">
+                <th ng-if="context.controller.page.downloadTableData"></th>
+                <th ng-repeat="(key, list) in context.controller.listView">
                     <div ng-if="!list.action && list.isFilterBy===undefined">{{list.title}}</div>
                     <div ng-if="list.isFilterBy">
                         <select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.commonFact.viewFilterBy(list)" ng-options="option.optionId as option.optionName for option in list.options">
@@ -13,46 +13,46 @@
                     </div>
                 </th>
                 <th>
-                    <div ng-if="context.page.actions.add" class="pull-right"><a href="javascript: void(0);" ng-click="context.commonFact.add()" class="fa fa-fw fa-plus-square-o">Add</a></div>
+                    <div ng-if="context.controller.page.actions.add" class="pull-right"><a href="javascript: void(0);" ng-click="context.commonFact.add()" class="fa fa-fw fa-plus-square-o">Add</a></div>
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="(dataKey, dataList) in context.listViewData | orderBy:context.orderByProperty: true  | filter:context.filterBy:true | startFrom:context.currentPage*context.pageSize | limitTo:context.pageSize">
-                <td ng-if="context.page.downloadTableData"><input type="checkbox" ng-model="dataList.isExported" ng-change="context.commonFact.selectListData(dataList)"></td>
-                <td ng-repeat="(key, list) in context.listView">
+            <tr ng-repeat="(dataKey, dataList) in context.controller.listViewData | orderBy:context.controller.orderByProperty: true  | filter:context.controller.filterBy:true | startFrom:context.controller.currentPage*context.controller.pageSize | limitTo:context.controller.pageSize">
+                <td ng-if="context.controller.page.downloadTableData"><input type="checkbox" ng-model="dataList.isExported" ng-change="context.commonFact.selectListData(dataList)"></td>
+                <td ng-repeat="(key, list) in context.controller.listView">
                     <div ng-if="!list.actions" ng-bind="context.commonFact.replaceFieldVal(dataList[list.id], list)"></div>
                 </td>
                 <td>
                     <div class="row">
-                        <div ng-if="context.page.actions.print" class="col">
+                        <div ng-if="context.controller.page.actions.print" class="col">
                             <a href="javascript: void(0);" ng-click="context.commonFact.printView(dataList.id, true)" title="Print View" class="fa fa-fw fa-print">
                             </a>
                         </div>
-                        <div class="col" ng-if="context.page.actions.edit">
+                        <div class="col" ng-if="context.controller.page.actions.edit">
                             <a href="javascript: void(0);" ng-click="context.commonFact.edit(dataList.id)" title="Edit" class="fa fa-fw fa-edit"> </a>
                         </div>
-                        <div class="col" ng-if="context.page.actions.delete">
+                        <div class="col" ng-if="context.controller.page.actions.delete">
                             <a href="javascript: void(0);" title="Delete" ng-click="context.commonFact.delete(dataList.id, dataList)" class="fa fa-fw fa-times"> </a>
                         </div>
-                        <div class="col" ng-if="context.page.custumActions" ng-repeat="(key, actions) in context.page.custumActions">
+                        <div class="col" ng-if="context.controller.page.custumActions" ng-repeat="(key, actions) in context.controller.page.custumActions">
                             <a href="javascript: void(0);" title="{{actions.title}}" ng-click="context.commonFact.callActions(actions.method)" class="fa fa-fw fa-{{actions.class}}"> </a>
                         </div>
                     </div>
                 </td>
             </tr>
-            <tr ng-if="context.listViewData.length > 0 && context.listViewData.length >= context.pageSize">
-                <td colspan="{{context.listView.length + 1}}" align="center">
-                    <button ng-disabled="context.currentPage == 0" class="btn btn-primary" ng-click="context.currentPage=context.currentPage-1">
+            <tr ng-if="context.controller.listViewData.length > 0 && context.controller.listViewData.length >= context.controller.pageSize">
+                <td colspan="{{context.controller.listView.length + 1}}" align="center">
+                    <button ng-disabled="context.controller.currentPage == 0" class="btn btn-primary" ng-click="context.controller.currentPage=context.controller.currentPage-1">
                         Previous
-                    </button> {{context.currentPage+1}}/{{context.commonFact.numberOfPages()}}
-                    <button ng-disabled="context.currentPage >= context.commonFact.getPageData().length/context.pageSize - 1" ng-click="context.currentPage=context.currentPage+1" class="btn btn-primary">
+                    </button> {{context.controller.currentPage+1}}/{{context.commonFact.numberOfPages()}}
+                    <button ng-disabled="context.controller.currentPage >= context.commonFact.getPageData().length/context.controller.pageSize - 1" ng-click="context.controller.currentPage=context.controller.currentPage+1" class="btn btn-primary">
                         Next
                     </button>
                 </td>
             </tr>
-            <tr ng-if="!context.listViewData || context.listViewData.length===0">
-                <td colspan="{{context.listView.length + 2}}">No recodes...</td>
+            <tr ng-if="!context.controller.listViewData || context.controller.listViewData.length===0">
+                <td colspan="{{context.controller.listView.length + 2}}">No recodes...</td>
 
             </tr>
         </tbody>

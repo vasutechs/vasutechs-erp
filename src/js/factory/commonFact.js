@@ -2,41 +2,41 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
     return function(context) {
         return {
             add: function() {
-                context.page.name = 'add';
-                context.data = angular.copy(context.masterData);
-                if (context.form.autoGenKey) {
+                context.controller.page.name = 'add';
+                context.controller.data = angular.copy(context.controller.masterData);
+                if (context.controller.form.autoGenKey) {
                     context.commonFact.setAutoGenKey();
                 }
-                if (context.data.date === null) {
-                    context.data.date = new Date();
+                if (context.controller.data.date === null) {
+                    context.controller.data.date = new Date();
                 }
-                context.page.editKey = undefined;
-                context.page.printView = undefined;
+                context.controller.page.editKey = undefined;
+                context.controller.page.printView = undefined;
                 return context.commonFact.formRender().then(function() {
-                    context.methods.callBackAdd && context.methods.callBackAdd();
+                    context.controller.methods.callBackAdd && context.controller.methods.callBackAdd();
                     return true;
                 });
             },
             edit: function(key, printView) {
-                context.page.name = 'edit';
-                context.page.printView = printView;
-                context.page.editKey = key;
-                context.existEditData = context.page.editKey && context.commonFact.findObjectByKey(context.listViewDataMaster, 'id', context.page.editKey);
+                context.controller.page.name = 'edit';
+                context.controller.page.printView = printView;
+                context.controller.page.editKey = key;
+                context.controller.existEditData = context.controller.page.editKey && context.commonFact.findObjectByKey(context.controller.listViewDataMaster, 'id', context.controller.page.editKey);
 
                 return context.commonFact.formRender().then(function() {
-                    return context.commonFact.getData(context, key).then(function(res) {
-                        context.data = res.data;
-                        context.printData = angular.copy(context.data);
-                        if (context.data['date']) {
-                            context.data['date'] = new Date(context.data['date']);
+                    return context.commonFact.getData(context.controller, key).then(function(res) {
+                        context.controller.data = res.data;
+                        context.controller.printData = angular.copy(context.controller.data);
+                        if (context.controller.data['date']) {
+                            context.controller.data['date'] = new Date(context.controller.data['date']);
                         }
-                        if (context.data['frmDate']) {
-                            context.data['frmDate'] = new Date(context.data['frmDate']);
+                        if (context.controller.data['frmDate']) {
+                            context.controller.data['frmDate'] = new Date(context.controller.data['frmDate']);
                         }
-                        if (context.data['toDate']) {
-                            context.data['toDate'] = new Date(context.data['toDate']);
+                        if (context.controller.data['toDate']) {
+                            context.controller.data['toDate'] = new Date(context.controller.data['toDate']);
                         }
-                        context.methods.callBackEdit && context.methods.callBackEdit(key);
+                        context.controller.methods.callBackEdit && context.controller.methods.callBackEdit(key);
                         return context;
                     });
                 });
@@ -46,56 +46,56 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 context.commonFact.edit(key, printView);
             },
             disable: function(id, item) {
-                context.methods.callBeforeDelete && context.methods.callBeforeDelete(item);
-                context.listViewDataMaster[id]['disabled'] = true;
-                context.commonFact.updateData(context, context.listViewData[id]);
+                context.controller.methods.callBeforeDelete && context.controller.methods.callBeforeDelete(item);
+                context.controller.listViewDataMaster[id]['disabled'] = true;
+                context.commonFact.updateData(context.controller, context.controller.listViewData[id]);
                 context.commonFact.list();
-                context.methods.callBackDelete && context.methods.callBackDelete(id, item);
+                context.controller.methods.callBackDelete && context.controller.methods.callBackDelete(id, item);
             },
             delete: function(id, item) {
-                context.methods.callBeforeDelete && context.methods.callBeforeDelete(id, item);
-                context.commonFact.updateData(context, { id: id, delete: 'yes' });
+                context.controller.methods.callBeforeDelete && context.controller.methods.callBeforeDelete(id, item);
+                context.commonFact.updateData(context.controller, { id: id, delete: 'yes' });
                 context.commonFact.list();
-                context.methods.callBackDelete && context.methods.callBackDelete(id, item);
+                context.controller.methods.callBackDelete && context.controller.methods.callBackDelete(id, item);
             },
             list: function() {
-                context.page.name = 'list';
-                context.currentPage = 0;
-                context.pageSize = 10;
-                context.filterBy = context.services.list.filter || {};
-                context.listViewData = [];
-                context.orderByProperty = 'updated';
+                context.controller.page.name = 'list';
+                context.controller.currentPage = 0;
+                context.controller.pageSize = 10;
+                context.controller.filterBy = context.controller.page.filter || {};
+                context.controller.listViewData = [];
+                context.controller.orderByProperty = 'updated';
                 context.commonFact.pageActionsAccess();
                 return context.commonFact.getData().then(function(res) {
                     var listViewData = res.data;
                     for (var x in listViewData) {
-                        listViewData.hasOwnProperty(x) && !listViewData[x].disabled && context.listViewData.push(listViewData[x])
+                        listViewData.hasOwnProperty(x) && !listViewData[x].disabled && context.controller.listViewData.push(listViewData[x])
                     }
-                    context.listViewDataMaster = angular.copy(context.listViewData);
-                    context.lastData = angular.copy(context.listViewData[context.listViewData.length - 1]);
-                    context.methods.callBackList && context.methods.callBackList();
+                    context.controller.listViewDataMaster = angular.copy(context.controller.listViewData);
+                    context.controller.lastData = angular.copy(context.controller.listViewData[context.controller.listViewData.length - 1]);
+                    context.controller.methods.callBackList && context.controller.methods.callBackList();
                     return context;
                 });
             },
             formRender: function() {
-                return context.commonFact.updateFields(context.form.fields).then(function() {
-                    if (context.form.mapping) {
-                        return context.commonFact.updateFields(context.form.mapping.fields);
+                return context.commonFact.updateFields(context.controller.form.fields).then(function() {
+                    if (context.controller.form.mapping) {
+                        return context.commonFact.updateFields(context.controller.form.mapping.fields);
                     }
                     return context;
                 });
 
             },
             getPageData: function() {
-                return $filter('filter')(context.listViewData, context.filterBy, true) || [];
+                return $filter('filter')(context.controller.listViewData, context.controller.filterBy, true) || [];
             },
             numberOfPages: function() {
-                return Math.ceil(context.commonFact.getPageData().length / context.pageSize);
+                return Math.ceil(context.commonFact.getPageData().length / context.controller.pageSize);
             },
             submit: function() {
-                return context.commonFact.updateData(context, context.data).then(function(res) {
+                return context.commonFact.updateData(context.controller, context.controller.data).then(function(res) {
                     context.commonFact.list();
-                    context.methods.callBackSubmit && context.methods.callBackSubmit(res.data);
+                    context.controller.methods.callBackSubmit && context.controller.methods.callBackSubmit(res.data);
                     return context;
                 });
 
@@ -104,7 +104,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 context.commonFact.list();
             },
             getData: function(module, data) {
-                var ctrl = angular.copy(module || context);
+                var ctrl = angular.copy(module || context.controller);
                 var serviceConf = context.commonFact.getServiceConfig(ctrl, 'GET');
                 var params = data && typeof(data) !== 'object' ? { id: data } : data;
                 serviceConf.params = angular.extend(serviceConf.params, params);
@@ -112,7 +112,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 return context.serviceApi.callServiceApi(serviceConf);
             },
             updateData: function(module, data) {
-                var ctrl = module || context;
+                var ctrl = angular.copy(module || context.controller);
                 var userDetails = context.authFact.getUserDetail();
                 var serviceConf = context.commonFact.getServiceConfig(ctrl, 'POST');
                 data.updatedUserId = userDetails && context.commonFact.isSuperAdmin() ? context.commonFact.isSuperAdmin() + '-' + userDetails.id : userDetails.id || null;
@@ -147,7 +147,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             matchFilter: function(field, list) {
                 var returnFlag = false;
-                if (context && context.page.name === 'edit') {
+                if (context && context.controller.page.name === 'edit') {
                     return true;
                 }
                 for (var i in field.filter) {
@@ -174,10 +174,10 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         var optionVal = field.optionId && list[i][field.optionId] || list[i]['id'];
                         var optionIdVal = field.optionId && list[i][field.optionId] || list[i]['id'];
                         var optionNameVal = field.valuePrefix && field.valuePrefix || '';
-                        var editOption = context.existEditData && optionIdVal === context.existEditData[field.id] || false;
+                        var editOption = context.controller.existEditData && optionIdVal === context.controller.existEditData[field.id] || false;
                         optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
                         optionNameVal += list[i][field.replaceName] || '';
-                        var isCheckExistVal = field.existingCheck && context.listViewDataMaster && context.commonFact.findObjectByKey(context.listViewDataMaster, field.id, optionIdVal) || false;
+                        var isCheckExistVal = field.existingCheck && context.controller.listViewDataMaster && context.commonFact.findObjectByKey(context.controller.listViewDataMaster, field.id, optionIdVal) || false;
                         field.allOptions[optionVal] = list[i];
                         field.allOptions[optionVal]['optionName'] = optionNameVal;
                         field.allOptions[optionVal]['optionId'] = optionIdVal;
@@ -198,24 +198,24 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             removeMapping: function(data, key) {
                 delete data.splice(key, 1);
-                context.methods.callBackRemoveMapping && context.methods.callBackRemoveMapping(data, key);
+                context.controller.methods.callBackRemoveMapping && context.controller.methods.callBackRemoveMapping(data, key);
             },
             changeMapping: function(data, key, field, fieldMapKey) {
                 for (var dataKey in data) {
                     if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
                         if (key === null) {
-                            data[dataKey] = context.masterData[dataKey];
+                            data[dataKey] = context.controller.masterData[dataKey];
                         } else if (key !== undefined && field.options[key][dataKey]) {
                             if (typeof(field.options[key][dataKey]) !== 'object') {
                                 data[dataKey] = field.options[key][dataKey];
                             } else if (field.updateMapping) {
-                                data[dataKey] = angular.copy(context.masterData[dataKey]);
+                                data[dataKey] = angular.copy(context.controller.masterData[dataKey]);
                                 for (var mapKey in field.options[key][dataKey]) {
-                                    var copyDataMapKey = angular.copy(context.masterData[dataKey][0]);
+                                    var copyDataMapKey = angular.copy(context.controller.masterData[dataKey][0]);
                                     if (field.options[key][dataKey][mapKey] !== null || field.options[key][dataKey][mapKey] !== '') {
                                         data[dataKey][mapKey] = angular.extend(copyDataMapKey, field.options[key][dataKey][mapKey]);
-                                        for (var mapFieldKey in context.form.mapping.fields) {
-                                            var mapfield = context.form.mapping.fields[mapFieldKey];
+                                        for (var mapFieldKey in context.controller.form.mapping.fields) {
+                                            var mapfield = context.controller.form.mapping.fields[mapFieldKey];
                                             if (mapfield.action) {
                                                 if (mapfield.type === 'select') {
                                                     context.commonFact.callActions(mapfield.action, [data[dataKey][mapKey], data[dataKey][mapKey][mapfield.id], mapfield, mapKey]);
@@ -228,13 +228,13 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         }
                     }
                 }
-                field.callBack !== false && context.methods.callBackChangeMapping && context.methods.callBackChangeMapping(data, key, field, fieldMapKey);
+                field.callBack !== false && context.controller.methods.callBackChangeMapping && context.controller.methods.callBackChangeMapping(data, key, field, fieldMapKey);
             },
             setAutoGenKey: function() {
-                var lastDataKey = context.lastData ? context.lastData[context.form.autoGenKey] : undefined;
-                lastDataKey = lastDataKey ? parseInt(lastDataKey) + 1 : context.form.autoGenValStart ? context.form.autoGenValStart : 1;
-                context.data[context.form.autoGenKey] = lastDataKey;
-                context.methods.callBackSetAutoGenKey && context.methods.callBackSetAutoGenKey();
+                var lastDataKey = context.controller.lastData ? context.controller.lastData[context.controller.form.autoGenKey] : undefined;
+                lastDataKey = lastDataKey ? parseInt(lastDataKey) + 1 : context.controller.form.autoGenValStart ? context.controller.form.autoGenValStart : 1;
+                context.controller.data[context.controller.form.autoGenKey] = lastDataKey;
+                context.controller.methods.callBackSetAutoGenKey && context.controller.methods.callBackSetAutoGenKey();
             },
             dateFormatChange: function(dateValue) {
                 dateValue = new Date(dateValue);
@@ -246,7 +246,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             getOperationFromFlow: function(field, restriction) {
                 var self = this,
-                    partNo = restriction.partNo || context.data.partNo,
+                    partNo = restriction.partNo || context.controller.data.partNo,
                     limit = 0;
                 var returnPromise = [];
                 var partStockPromise;
@@ -343,15 +343,15 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
                         scStock[scStockData[i].partNo + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
                     }
-                    var existingStock = scStock[newContext.data.partNo + '-' + newContext.data.operationFrom + '-' + newContext.data.operationTo];
-                    var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(newContext.data.acceptedQty) : parseInt(newContext.data.acceptedQty);
+                    var existingStock = scStock[newContext.controller.data.partNo + '-' + newContext.controller.data.operationFrom + '-' + newContext.controller.data.operationTo];
+                    var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(newContext.controller.data.acceptedQty) : parseInt(newContext.controller.data.acceptedQty);
                     var data = {
                         id: existingStock && existingStock.id || undefined,
-                        partNo: newContext.data.partNo,
-                        subContractorCode: newContext.data.subContractorCode,
+                        partNo: newContext.controller.data.partNo,
+                        subContractorCode: newContext.controller.data.subContractorCode,
                         partStockQty: partStockQty,
-                        operationFrom: newContext.data.operationFrom,
-                        operationTo: newContext.data.operationTo
+                        operationFrom: newContext.controller.data.operationFrom,
+                        operationTo: newContext.controller.data.operationTo
                     }
                     returnPromise.push(context.commonFact.updateData('report.subContractorStock', data));
                 });
@@ -367,14 +367,14 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     operation = data.operationFrom;
                 if (data.id &&
                     operation &&
-                    (context.partStock === undefined ||
-                        context.partStock[data.id + '-' + operation] === undefined ||
-                        context.partStock[data.id + '-' + operation].partStockQty < qty)) {
+                    (context.controller.partStock === undefined ||
+                        context.controller.partStock[data.id + '-' + operation] === undefined ||
+                        context.controller.partStock[data.id + '-' + operation].partStockQty < qty)) {
                     data[field.id] = qty = null;
                 }
                 totalBeforTax = qty * data.rate;
                 data.total = parseFloat(totalBeforTax).toFixed(2);
-                context.methods.callBackUpdatePartTotal && context.methods.callBackUpdatePartTotal(data, newValue, field, fieldMapKey);
+                context.controller.methods.callBackUpdatePartTotal && context.controller.methods.callBackUpdatePartTotal(data, newValue, field, fieldMapKey);
 
             },
             getServiceConfig: function(ctrl, replaceMethod) {
@@ -392,7 +392,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     ctrl = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, ctrl);
                 }
                 if (ctrl.id) {
-                    serviceConfig = ctrl.services.list;
+                    serviceConfig = ctrl.services && ctrl.services.list || {};
                     serviceConfig.id = ctrl.id;
                 }
                 serviceConfig.params = angular.extend(serviceConfig.params || {}, { appCustomer: serviceConfig.params && serviceConfig.params.appCustomer || context.commonFact.isAppCustomer() || '' })
@@ -412,7 +412,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     for (var i in partStockData) {
                         partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                     }
-                    context.partStock = partStock;
+                    context.controller.partStock = partStock;
                 });
             },
             getSCStock: function() {
@@ -422,7 +422,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     for (var i in scStockData) {
                         scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom] = scStockData[i] && scStockData[i] || undefined;
                     }
-                    context.partStock = scStock;
+                    context.controller.partStock = scStock;
                     return scStock;
                 });
             },
@@ -433,7 +433,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     for (var i in rmStockData) {
                         rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
                     }
-                    context.rmStock = rmStock;
+                    context.controller.rmStock = rmStock;
                 });
             },
             objectSort: function(obj, sortBy) {
@@ -450,29 +450,29 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             viewFilterBy: function(list) {
                 var self = this;
                 if (!list.selectedFilterBy) {
-                    delete context.filterBy[list.id];
+                    delete context.controller.filterBy[list.id];
                 } else {
                     if (list.type === 'date' || list.inputType === 'date') {
-                        context.filterBy[list.id] = new Date(list.selectedFilterBy).toISOString();
+                        context.controller.filterBy[list.id] = new Date(list.selectedFilterBy).toISOString();
                     } else {
-                        context.filterBy[list.id] = list.selectedFilterBy;
+                        context.controller.filterBy[list.id] = list.selectedFilterBy;
                     }
                 }
             },
             getFlowMaster: function() {
-                context.flowMasterData = {};
-                context.flowMasterByPart = {};
-                context.flowMasterByPartOpr = {};
+                context.controller.flowMasterData = {};
+                context.controller.flowMasterByPart = {};
+                context.controller.flowMasterByPartOpr = {};
 
                 return context.commonFact.getData('production.flowMaster').then(function(res) {
                     var flowMasterData = res.data,
                         prevOpp;
 
-                    context.flowMasterData = flowMasterData;
+                    context.controller.flowMasterData = flowMasterData;
                     for (var i in flowMasterData) {
-                        context.flowMasterByPart[flowMasterData[i].partNo] = flowMasterData[i];
+                        context.controller.flowMasterByPart[flowMasterData[i].partNo] = flowMasterData[i];
                         for (var j in flowMasterData[i].mapping) {
-                            context.flowMasterByPartOpr[flowMasterData[i].partNo + '-' + flowMasterData[i].mapping[j].id] = flowMasterData[i].mapping[j];
+                            context.controller.flowMasterByPartOpr[flowMasterData[i].partNo + '-' + flowMasterData[i].mapping[j].id] = flowMasterData[i].mapping[j];
                         }
                     }
                     return context;
@@ -494,15 +494,15 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 return optionsPromise;
             },
             getOperations: function() {
-                context.operationsData = {};
+                context.controller.operationsData = {};
 
                 context.commonFact.getData('production.operationMaster').then(function(res) {
-                    context.operationsData = res.data;
+                    context.controller.operationsData = res.data;
                 });
 
             },
             isCheckExistField: function(data, value, field) {
-                if (context.listViewData && context.commonFact.findObjectByKey(context.listViewData, field.id, value)) {
+                if (context.controller.listViewData && context.commonFact.findObjectByKey(context.controller.listViewData, field.id, value)) {
                     data[field.id] = null;
                 }
             },
@@ -522,9 +522,9 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 return isExist;
             },
             updateGstPart: function(data, newValue, field, fieldMapKey) {
-                var acceptedQtyField = context.form.mapping.fields['acceptedQty'];
-                var cgstField = context.form.mapping.fields['cgst'];
-                var sgstField = context.form.mapping.fields['sgst'];
+                var acceptedQtyField = context.controller.form.mapping.fields['acceptedQty'];
+                var cgstField = context.controller.form.mapping.fields['cgst'];
+                var sgstField = context.controller.form.mapping.fields['sgst'];
                 if (cgstField && sgstField) {
                     if (newValue > 0) {
                         data[cgstField.id] = parseInt(newValue) / 2;
@@ -539,10 +539,9 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             updateFields: function(fields) {
                 var returnPromise = [];
                 for (var i in fields) {
-                    if (fields[i].dataFrom && context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, fields[i].dataFrom) && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
+                    if (fields[i].dataFrom && (typeof(fields[i].dataFrom) === 'object' || context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, fields[i].dataFrom)) && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
                         returnPromise.push(context.commonFact.makeOptionsFields(fields[i]));
-                    }
-                    if (fields[i].dataFrom && !context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, fields[i].dataFrom)) {
+                    } else if (fields[i].dataFrom) {
                         delete fields[i];
                     }
                 }
@@ -565,19 +564,19 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     delete: false,
                     print: false
                 };
-                if (context.page && (context.page.actions === undefined || context.page.actions)) {
-                    actions.add = context.page.actions === undefined ? true : context.page.actions.add;
-                    actions.edit = context.page.actions === undefined ? true : context.page.actions.edit;
-                    actions.delete = context.page.actions === undefined ? true : context.page.actions.delete;
-                    actions.print = context.page.actions === undefined ? true : context.page.actions.print;
+                if (context.controller.page && (context.controller.page.actions === undefined || context.controller.page.actions)) {
+                    actions.add = context.controller.page.actions === undefined ? true : context.controller.page.actions.add;
+                    actions.edit = context.controller.page.actions === undefined ? true : context.controller.page.actions.edit;
+                    actions.delete = context.controller.page.actions === undefined ? true : context.controller.page.actions.delete;
+                    actions.print = context.controller.page.actions === undefined ? true : context.controller.page.actions.print;
                 }
-                context.page.actions = actions;
+                context.controller.page.actions = actions;
             },
             isFloat: function(n) {
                 return Number(n) === n && n % 1 !== 0;
             },
             downloadExcel: function(table) {
-                context.filterBy = [];
+                context.controller.filterBy = [];
                 var uri = 'data:application/vnd.ms-excel;base64,',
                     template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
                     base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
@@ -601,36 +600,36 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
 
             },
             updatePOTotalAmount: function() {
-                var gst = context.data.gst,
-                    igst = context.data.igst,
-                    cgst = context.data.cgst,
-                    sgst = context.data.sgst,
+                var gst = context.controller.data.gst,
+                    igst = context.controller.data.igst,
+                    cgst = context.controller.data.cgst,
+                    sgst = context.controller.data.sgst,
                     igstTotal = 0,
                     cgstTotal = 0,
                     sgstTotal = 0,
                     gstTotal = 0,
                     total = 0,
                     subTotal = 0,
-                    mapping = context.data.mapping,
-                    extraAmount = context.data.extraAmount || 0;
+                    mapping = context.controller.data.mapping,
+                    extraAmount = context.controller.data.extraAmount || 0;
 
                 for (var i in mapping) {
                     subTotal += mapping[i].total && parseFloat(mapping[i].total) || 0;
                 }
-                cgstTotal = context.data.cgst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.cgst / 100)) || 0;
-                sgstTotal = context.data.sgst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.sgst / 100)) || 0;
-                igstTotal = context.data.igst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.data.igst / 100)) || 0;
+                cgstTotal = context.controller.data.cgst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.controller.data.cgst / 100)) || 0;
+                sgstTotal = context.controller.data.sgst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.controller.data.sgst / 100)) || 0;
+                igstTotal = context.controller.data.igst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.controller.data.igst / 100)) || 0;
 
                 gstTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
                 total = subTotal + gstTotal + extraAmount;
-                context.data.gstTotal = parseFloat(gstTotal).toFixed(2);
-                context.data.subTotal = parseFloat(subTotal).toFixed(2);
-                context.data.total = parseInt(total);
+                context.controller.data.gstTotal = parseFloat(gstTotal).toFixed(2);
+                context.controller.data.subTotal = parseFloat(subTotal).toFixed(2);
+                context.controller.data.total = parseInt(total);
             },
             goToPage: function(url, isReload) {
                 window.location.hash = '#!/' + url;
                 if (isReload) {
-                    setTimeout(function() { window.location.reload() }, 500);
+                    setTimeout(function() { window.location.reload() }, 200);
                 }
             },
             setSessionStore: function(key, data) {
@@ -644,14 +643,14 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             selectListData: function(data) {
                 if (!context.selectedTableData) {
                     context.selectedTableData = {};
-                    context.selectedTableData[context.id] = {};
+                    context.selectedTableData[context.controller.id] = {};
                 }
-                context.selectedTableData[context.id][data.id] = angular.copy(data);
-                delete context.selectedTableData[context.id][data.id].id;
-                delete context.selectedTableData[context.id][data.id].isExported;
+                context.selectedTableData[context.controller.id][data.id] = angular.copy(data);
+                delete context.selectedTableData[context.controller.id][data.id].id;
+                delete context.selectedTableData[context.controller.id][data.id].isExported;
             },
             downloadTableData: function() {
-                context.commonFact.downloadFile(context.selectedTableData, context.id + '.json');
+                context.commonFact.downloadFile(context.selectedTableData, context.controller.id + '.json');
             },
             downloadFile: function(data, name, type) {
 
@@ -768,7 +767,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             isShowMenu: function(menu) {
                 var disabled = menu.disableMenu || menu.disable;
-                var restricked = context.commonFact.isSuperAdmin() && menu.restricked || false;
+                var restricked = context.commonFact.isSuperAdmin() && !context.commonFact.isAppCustomer() && menu.restricked || false;
                 var isAppCustomer = !menu.restricked && context.commonFact.isAppCustomer();
                 return !disabled && (restricked || isAppCustomer);
             },
@@ -778,8 +777,57 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 return e;
             },
             callActions: function(actionName, params) {
-                var actionMethod = context.methods[actionName] || context.authFact[actionName] || context.commonFact[actionName];
-                actionMethod && actionMethod.call(this, params);
+                var actionMethod = context.controller.methods[actionName] || context.authFact[actionName] || context.commonFact[actionName];
+                actionMethod && actionMethod.apply(this, params);
+            },
+            appModuleAccess: function() {
+                return new Promise(function(resolve) {
+                    var isAppCustomer = context.commonFact.isAppCustomer();
+                    var userDetail = context.authFact.getUserDetail();
+                    if (isAppCustomer && userDetail) {
+                        context.commonFact.getData(context.erpAppConfig.modules.controllers.admin.settings, isAppCustomer).then(function(res) {
+                            context.erpAppConfig = angular.extend(context.erpAppConfig, res.data);
+                            if (context.commonFact.isAppUser()) {
+                                for (var i in context.erpAppConfig.mapping) {
+                                    var map = context.erpAppConfig.mapping[i];
+                                    var module = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, map.module) || {};
+                                    if (!userDetail.userType || (userDetail.userType && map.restrictUser !== userDetail.userType)) {
+                                        module.disable = map.restrictUser && true;
+                                    }
+                                    if (module.page && (module.page.actions || module.page.actions === undefined)) {
+                                        module.page.actions = {
+                                            print: true
+                                        };
+                                        module.page.actions.add = map.restrictUser === userDetail.userType && map['add'] || false;
+                                        module.page.actions.edit = map.restrictUser === userDetail.userType && map['edit'] || false;
+                                        module.page.actions.delete = map.restrictUser === userDetail.userType && map['delete'] || false;
+                                    }
+                                }
+                            }
+                            resolve();
+                        });
+                    } else {
+                        resolve();
+                    }
+                });
+            },
+            loadAuth: function() {
+                var path = context.commonFact.location.path();
+
+                return new Promise(function(resolve) {
+                    if (context.erpAppConfig.serverAuth && path !== '/login') {
+                        context.commonFact.getData({ dataUri: 'checkLoggedIn', cache: false }).then(function(res) {
+                            var data = res.data || {};
+                            if (data.userName) {
+                                context.authFact.setUserDetail(data);
+                            }
+                            resolve()
+                        });
+                    } else {
+                        resolve();
+                    }
+                })
+
             }
         };
     };

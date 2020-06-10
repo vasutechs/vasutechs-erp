@@ -8,7 +8,7 @@ erpConfig.moduleFiles.empMaster = function(context) {
             context.commonFact.getOperationFromFlow(field, restriction);
         },
         callBackEdit: function() {
-            context.data.mapping = !context.data.mapping && context.masterData.mapping || context.data.mapping;
+            context.controller.data.mapping = !context.controller.data.mapping && context.controller.masterData.mapping || context.controller.data.mapping;
         }
     };
 };

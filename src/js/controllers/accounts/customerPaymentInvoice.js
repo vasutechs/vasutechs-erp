@@ -1,35 +1,35 @@
 erpConfig.moduleFiles.customerPaymentInvoice = function(context) {
     return {
         callBackList: function() {
-            context.form.mapping.actions = {};
+            context.controller.form.mapping.actions = {};
         },
         callBackAdd: function() {
-            context.commonFact.makeOptionsFields(context.form.fields['invoiceNo']);
-            context.data['date'] = null;
+            context.commonFact.makeOptionsFields(context.controller.form.fields['invoiceNo']);
+            context.controller.data['date'] = null;
         },
         callBackEdit: function() {
-            for (var i in context.data.mapping) {
-                context.data.mapping[i].date = new Date(context.data.mapping[i].date);
+            for (var i in context.controller.data.mapping) {
+                context.controller.data.mapping[i].date = new Date(context.controller.data.mapping[i].date);
             }
-            if (context.data.balanceAmount <= 0) {
-                context.form.mapping.actions.add = false;
+            if (context.controller.data.balanceAmount <= 0) {
+                context.controller.form.mapping.actions.add = false;
             }
         },
         callBackChangeMapping: function() {
-            context.data.balanceAmount = context.data.total;
-            context.data['date'] = context.commonFact.dateFormatChange(context.data['date']);
+            context.controller.data.balanceAmount = context.controller.data.total;
+            context.controller.data['date'] = context.commonFact.dateFormatChange(context.controller.data['date']);
         },
         updateBalanceAmount: function() {
             var amount = 0;
-            for (var i in context.data.mapping) {
-                amount += parseFloat(context.data.mapping[i].amount);
+            for (var i in context.controller.data.mapping) {
+                amount += parseFloat(context.controller.data.mapping[i].amount);
             }
-            context.data.balanceAmount = parseFloat(context.data.total) - parseFloat(amount);
-            if (context.data.balanceAmount <= 0) {
-                context.form.mapping.actions.add = false;
+            context.controller.data.balanceAmount = parseFloat(context.controller.data.total) - parseFloat(amount);
+            if (context.controller.data.balanceAmount <= 0) {
+                context.controller.form.mapping.actions.add = false;
             }
-            if (context.data.balanceAmount < 0) {
-                context.data.balanceAmount = 0;
+            if (context.controller.data.balanceAmount < 0) {
+                context.controller.data.balanceAmount = 0;
                 //data.amount = null;
             }
         }

@@ -1,5 +1,5 @@
 erpConfig.moduleFiles.header = function(appFact) {
-    var context = appFact.context || null;
+    var context = angular.copy(appFact.context) || null;
     context.erpAppConfig.calendarYear = new Date().getMonth() >= context.erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
     context.downloadDbName = context.erpAppConfig.calendarYear + '-' + ('' + parseInt(context.erpAppConfig.calendarYear + 1)).substring(2);
     context.calendarYearList = [];

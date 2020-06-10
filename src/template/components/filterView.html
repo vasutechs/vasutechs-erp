@@ -1,9 +1,9 @@
 <div>
     <h3>{{context.filterView.title}}
-        <div ng-if="context.page.downloadTableData" class="pull-right">
-            <a href="javascript: void(0);" ng-click="context.page.downloadTableData === true && context.commonFact.downloadTableData() || context.commonFact.callActions(context.page.downloadTableData)" title="Download Table Data" class="fa fa-fw fa-download"></a>
+        <div ng-if="context.controller.page.downloadTableData" class="pull-right">
+            <a href="javascript: void(0);" ng-click="context.controller.page.downloadTableData === true && context.commonFact.downloadTableData() || context.commonFact.callActions(context.controller.page.downloadTableData)" title="Download Table Data" class="fa fa-fw fa-download"></a>
         </div>
-        <div ng-if="context.page.downloadExcel" class="pull-right">
+        <div ng-if="context.controller.page.downloadExcel" class="pull-right">
             <a href="javascript: void(0);" ng-click="context.commonFact.downloadExcel('listView')" title="Download Excel" class="fa fa-fw fa-file-excel-o"></a>
         </div>
     </h3>
@@ -23,14 +23,14 @@
     <table class="table table-bordered" id="listView" style="display: none;">
         <thead>
             <tr>
-                <th ng-repeat="(key, list) in context.listView">
+                <th ng-repeat="(key, list) in context.controller.listView">
                     <div>{{list.title}}</div>
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="dataList in context.listViewData">
-                <td ng-repeat="(key, list) in context.listView">
+            <tr ng-repeat="dataList in context.controller.listViewData">
+                <td ng-repeat="(key, list) in context.controller.listView">
                     <div ng-if="!list.actions" ng-bind="context.commonFact.replaceFieldVal(dataList[list.id], list)"></div>
                 </td>
             </tr>

@@ -1,17 +1,17 @@
 erpConfig.moduleFiles.rmStock = function(context) {
     return {
         callBackList: function() {
-            var newList = angular.copy(context.listViewData);
+            var newList = angular.copy(context.controller.listViewData);
             if ($location.search() && $location.search()['showall'] === 'no') {
-                newList = context.listViewData.filter(function(data) {
+                newList = context.controller.listViewData.filter(function(data) {
                     return data.partStockQty > 0;
                 });
-                context.listViewData = newList
+                context.controller.listViewData = newList
             }
             context.commonFact.getData('purchase.rmMaster').then(function(res) {
-                var listViewData = angular.copy(context.listViewDataMaster);
+                var listViewData = angular.copy(context.controller.listViewDataMaster);
                 for (var i in listViewData) {
-                    var stockData = context.listViewData[i];
+                    var stockData = context.controller.listViewData[i];
                     var rmCode = stockData.rmCode;
                     var rmDetails = rmCode && res.data[rmCode];
                     stockData.rate = rmDetails && rmDetails.rate;
@@ -24,9 +24,9 @@ erpConfig.moduleFiles.rmStock = function(context) {
             context.commonFact.getData('report.rmStock').then(function(res) {
                 stockData = res.data;
                 for (var i in stockData) {
-                    if (!context.data.id && stockData[i].rmCode === context.data.rmCode) {
-                        context.data.id = stockData[i].id;
-                        context.data.rmStockQty = parseInt(context.data.rmStockQty) + parseInt(stockData[i].rmStockQty);
+                    if (!context.controller.data.id && stockData[i].rmCode === context.controller.data.rmCode) {
+                        context.controller.data.id = stockData[i].id;
+                        context.controller.data.rmStockQty = parseInt(context.controller.data.rmStockQty) + parseInt(stockData[i].rmStockQty);
                     }
                 }
                 commonFact.submit();

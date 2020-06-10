@@ -3,7 +3,7 @@ erpConfig.moduleFiles.login = function(context) {
         loginSubmit: function() {
             context.authFact.login().then(function(userDetail) {
                 if (!userDetail || !userDetail.userType) {
-                    context.alertMessage = 'Invalid User!!!';
+                    context.controller.alertMessage = 'Invalid User!!!';
                 } else {
                     context.commonFact.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link, true);
                 }
@@ -16,8 +16,8 @@ erpConfig.moduleFiles.login = function(context) {
         onLoad: function() {
             if (context.commonFact.location.search() && context.commonFact.location.search()['type'] === 'logout') {
                 context.erpAppConfig.serverAuth && context.authFact.logout().then(function() {
-                    context.methods.redirectLogin();
-                }) || context.methods.redirectLogin();
+                    context.controller.methods.redirectLogin();
+                }) || context.controller.methods.redirectLogin();
 
             }
         }

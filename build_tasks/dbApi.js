@@ -3,23 +3,21 @@ module.exports = function(config) {
     var fs = require('fs');
     var cryptr = new(require('cryptr'))(config.appName);
 
-    config.currentDb = {};
-
-    config.task.getTableData = function(table) {
+    var getTableData = function(table, dbConfig) {
         var data;
         try {
-            data = table && config.currentDb.getData('/tables' + table) || config.currentDb.getData('/');
+            data = table && dbConfig.currentDb.getData('/tables' + table) || dbConfig.currentDb.getData('/');
             if (data.password) {
                 data.password = '';
             }
         } catch (error) {
-            data = {};
+            data = null;
         };
         return data;
     };
 
 
-    config.task.setTableData = function(table, inputData) {
+    var setTableData = function(table, inputData, dbConfig) {
         var lastData,
             newId,
             id = '';
@@ -29,10 +27,10 @@ module.exports = function(config) {
         }
         if (!inputData.id && !inputData.delete) {
             try {
-                lastData = config.currentDb.getData('/tables' + table);
+                lastData = dbConfig.currentDb.getData('/tables' + table);
             } catch (error) {
-                config.currentDb.push('/tables' + table, {}, true);
-                lastData = config.currentDb.getData('/tables' + table);
+                dbConfig.currentDb.push('/tables' + table, {}, true);
+                lastData = dbConfig.currentDb.getData('/tables' + table);
             };
             lastData = lastData && lastData[Object.keys(lastData)[Object.keys(lastData).length - 1]];
             newId = lastData && lastData.id && parseInt(lastData.id) + 1 || 1;
@@ -41,38 +39,37 @@ module.exports = function(config) {
             table += '/' + newId;
         }
         try {
-            config.databaseType && config.currentDb.push('/type', config.databaseType, true);
-            config.appCustomer && config.currentDb.push('/appCustomer', config.appCustomer, true);
-            config.currentDb.push('/updated', new Date(), true);
-            config.currentDb.push('/updatedUserId', inputData.updatedUserId, true);
+            dbConfig.databaseType && dbConfig.currentDb.push('/type', dbConfig.databaseType, true);
+            dbConfig.appCustomer && dbConfig.currentDb.push('/appCustomer', dbConfig.appCustomer, true);
+            dbConfig.currentDb.push('/updated', new Date(), true);
+            dbConfig.currentDb.push('/updatedUserId', inputData.updatedUserId, true);
             if (inputData.delete) {
-                config.currentDb.delete('/tables' + table);
-                data = config.currentDb.getData('/tables' + table);
+                dbConfig.currentDb.delete('/tables' + table);
+                data = {};
             } else {
                 inputData['updated'] = new Date();
-                config.currentDb.push('/tables' + table, inputData, true);
-                data = config.currentDb.getData('/tables' + table);
+                dbConfig.currentDb.push('/tables' + table, inputData, true);
+                data = dbConfig.currentDb.getData('/tables' + table);
             }
 
         } catch (error) {
-            console.log(error);
-            data = {};
+            data = null;
         };
         return data;
     };
 
-    var uploadTableData = function(inputData) {
+    var uploadTableData = function(inputData, dbConfig) {
         var inputVal = JSON.parse(inputData);
-        config.databaseType = "yearly-" + new Date().getFullYear();
+        dbConfig.databaseType = "yearly-" + new Date().getFullYear();
         for (var table in inputVal) {
             for (var data in inputVal[table]) {
-                config.task.setTableData('/' + table, JSON.stringify(inputVal[table][data]));
+                setTableData('/' + table, JSON.stringify(inputVal[table][data]));
             }
         }
         return currentYearDb.getData('/tables');
     };
 
-    var uploadDb = function(inputData) {
+    var uploadDb = function(inputData, dbConfig) {
         var inputVal = JSON.parse(inputData);
         var type = inputVal.type || null;
         var year = type && type.split('yearly-');
@@ -107,74 +104,79 @@ module.exports = function(config) {
         return listDbYears;
     };
 
-    config.task.updateDataId = function(params, inputData, query) {
+    var setCustomerCurrentDb = function(query, appCustomer) {
+        var year = query.year;
+        var dbConfig = {};
+        if (appCustomer) {
+            if (year) {
+                dbConfig.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/" + year + "/database", true, true);
+                dbConfig.databaseType = "yearly-" + year;
+            } else {
+                dbConfig.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/database", true, true);
+                dbConfig.databaseType = "appCustomerMaster";
+            }
+            dbConfig.appCustomer = appCustomer;
+            return dbConfig;
+        }
+        return false;
+    };
+
+
+    var updateDataId = function(params, inputData, query) {
         var table = '/' + params.table;
         var id = inputData.id || query.id
         table += id ? ('/' + id) : '';
         return table;
     };
 
-    config.task.dbData = function(req, res) {
+    config.task.dbData = function(req, res, localDb) {
         var data = {};
         var inputData = req.body;
         var params = req.params;
         var query = req.query;
-        var table = config.task.updateDataId(params, inputData, query);
-        if (config.task.setCustomerCurrentDb(query, inputData.appCustomer || query.appCustomer)) {
+        var table = updateDataId(params, inputData, query);
+        var dbConfig = setCustomerCurrentDb(query, inputData.appCustomer || query.appCustomer) || {};
+        if (localDb) {
+            dbConfig.currentDb = localDb;
+        }
+        if (dbConfig.currentDb) {
             if (table === 'download') {
-                data = config.task.getTableData(inputData);
+                data = getTableData(inputData, dbConfig);
             } else if (table === 'getDatabases') {
-                data = { list: getListDb(inputData) };
+                data = { list: getListDb(inputData, dbConfig) };
             } else if (table === 'upload') {
-                data = uploadDb(inputData);
+                data = uploadDb(inputData, dbConfig);
             } else if (req.method === 'POST') {
-                data = config.task.setTableData(table, inputData);
+                data = setTableData(table, inputData, dbConfig);
             } else {
-                data = config.task.getTableData(table);
+                data = getTableData(table, dbConfig);
             }
 
         }
         return data;
     };
 
-    config.task.setCustomerCurrentDb = function(query, appCustomer) {
-        var year = query.year;
-
-        if (appCustomer) {
-            if (year && year[1]) {
-                config.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/" + year[1] + "/database", true, true);
-                config.databaseType = "yearly-" + year[1];
-            } else {
-                config.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/database", true, true);
-                config.databaseType = "appCustomerMaster";
-                config.appCustomer = appCustomer;
-            }
-            return true;
-        } else {
-            config.currentDb = {};
-            config.databaseType = undefined;
-            config.appCustomer = undefined;
-            return false;
-        }
-    };
-
-    config.task.login = function(req, loginDb) {
-        var data = {};
+    config.task.login = function(req, localDb) {
+        var data = null;
         var inputData = req.body;
         var query = req.query;
-
-        loginDb = loginDb || config.task.setCustomerCurrentDb(query, inputData.appCustomer || query.appCustomer);
-        if (loginDb) {
-            var users = loginDb.getData('/tables/users');
+        var dbConfig = setCustomerCurrentDb(query, inputData.appCustomer || query.appCustomer) || {};
+        if (localDb) {
+            dbConfig.currentDb = localDb;
+        }
+        if (dbConfig.currentDb) {
+            var users = dbConfig.currentDb.getData('/tables/users');
             for (var i in users) {
                 if (users[i].userName === inputData.userName && inputData.password === cryptr.decrypt(users[i].password)) {
                     data = {
                         id: users[i].id,
                         userName: users[i].userName,
                         userType: users[i].userType,
-                        appCustomer: config.appCustomer,
+                        appCustomer: inputData.appCustomer || query.appCustomer,
                         loggedIn: true
                     };
+                    users[i].laskLogin = new Date();
+                    dbConfig.currentDb.push('/tables/users/' + users[i].id, users[i], true);
                 }
             }
         }
@@ -184,15 +186,13 @@ module.exports = function(config) {
     // respond to all requests
     config.app.use('/api/data/:table', function(req, res) {
         var data = config.task.dbData(req);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(data));
+        res.status(200).send(data);
 
     });
 
     config.app.use('/api/login', function(req, res) {
-        var data = config.task.dbData(req, res);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(data));
+        var data = config.task.login(req);
+        res.status(200).send(data);
 
     });
 

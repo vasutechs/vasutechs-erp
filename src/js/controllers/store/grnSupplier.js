@@ -2,7 +2,7 @@ erpConfig.moduleFiles.grnSupplier = function(context) {
     var orgItemVal = null;
     return {
         getPOSupplier: function(data, key, field) {
-            context.form.fields['poNo'] = angular.extend(context.form.fields['poNo'], {
+            context.controller.form.fields['poNo'] = angular.extend(context.controller.form.fields['poNo'], {
                 dataFrom: 'purchase.poSupplier',
                 replaceName: 'poNo',
                 filter: {
@@ -10,7 +10,7 @@ erpConfig.moduleFiles.grnSupplier = function(context) {
                     status: 0
                 }
             });
-            context.commonFact.makeOptionsFields(context.form.fields['poNo']);
+            context.commonFact.makeOptionsFields(context.controller.form.fields['poNo']);
         },
         updateRmTotal: function(data, updateValue) {
             var total = 0;
@@ -23,9 +23,9 @@ erpConfig.moduleFiles.grnSupplier = function(context) {
             orgItemVal = null;
         },
         callBackEdit: function(key) {
-            context.form.mapping.actions.delete = false;
-            orgItemVal = angular.copy(context.data);
-            context.data['supplierInvoiceDate'] = new Date(context.data['supplierInvoiceDate']);
+            context.controller.form.mapping.actions.delete = false;
+            orgItemVal = angular.copy(context.controller.data);
+            context.controller.data['supplierInvoiceDate'] = new Date(context.controller.data['supplierInvoiceDate']);
         },
         updateRMStockQty: function() {
             context.commonFact.getData('report.rmStock').then(function(res) {
@@ -40,9 +40,9 @@ erpConfig.moduleFiles.grnSupplier = function(context) {
                     rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
                 }
 
-                for (var i in context.data.mapping) {
-                    existingStock = rmStock[context.data.mapping[i].id];
-                    qty = context.data.mapping[i].acceptedQty || context.data.mapping[i].receivedQty;
+                for (var i in context.controller.data.mapping) {
+                    existingStock = rmStock[context.controller.data.mapping[i].id];
+                    qty = context.controller.data.mapping[i].acceptedQty || context.controller.data.mapping[i].receivedQty;
                     if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
                         oldQty = orgItemVal.mapping[i].acceptedQty || orgItemVal.mapping[i].receivedQty;
                         qty = parseInt(qty) - parseInt(oldQty);
@@ -50,25 +50,25 @@ erpConfig.moduleFiles.grnSupplier = function(context) {
                     rmStockQty = existingStock && parseInt(existingStock.rmStockQty) + parseInt(qty) || parseInt(qty);
                     data = {
                         id: existingStock && existingStock.id || undefined,
-                        rmCode: context.data.mapping[i].id,
+                        rmCode: context.controller.data.mapping[i].id,
                         rmStockQty: rmStockQty,
-                        uomCode: context.data.mapping[i].uomCode
+                        uomCode: context.controller.data.mapping[i].uomCode
                     }
                     context.commonFact.updateData('report.rmStock', data);
                 }
             });
         },
         updatePoSupplier: function() {
-            context.commonFact.getData('purchase.poSupplier', context.data.poNo).then(function(res) {
+            context.commonFact.getData('purchase.poSupplier', context.controller.data.poNo).then(function(res) {
                 var poSupplierData = res.data;
                 poSupplierData.status = 1;
-                poSupplierData.id = context.data.poNo;
+                poSupplierData.id = context.controller.data.poNo;
                 context.commonFact.updateData('purchase.poSupplier', poSupplierData);
             });
         },
         callBackSubmit: function() {
-            context.methods.updateRMStockQty();
-            context.methods.updatePoSupplier();
+            context.controller.methods.updateRMStockQty();
+            context.controller.methods.updatePoSupplier();
         }
     };
 };

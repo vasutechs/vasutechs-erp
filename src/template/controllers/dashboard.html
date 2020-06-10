@@ -8,7 +8,7 @@
     </ol>
     <alert-rol></alert-rol>
     <div class="mb-3">
-        <h3>{{context.title}}</h3>
+        <h3>{{context.controller.title}}</h3>
         <ul class="navbar-nav">
             <li ng-if="context.commonFact.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">
                 <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">

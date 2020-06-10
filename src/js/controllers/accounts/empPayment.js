@@ -1,13 +1,13 @@
 erpConfig.moduleFiles.empPayment = function(context) {
     return {
         callBackAdd: function() {
-            context.data['toDate'] = new Date();
+            context.controller.data['toDate'] = new Date();
         },
         getProductionEntry: function() {
-            var frmDate = context.data.frmDate;
-            var toDate = context.data.toDate;
-            var filterOperator = context.data.employeeCode;
-            var empPaidList = context.methods.getEmpPaymentPaid();
+            var frmDate = context.controller.data.frmDate;
+            var toDate = context.controller.data.toDate;
+            var filterOperator = context.controller.data.employeeCode;
+            var empPaidList = context.controller.methods.getEmpPaymentPaid();
             return context.commonFact.getData('report.productionEntryReport').then(function(res) {
                 var productionEntry = res.data;
                 var productionEntryList = {};
@@ -45,8 +45,8 @@ erpConfig.moduleFiles.empPayment = function(context) {
 
         },
         getEmpPaymentPaid: function() {
-            var listViewData = angular.copy(context.listViewDataMaster);
-            var filterOperator = context.data.employeeCode;
+            var listViewData = angular.copy(context.controller.listViewDataMaster);
+            var filterOperator = context.controller.data.employeeCode;
             var empPaidList = {};
 
             for (var i in listViewData) {
@@ -60,26 +60,26 @@ erpConfig.moduleFiles.empPayment = function(context) {
             return empPaidList;
         },
         callBackEdit: function() {
-            for (var i in context.data.mapping) {
-                context.data.mapping[i].date = new Date(context.data.mapping[i].date);
+            for (var i in context.controller.data.mapping) {
+                context.controller.data.mapping[i].date = new Date(context.controller.data.mapping[i].date);
             }
-            if (context.data.balanceAmount <= 0) {
-                context.form.mapping.actions.add = false;
+            if (context.controller.data.balanceAmount <= 0) {
+                context.controller.form.mapping.actions.add = false;
             }
         },
         addPartMap: function(data) {
-            context.commonFact.changeMapping(data, data.employeeCode, context.form.fields['employeeCode']);
+            context.commonFact.changeMapping(data, data.employeeCode, context.controller.form.fields['employeeCode']);
         },
         callBackChangeMapping: function(data, key, field, fieldMapKey) {
-            context.methods.updatePartMap(data, key, field, fieldMapKey);
+            context.controller.methods.updatePartMap(data, key, field, fieldMapKey);
         },
         updatePartMap: function() {
 
-            context.methods.getProductionEntry().then(function(productionEntryList) {
+            context.controller.methods.getProductionEntry().then(function(productionEntryList) {
                 var total = 0;
-                var employeeCode = context.data.employeeCode;
+                var employeeCode = context.controller.data.employeeCode;
                 var newMapData = [];
-                newMapData = context.data.mapping.filter(function(data) {
+                newMapData = context.controller.data.mapping.filter(function(data) {
                     var mapFindKey = employeeCode + '-' + data.id + '-' + data.operationTo;
                     if (productionEntryList[mapFindKey] && productionEntryList[mapFindKey].qty > 0) {
                         data = angular.extend(data, angular.copy(productionEntryList[mapFindKey]));
@@ -88,21 +88,21 @@ erpConfig.moduleFiles.empPayment = function(context) {
                         return true;
                     }
                 });
-                context.data.mapping = newMapData;
-                context.data.total = total;
-                context.data.balanceAmount = context.data.total;
+                context.controller.data.mapping = newMapData;
+                context.controller.data.total = total;
+                context.controller.data.balanceAmount = context.controller.data.total;
             });
 
         },
         updateBalanceAmount: function(data) {
-            var amount = context.data.balanceAmount;
+            var amount = context.controller.data.balanceAmount;
             if (data.paidStatus) {
                 amount -= parseInt(data.totalLaborCost);
             } else {
                 amount += parseInt(data.totalLaborCost);
             }
             data.date = new Date();
-            context.data.balanceAmount = amount;
+            context.controller.data.balanceAmount = amount;
         }
     };
 };

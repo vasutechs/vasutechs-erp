@@ -1,7 +1,7 @@
 erpConfig.moduleFiles.appCustomers = function(context) {
     return {
         callBackList: function() {
-            var moduleField = context.form.mapping.fields['module'];
+            var moduleField = context.controller.form.mapping.fields['module'];
             moduleField.options = {
                 all: {
                     'optionName': 'All',
@@ -14,7 +14,7 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                     'optionId': 'all'
                 }
             };
-            context.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
+            context.controller.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
 
 
         },
@@ -30,7 +30,7 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                     field.options[optionIdVal] = field.allOptions[optionIdVal];
 
                     if (!module.page) {
-                        context.methods.makeModuleOptions(context.commonFact.showSubModule(modules[i]), field, modules[i]);
+                        context.controller.methods.makeModuleOptions(context.commonFact.showSubModule(modules[i]), field, modules[i]);
                     }
                 }
             }
@@ -40,10 +40,10 @@ erpConfig.moduleFiles.appCustomers = function(context) {
             var userData = {
                 userName: data.companyName.replace(' ', '').toLowerCase(),
                 password: data.companyName.replace(' ', '').toLowerCase(),
-                ueerType: 'ADMIN'
+                userType: 'ADMIN'
             };
-            var appModules = {
-                dataUri: 'restrict/appModules',
+            var appSettings = {
+                dataUri: 'restrict/settings',
                 params: {
                     appCustomer: appCustomer
                 }
@@ -55,8 +55,8 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                     appCustomer: appCustomer
                 }
             };
-            context.commonFact.updateData(appModules, { id: appCustomer, modules: data.mapping }).then(function() {
-                !context.page.editKey && context.commonFact.updateData(appUsers, userData);
+            context.commonFact.updateData(appSettings, { id: appCustomer, appModules: data.mapping }).then(function() {
+                !context.controller.page.editKey && context.commonFact.updateData(appUsers, userData);
             });
         },
         callBackDelete: function(id) {

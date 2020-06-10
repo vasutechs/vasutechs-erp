@@ -8,21 +8,21 @@
     </ol>
     <!-- Example DataTables Card-->
     <div class="mb-3">
-        <h3>{{context.title}}</h3>
+        <h3>{{context.controller.title}}</h3>
         <div>
             <div class="card">
                 <div class="card-body">
-                    <div ng-if="context.alertMessage!==undefined" class="alert alert-danger" role="alert">
-                        {{context.alertMessage}}
+                    <div ng-if="context.controller.alertMessage!==undefined" class="alert alert-danger" role="alert">
+                        {{context.controller.alertMessage}}
                     </div>
-                    <div ng-if="context.message!==undefined" class="alert alert-success" role="alert">
-                        {{context.message}}
+                    <div ng-if="context.controller.message!==undefined" class="alert alert-success" role="alert">
+                        {{context.controller.message}}
                     </div>
-                    <h5 style="color:green;">{{context.data.uploadSuccess}}</h5>
+                    <h5 style="color:green;">{{context.controller.data.uploadSuccess}}</h5>
                     <form name="customForm">
-                        <input type="file" file-model="context.data.databaseUpload" class="form-control" />
+                        <input type="file" file-model="context.controller.data.databaseUpload" class="form-control" />
 
-                        <button ng-click="context.methods.uploadDatabase()" class="btn btn-primary">Submit</button>
+                        <button ng-click="context.controller.methods.uploadDatabase()" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>
