@@ -43,8 +43,27 @@ erpConfig.moduleFiles.authFact = function($window) {
             return false;
         };
 
+        var loadAuth = function() {
+            var path = context.commonFact.location.path();
+            var promiseRes = context.commonFact.getPromiseRes();
+
+            if (context.erpAppConfig.serverAuth && path !== '/login') {
+                context.commonFact.getData({ dataUri: 'checkLoggedIn', cache: false }).then(function(res) {
+                    var data = res.data || {};
+                    if (data.userName) {
+                        context.authFact.setUserDetail(data);
+                    }
+                    promiseRes.resolve();
+                });
+            } else {
+                promiseRes.resolve();
+            }
+            return promiseRes.promise;
+        }
+
 
         return {
+            loadAuth: loadAuth,
             login: login,
             logout: logout,
             setUserDetail: setUserDetail,

@@ -44,7 +44,7 @@ erpConfig.moduleFiles.grnGeneralSupplier = function(context) {
                 data.partNo = data.id;
                 data.operationTo = context.erpAppConfig.finalStageOpp;
                 newContext.controller.data = data;
-                newContext.updatePrevStock = false;
+                newContext.controller.updatePrevStock = false;
                 if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
                     acceptedQty = parseInt(newContext.controller.data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
                     newContext.controller.data.acceptedQty = acceptedQty;

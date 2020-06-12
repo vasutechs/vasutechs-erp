@@ -59,6 +59,8 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 context.controller.methods.callBackDelete && context.controller.methods.callBackDelete(id, item);
             },
             list: function() {
+                var pageProm = [];
+                var promiseRes = context.commonFact.getPromiseRes();
                 context.controller.page.name = 'list';
                 context.controller.currentPage = 0;
                 context.controller.pageSize = 10;
@@ -66,16 +68,24 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 context.controller.listViewData = [];
                 context.controller.orderByProperty = 'updated';
                 context.commonFact.pageActionsAccess();
-                return context.commonFact.getData().then(function(res) {
-                    var listViewData = res.data;
-                    for (var x in listViewData) {
-                        listViewData.hasOwnProperty(x) && !listViewData[x].disabled && context.controller.listViewData.push(listViewData[x])
-                    }
-                    context.controller.listViewDataMaster = angular.copy(context.controller.listViewData);
-                    context.controller.lastData = angular.copy(context.controller.listViewData[context.controller.listViewData.length - 1]);
-                    context.controller.methods.callBackList && context.controller.methods.callBackList();
-                    return context;
+                pageProm.push(context.commonFact.updateFields(context.controller.listView));
+                context.controller.filterView && pageProm.push(context.commonFact.updateFields(context.controller.filterView.fields));
+
+
+                Promise.all(pageProm).then(function() {
+                    context.commonFact.getData().then(function(res) {
+                        var listViewData = res.data;
+                        for (var x in listViewData) {
+                            listViewData.hasOwnProperty(x) && !listViewData[x].disabled && context.controller.listViewData.push(listViewData[x])
+                        }
+                        context.controller.listViewDataMaster = angular.copy(context.controller.listViewData);
+                        context.controller.lastData = angular.copy(context.controller.listViewData[context.controller.listViewData.length - 1]);
+                        context.controller.methods.callBackList && context.controller.methods.callBackList();
+                        promiseRes.resolve(context);
+                    });
                 });
+                return promiseRes.promise;
+
             },
             formRender: function() {
                 return context.commonFact.updateFields(context.controller.form.fields).then(function() {
@@ -248,117 +258,120 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 var self = this,
                     partNo = restriction.partNo || context.controller.data.partNo,
                     limit = 0;
-                var returnPromise = [];
-                var partStockPromise;
-                if (partNo) {
-                    context.commonFact.makeOptionsFields(field);
-                    var localOptions = field.options;
-                    partStockPromise = context.commonFact.getData('production.flowMaster').then(function(res) {
-                        var flowMasterData = res.data,
-                            flowMasterVal;
-                        field.options = {};
-                        for (var i in flowMasterData) {
-                            if (flowMasterData[i].partNo === partNo) {
-                                var flowMapPromise = context.commonFact.mergeOprFlowMap(flowMasterData[i].mapping).then(function(flowMasterMap) {
-                                    var startWith = context.commonFact.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
-                                    flowMasterMap = context.commonFact.objectSort(flowMasterMap, 'opCode');
-                                    for (var j in flowMasterMap) {
-                                        flowMasterVal = flowMasterMap[j];
-                                        if ((!restriction.limit || limit < restriction.limit) &&
-                                            (!restriction.startWith || (startWith.opCode < flowMasterVal.opCode)) &&
-                                            (restriction.filter === undefined || context.commonFact.matchFilter(restriction, flowMasterVal) === true)) {
-                                            limit++;
-                                            field.options[' ' + flowMasterVal.id] = localOptions[flowMasterVal.id];
-                                        }
-                                    }
-                                    return field;
-                                });
-                                returnPromise.push(flowMapPromise);
-                            }
-                        }
-                        return field;
-                    });
-                }
-                returnPromise.push(partStockPromise);
+                var promiseRes = context.commonFact.getPromiseRes();
 
-                return Promise.all(returnPromise);
+                if (partNo) {
+                    context.commonFact.makeOptionsFields(field).then(function() {
+                        var localOptions = field.options;
+                        context.commonFact.getData('production.flowMaster').then(function(res) {
+                            var flowMasterData = res.data,
+                                flowMasterVal;
+                            field.options = {};
+                            for (var i in flowMasterData) {
+                                if (flowMasterData[i].partNo === partNo) {
+                                    context.commonFact.mergeOprFlowMap(flowMasterData[i].mapping).then(function(flowMasterMap) {
+                                        var startWith = context.commonFact.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
+                                        flowMasterMap = context.commonFact.objectSort(flowMasterMap, 'opCode');
+                                        for (var j in flowMasterMap) {
+                                            flowMasterVal = flowMasterMap[j];
+                                            if ((!restriction.limit || limit < restriction.limit) &&
+                                                (!restriction.startWith || (startWith.opCode < flowMasterVal.opCode)) &&
+                                                (restriction.filter === undefined || context.commonFact.matchFilter(restriction, flowMasterVal) === true)) {
+                                                limit++;
+                                                field.options[flowMasterVal.id] = localOptions[flowMasterVal.id];
+                                            }
+                                        }
+                                        promiseRes.resolve(field);
+                                    });
+                                } else {
+                                    promiseRes.resolve(field);
+                                }
+                            }
+                        });
+                    });
+                } else {
+                    promiseRes.resolve(field);
+                }
+                return promiseRes.promise;
             },
             updatePartStock: function(newContext) {
                 var self = this;
                 var localContext = newContext || context;
-                var returnPromise = [];
-                var partStockPromise = context.commonFact.getData('report.partStock').then(function(res) {
+                var promiseRes = context.commonFact.getPromiseRes();
+                var currentData;
+                var prevData;
+                context.commonFact.getData('report.partStock').then(function(res) {
                     var partStockData = res.data,
                         partStock = {};
                     for (var i in partStockData) {
                         partStock[partStockData[i].partNo + '-' + partStockData[i].operationFrom + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                         partStock[partStockData[i].partNo + '-' + partStockData[i].operationTo] = partStockData[i] && partStockData[i] || undefined;
                     }
-                    var existingStock = partStock[localContext.data.partNo + '-' + localContext.data.operationFrom + '-' + localContext.data.operationTo];
-                    var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(localContext.data.acceptedQty) : parseInt(localContext.data.acceptedQty);
-                    if (localContext.updateCurStock === undefined || localContext.updateCurStock) {
-                        var data = {
+                    var existingStock = partStock[localContext.controller.data.partNo + '-' + localContext.controller.data.operationFrom + '-' + localContext.controller.data.operationTo];
+                    var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(localContext.controller.data.acceptedQty) : parseInt(localContext.controller.data.acceptedQty);
+                    if (localContext.controller.updateCurStock === undefined || localContext.controller.updateCurStock) {
+                        currentData = {
                             id: existingStock && existingStock.id || undefined,
-                            partNo: localContext.data.partNo,
+                            partNo: localContext.controller.data.partNo,
                             partStockQty: partStockQty,
-                            operationFrom: localContext.data.operationFrom,
-                            operationTo: localContext.data.operationTo
+                            operationFrom: localContext.controller.data.operationFrom,
+                            operationTo: localContext.controller.data.operationTo
                         }
-                        returnPromise.push(context.commonFact.updateData('report.partStock', data).then(function() {
+                        context.commonFact.updateData('report.partStock', currentData).then(function() {
                             context.commonFact.getPartStock();
-                        }));
-                    }
-
-                    var existingPrevStock = partStock[localContext.data.partNo + '-' + localContext.data.operationFrom];
-                    if (existingPrevStock && (localContext.updatePrevStock === undefined || localContext.updatePrevStock)) {
-                        var existPartStockQty = parseInt(localContext.data.acceptedQty);
-                        existPartStockQty += parseInt(localContext.data.rejectionQty) || 0;
-                        existPartStockQty += parseInt(localContext.data.rwQty) || 0;
-                        existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
-                        data = {
-                            id: existingPrevStock.id,
-                            partNo: localContext.data.partNo,
-                            partStockQty: existPartStockQty,
-                            operationFrom: existingPrevStock.operationFrom,
-                            operationTo: existingPrevStock.operationTo
-                        }
-
-                        returnPromise.push(context.commonFact.updateData('report.partStock', data).then(function() {
-                            context.commonFact.getPartStock();
-                        }));
+                            var existingPrevStock = partStock[localContext.controller.data.partNo + '-' + localContext.controller.data.operationFrom];
+                            if (existingPrevStock && (localContext.controller.updatePrevStock === undefined || localContext.controller.updatePrevStock)) {
+                                var existPartStockQty = parseInt(localContext.controller.data.acceptedQty);
+                                existPartStockQty += parseInt(localContext.controller.data.rejectionQty) || 0;
+                                existPartStockQty += parseInt(localContext.controller.data.rwQty) || 0;
+                                existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
+                                prevData = {
+                                    id: existingPrevStock.id,
+                                    partNo: localContext.controller.data.partNo,
+                                    partStockQty: existPartStockQty,
+                                    operationFrom: existingPrevStock.operationFrom,
+                                    operationTo: existingPrevStock.operationTo
+                                }
+                                context.commonFact.updateData('report.partStock', prevData).then(function() {
+                                    context.commonFact.getPartStock();
+                                    promiseRes.resolve();
+                                });
+                            } else {
+                                promiseRes.resolve();
+                            }
+                        });
+                    } else {
+                        promiseRes.resolve();
                     }
                 });
-                returnPromise.push(partStockPromise);
 
-                return Promise.all(returnPromise);
+                return promiseRes.promise;
             },
             updateSCStock: function(newContext) {
-                var self = this;
+                var promiseRes = context.commonFact.getPromiseRes();
                 var localContext = newContext || context;
                 var returnPromise = [];
-                var partStockPromise = context.commonFact.getData('report.subContractorStock').then(function(res) {
+                context.commonFact.getData('report.subContractorStock').then(function(res) {
                     var scStockData = res.data,
                         scStock = {};
                     for (var i in scStockData) {
                         scStock[scStockData[i].partNo + '-' + scStockData[i].operationFrom + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
                         scStock[scStockData[i].partNo + '-' + scStockData[i].operationTo] = scStockData[i] && scStockData[i] || undefined;
                     }
-                    var existingStock = scStock[newContext.controller.data.partNo + '-' + newContext.controller.data.operationFrom + '-' + newContext.controller.data.operationTo];
+                    var existingStock = scStock[localContext.controller.data.partNo + '-' + newContext.controller.data.operationFrom + '-' + newContext.controller.data.operationTo];
                     var partStockQty = existingStock ? parseInt(existingStock.partStockQty) + parseInt(newContext.controller.data.acceptedQty) : parseInt(newContext.controller.data.acceptedQty);
                     var data = {
                         id: existingStock && existingStock.id || undefined,
-                        partNo: newContext.controller.data.partNo,
-                        subContractorCode: newContext.controller.data.subContractorCode,
+                        partNo: localContext.controller.data.partNo,
+                        subContractorCode: localContext.controller.data.subContractorCode,
                         partStockQty: partStockQty,
-                        operationFrom: newContext.controller.data.operationFrom,
-                        operationTo: newContext.controller.data.operationTo
+                        operationFrom: localContext.controller.data.operationFrom,
+                        operationTo: localContext.controller.data.operationTo
                     }
-                    returnPromise.push(context.commonFact.updateData('report.subContractorStock', data));
+                    promiseRes.resolve(context.commonFact.updateData('report.subContractorStock', data));
                 });
 
-                returnPromise.push(partStockPromise);
-
-                return Promise.all(returnPromise);
+                return promiseRes.promise;
             },
             updatePartTotal: function(data, newValue, field, fieldMapKey) {
                 var total = 0,
@@ -393,7 +406,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 }
                 if (ctrl.id) {
                     serviceConfig = ctrl.services && ctrl.services.list || {};
-                    serviceConfig.id = ctrl.id;
+                    serviceConfig.id = serviceConfig.id || ctrl.id;
                 }
                 serviceConfig.params = angular.extend(serviceConfig.params || {}, { appCustomer: serviceConfig.params && serviceConfig.params.appCustomer || context.commonFact.isAppCustomer() || '' })
 
@@ -480,18 +493,15 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
 
             },
             mergeOprFlowMap: function(flowMap) {
-                var optionsPromiseResolve, optionsPromise = new Promise(function(resolve, reject) {
-                    optionsPromiseResolve = resolve;
-                });
-
+                var promiseRes = context.commonFact.getPromiseRes();
                 context.commonFact.getData('production.operationMaster').then(function(res) {
                     for (var i in flowMap) {
                         flowMap[i] = res.data[flowMap[i].id];
                         flowMap[i].opCode = parseInt(res.data[flowMap[i].id].opCode);
                     }
-                    optionsPromiseResolve(flowMap);
+                    promiseRes.resolve(flowMap);
                 });
-                return optionsPromise;
+                return promiseRes.promise;
             },
             getOperations: function() {
                 context.controller.operationsData = {};
@@ -781,53 +791,48 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 actionMethod && actionMethod.apply(this, params);
             },
             appModuleAccess: function() {
-                return new Promise(function(resolve) {
-                    var isAppCustomer = context.commonFact.isAppCustomer();
-                    var userDetail = context.authFact.getUserDetail();
-                    if (isAppCustomer && userDetail) {
-                        context.commonFact.getData(context.erpAppConfig.modules.controllers.admin.settings, isAppCustomer).then(function(res) {
-                            context.erpAppConfig = angular.extend(context.erpAppConfig, res.data);
-                            if (context.commonFact.isAppUser()) {
-                                for (var i in context.erpAppConfig.mapping) {
-                                    var map = context.erpAppConfig.mapping[i];
-                                    var module = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, map.module) || {};
-                                    if (!userDetail.userType || (userDetail.userType && map.restrictUser !== userDetail.userType)) {
-                                        module.disable = map.restrictUser && true;
-                                    }
-                                    if (module.page && (module.page.actions || module.page.actions === undefined)) {
-                                        module.page.actions = {
-                                            print: true
-                                        };
-                                        module.page.actions.add = map.restrictUser === userDetail.userType && map['add'] || false;
-                                        module.page.actions.edit = map.restrictUser === userDetail.userType && map['edit'] || false;
-                                        module.page.actions.delete = map.restrictUser === userDetail.userType && map['delete'] || false;
-                                    }
+                var promiseRes = context.commonFact.getPromiseRes();
+                var isAppCustomer = context.commonFact.isAppCustomer();
+                var userDetail = context.authFact.getUserDetail();
+                if (isAppCustomer && userDetail) {
+                    context.commonFact.getData(context.erpAppConfig.modules.controllers.admin.settings, isAppCustomer).then(function(res) {
+                        context.erpAppConfig = angular.extend(context.erpAppConfig, res.data);
+                        if (context.commonFact.isAppUser()) {
+                            for (var i in context.erpAppConfig.mapping) {
+                                var map = context.erpAppConfig.mapping[i];
+                                var module = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, map.module) || {};
+                                if (!userDetail.userType || (userDetail.userType && map.restrictUser !== userDetail.userType)) {
+                                    module.disable = map.restrictUser && true;
+                                }
+                                if (module.page && (module.page.actions || module.page.actions === undefined)) {
+                                    module.page.actions = {
+                                        print: true
+                                    };
+                                    module.page.actions.add = map.restrictUser === userDetail.userType && map['add'] || false;
+                                    module.page.actions.edit = map.restrictUser === userDetail.userType && map['edit'] || false;
+                                    module.page.actions.delete = map.restrictUser === userDetail.userType && map['delete'] || false;
                                 }
                             }
-                            resolve();
-                        });
-                    } else {
-                        resolve();
-                    }
-                });
+                        }
+                        promiseRes.resolve();
+                    });
+                } else {
+                    promiseRes.resolve();
+                }
+                return promiseRes.promise;
             },
-            loadAuth: function() {
-                var path = context.commonFact.location.path();
-
-                return new Promise(function(resolve) {
-                    if (context.erpAppConfig.serverAuth && path !== '/login') {
-                        context.commonFact.getData({ dataUri: 'checkLoggedIn', cache: false }).then(function(res) {
-                            var data = res.data || {};
-                            if (data.userName) {
-                                context.authFact.setUserDetail(data);
-                            }
-                            resolve()
-                        });
-                    } else {
-                        resolve();
-                    }
-                })
-
+            getPromiseRes: function() {
+                var returnPromiseRes;
+                var returnPromiseRej;
+                var returnPromise = new Promise(function(res, rej) {
+                    returnPromiseRes = res;
+                    returnPromiseRej = rej;
+                });
+                return {
+                    promise: returnPromise,
+                    resolve: returnPromiseRes,
+                    reject: returnPromiseRej
+                };
             }
         };
     };

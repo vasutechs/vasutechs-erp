@@ -2,7 +2,7 @@ erpConfig.moduleFiles.rmStock = function(context) {
     return {
         callBackList: function() {
             var newList = angular.copy(context.controller.listViewData);
-            if ($location.search() && $location.search()['showall'] === 'no') {
+            if (context.commonFact.location.search() && context.commonFact.location.search()['showall'] === 'no') {
                 newList = context.controller.listViewData.filter(function(data) {
                     return data.partStockQty > 0;
                 });

@@ -120,7 +120,7 @@ erpConfig.moduleFiles.grnSubContractor = function(context) {
                 var newContext = angular.copy(context);
                 data.partNo = data.id;
                 newContext.controller.data = data;
-                newContext.updatePrevStock = false;
+                newContext.controller.updatePrevStock = false;
                 if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
                     acceptedQty = parseInt(newContext.controller.data.acceptedQty) - parseInt(orgItemVal.mapping[i].acceptedQty);
                     newContext.controller.data.acceptedQty = acceptedQty;
@@ -130,7 +130,7 @@ erpConfig.moduleFiles.grnSubContractor = function(context) {
                 var newScContext = angular.copy(context);
                 scData.subContractorCode = context.controller.data.subContractorCode;
                 scData.acceptedQty = 0 - scData.acceptedQty;
-                newScContext.data = scData;
+                newScContext.controller.data = scData;
                 context.commonFact.updateSCStock(newScContext);
             }
             context.controller.methods.updateDCSubContractor();

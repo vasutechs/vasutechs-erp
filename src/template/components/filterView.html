@@ -1,5 +1,5 @@
 <div>
-    <h3>{{context.filterView.title}}
+    <h3>{{context.controller.filterView.title}}
         <div ng-if="context.controller.page.downloadTableData" class="pull-right">
             <a href="javascript: void(0);" ng-click="context.controller.page.downloadTableData === true && context.commonFact.downloadTableData() || context.commonFact.callActions(context.controller.page.downloadTableData)" title="Download Table Data" class="fa fa-fw fa-download"></a>
         </div>
@@ -10,11 +10,11 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th ng-repeat="(key, list) in context.filterView.fields">
-                    {{list.title}}:<select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="context.filterView.data[list.id]" ng-change="context.commonFact.callActions(list.action, [list]) || context.commonFact.callActions(list)"
+                <th ng-repeat="(key, list) in context.controller.filterView.fields">
+                    {{list.title}}:<select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[list.id]" ng-change="context.commonFact.callActions(list.action, [list]) || context.commonFact.callActions(list)"
                         ng-options="option.optionId as option.optionName for option in list.options">
                         <option value="">--Select--</option>
-                    </select> <input ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="context.filterView.data[list.id]" ng-change="context.commonFact.callActions(list.action, [list]) || context.commonFact.callActions(list)"
+                    </select> <input ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[list.id]" ng-change="context.commonFact.callActions(list.action, [list]) || context.commonFact.callActions(list)"
                     />
                 </th>
             </tr>

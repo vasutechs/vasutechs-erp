@@ -2,7 +2,6 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
     var orgItemVal = null;
     return {
         callBackEdit: function() {
-            context.controller.methods.callBackAdd();
             orgItemVal = angular.copy(context.controller.data);
         },
         callBackAdd: function() {
@@ -21,7 +20,6 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
                 }
             });
             context.commonFact.makeOptionsFields(context.controller.form.fields['rmCode']);
-
 
         },
         callBackList: function() {
@@ -50,12 +48,6 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
             }
         },
         getNorms: function() {
-            var restriction = {
-                partNo: context.controller.data.partNo,
-                filter: {
-                    source: ['Supplier']
-                }
-            };
             if (context.controller.data.rmCode && context.controller.data.partNo) {
                 context.controller.data.partNorms = null;
                 context.controller.data.qtyCanMake = null;
@@ -68,7 +60,6 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
                         }
                     }
                 });
-                context.commonFact.getOperationFromFlow(context.controller.form.fields['operationTo'], restriction);
             }
         },
         updateQtyMake: function() {

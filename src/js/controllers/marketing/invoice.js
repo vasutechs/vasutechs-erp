@@ -12,7 +12,7 @@ erpConfig.moduleFiles.invoice = function(context) {
             context.controller.data[context.controller.form.autoGenKey] = context.controller.data[context.controller.form.autoGenKey] + '/' + year + '-' + ('' + parseInt(year + 1)).substring(2);
         },
         callBackChangeMapping: function(data, key, field) {
-            context.commonFact.getPartStockDetail(data, key, field);
+            context.controller.methods.getPartStockDetail(data, key, field);
             orgItemVal.mapping = angular.copy(context.controller.data.mapping);
             context.controller.methods.updateTotalAmount();
         },
@@ -48,7 +48,7 @@ erpConfig.moduleFiles.invoice = function(context) {
                 partStock = 0;
 
             if (context.controller.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp]) {
-                partStock = parseInt(context.controller.partStock[data.id + '-' + context.erp.finalStageOpp].partStockQty);
+                partStock = parseInt(context.controller.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].partStockQty);
                 if (context.controller.page.name === 'edit') {
                     partStock += parseInt(orgItemVal.mapping[fieldKey].unit);
                 }
@@ -118,7 +118,7 @@ erpConfig.moduleFiles.invoice = function(context) {
                     data.acceptedQty = parseInt(map.unit);
                 }
                 newContext.controller.data = data;
-                newContext.updatePrevStock = false;
+                newContext.controller.updatePrevStock = false;
                 context.commonFact.updatePartStock(newContext);
             };
             for (var i in context.controller.data.mapping) {

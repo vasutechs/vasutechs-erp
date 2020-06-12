@@ -13,7 +13,7 @@ module.exports = function(config) {
             name: config.appName,
             resave: true,
             saveUninitialized: true,
-            //cookie: { maxAge: 6000 } /* 6000 ms? 6 seconds -> wut? :S */
+            //cookie: { maxAge: 15000 } /* 6000 ms? 6 seconds -> wut? :S */
         })
     );
 

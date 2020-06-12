@@ -134,7 +134,7 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
                 }
                 newContext.controller.data = data;
                 context.commonFact.updateSCStock(newContext);
-                newContext.updateCurStock = false;
+                newContext.controller.updateCurStock = false;
                 context.commonFact.updatePartStock(newContext);
             }
             context.controller.methods.updatePoSubContractor();
@@ -152,7 +152,7 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
 
                 newContext.controller.data = data;
                 context.commonFact.updateSCStock(newContext);
-                newContext.updateCurStock = false;
+                newContext.controller.updateCurStock = false;
                 context.commonFact.updatePartStock(newContext);
             }
             poSubContractor.status = 0;

@@ -4,7 +4,7 @@
     "calendarYear": "",
     "finalStageOpp": 9,
     "yearChangeMonth": 3,
-    "httpCache": true,
+    "httpCache": false,
     "serverApiUri": "api",
     "serverDataUri": "data",
     "serverAuth": "auth",
@@ -2745,7 +2745,7 @@
                                 "name": "Operation",
                                 "id": "opCode",
                                 "type": "input",
-                                "inputType": "text",
+                                "inputType": "number",
                                 "required": true
                             },
                             "opName": {
@@ -3359,6 +3359,9 @@
                                 "dataFrom": "production.operationMaster",
                                 "replaceName": "opName",
                                 "valuePrefixData": "opCode",
+                                "filter": {
+                                    "source": ["Supplier"]
+                                },
                                 "isEditDisable": true,
                                 "isSingle": true
                             }
@@ -4191,6 +4194,7 @@
                     },
                     "services": {
                         "list": {
+                            "id": "invoice",
                             "params": {
                                 "year": true
                             }
@@ -4210,6 +4214,7 @@
                     },
                     "services": {
                         "list": {
+                            "id": "cashBill",
                             "params": {
                                 "year": true
                             }
@@ -4297,6 +4302,11 @@
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
+                    },
+                    "services": {
+                        "list": {
+                            "id": "partMaster"
+                        }
                     }
                 },
                 "productionEntryReport": {
@@ -4395,6 +4405,7 @@
                     },
                     "services": {
                         "list": {
+                            "id": "productionEntry",
                             "params": {
                                 "year": true
                             }
@@ -4484,6 +4495,7 @@
                     },
                     "services": {
                         "list": {
+                            "id": "productionEntry",
                             "params": {
                                 "year": true
                             }
@@ -4566,6 +4578,7 @@
                     },
                     "services": {
                         "list": {
+                            "id": "productionEntry",
                             "params": {
                                 "year": true
                             }
@@ -4663,6 +4676,7 @@
                     },
                     "services": {
                         "list": {
+                            "id": "productionEntry",
                             "params": {
                                 "year": true
                             }
@@ -5360,43 +5374,37 @@
                                 "name": "Company Logo Url",
                                 "id": "companyLogoUrl",
                                 "type": "input",
-                                "inputType": "text",
-                                "required": true
+                                "inputType": "text"
                             },
                             "companyAddress": {
                                 "name": "Company Address",
                                 "id": "companyAddress",
                                 "type": "input",
-                                "inputType": "text",
-                                "required": true
+                                "inputType": "text"
                             },
                             "companyMobile": {
                                 "name": "Company Mobile",
                                 "id": "companyMobile",
                                 "type": "input",
-                                "inputType": "text",
-                                "required": true
+                                "inputType": "text"
                             },
                             "companyEmail": {
                                 "name": "Company Email",
                                 "id": "companyEmail",
                                 "type": "input",
-                                "inputType": "text",
-                                "required": true
+                                "inputType": "text"
                             },
                             "companyGstin": {
                                 "name": "Company GSTIN",
                                 "id": "companyGstin",
                                 "type": "input",
-                                "inputType": "text",
-                                "required": true
+                                "inputType": "text"
                             },
                             "finalStageOpp": {
                                 "name": "Operation Final Stage",
                                 "id": "finalStageOpp",
                                 "type": "select",
                                 "options": {},
-                                "required": true,
                                 "dataFrom": "production.operationMaster",
                                 "replaceName": "opName",
                                 "valuePrefixData": "opCode"
@@ -5417,7 +5425,6 @@
                                     "id": "restrictUser",
                                     "type": "select",
                                     "options": {},
-                                    "required": true,
                                     "dataFrom": "admin.userTypes",
                                     "replaceName": "userType"
                                 },

@@ -3,7 +3,7 @@ erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $q, $httpParam
         var callServiceApi = function(serviceConf, inputData) {
             var servicePromise,
                 httpCache = $cacheFactory.get('$http');
-            var deferred = $q.defer();
+            var promiseRes = context.commonFact.getPromiseRes();
             var removeCacheUrl;
             serviceConf['data'] = angular.extend(serviceConf['data'] || {}, inputData || {});
             if (serviceConf.method === 'POST') {
@@ -13,9 +13,9 @@ erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $q, $httpParam
             }
             if (!serviceConf.url) {
                 setTimeout(function() {
-                    deferred.reject();
+                    promiseRes.reject();
                 }, 200);
-                servicePromise = deferred.promise;
+                servicePromise = promiseRes.promise;
             } else {
                 servicePromise = $http(serviceConf)
                     .then(function(res) {

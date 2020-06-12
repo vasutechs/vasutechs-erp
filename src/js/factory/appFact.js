@@ -11,7 +11,7 @@ erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
             commonFact: commonFact(context),
             authFact: authFact(context)
         });
-        context.commonFact.loadAuth().then(function() {
+        context.authFact.loadAuth().then(function() {
             return context.commonFact.appModuleAccess();
         }).then(function() {
             erpLoadProm.resolve();
@@ -22,7 +22,7 @@ erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
         var returnPageProm = $q.defer();
         return erpLoadProm.promise.then(function() {
             var parentModule;
-            var pageProm = [];
+
             context.controller = angular.extend(angular.copy(module), { methods: methods && methods(context) || {} });
             var isLogged = context.authFact.isLogged();
             scope.context = context;
@@ -38,21 +38,20 @@ erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
                 return;
             }
             context.showLoading = true;
-            pageProm.push(context.commonFact.updateFields(context.controller.listView));
-            context.controller.filterView && pageProm.push(context.commonFact.updateFields(context.controller.filterView.fields));
+
 
             scope.$broadcast('showAlertRol');
 
-            Promise.all(pageProm).then(function() {
-                if (context.commonFact[context.controller.page.name]) {
-                    context.commonFact[context.controller.page.name]().then(function() {
-                        scope.context = context;
-                        context.commonFact.showLoadingHttp(scope);
-                        context.controller.methods.onLoad && context.controller.methods.onLoad();
-                        returnPageProm.resolve();
-                    });
-                };
-            });
+
+            if (context.commonFact[context.controller.page.name]) {
+                context.commonFact[context.controller.page.name]().then(function() {
+                    scope.context = context;
+                    context.commonFact.showLoadingHttp(scope);
+                    context.controller.methods.onLoad && context.controller.methods.onLoad();
+                    returnPageProm.resolve();
+                });
+            };
+
             return returnPageProm.promise;
         });
     };

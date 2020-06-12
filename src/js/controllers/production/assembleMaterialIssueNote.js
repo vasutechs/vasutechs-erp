@@ -92,7 +92,7 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
                     data.acceptedQty = parseInt(map.qtyCanMake);
                 }
                 newContext.controller.data = data;
-                newContext.updatePrevStock = false;
+                newContext.controller.updatePrevStock = false;
                 context.commonFact.updatePartStock(newContext);
             };
             for (var i in context.controller.data.mapping) {

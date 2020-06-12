@@ -14,10 +14,10 @@ erpConfig.moduleFiles.productionEntryReport = function(context) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
                     for (var i in listViewData) {
-                        var frmDate = context.filterView.data['frmDate'];
-                        var toDate = context.filterView.data['toDate'];
-                        var filterToolNo = context.filterView.data['toolNo'];
-                        var filterPartNo = context.filterView.data['partNo'];
+                        var frmDate = context.controller.filterView.data['frmDate'];
+                        var toDate = context.controller.filterView.data['toDate'];
+                        var filterToolNo = context.controller.filterView.data['toolNo'];
+                        var filterPartNo = context.controller.filterView.data['partNo'];
                         var partNo = listViewData[i]['partNo'];
 
                         for (var j in listViewData[i].mapping) {
@@ -53,9 +53,9 @@ erpConfig.moduleFiles.productionEntryReport = function(context) {
                 for (var x in listViewYearData) {
                     var listViewData = listViewYearData[x];
                     for (var i in listViewData) {
-                        var frmDate = context.filterView.data['frmDate'];
-                        var toDate = context.filterView.data['toDate'];
-                        var filterMachineNo = context.filterView.data['machineNo'];
+                        var frmDate = context.controller.filterView.data['frmDate'];
+                        var toDate = context.controller.filterView.data['toDate'];
+                        var filterMachineNo = context.controller.filterView.data['machineNo'];
 
                         for (var j in listViewData[i].mapping) {
                             var date = new Date(listViewData[i].mapping[j].date);
@@ -86,11 +86,11 @@ erpConfig.moduleFiles.productionEntryReport = function(context) {
             var list = [];
             var listViewData = angular.copy(context.controller.listViewDataMaster);
             for (var i in listViewData) {
-                var frmDate = context.filterView.data['frmDate'];
-                var toDate = context.filterView.data['toDate'];
-                var filterPartNo = context.filterView.data['partNo'];
+                var frmDate = context.controller.filterView.data['frmDate'];
+                var toDate = context.controller.filterView.data['toDate'];
+                var filterPartNo = context.controller.filterView.data['partNo'];
                 var partNo = listViewData[i]['partNo'];
-                var filterOperator = context.filterView.data['operator'];
+                var filterOperator = context.controller.filterView.data['operator'];
 
                 for (var j in listViewData[i].mapping) {
                     var date = new Date(listViewData[i].mapping[j].date);
@@ -117,8 +117,8 @@ erpConfig.moduleFiles.productionEntryReport = function(context) {
             var listViewData = angular.copy(context.controller.listViewDataMaster);
 
             for (var i in listViewData) {
-                var frmDate = context.filterView.data['frmDate'];
-                var toDate = context.filterView.data['toDate'];
+                var frmDate = context.controller.filterView.data['frmDate'];
+                var toDate = context.controller.filterView.data['toDate'];
 
                 for (var j in listViewData[i].mapping) {
                     var date = new Date(listViewData[i].mapping[j].date);

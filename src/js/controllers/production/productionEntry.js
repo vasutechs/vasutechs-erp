@@ -7,7 +7,7 @@ erpConfig.moduleFiles.productionEntry = function(context) {
         callBackEdit: function() {
             if (!context.controller.page.printView) {
                 context.controller.page.printViewMapping = true;
-                context.commonFact.makeOptionsFields(context.controller.data.mapping);
+                context.commonFact.addMapping(context.controller.data.mapping);
                 context.controller.finalMapping = context.controller.data.mapping.length - 1;
             }
         },
