@@ -9,6 +9,7 @@ erpConfig.moduleFiles.productionEntry = function(context) {
                 context.controller.page.printViewMapping = true;
                 context.commonFact.addMapping(context.controller.data.mapping);
                 context.controller.finalMapping = context.controller.data.mapping.length - 1;
+                context.controller.methods.callBackChangeMapping();
             }
         },
         callBackList: function() {
@@ -75,9 +76,12 @@ erpConfig.moduleFiles.productionEntry = function(context) {
 
                         if ((!context.controller.prQty[prQtyFrmMap] &&
                                 (!context.controller.partStock[i].operationFrom ||
-                                    (context.controller.prQty[prQtyPrevMap] && context.controller.prQty[prQtyPrevMap].prQty > 0))) ||
-                            (context.controller.prQty[prQtyFrmMap] && context.controller.prQty[prQtyFrmMap].prQty < jobCardQty) ||
-                            (context.controller.flowMasterByPartOpr[flwMap] && context.controller.flowMasterByPartOpr[flwMap].source === "Sub-Contractor" && context.controller.prQty[prQtyToMap])) {
+                                    (context.controller.prQty[prQtyPrevMap] &&
+                                        context.controller.prQty[prQtyPrevMap].prQty > 0))) ||
+                            (context.controller.prQty[prQtyFrmMap] &&
+                                context.controller.prQty[prQtyFrmMap].prQty < jobCardQty) ||
+                            (context.controller.flowMasterByPartOpr[flwMap] &&
+                                context.controller.flowMasterByPartOpr[flwMap].source === "Sub-Contractor")) {
                             operation.push(context.controller.partStock[i].operationTo);
                         }
                     }
@@ -88,17 +92,14 @@ erpConfig.moduleFiles.productionEntry = function(context) {
                 context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationFrom'], restriction);
             }
         },
-        updateOperationTo: function(mappingData, key, field) {
+        updateOperationTo: function(mappingData) {
+            context.controller.form.mapping.fields['operationTo'].options = {};
             if (context.controller.data.jobCardNo) {
                 var partNo = context.controller.data.partNo,
                     restriction = {
                         partNo: partNo
-                    },
-                    operation = [];
-                var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
-                var jobCardQty = jobCard && jobCard.qtyCanMake;
-
-                if (mappingData.operationFrom) {
+                    };
+                if (mappingData && mappingData.operationFrom) {
                     restriction = angular.extend(restriction, {
                         limit: 1,
                         startWith: mappingData.operationFrom

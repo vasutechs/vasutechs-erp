@@ -53,7 +53,7 @@ var erpApp = (function() {
                 var compLink = compMethods && compMethods(appFact);
                 return {
                     restrict: comp.restrict || 'E',
-                    templateUrl: 'template/components/' + comp.id + '.html',
+                    templateUrl: comp.template || comp.template === undefined ? 'template/components/' + comp.id + '.html' : '',
                     link: compLink
                 };
             });

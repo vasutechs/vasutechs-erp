@@ -10,8 +10,6 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 if (context.controller.data.date === null) {
                     context.controller.data.date = new Date();
                 }
-                context.controller.page.editKey = undefined;
-                context.controller.page.printView = undefined;
                 return context.commonFact.formRender().then(function() {
                     context.controller.methods.callBackAdd && context.controller.methods.callBackAdd();
                     return true;
@@ -61,6 +59,9 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             list: function() {
                 var pageProm = [];
                 var promiseRes = context.commonFact.getPromiseRes();
+                context.controller.existEditData = null;
+                context.controller.page.editKey = undefined;
+                context.controller.page.printView = undefined;
                 context.controller.page.name = 'list';
                 context.controller.currentPage = 0;
                 context.controller.pageSize = 10;
@@ -157,9 +158,9 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             matchFilter: function(field, list) {
                 var returnFlag = false;
-                if (context && context.controller.page.name === 'edit') {
-                    return true;
-                }
+                // if (context && context.controller.page.name === 'edit') {
+                //     return true;
+                // }
                 for (var i in field.filter) {
                     if (typeof(field.filter[i]) === 'object' && field.filter[i].indexOf(list[i]) < 0) {
                         return false;
@@ -191,7 +192,8 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         field.allOptions[optionVal] = list[i];
                         field.allOptions[optionVal]['optionName'] = optionNameVal;
                         field.allOptions[optionVal]['optionId'] = optionIdVal;
-                        if ((field.filter === undefined || context.commonFact.matchFilter(field, list[i], context) === true) &&
+                        if ((field.filter === undefined ||
+                                context.commonFact.matchFilter(field, list[i], context) === true) &&
                             (!isCheckExistVal || editOption)) {
                             field.options[optionVal] = field.allOptions[optionVal];
                         }
@@ -214,7 +216,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 for (var dataKey in data) {
                     if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
                         if (key === null) {
-                            data[dataKey] = context.controller.masterData[dataKey];
+                            data[dataKey] = angular.copy(context.controller.masterData[dataKey]);
                         } else if (key !== undefined && field.options[key][dataKey]) {
                             if (typeof(field.options[key][dataKey]) !== 'object') {
                                 data[dataKey] = field.options[key][dataKey];
@@ -266,6 +268,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         context.commonFact.getData('production.flowMaster').then(function(res) {
                             var flowMasterData = res.data,
                                 flowMasterVal;
+                            var isPartFlow = false;
                             field.options = {};
                             for (var i in flowMasterData) {
                                 if (flowMasterData[i].partNo === partNo) {
@@ -283,9 +286,11 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                                         }
                                         promiseRes.resolve(field);
                                     });
-                                } else {
-                                    promiseRes.resolve(field);
+                                    isPartFlow = true;
                                 }
+                            }
+                            if (!isPartFlow) {
+                                promiseRes.resolve(field);
                             }
                         });
                     });
@@ -298,6 +303,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 var self = this;
                 var localContext = newContext || context;
                 var promiseRes = context.commonFact.getPromiseRes();
+                var currentPartProm = context.commonFact.getPromiseRes();
                 var currentData;
                 var prevData;
                 context.commonFact.getData('report.partStock').then(function(res) {
@@ -319,30 +325,34 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         }
                         context.commonFact.updateData('report.partStock', currentData).then(function() {
                             context.commonFact.getPartStock();
-                            var existingPrevStock = partStock[localContext.controller.data.partNo + '-' + localContext.controller.data.operationFrom];
-                            if (existingPrevStock && (localContext.controller.updatePrevStock === undefined || localContext.controller.updatePrevStock)) {
-                                var existPartStockQty = parseInt(localContext.controller.data.acceptedQty);
-                                existPartStockQty += parseInt(localContext.controller.data.rejectionQty) || 0;
-                                existPartStockQty += parseInt(localContext.controller.data.rwQty) || 0;
-                                existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
-                                prevData = {
-                                    id: existingPrevStock.id,
-                                    partNo: localContext.controller.data.partNo,
-                                    partStockQty: existPartStockQty,
-                                    operationFrom: existingPrevStock.operationFrom,
-                                    operationTo: existingPrevStock.operationTo
-                                }
-                                context.commonFact.updateData('report.partStock', prevData).then(function() {
-                                    context.commonFact.getPartStock();
-                                    promiseRes.resolve();
-                                });
-                            } else {
-                                promiseRes.resolve();
-                            }
+                            currentPartProm.resolve();
                         });
                     } else {
-                        promiseRes.resolve();
+                        currentPartProm.resolve();
                     }
+                    currentPartProm.promise.then(function() {
+                        var existingPrevStock = partStock[localContext.controller.data.partNo + '-' + localContext.controller.data.operationFrom];
+                        if (existingPrevStock && (localContext.controller.updatePrevStock === undefined || localContext.controller.updatePrevStock)) {
+                            var existPartStockQty = parseInt(localContext.controller.data.acceptedQty);
+                            existPartStockQty += parseInt(localContext.controller.data.rejectionQty) || 0;
+                            existPartStockQty += parseInt(localContext.controller.data.rwQty) || 0;
+                            existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
+                            prevData = {
+                                id: existingPrevStock.id,
+                                partNo: localContext.controller.data.partNo,
+                                partStockQty: existPartStockQty,
+                                operationFrom: existingPrevStock.operationFrom,
+                                operationTo: existingPrevStock.operationTo
+                            }
+                            context.commonFact.updateData('report.partStock', prevData).then(function() {
+                                context.commonFact.getPartStock();
+                                promiseRes.resolve();
+                            });
+                        } else {
+                            promiseRes.resolve();
+                        }
+                    });
+
                 });
 
                 return promiseRes.promise;
@@ -391,7 +401,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
 
             },
             getServiceConfig: function(ctrl, replaceMethod) {
-                var currentYear = new Date().getMonth() >= context.erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
+                var currentYear = context.erpAppConfig.calendarYear;
                 var serviceConfig = ctrl;
                 var genUrl = function(serviceConfig) {
                     var url = context.erpAppConfig.serverApiUri;
@@ -404,7 +414,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 if (typeof(ctrl) !== 'object') {
                     ctrl = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, ctrl);
                 }
-                if (ctrl.id) {
+                if (ctrl.id && ctrl.page) {
                     serviceConfig = ctrl.services && ctrl.services.list || {};
                     serviceConfig.id = serviceConfig.id || ctrl.id;
                 }
@@ -690,6 +700,13 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     document.body.removeChild(downloadLink);
                 }
             },
+            downloadDatabase: function(year) {
+                var downloadDbName = 'database' + (year ? context.erpAppConfig.calendarYear + '-' + ('' + parseInt(context.erpAppConfig.calendarYear + 1)).substring(2) : '');
+
+                context.commonFact.getData({ id: 'databaseDownload', params: { year: year } }).then(function(res) {
+                    context.commonFact.downloadFile(res.data, downloadDbName + '.json');
+                });
+            },
             showLoadingHttp: function(scope) {
                 var showLoader = function(v) {
                     if (v) {
@@ -711,7 +728,6 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             location: $location,
             changeCalendarYear: function() {
-                context.commonFact.getData('calendarYear');
                 context.commonFact.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link);
             },
             downloadData: function() {
@@ -787,7 +803,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 return e;
             },
             callActions: function(actionName, params) {
-                var actionMethod = context.controller.methods[actionName] || context.authFact[actionName] || context.commonFact[actionName];
+                var actionMethod = actionName && (context.controller.methods[actionName] || context.authFact[actionName] || context.commonFact[actionName]);
                 actionMethod && actionMethod.apply(this, params);
             },
             appModuleAccess: function() {

@@ -43,9 +43,9 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
                                 }
 
                                 if (operationFrom) {
-                                    dcPartStockQty = context.controller.partStock[partNo + '-' + operationFrom].partStockQty;
+                                    dcPartStockQty = context.controller.partStock[partNo + '-' + operationFrom];
 
-                                    if (dcPartStockQty === undefined || dcPartStockQty < qty) {
+                                    if (dcPartStockQty === undefined || dcPartStockQty.partStockQty < qty) {
                                         context.controller.data.mapping[i].acceptedQty = qty = null;
                                     }
                                 }
@@ -141,7 +141,7 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
         },
         callBeforeDelete: function(id, item) {
             var acceptedQty;
-            var poSubContractor = context.controller.form.fields['poNo'].allOptions[item.poNo];
+            var poSubContractor;
             for (var i in item.mapping) {
                 var data = angular.copy(item.mapping[i]);
                 var newContext = angular.copy(context);
@@ -155,8 +155,13 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
                 newContext.controller.updateCurStock = false;
                 context.commonFact.updatePartStock(newContext);
             }
-            poSubContractor.status = 0;
-            context.commonFact.updateData('purchase.poSubContractor', poSubContractor);
+
+            context.commonFact.getData('purchase.poSubContractor', item.poNo).then(function(res) {
+                poSubContractor = res.data;
+                poSubContractor.status = 0;
+                context.commonFact.updateData('purchase.poSubContractor', poSubContractor);
+            });
+
         }
     };
 };

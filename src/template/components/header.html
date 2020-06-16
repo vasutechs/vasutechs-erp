@@ -62,8 +62,8 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body modal-Scroll">
-                        <a href="{{context.erpAppConfig.modules.controllers['databaseDownload'].page.link}}" download="master_database.json"> Master database</a> ||
-                        <a href="YEAR-{{context.calendarYear}}/{{context.erpAppConfig.modules.controllers['databaseDownload'].page.link}}" download="database_{{context.downloadDbName}}.json"> Current Year database</a>
+                        <a href="" ng-click="context.commonFact.downloadDatabase()"> Master database</a> ||
+                        <a href="" ng-click="context.commonFact.downloadDatabase(true)"> Current Year database</a>
                     </div>
                 </div>
             </div>

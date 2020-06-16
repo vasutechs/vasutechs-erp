@@ -36,9 +36,22 @@ module.exports = function(config) {
         req.session.auth = data;
     };
 
-    var checkUser = function(req) {
+    var checkSuperAdminUser = function(req) {
         var user = req.session.auth;
         if (user && user.loggedIn && user.userType === 'SUPERADMIN') {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    var checkUser = function(req) {
+        var user = req.session.auth || {};
+        var inputData = req.body;
+        var query = req.query;
+        var appCustomer = inputData.appCustomer || query.appCustomer;
+        var userAppCustomer = user.appCustomer;
+        if (user && user.loggedIn && (appCustomer === userAppCustomer.toString() || user.userType === 'SUPERADMIN')) {
             return true;
         } else {
             return false;
@@ -49,7 +62,7 @@ module.exports = function(config) {
     var restrictedDbData = function(req, res) {
         var data = {};
         var query = req.query;
-        if (checkUser(req)) {
+        if (checkSuperAdminUser(req)) {
             data = config.task.dbData(req, res, !query.appCustomer && masterDb);
             res.status(200).send(data);
         } else {
@@ -87,7 +100,7 @@ module.exports = function(config) {
 
     // redirect to login form
     config.app.use('/api/auth/data/:table', function(req, res, next) {
-        if (req.session.auth && req.session.auth.loggedIn) {
+        if (checkUser(req)) {
             var data = config.task.dbData(req);
             res.status(200).send(data);
         } else {

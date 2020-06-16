@@ -1,5 +1,5 @@
 'use strict'
-var erpConfig = {"appName":"VASUTECHS","appBaseUrl":"/dashboard","calendarYear":"","finalStageOpp":9,"yearChangeMonth":3,"httpCache":false,"serverApiUri":"api","serverDataUri":"data","serverAuth":"auth","modules":{"controllers":{"login":{"id":"login","title":"Login","disableMenu":true,"defaultRelease":true,"masterData":{"userName":null,"password":null},"form":{"name":"Login","id":"login","title":"Login","fields":{"userName":{"name":"User Name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true},"appCustomer":{"name":"App Customers","id":"appCustomer","type":"select","options":{},"dataFrom":{"dataUri":"getAppCustomer"},"replaceName":"companyName"}},"actions":{"cancel":false,"customSubmit":"loginSubmit"}},"page":{"link":"login","name":"add","actions":false},"services":{"list":{"notDataUri":true,"cache":false}}},"databaseUpload":{"id":"databaseUpload","name":"Database Upload","title":"Database Upload","disableMenu":true,"defaultRelease":true,"masterData":{"databaseUpload":null},"page":{"link":"databaseUpload","name":"databaseUpload","templateUrl":"template/controllers/databaseUpload.html"}},"databaseDownload":{"id":"databaseDownload","name":"Database Download","title":"Database Download","disableMenu":true,"defaultRelease":true,"page":{"link":"/api/download","name":"databaseUpload"}},"calendarYear":{"id":"calendarYear","name":"Calendar Year","title":"Calendar Year","disableMenu":true,"defaultRelease":true,"page":{"link":"calendarYear","name":"calendarYear"},"services":{"list":{"params":{"year":true}}}},"dashboard":{"id":"dashboard","name":"Dashboard","title":"Dashboard","icon":"dashboard","disableMenu":true,"defaultRelease":true,"page":{"link":"dashboard","name":"dashboard","templateUrl":"template/controllers/dashboard.html"}},"marketing":{"id":"marketing","name":"Marketing","title":"Marketing","icon":"stack-exchange","partMaster":{"id":"partMaster","title":"Part Master","masterData":{"partNo":null,"partName":null,"rmCode":null,"inputWeight":null,"finishedWeight":null,"hsnCode":null,"uomCode":null,"prodRateHr":null,"rate":null,"rolQtyYellowRage":null,"rolQtyRedRage":null,"rejection":null,"icc":null,"toolMaintenance":null,"profit":null,"transportCostKg":null},"form":{"name":"partMaster","id":"partMaster","fields":{"partNo":{"name":"Part No","id":"partNo","type":"input","inputType":"text","action":"isCheckExistField","required":true},"partName":{"name":"Part Name","id":"partName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"rmCode":{"name":"Raw material","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"inputWeight":{"name":"Input weight","id":"inputWeight","type":"input","inputType":"number","required":true},"finishedWeight":{"name":"Finished weight","id":"finishedWeight","type":"input","inputType":"number","required":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"input","inputType":"text","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true},"prodRateHr":{"name":"Prod Rate/ hr","id":"prodRateHr","type":"input","inputType":"number","required":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"number","required":true},"rolQtyYellowRage":{"name":"ROL Qty Yellow Rage","id":"rolQtyYellowRage","type":"input","inputType":"number","required":true},"rolQtyRedRage":{"name":"ROL Qty Red Rage","id":"rolQtyRedRage","type":"input","inputType":"number","required":true},"rejection":{"name":"Rejection %","id":"rejection","type":"input","inputType":"number","required":true},"icc":{"name":"ICC %","id":"icc","type":"input","inputType":"number","required":true},"toolMaintenance":{"name":"Tool Maintenance %","id":"toolMaintenance","type":"input","inputType":"number","required":true},"profit":{"name":"Profit %","id":"profit","type":"input","inputType":"number","required":true},"transportCostKg":{"name":"Transport cost per kg","id":"transportCostKg","type":"input","inputType":"number","required":true},"isAssemblePart":{"name":"Is Assemble Part","id":"isAssemblePart","type":"input","inputType":"checkbox"}}},"listView":[{"title":"PartNo","id":"id","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Part Name","id":"partName"}],"page":{"link":"marketing/partMaster/list","name":"list"}},"customerMaster":{"id":"customerMaster","title":"Customer Master","masterData":{"customerCode":null,"customerName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"cgst":null,"sgst":null,"igst":null,"mapping":[{"id":null,"partName":null,"hsnCode":null,"rate":null}]},"form":{"name":"customerMaster","id":"customerMaster","autoGenKey":"customerCode","fields":{"customerCode":{"name":"Customer Code","id":"customerCode","type":"span","valuePrefix":"VT-CUS-"},"customerName":{"name":"Customer Name","id":"customerName","type":"input","inputType":"text","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"text"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"text"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"text"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"text"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Customer Code","id":"customerCode","valuePrefix":"VT-CUS-"},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"marketing/customerMaster/list","name":"list"}},"empMaster":{"id":"empMaster","title":"Employee Master","masterData":{"id":null,"employeeCode":null,"employeeName":null,"address":null,"contactNo":null,"mailId":null,"qualification":null,"designation":null,"basicSalary":null,"hra":null,"ca":null,"ot":null,"totalSalary":null,"mapping":[{"id":null,"partName":null,"operationTo":null,"laborCost":null}]},"form":{"name":"empMaster","id":"empMaster","autoGenKey":"employeeCode","fields":{"employeeCode":{"name":"Employee Code","id":"employeeCode","valuePrefix":"VT-EMP-","type":"span"},"employeeName":{"name":"Employee Name","id":"employeeName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"mailId":{"name":"Mail Id","id":"mailId","type":"input","inputType":"email","required":true},"qualification":{"name":"Qualification","id":"qualification","type":"input","inputType":"text","required":true},"designation":{"name":"Designation","id":"designation","type":"input","inputType":"text","required":true},"basicSalary":{"name":"BasicSalary","id":"basicSalary","type":"input","inputType":"number","required":true},"hra":{"name":"HRA","id":"hra","type":"input","inputType":"number","required":true},"ca":{"name":"CA","id":"ca","type":"input","inputType":"number","required":true},"ot":{"name":"OT","id":"ot","type":"input","inputType":"number","required":true},"total":{"name":"Total","id":"total","type":"input","inputType":"number","required":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"operationTo":{"name":"Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isSingle":true},"laborCost":{"name":"Labor Cost","id":"laborCost","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Employee Name","id":"employeeName"},{"title":"Mail Id","id":"mailId"}],"page":{"link":"marketing/empMaster/list","name":"list"}},"uomMaster":{"id":"uomMaster","title":"UOM Master","masterData":{"uomCode":null,"uomName":null},"form":{"name":"uomMaster","id":"uomMaster","autoGenKey":"uomCode","fields":{"uomCode":{"name":"UOM Code","id":"uomCode","type":"span","valuePrefix":"VT-UOM-"},"uomName":{"name":"UOM Name","id":"uomName","type":"input","inputType":"text","action":"isCheckExistField","required":true}}},"listView":[{"title":"UOM Code","id":"uomCode","valuePrefix":"VT-UOM-"},{"title":"UOM Name","id":"uomName"}],"page":{"link":"marketing/uomMaster/list","name":"list"}},"invoice":{"id":"invoice","title":"Invoice","masterData":{"invoiceNo":null,"date":null,"customerCode":null,"address":null,"gstin":null,"subTotal":null,"taxRate":null,"cgst":null,"sgst":null,"gst":null,"igst":null,"cgstTotal":null,"sgstTotal":null,"igstTotal":null,"totalBeforTax":null,"total":null,"mapping":[{"id":null,"hsnCode":null,"unit":null,"rate":null,"amount":null}]},"form":{"name":"Invoice","id":"invoice","autoGenKey":"invoiceNo","disableByField":"id","fields":{"invoiceNo":{"name":"Invoice No","id":"invoiceNo","type":"span","valuePrefix":"VT-","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"customerCode":{"name":"To","id":"customerCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","igst","sgst","cgst","address","mapping"],"dataFrom":"marketing.customerMaster","replaceName":"customerName","isEditDisable":true,"isSingle":true},"address":{"name":"Customer Address","id":"address"},"partyGstin":{"name":"Party GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"taxRate":{"name":"Tax Rate","id":"taxRate","type":"input","inputType":"number","required":true},"cgst":{"name":"CGST","id":"cgst","type":"span"},"cgstTotal":{"name":"CGST Total","id":"cgstTotal","type":"span"},"sgst":{"name":"SGST","id":"sgst","type":"span"},"sgstTotal":{"name":"SGST Total","id":"sgstTotal","type":"span"},"igst":{"name":"IGST","id":"igst","type":"span"},"igstTotal":{"name":"IGST Total","id":"igstTotal","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","type":"input","inputType":"number","required":true},"total":{"name":"Total","id":"total","type":"input","inputType":"number","required":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"span"},"unit":{"name":"Unit","id":"unit","type":"input","inputType":"text","action":"updateTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"amount":{"name":"Amount","id":"amount","type":"span"}}}},"listView":[{"title":"Invoice No","id":"invoiceNo","valuePrefix":"VT-"},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}},{"title":"Date","id":"date","type":"date"}],"page":{"link":"marketing/invoice/list","name":"list","templateUrl":"template/controllers/marketing/invoice.html"},"services":{"list":{"params":{"year":true}}}},"cashBill":{"id":"cashBill","name":"cashBill","title":"Cash Bill","parentModule":"marketing.invoice","form":{"autoGenValStart":null,"fields":{"invoiceNo":{"name":"CashBill No","id":"invoiceNo","type":"span","valuePrefix":"","required":true},"preBalance":{"name":"Previous Balance","id":"preBalance","type":"input","inputType":"text","action":"updatePreBalance"}}},"listView":[{"title":"Cash Bill No","id":"invoiceNo","valuePrefix":""}],"page":{"link":"marketing/invoice/list?type=cashBill","name":"list","templateUrl":"template/marketing/invoice.html"},"services":{"list":{"params":{"year":true}}}}},"purchase":{"id":"purchase","name":"Purchase","title":"Purchase","icon":"shopping-bag","rmMaster":{"id":"rmMaster","title":"Raw Material Master","masterData":{"rmCode":null,"rmName":null,"grade":null,"type":null,"hsnCode":null,"uomCode":null,"rate":null,"transportCostKg":null,"scrapRate":null},"form":{"name":"rmMaster","id":"rmMaster","autoGenKey":"rmCode","fields":{"rmCode":{"name":"RM Code","id":"rmCode","valuePrefix":"RM-","type":"span"},"rmName":{"name":"RM Name","id":"rmName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"grade":{"name":"Grade","id":"grade","type":"input","inputType":"text","required":true},"type":{"name":"Type","id":"type","type":"input","inputType":"text","required":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"input","inputType":"text","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"number","required":true},"transportCostKg":{"name":"Transport cost / kg","id":"transportCostKg","type":"input","inputType":"number","required":true},"scrapRate":{"name":"Scrap rate","id":"scrapRate","type":"input","inputType":"number","required":true}}},"listView":[{"title":"RM Code","id":"rmCode","valuePrefix":"RM-"},{"title":"Raw Material Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"purchase/rmMaster/list","name":"list","templateUrl":"template/defaultView.html"}},"supplierMaster":{"id":"supplierMaster","title":"Supplier Master","masterData":{"supplierCode":null,"supplierName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"rmCode":null,"rate":null}]},"form":{"name":"supplierMaster","id":"supplierMaster","autoGenKey":"supplierCode","fields":{"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"span","valuePrefix":"VT-SP-"},"supplierName":{"name":"Supplier Name","id":"supplierName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"text","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"RM Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Supplier Code","id":"supplierCode","valuePrefix":"VT-SP-"},{"title":"Supplier Name","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true}],"page":{"link":"purchase/supplierMaster/list","name":"list"}},"poSupplier":{"id":"poSupplier","title":"Purchase Order - Supplier","masterData":{"poNo":null,"date":null,"supplierCode":null,"gstin":null,"status":0,"subTotal":null,"extraAmount":null,"gstTotal":null,"total":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"rate":null,"amount":null}]},"form":{"name":"poSupplier","id":"poSupplier","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-SP-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isSingle":true},"gstin":{"name":"Party Gstin","id":"gstin","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"RM Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isDisable":true},"qty":{"name":"Qty","id":"qty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-SP-PO-"},{"title":"Supplier Code","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poSupplier/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"generalSupplierMaster":{"id":"generalSupplierMaster","title":"General Supplier Master","masterData":{"generalSupplierCode":null,"generalSupplierName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"partName":null,"rate":null}]},"form":{"name":"General Supplier Master","id":"generalSupplierMaster","autoGenKey":"generalSupplierCode","fields":{"generalSupplierCode":{"name":"General Supplier Code","id":"generalSupplierCode","type":"span","valuePrefix":"VT-GSP-"},"supplierName":{"name":"General Supplier Name","id":"generalSupplierName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"text","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"General Supplier Code","id":"generalSupplierCode","valuePrefix":"VT-GSP-"},{"title":"General Supplier Name","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true}],"page":{"link":"purchase/generalSupplierMaster/list","name":"list"}},"poGeneralSupplier":{"id":"poGeneralSupplier","title":"Purchase Order - General Supplier","masterData":{"poNo":null,"date":null,"generalSupplierCode":null,"gstin":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"rate":null,"amount":null}]},"form":{"name":"poGeneralSupplier","id":"poGeneralSupplier","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-GSP-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"GeneralSupplier Code","id":"generalSupplierCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","isSingle":true},"gstin":{"name":"Party Gstin","id":"gstin","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"qty":{"name":"Qty","id":"qty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-GSP-PO-"},{"title":"General Supplier Code","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poGeneralSupplier/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"subContractorMaster":{"id":"subContractorMaster","title":"Sub Contractor Master","masterData":{"subContractorCode":null,"subContractorName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"operationTo":null,"rate":null}]},"form":{"name":"subContractorMaster","id":"subContractorMaster","autoGenKey":"subContractorCode","fields":{"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"span","valuePrefix":"VT-SC-"},"subContractorName":{"name":"Sub Contractor Name","id":"subContractorName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo","required":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","filter":{"source":["Sub-Contractor"]},"required":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Sub Contractor Code","id":"subContractorCode","valuePrefix":"VT-SC-"},{"title":"Sub Contractor Name","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true}],"page":{"link":"purchase/subContractorMaster/list","name":"list"}},"poSubContractor":{"id":"poSubContractor","title":"Purchase Order - Sub Contractor","masterData":{"poNo":null,"date":null,"subContractorCode":null,"gstin":null,"status":0,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationTo":null,"qty":null,"uomCode":null,"rate":null,"total":null}]},"form":{"name":"poSubContractor","id":"poSubContractor","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-SC-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isSingle":true,"callBack":false},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isDisable":true},"acceptedQty":{"name":"Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-SC-PO-"},{"title":"SubContractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poSubContractor/list","name":"list"},"services":{"list":{"params":{"year":true}}}}},"store":{"id":"store","name":"Store","title":"Store","icon":"suitcase","grnSupplier":{"id":"grnSupplier","title":"Good Receipt Note - Supplier","masterData":{"grnNo":null,"date":null,"supplierCode":null,"poNo":null,"supplierInvoiceNo":null,"supplierInvoiceDate":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"cost":null,"total":null}]},"form":{"name":"grnSupplier","id":"grnSupplier","autoGenKey":"grnNo","disableByField":"id","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"select","options":{},"action":"getPOSupplier","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isSingle":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"dataFrom":"purchase.poSupplier","replaceName":"poNo","valuePrefix":"VT-SP-PO-","filter":{"status":0},"isEditDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"Supplier Invoice No","id":"supplierInvoiceNo","type":"input","inputType":"text","required":true},"supplierInvoiceDate":{"name":"Supplier Invoice Date","id":"supplierInvoiceDate","type":"input","inputType":"date","required":true},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isDisable":true},"qty":{"name":"PO Qty","id":"qty","type":"span"},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updateRmTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updateRmTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-GRN-"},{"title":"Supplier","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true}],"page":{"link":"store/grnSupplier/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"grnGeneralSupplier":{"id":"grnGeneralSupplier","title":"Good Receipt Note - General Supplier","masterData":{"grnNo":null,"date":null,"generalSupplierCode":null,"poNo":null,"generalSupplierInvoiceNo":null,"generalSupplierInvoiceDate":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"cost":null,"total":null}]},"form":{"name":"grnSupplier","id":"grnSupplier","autoGenKey":"grnNo","disableByField":"id","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"General Supplier Code","id":"generalSupplierCode","type":"select","options":{},"action":"getPOGeneralSupplier","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","isSingle":true,"isEditDisable":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"dataFrom":"purchase.poGeneralSupplier","replaceName":"poNo","valuePrefix":"VT-GSP-PO-","filter":{"status":0},"isEditDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"General Supplier Invoice No","id":"generalSupplierInvoiceNo","type":"input","inputType":"text","required":true},"supplierInvoiceDate":{"name":"General Supplier Invoice Date","id":"generalSupplierInvoiceDate","type":"input","inputType":"date","required":true},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"qty":{"name":"PO Qty","id":"qty","type":"span"},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updatePTTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePTTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-GRN-"},{"title":"General General Supplier","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true}],"page":{"link":"store/grnGeneralSupplier/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"dcSubContractor":{"id":"dcSubContractor","title":"Delivery Chellan - Sub Contractor","masterData":{"dcNo":null,"date":null,"subContractorCode":null,"address":null,"gstin":null,"poNo":null,"status":0,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationFrom":null,"operationTo":null,"acceptedQty":null,"uomCode":null,"rate":null,"total":null}]},"form":{"name":"dcSubContractor","id":"dcSubContractor","disableByField":"id","autoGenKey":"dcNo","fields":{"dcNo":{"name":"DC No","id":"dcNo","type":"span","valuePrefix":"VT-DC-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"To Sub Contractor","id":"subContractorCode","type":"select","options":{},"action":"getPOSubContractor","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","updateData":["address","gstin"],"isSingle":true,"isEditDisable":true},"address":{"name":"Address","id":"address","type":"span"},"gstin":{"name":"GSTIN","id":"gstin","type":"span"},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","dataFrom":"purchase.poSubContractor","replaceName":"poNo","valuePrefix":"VT-SC-PO-","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"filter":{"status":0},"isSingle":true,"isEditDisable":true},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"GST/IGST Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationFrom":{"name":"Part From","id":"operationFrom","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"operationTo":{"name":"For the purpose","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"acceptedQty":{"name":"Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"DC NO","id":"dcNo","valuePrefix":"VT-DC-"},{"title":"Sub Contractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"store/dcSubContractor/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"grnSubContractor":{"id":"grnSubContractor","title":"Good Receipt Note - Sub Contractor","masterData":{"grnNo":null,"date":null,"subContractorCode":null,"poNo":null,"subContractorDCNo":null,"subContractorDCDate":null,"dcNo":null,"status":0,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationFrom":null,"operationTo":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"gst":null,"cost":null,"total":null}]},"form":{"name":"grnSubContractor","id":"grnSubContractor","disableByField":"id","autoGenKey":"grnNo","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-SC-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"select","options":{},"action":"getPOSubContractor","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isSingle":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"getDCSubContractor","dataFrom":"purchase.poSubContractor","replaceName":"poNo","valuePrefix":"VT-SC-PO-","filter":{"status":0},"isSingle":true,"isEditDisable":true},"dcNo":{"name":"Our DC No","id":"dcNo","type":"select","options":{},"dataFrom":"store.dcSubContractor","action":"changeMapping","replaceName":"dcNo","valuePrefix":"VT-DC-","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"filter":{"status":0},"isSingle":true,"isEditDisable":true,"onLoadActions":true},"subContractorDCCode":{"name":"Sub Contractor DC Code","id":"subContractorDCCode","type":"input","inputType":"number","required":true},"subContractorDCDate":{"name":"Sub Contractor DC Date","id":"subContractorDCDate","type":"input","inputType":"date","required":true},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"GST/IGST Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationFrom":{"name":"Part From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-SC-GRN-"},{"title":"Sub Contractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true}],"page":{"link":"store/grnSubContractor/list","name":"list"},"services":{"list":{"params":{"year":true}}}}},"production":{"id":"production","name":"Production","title":"Production","icon":"cogs","operationMaster":{"id":"operationMaster","title":"Operation Master","masterData":{"opCode":null,"opName":null,"source":null},"form":{"name":"operationMaster","id":"operationMaster","fields":{"opCode":{"name":"Operation","id":"opCode","type":"input","inputType":"number","required":true},"opName":{"name":"Operation Name","id":"opName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"source":{"name":"Source","id":"source","type":"select","options":{"Supplier":{"optionId":"Supplier","optionName":"Supplier"},"In-House":{"optionId":"In-House","optionName":"IN House"},"Sub-Contractor":{"optionId":"Sub-Contractor","optionName":"Sub Contractor"}},"makeFieldOptions":false,"required":true}}},"listView":[{"title":"Operation","id":"opCode"},{"title":"Operation Name","id":"id","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true}],"page":{"link":"production/operationMaster/list","name":"list"}},"bom":{"id":"bom","title":"BOM","masterData":{"partNo":null,"partName":null,"rmCode":null,"partNorms":null},"form":{"name":"bom","id":"bom","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","updateData":["rmCode","partName"],"action":"changeMapping","existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"rmCode":{"name":"RM Code","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"RM Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","type":"select","isFilterBy":true}],"page":{"link":"production/bom/list","name":"list"}},"bomAssemblePart":{"id":"bomAssemblePart","title":"BOM Assemble Part","masterData":{"partNo":null,"partName":null,"mapping":[{"id":null,"partName":null,"partNorms":null}]},"form":{"name":"bomAssemblePart","id":"bomAssemblePart","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","updateData":["partName"],"action":"changeMapping","existingCheck":true,"isSingle":true,"filter":{"isAssemblePart":1}},"partName":{"name":"Part Name","id":"partName","type":"span"}},"mapping":{"name":"Sub Part Mapping","enabled":false,"fields":{"id":{"name":"Sub Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"changeMapping","updateData":["partName"],"existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"filter":{"isAssemblePart":1}}],"page":{"link":"production/bomAssemblePart/list","name":"list"}},"machineMaster":{"id":"machineMaster","title":"Machine Master","masterData":{"machineNo":null,"machineName":null,"make":null,"model":null,"capacity":null,"yop":null,"id":null,"machineShiftRate":null,"shiftHrs":null},"form":{"name":"machineMaster","id":"machineMaster","autoGenKey":"machineNo","fields":{"machineNo":{"name":"Machine No","id":"machineNo","type":"span","valuePrefix":"VT-M/C-"},"machineName":{"name":"Machine Name","id":"machineName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"make":{"name":"Make","id":"make","type":"input","inputType":"text","required":true},"model":{"name":"Model","id":"model","type":"input","inputType":"text","required":true},"capacity":{"name":"Capacity","id":"capacity","type":"input","inputType":"text","required":true},"yop":{"name":"Year of Purchase","id":"yop","type":"input","inputType":"text","required":true},"value":{"name":"Value","id":"value","type":"input","inputType":"text","required":true},"machineShiftRate":{"name":"Machine Shift Rate","id":"machineShiftRate","type":"input","inputType":"text","required":true},"shiftHrs":{"name":"Shift Hrs","id":"shiftHrs","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Machine No","id":"machineNo","valuePrefix":"VT-M/C-"},{"title":"Machine Name","id":"machineNo","dataFrom":"production.machineMaster","replaceName":"machineName","type":"select","isFilterBy":true}],"page":{"link":"production/machineMaster/list","name":"list"}},"flowMaster":{"id":"flowMaster","title":"Flow Master","masterData":{"partNo":null,"partName":null,"mapping":[{"id":null,"opName":null,"source":null,"toolNo":null,"machineNo":null,"palnQtyPerHr":null,"costAnalysis":null,"otherCost":null}],"totalCost":null},"form":{"name":"flowMaster","id":"flowMaster","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"required":true,"action":"changeMapping","updateData":["partName"],"dataFrom":"marketing.partMaster","replaceName":"partNo","existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"totalCost":{"name":"Total Cost","id":"totalCost","type":"span","afterMapping":true}},"mapping":{"name":"OP Mapping","fields":{"id":{"name":"Part op code","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","required":true},"opName":{"name":"op Name","id":"opName","type":"span"},"source":{"name":"Source","id":"source","type":"span"},"toolNo":{"name":"Tool Name","id":"toolNo","type":"select","options":{},"dataFrom":"production.toolMaster","replaceName":"toolName","required":true},"machineNo":{"name":"M/C No","id":"machineNo","type":"select","options":{},"dataFrom":"production.machineMaster","replaceName":"machineName","action":"updateCostAnalysis","required":true},"palnQtyPerHr":{"name":"Paln Qty Per Hr","id":"palnQtyPerHr","type":"input","inputType":"number","action":"updateCostAnalysis","required":true},"costAnalysis":{"name":"Cost Analysis","id":"costAnalysis","type":"span"},"otherCost":{"name":"Other Cost","id":"otherCost","type":"input","inputType":"number","action":"updateTotalCost"}}}},"listView":[{"title":"Part NO","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true}],"page":{"link":"store/flowMaster/list","name":"list"}},"toolMaster":{"id":"toolMaster","title":"Tool Master","masterData":{"toolNo":null,"toolName":null,"make":null,"type":null,"toolLife":null,"yop":null,"id":null},"form":{"name":"toolMaster","id":"toolMaster","autoGenKey":"toolNo","fields":{"toolNo":{"name":"Tool No","id":"toolNo","type":"span","valuePrefix":"VT-T-"},"toolName":{"name":"Tool Name","id":"toolName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"make":{"name":"Make","id":"make","type":"input","inputType":"text","required":true},"type":{"name":"Type","id":"type","type":"input","inputType":"text","required":true},"toolLife":{"name":"Tool Life","id":"toolLife","type":"input","inputType":"text","required":true},"yop":{"name":"Year of Purchase","id":"yop","type":"input","inputType":"text","required":true},"value":{"name":"Value","id":"value","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Tool No","id":"toolNo","valuePrefix":"VT-T-"},{"title":"Tool Name","id":"toolNo","dataFrom":"production.toolMaster","replaceName":"toolName","type":"select","isFilterBy":true}],"page":{"link":"production/toolMaster/list","name":"list"}},"materialIssueNote":{"id":"materialIssueNote","title":"Material Issue Note","masterData":{"jobCardNo":null,"date":null,"rmCode":null,"partNo":null,"partNorms":null,"issueQty":null,"qtyCanMake":null,"operationTo":null,"status":0},"form":{"name":"materialIssueNote","id":"materialIssueNote","autoGenKey":"jobCardNo","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"span","valuePrefix":"VT-"},"date":{"name":"Job Card Date","id":"date","type":"input","inputType":"date","required":true},"rmCode":{"name":"RM Code","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","action":"getPartNo","isEditDisable":true,"isSingle":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"getNorms","isEditDisable":true,"isSingle":true},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"issueQty":{"name":"Issue Qty","id":"issueQty","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"qtyCanMake":{"name":"Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true},"operationTo":{"name":"Issue Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","filter":{"source":["Supplier"]},"isEditDisable":true,"isSingle":true}}},"listView":[{"title":"Job Card No","id":"jobCardNo","valuePrefix":"VT-"},{"title":"PartNo","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Qty Can Make","id":"qtyCanMake"},{"title":"Date","id":"date","type":"date"},{"title":"Status","id":"status"}],"page":{"link":"production/materialIssueNote/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"assembleMaterialIssueNote":{"id":"assembleMaterialIssueNote","title":"Assemble Material Issue Note","masterData":{"jobCardNo":null,"date":null,"partNo":null,"status":0,"operationTo":null,"qtyCanMake":null,"isAssemblePart":1,"mapping":[{"id":null,"partName":null,"partNorms":null,"issueQty":null,"qtyCanMake":null,"operationTo":null}]},"form":{"name":"assembleMaterialIssueNote","id":"assembleMaterialIssueNote","autoGenKey":"jobCardNo","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"span","valuePrefix":"VT-"},"date":{"name":"Job Card Date","id":"date","type":"input","inputType":"date","required":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"getSubParts","isSingle":true,"filter":{"isAssemblePart":1}},"operationTo":{"name":"Issue Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isEditDisable":true,"filter":{"opCode":["105"]},"isSingle":true},"qtyCanMake":{"name":"Total Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true,"afterMapping":true}},"mapping":{"name":"Sub Part Mapping","enabled":false,"fields":{"id":{"name":"Sub Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"partNorms":{"name":"Part Norms","id":"partNorms","type":"span"},"issueQty":{"name":"Issue Qty","id":"issueQty","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"qtyCanMake":{"name":"Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true}},"actions":{"add":false}}},"listView":[{"title":"Job Card No","id":"jobCardNo","valuePrefix":"VT-"},{"title":"PartNo","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"filter":{"isAssemblePart":1}},{"title":"Qty Can Make","id":"qtyCanMake"},{"title":"Date","id":"date","type":"date"},{"title":"Status","id":"status"}],"page":{"link":"production/assembleMaterialIssueNote/list","name":"list","filter":{"isAssemblePart":1}},"services":{"list":{"params":{"year":true}}}},"productionEntry":{"id":"productionEntry","title":"Production Entry","masterData":{"jobCardNo":null,"partNo":null,"mapping":[{"date":null,"machineNo":null,"operationFrom":null,"operationTo":null,"toolNo":null,"operator":null,"startTime":null,"endTime":null,"planQty":null,"acceptedQty":null,"rejectionQty":null,"rwQty":null}]},"form":{"name":"productionEntry","id":"productionEntry","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"select","options":{},"required":true,"dataFrom":"production.materialIssueNote","replaceName":"jobCardNo","valuePrefix":"VT-","action":"changeMapping","updateData":["partNo"],"filter":{"status":0},"isEditDisable":true,"isSingle":true,"onLoadActions":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"required":true,"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true,"isEditDisable":true,"isSingle":true}},"mapping":{"name":"Production Mapping","fields":{"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"machineNo":{"name":"M/C No","id":"machineNo","type":"select","options":{},"dataFrom":"production.machineMaster","replaceName":"machineName","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"action":"updateOperationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","required":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","action":"updateToolNo","valuePrefixData":"opCode"},"toolName":{"name":"Tool Name","id":"toolNo","type":"select","options":{},"dataFrom":"production.toolMaster","replaceName":"toolName"},"operator":{"name":"Operator","id":"operator","type":"select","options":{},"required":true,"dataFrom":"marketing.empMaster","replaceName":"employeeName"},"startTime":{"name":"Start Time: (1-24)","id":"startTime","type":"input","inputType":"number","required":true},"endTime":{"name":"End Time: (1-24)","id":"endTime","type":"input","inputType":"number","required":true,"action":"calculatePlanQty"},"planQty":{"name":"Plan Qty","id":"planQty","type":"input","inputType":"number","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"},"rejectionQty":{"name":"Rejection Qty","id":"rejectionQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"},"rwQty":{"name":"R/w Qty","id":"rwQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"}},"actions":{"add":false,"delete":false}}},"listView":[{"title":"Job Card No","id":"jobCardNo","dataFrom":"production.materialIssueNote","isFilterBy":true,"replaceName":"id","valuePrefix":"VT-","type":"select","options":{}},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"options":{}}],"page":{"link":"production/productionEntry/list","name":"list","downloadTableData":"prodEntryDownload"},"services":{"list":{"params":{"year":true}}}}},"report":{"id":"report","name":"Report","title":"Report","icon":"tasks","rmStock":{"id":"rmStock","title":"Raw Material Stock","masterData":{"rmName":null,"rmStockQty":null,"uomCode":null},"form":{"name":"RMStock","id":"RMStock","fields":{"rmName":{"name":"RM Name","id":"rmCode","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"rmStockQty":{"name":"Stock Qty","id":"rmStockQty","type":"input","inputType":"number","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true}}},"listView":[{"title":"Raw Material Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isFilterBy":true,"type":"select","options":{}},{"title":"Rm Stock Qty","id":"rmStockQty"},{"title":"UOM","id":"uomCode","dataFrom":"marketing.uomMaster","replaceName":"uomName"},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/rmStock/list","name":"list","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}},"services":{"list":{"params":{"year":true}}}},"partStock":{"id":"partStock","title":"Part Stock","masterData":{"partNo":null,"partStockQty":null,"operationFrom":null,"operationTo":null},"form":{"name":"PartStock","id":"PartStock","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"updateOperationFrom","isSingle":true},"partStockQty":{"name":"Part Qty","id":"partStockQty","type":"input","inputType":"number","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","action":"updateOperationTo","replaceName":"opName","isSingle":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isSingle":true}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Part Stock Qty","id":"partStockQty"},{"title":"Operation From","id":"operationFrom","dataFrom":"production.operationMaster","replaceName":"opName","type":"select"},{"title":"Operation To","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","type":"select"},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/partStock/list","name":"list","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}},"services":{"list":{"params":{"year":true}}}},"subContractorStock":{"id":"subContractorStock","title":"SubContractor Stock","masterData":{"subContractorCode":null,"partStockQty":null,"operationFrom":null,"operationTo":null},"form":{"name":"subContractorStock","id":"subContractorStock","fields":{"subContractorCode":{"name":"SubContractor Code","id":"subContractorCode","type":"select","options":{},"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","action":"getPartNos","isSingle":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"updateOperationFrom","isSingle":true},"partStockQty":{"name":"SubContractor Qty","id":"partStockQty","type":"input","inputType":"number","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","action":"updateOperationTo","replaceName":"opName","isSingle":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isSingle":true}}},"listView":[{"title":"SubContractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Part Stock Qty","id":"partStockQty"},{"title":"Operation From","id":"operationFrom","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true},{"title":"Operation To","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/subContractorStock/list","name":"list","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}},"services":{"list":{"params":{"year":true}}}},"salesAnalysisInvoice":{"id":"salesAnalysisInvoice","title":"Sales Analysis - Invoice","filterView":{"title":"Filter","data":{"customerCode":null,"frmDate":null,"toDate":null},"fields":[{"title":"Customer","id":"customerCode","type":"select","dataFrom":"marketing.customerMaster","replaceName":"customerName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Customer","id":"customerCode","type":"select","dataFrom":"marketing.customerMaster","replaceName":"customerName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Part Qty","id":"unit"},{"title":"Part Price","id":"rate"},{"title":"Sales Value","id":"amount"},{"title":"Dates","id":"dates"},{"title":"Invoice Nos","id":"invoiceNos"}],"page":{"link":"report/salesAnalysisInvoice/list","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"invoice","params":{"year":true}}}},"salesAnalysisCashBill":{"id":"salesAnalysisCashBill","name":"salesAnalysisCashBill","title":"Sales Analysis - Cash Bill","parentModule":"report.salesAnalysisInvoice","page":{"link":"report/salesAnalysisInvoice/list?type=cashBill","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"cashBill","params":{"year":true}}}},"costAnalysis":{"id":"costAnalysisInvoice","title":"Cost Analysis","listView":[{"title":"PartNo","id":"id","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Input Weight","id":"inputWeight"},{"title":"Finished Weight","id":"finishedWeight"},{"title":"RM Rate","id":"rmRate"},{"title":"Scrap Rate","id":"scrapRate"},{"title":"Material Cost","id":"materialCost"},{"title":"Conversion Cost","id":"conversionCost"},{"title":"Sub Total","id":"subTotal"},{"title":"Rej Cost","id":"rejCost"},{"title":"ICC cost","id":"iccCost"},{"title":"Tool Maint cost","id":"toolMaintCost"},{"title":"Trans Cost","id":"transCost"},{"title":"Profit Cost","id":"profitCost"},{"title":"Total","id":"total"},{"title":"Sales Rate","id":"salesRate"},{"title":"Difference in cost","id":"differenceInCost"},{"title":"% of Gain or Loss","id":"gainOrLoss"}],"page":{"link":"report/costAnalysis/list","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"partMaster"}}},"productionEntryReport":{"id":"productionEntryReport","title":"Production Entry Report","filterView":{"title":"Filter","data":{"frmDate":null,"toDate":null},"fields":[{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"M/C No","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"Job Card No","id":"jobCardNo","type":"input"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Operation","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","type":"select"},{"title":"Operator","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"Start Time","id":"startTime"},{"title":"End Time","id":"endTime"},{"title":"Plan Qty","id":"planQty"},{"title":"Qty","id":"acceptedQty"},{"title":"Rejection Qty","id":"rejectionQty"},{"title":"RW Qty","id":"rwQty"}],"page":{"link":"report/productionEntryReport/list","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"productionEntry","params":{"year":true}}}},"toolHistoryCard":{"id":"toolHistoryCard","title":"Tool History Card","filterView":{"title":"Filter","data":{"toolNo":null,"partNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Tool Name","id":"toolNo","type":"select","dataFrom":"production.toolMaster","replaceName":"toolName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Tool Name","id":"toolNo","type":"select","dataFrom":"production.toolMaster","replaceName":"toolName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Qty","id":"qty"},{"title":"Cummulative Qty","id":"cummulativeQty"},{"title":"Activity","id":"activity","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode"}],"page":{"link":"report/productionEntryReport/list?type=toolHistoryCard","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"productionEntry","params":{"year":true}}}},"machineRunningTime":{"id":"machineRunningTime","title":"Machine Running Time","filterView":{"title":"Filter","data":{"machineNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Machine Name","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Machine No","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"Year","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"yop"},{"title":"Time On","id":"startTime"},{"title":"Time Off","id":"endTime"},{"title":"Running Time","id":"runningTime"},{"title":"Cum Running Time","id":"cumRunningTime"}],"page":{"link":"report/productionEntryReport/list?type=machineRunningTime","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"productionEntry","params":{"year":true}}}},"empPerformanceReport":{"id":"empPerformanceReport","title":"Employee Performance Report","filterView":{"title":"Filter","data":{"partNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Part No","id":"partNo","type":"select","dataFrom":"marketing.partMaster","replaceName":"partNo"},{"title":"Employee Name","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Employee Name","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Operation","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","type":"select"},{"title":"Start Time","id":"startTime"},{"title":"End Time","id":"endTime"},{"title":"Plan Qty","id":"planQty"},{"title":"Qty","id":"acceptedQty"}],"page":{"link":"report/productionEntryReport/list?type=empPerformanceReport","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"productionEntry","params":{"year":true}}}}},"accounts":{"id":"accounts","name":"Accounts","title":"Accounts","icon":"money","customerPaymentInvoice":{"id":"customerPaymentInvoice","title":"Customer Payment - Invoice","masterData":{"invoiceNo":null,"customerCode":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Customer Payment","id":"customerPayment","fields":{"invoiceNo":{"name":"Invoice No","id":"invoiceNo","type":"select","options":{},"action":"changeMapping","updateData":["customerCode","total","date"],"dataFrom":"marketing.invoice","replaceName":"invoiceNo","valuePrefix":"VT-","required":true,"existingCheck":true,"isSingle":true},"customerCode":{"name":"Customer Code","id":"customerCode","type":"select","options":{},"dataFrom":"marketing.customerMaster","replaceName":"customerName","isSingle":true,"isDisable":true},"date":{"name":"Invoice Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"Invoice No","id":"invoiceNo","dataFrom":"marketing.invoice","valuePrefix":"VT-","replaceName":"invoiceNo","isFilterBy":true,"type":"select","options":{}},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/customerPaymentInvoice/list","name":"list","downloadExcel":true},"services":{"list":{"params":{"year":true}}}},"customerPaymentCashBill":{"id":"customerPaymentCashBill","name":"customerPaymentCashBill","title":"Customer Payment - Cash Bill","parentModule":"accounts.customerPaymentInvoice","form":{"fields":{"invoiceNo":{"name":"CashBill No","id":"invoiceNo","options":{},"action":"changeMapping","updateData":["date","customerCode","total"],"dataFrom":"marketing.cashBill","replaceName":"invoiceNo","valuePrefix":"","required":true,"existingCheck":true,"isSingle":true}}},"listView":[{"title":"Cash Bill No","id":"invoiceNo","valuePrefix":"","dataFrom":"marketing.cashBill","replaceName":"invoiceNo","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"accounts/customerPaymentInvoice/list?type=cashBill","name":"list","downloadExcel":true},"services":{"list":{"params":{"year":true}}}},"suppilerPayment":{"id":"suppilerPayment","title":"Suppiler Payment","masterData":{"grnNo":null,"supplierCode":null,"supplierInvoiceNo":null,"supplierInvoiceDate":null,"invoiceDate":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Suppiler Payment","id":"suppilerPayment","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"select","options":{},"action":"changeMapping","updateData":["supplierCode","supplierInvoiceNo","supplierInvoiceDate","date"],"dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","required":true,"existingCheck":true,"isSingle":true},"supplierCode":{"name":"Supplier Name","id":"supplierCode","type":"select","options":{},"dataFrom":"purchase.supplierMaster","replaceName":"supplierName","required":true,"isDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"Supplier Invoice No","id":"supplierInvoiceNo","type":"span"},"supplierInvoiceDate":{"name":"Supplier Invoice Date","id":"supplierInvoiceDate","type":"span"},"date":{"name":"GRN Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"GRN No","id":"grnNo","dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","isFilterBy":true,"type":"select","options":{}},{"title":"Supplier Name","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isFilterBy":true,"type":"select","options":{}},{"title":"Supplier InvoiceNo No","id":"supplierInvoiceNo","dataFrom":"store.grnSupplier","replaceName":"supplierInvoiceNo","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/suppilerPayment/list","name":"list","downloadExcel":true},"services":{"list":{"params":{"year":true}}}},"subContractorPayment":{"id":"subContractorPayment","title":"Sub Contractor Payment","masterData":{"grnNo":null,"subContractorCode":null,"subContractorDCCode":null,"subContractorDCDate":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Sub Contractor Payment","id":"subContractorPayment","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"select","options":{},"action":"changeMapping","updateData":["subContractorCode","subContractorDCCode","subContractorDCDate","date"],"dataFrom":"store.grnSubContractor","replaceName":"grnNo","valuePrefix":"VT-SC-GRN","required":true,"existingCheck":true,"isSingle":true},"subContractorCode":{"name":"Sub Contractor Name","id":"subContractorCode","type":"select","options":{},"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","required":true,"isDisable":true,"isSingle":true},"subContractorDCCode":{"name":"Sub Contractor Invoice No","id":"subContractorDCCode","type":"span"},"subContractorDCDate":{"name":"Sub Contractor Invoice Date","id":"subContractorDCDate","type":"span"},"date":{"name":"GRN Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"GRN No","id":"grnNo","dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","isFilterBy":true,"type":"select","options":{}},{"title":"Sub Contractor Name","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isFilterBy":true,"type":"select","options":{}},{"title":"Sub Contractor InvoiceNo No","id":"subContractorDCCode","dataFrom":"store.grnSupplier","replaceName":"subContractorDCCode","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/subContractorPayment/list","name":"list","downloadExcel":true},"services":{"list":{"params":{"year":true}}}},"empPayment":{"id":"empPayment","title":"Employee Labor Payment","masterData":{"employeeCode":null,"frmDate":null,"toDate":null,"total":0,"balanceAmount":0,"mapping":[{"id":null,"operationTo":null,"qty":null,"laborCost":null,"totalCost":null,"date":null,"paidStatus":false,"productionEntryKey":null,"productionEntryDate":null}]},"form":{"name":"Employee Payment","id":"employeePayment","disableByField":"id","fields":{"employeeCode":{"name":"Employee Name","id":"employeeCode","type":"select","options":{},"action":"addPartMap","updateMapping":true,"updateData":["mapping"],"required":true,"dataFrom":"marketing.empMaster","replaceName":"employeeName","isEditDisable":true},"frmDate":{"name":"From Date","id":"frmDate","type":"input","action":"addPartMap","inputType":"date","isEditDisable":true},"toDate":{"name":"To Date","id":"toDate","type":"input","action":"addPartMap","inputType":"date","isEditDisable":true},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Payment","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"operationTo":{"name":"Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isSingle":true,"isDisable":true},"qty":{"name":"Qty","id":"qty","type":"span"},"laborCost":{"name":"Labor Cost","id":"laborCost","type":"span"},"totalLaborCost":{"name":"Total Labor Cost","id":"totalLaborCost","type":"span"},"date":{"name":"Date","id":"date","type":"input","inputType":"date"},"paidStatus":{"name":"Paid Status","id":"paidStatus","type":"input","action":"updateBalanceAmount","inputType":"checkbox"}},"actions":{"add":false,"delete":false}}},"listView":[{"title":"Employee Name","id":"employeeCode","dataFrom":"marketing.empMaster","replaceName":"employeeName","isFilterBy":true,"type":"select","options":{}},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/empPayment/list","name":"list","downloadExcel":true},"services":{"list":{"params":{"year":true}}}}},"admin":{"id":"admin","name":"Admin","title":"Admin","icon":"cog","defaultRelease":true,"settings":{"id":"settings","title":"Settings","masterData":{"companyName":null,"companyLogoUrl":null,"companyAddress":null,"companyMobile":null,"companyEmail":null,"companyGstin":null,"finalStageOpp":null,"mapping":[{"module":null,"restrictUser":null,"add":null,"edit":null,"delete":null}]},"form":{"name":"Settings","id":"settings","fields":{"companyName":{"name":"Company Name","id":"companyName","type":"input","inputType":"text","required":true},"companyLogoUrl":{"name":"Company Logo Url","id":"companyLogoUrl","type":"input","inputType":"text"},"companyAddress":{"name":"Company Address","id":"companyAddress","type":"input","inputType":"text"},"companyMobile":{"name":"Company Mobile","id":"companyMobile","type":"input","inputType":"text"},"companyEmail":{"name":"Company Email","id":"companyEmail","type":"input","inputType":"text"},"companyGstin":{"name":"Company GSTIN","id":"companyGstin","type":"input","inputType":"text"},"finalStageOpp":{"name":"Operation Final Stage","id":"finalStageOpp","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode"}},"mapping":{"name":"Restrict User Modules","fields":{"module":{"name":"Page name","id":"module","type":"select","options":{},"makeFieldOptions":false},"restrictUser":{"name":"Restrict Type","id":"restrictUser","type":"select","options":{},"dataFrom":"admin.userTypes","replaceName":"userType"},"add":{"name":"Show Add action","id":"add","type":"input","inputType":"checkbox"},"edit":{"name":"Show Edit action","id":"edit","type":"input","inputType":"checkbox"},"delete":{"name":"Show Delete action","id":"delete","type":"input","inputType":"checkbox"}}}},"listView":[{"title":"Company Name","id":"companyName"}],"page":{"link":"admin/settings/list","name":"list","actions":{"edit":true}}},"userTypes":{"id":"userTypes","title":"User Types","masterData":{"userType":null,"desc":null},"form":{"name":"User Types","id":"userTypes","fields":{"userType":{"name":"User Type","id":"userType","type":"input","inputType":"text","required":true},"desc":{"name":"Description","id":"desc","type":"input","inputType":"text","required":true}}},"listView":[{"title":"User Name","id":"userType"}],"page":{"link":"admin/userTypes/list","name":"list"}},"users":{"id":"users","title":"Users","masterData":{"userName":null,"password":null,"userType":null},"form":{"name":"Users","id":"users","fields":{"userName":{"name":"User Name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true},"userType":{"name":"User Type","id":"userType","type":"select","options":{},"required":true}}},"listView":[{"title":"User Name","id":"userName"}],"page":{"link":"admin/users/list","name":"list"}}},"superAdmin":{"id":"superAdmin","name":"Super Admin","title":"Super Admin","icon":"cog","restricked":true,"defaultRelease":true,"users":{"id":"users","title":"Users","restricked":true,"masterData":{"userName":null,"password":null,"userType":"SUPERADMIN"},"form":{"name":"Users","id":"Users","fields":{"userName":{"name":"User Name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true}}},"listView":[{"title":"User Name","id":"userName"}],"page":{"link":"superAdmin/users/list","name":"list"},"services":{"list":{"dataUri":"restrict"}}},"appCustomers":{"name":"App Customers","id":"appCustomers","title":"App Customers","restricked":true,"masterData":{"companyName":null,"address":null,"mapping":[{"module":null}]},"form":{"name":"App Customers","id":"appCustomers","fields":{"companyName":{"name":"Company Name","id":"companyName","type":"input","inputType":"text","required":true},"address":{"name":"Company Adress","id":"address","type":"input","inputType":"text","required":true}},"mapping":{"name":"Module Mapping","fields":{"module":{"name":"Page name","id":"module","type":"select","options":{},"makeFieldOptions":false}}}},"listView":[{"title":"Company Name","id":"companyName"}],"page":{"link":"appCustomers/list","name":"list","custumActions":{"downloadZip":{"title":"Download app","class":"download","method":"downloadAppCustomer"}}},"services":{"list":{"dataUri":"restrict"}}}}},"components":{"header":{"id":"header"},"customForm":{"id":"customForm"},"mappingForm":{"id":"mappingForm"},"entryInvoice":{"id":"entryInvoice"},"listView":{"id":"listView"},"filterView":{"id":"filterView"},"fileModel":{"id":"fileModel","restrict":"A"}},"filters":{"startFrom":{"id":"startFrom"}},"factory":{"appFact":{"id":"appFact"},"authFact":{"id":"authFact"},"commonFact":{"id":"commonFact"}}},"moduleFiles":{}};
+var erpConfig = {"appName":"VASUTECHS","appBaseUrl":"/dashboard","calendarYear":"","finalStageOpp":9,"yearChangeMonth":3,"httpCache":true,"serverApiUri":"api","serverDataUri":"data","serverAuth":"auth","modules":{"controllers":{"login":{"id":"login","title":"Login","disableMenu":true,"defaultRelease":true,"masterData":{"userName":null,"password":null},"form":{"name":"Login","id":"login","title":"Login","fields":{"userName":{"name":"User Name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true},"appCustomer":{"name":"App Customers","id":"appCustomer","type":"select","options":{},"dataFrom":{"dataUri":"getAppCustomer"},"replaceName":"companyName"}},"actions":{"cancel":false,"customSubmit":"loginSubmit"}},"page":{"link":"login","name":"add","actions":false},"services":{"list":{"notDataUri":true,"cache":false}}},"databaseUpload":{"id":"databaseUpload","name":"Database Upload","title":"Database Upload","disableMenu":true,"defaultRelease":true,"masterData":{"databaseUpload":null},"page":{"link":"databaseUpload","name":"databaseUpload","templateUrl":"template/controllers/databaseUpload.html"}},"databaseDownload":{"id":"databaseDownload","name":"Database Download","title":"Database Download","disableMenu":true,"defaultRelease":true},"calendarYear":{"id":"calendarYear","name":"Calendar Year","title":"Calendar Year","disableMenu":true,"defaultRelease":true,"page":{"link":"calendarYear","name":"calendarYear"},"services":{"list":{"params":{"year":true}}}},"dashboard":{"id":"dashboard","name":"Dashboard","title":"Dashboard","icon":"dashboard","disableMenu":true,"defaultRelease":true,"page":{"link":"dashboard","name":"dashboard","templateUrl":"template/controllers/dashboard.html"}},"marketing":{"id":"marketing","name":"Marketing","title":"Marketing","icon":"stack-exchange","partMaster":{"id":"partMaster","title":"Part Master","masterData":{"partNo":null,"partName":null,"rmCode":null,"inputWeight":null,"finishedWeight":null,"hsnCode":null,"uomCode":null,"prodRateHr":null,"rate":null,"rolQtyYellowRage":null,"rolQtyRedRage":null,"rejection":null,"icc":null,"toolMaintenance":null,"profit":null,"transportCostKg":null},"form":{"name":"partMaster","id":"partMaster","fields":{"partNo":{"name":"Part No","id":"partNo","type":"input","inputType":"text","action":"isCheckExistField","required":true},"partName":{"name":"Part Name","id":"partName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"rmCode":{"name":"Raw material","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"inputWeight":{"name":"Input weight","id":"inputWeight","type":"input","inputType":"number","required":true},"finishedWeight":{"name":"Finished weight","id":"finishedWeight","type":"input","inputType":"number","required":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"input","inputType":"text","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true},"prodRateHr":{"name":"Prod Rate/ hr","id":"prodRateHr","type":"input","inputType":"number","required":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"number","required":true},"rolQtyYellowRage":{"name":"ROL Qty Yellow Rage","id":"rolQtyYellowRage","type":"input","inputType":"number","required":true},"rolQtyRedRage":{"name":"ROL Qty Red Rage","id":"rolQtyRedRage","type":"input","inputType":"number","required":true},"rejection":{"name":"Rejection %","id":"rejection","type":"input","inputType":"number","required":true},"icc":{"name":"ICC %","id":"icc","type":"input","inputType":"number","required":true},"toolMaintenance":{"name":"Tool Maintenance %","id":"toolMaintenance","type":"input","inputType":"number","required":true},"profit":{"name":"Profit %","id":"profit","type":"input","inputType":"number","required":true},"transportCostKg":{"name":"Transport cost per kg","id":"transportCostKg","type":"input","inputType":"number","required":true},"isAssemblePart":{"name":"Is Assemble Part","id":"isAssemblePart","type":"input","inputType":"checkbox"}}},"listView":[{"title":"PartNo","id":"id","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Part Name","id":"partName"}],"page":{"link":"marketing/partMaster/list","name":"list"}},"customerMaster":{"id":"customerMaster","title":"Customer Master","masterData":{"customerCode":null,"customerName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"cgst":null,"sgst":null,"igst":null,"mapping":[{"id":null,"partName":null,"hsnCode":null,"rate":null}]},"form":{"name":"customerMaster","id":"customerMaster","autoGenKey":"customerCode","fields":{"customerCode":{"name":"Customer Code","id":"customerCode","type":"span","valuePrefix":"VT-CUS-"},"customerName":{"name":"Customer Name","id":"customerName","type":"input","inputType":"text","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"text"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"text"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"text"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"text"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Customer Code","id":"customerCode","valuePrefix":"VT-CUS-"},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"marketing/customerMaster/list","name":"list"}},"empMaster":{"id":"empMaster","title":"Employee Master","masterData":{"id":null,"employeeCode":null,"employeeName":null,"address":null,"contactNo":null,"mailId":null,"qualification":null,"designation":null,"basicSalary":null,"hra":null,"ca":null,"ot":null,"totalSalary":null,"mapping":[{"id":null,"partName":null,"operationTo":null,"laborCost":null}]},"form":{"name":"empMaster","id":"empMaster","autoGenKey":"employeeCode","fields":{"employeeCode":{"name":"Employee Code","id":"employeeCode","valuePrefix":"VT-EMP-","type":"span"},"employeeName":{"name":"Employee Name","id":"employeeName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"mailId":{"name":"Mail Id","id":"mailId","type":"input","inputType":"email","required":true},"qualification":{"name":"Qualification","id":"qualification","type":"input","inputType":"text","required":true},"designation":{"name":"Designation","id":"designation","type":"input","inputType":"text","required":true},"basicSalary":{"name":"BasicSalary","id":"basicSalary","type":"input","inputType":"number","required":true},"hra":{"name":"HRA","id":"hra","type":"input","inputType":"number","required":true},"ca":{"name":"CA","id":"ca","type":"input","inputType":"number","required":true},"ot":{"name":"OT","id":"ot","type":"input","inputType":"number","required":true},"total":{"name":"Total","id":"total","type":"input","inputType":"number","required":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"operationTo":{"name":"Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isSingle":true},"laborCost":{"name":"Labor Cost","id":"laborCost","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Employee Name","id":"employeeName"},{"title":"Mail Id","id":"mailId"}],"page":{"link":"marketing/empMaster/list","name":"list"}},"uomMaster":{"id":"uomMaster","title":"UOM Master","masterData":{"uomCode":null,"uomName":null},"form":{"name":"uomMaster","id":"uomMaster","autoGenKey":"uomCode","fields":{"uomCode":{"name":"UOM Code","id":"uomCode","type":"span","valuePrefix":"VT-UOM-"},"uomName":{"name":"UOM Name","id":"uomName","type":"input","inputType":"text","action":"isCheckExistField","required":true}}},"listView":[{"title":"UOM Code","id":"uomCode","valuePrefix":"VT-UOM-"},{"title":"UOM Name","id":"uomName"}],"page":{"link":"marketing/uomMaster/list","name":"list"}},"invoice":{"id":"invoice","title":"Invoice","cashBill":false,"masterData":{"invoiceNo":null,"date":null,"customerCode":null,"address":null,"gstin":null,"subTotal":null,"taxRate":null,"cgst":null,"sgst":null,"gst":null,"igst":null,"cgstTotal":null,"sgstTotal":null,"igstTotal":null,"totalBeforTax":null,"total":null,"mapping":[{"id":null,"hsnCode":null,"unit":null,"rate":null,"amount":null}]},"form":{"name":"Invoice","id":"invoice","autoGenKey":"invoiceNo","disableByField":"id","fields":{"invoiceNo":{"name":"Invoice No","id":"invoiceNo","type":"span","valuePrefix":"VT-","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"customerCode":{"name":"To","id":"customerCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","igst","sgst","cgst","address","mapping"],"dataFrom":"marketing.customerMaster","replaceName":"customerName","isEditDisable":true,"isSingle":true},"address":{"name":"Customer Address","id":"address"},"partyGstin":{"name":"Party GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"taxRate":{"name":"Tax Rate","id":"taxRate","type":"input","inputType":"number","required":true},"cgst":{"name":"CGST","id":"cgst","type":"span"},"cgstTotal":{"name":"CGST Total","id":"cgstTotal","type":"span"},"sgst":{"name":"SGST","id":"sgst","type":"span"},"sgstTotal":{"name":"SGST Total","id":"sgstTotal","type":"span"},"igst":{"name":"IGST","id":"igst","type":"span"},"igstTotal":{"name":"IGST Total","id":"igstTotal","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","type":"input","inputType":"number","required":true},"total":{"name":"Total","id":"total","type":"input","inputType":"number","required":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"span"},"unit":{"name":"Unit","id":"unit","type":"input","inputType":"text","action":"updateTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"amount":{"name":"Amount","id":"amount","type":"span"}}}},"listView":[{"title":"Invoice No","id":"invoiceNo","valuePrefix":"VT-"},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}},{"title":"Date","id":"date","type":"date"}],"page":{"link":"marketing/invoice/list","name":"list","templateUrl":"template/controllers/marketing/invoice.html"},"services":{"list":{"params":{"year":true}}}},"cashBill":{"id":"cashBill","name":"cashBill","title":"Cash Bill","cashBill":true,"parentModule":"marketing.invoice","form":{"autoGenValStart":null,"fields":{"invoiceNo":{"name":"CashBill No","id":"invoiceNo","type":"span","valuePrefix":"","required":true},"preBalance":{"name":"Previous Balance","id":"preBalance","type":"input","inputType":"text","action":"updatePreBalance"}}},"listView":[{"title":"Cash Bill No","id":"invoiceNo","valuePrefix":""}],"page":{"link":"marketing/cashBill/list","name":"list","templateUrl":"template/controllers/marketing/invoice.html"},"services":{"list":{"params":{"year":true}}}}},"purchase":{"id":"purchase","name":"Purchase","title":"Purchase","icon":"shopping-bag","rmMaster":{"id":"rmMaster","title":"Raw Material Master","masterData":{"rmCode":null,"rmName":null,"grade":null,"type":null,"hsnCode":null,"uomCode":null,"rate":null,"transportCostKg":null,"scrapRate":null},"form":{"name":"rmMaster","id":"rmMaster","autoGenKey":"rmCode","fields":{"rmCode":{"name":"RM Code","id":"rmCode","valuePrefix":"RM-","type":"span"},"rmName":{"name":"RM Name","id":"rmName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"grade":{"name":"Grade","id":"grade","type":"input","inputType":"text","required":true},"type":{"name":"Type","id":"type","type":"input","inputType":"text","required":true},"hsnCode":{"name":"HSN Code","id":"hsnCode","type":"input","inputType":"text","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"number","required":true},"transportCostKg":{"name":"Transport cost / kg","id":"transportCostKg","type":"input","inputType":"number","required":true},"scrapRate":{"name":"Scrap rate","id":"scrapRate","type":"input","inputType":"number","required":true}}},"listView":[{"title":"RM Code","id":"rmCode","valuePrefix":"RM-"},{"title":"Raw Material Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"purchase/rmMaster/list","name":"list","templateUrl":"template/defaultView.html"}},"supplierMaster":{"id":"supplierMaster","title":"Supplier Master","masterData":{"supplierCode":null,"supplierName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"rmCode":null,"rate":null}]},"form":{"name":"supplierMaster","id":"supplierMaster","autoGenKey":"supplierCode","fields":{"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"span","valuePrefix":"VT-SP-"},"supplierName":{"name":"Supplier Name","id":"supplierName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"text","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"RM Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Supplier Code","id":"supplierCode","valuePrefix":"VT-SP-"},{"title":"Supplier Name","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true}],"page":{"link":"purchase/supplierMaster/list","name":"list"}},"poSupplier":{"id":"poSupplier","title":"Purchase Order - Supplier","masterData":{"poNo":null,"date":null,"supplierCode":null,"gstin":null,"status":0,"subTotal":null,"extraAmount":null,"gstTotal":null,"total":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"rate":null,"amount":null}]},"form":{"name":"poSupplier","id":"poSupplier","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-SP-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isSingle":true},"gstin":{"name":"Party Gstin","id":"gstin","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"RM Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isDisable":true},"qty":{"name":"Qty","id":"qty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-SP-PO-"},{"title":"Supplier Code","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poSupplier/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"generalSupplierMaster":{"id":"generalSupplierMaster","title":"General Supplier Master","masterData":{"generalSupplierCode":null,"generalSupplierName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"partName":null,"rate":null}]},"form":{"name":"General Supplier Master","id":"generalSupplierMaster","autoGenKey":"generalSupplierCode","fields":{"generalSupplierCode":{"name":"General Supplier Code","id":"generalSupplierCode","type":"span","valuePrefix":"VT-GSP-"},"supplierName":{"name":"General Supplier Name","id":"generalSupplierName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"text","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo"},"partName":{"name":"Part Name","id":"partName","type":"span"},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"General Supplier Code","id":"generalSupplierCode","valuePrefix":"VT-GSP-"},{"title":"General Supplier Name","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true}],"page":{"link":"purchase/generalSupplierMaster/list","name":"list"}},"poGeneralSupplier":{"id":"poGeneralSupplier","title":"Purchase Order - General Supplier","masterData":{"poNo":null,"date":null,"generalSupplierCode":null,"gstin":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"rate":null,"amount":null}]},"form":{"name":"poGeneralSupplier","id":"poGeneralSupplier","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-GSP-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"GeneralSupplier Code","id":"generalSupplierCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","isSingle":true},"gstin":{"name":"Party Gstin","id":"gstin","type":"span"},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"qty":{"name":"Qty","id":"qty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-GSP-PO-"},{"title":"General Supplier Code","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poGeneralSupplier/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"subContractorMaster":{"id":"subContractorMaster","title":"Sub Contractor Master","masterData":{"subContractorCode":null,"subContractorName":null,"address":null,"contactNo":null,"gstin":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"mapping":[{"id":null,"operationTo":null,"rate":null}]},"form":{"name":"subContractorMaster","id":"subContractorMaster","autoGenKey":"subContractorCode","fields":{"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"span","valuePrefix":"VT-SC-"},"subContractorName":{"name":"Sub Contractor Name","id":"subContractorName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"address":{"name":"Address","id":"address","type":"input","inputType":"text","required":true},"contactNo":{"name":"Contact No","id":"contactNo","type":"input","inputType":"number","required":true},"gstin":{"name":"GSTIN","id":"gstin","type":"input","inputType":"text","required":true},"gst":{"name":"GST %","id":"gst","type":"input","inputType":"number"},"sgst":{"name":"SGST %","id":"sgst","type":"input","inputType":"number"},"cgst":{"name":"CGST %","id":"cgst","type":"input","inputType":"number"},"igst":{"name":"IGST %","id":"igst","type":"input","inputType":"number"}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"marketing.partMaster","replaceName":"partNo","required":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","filter":{"source":["Sub-Contractor"]},"required":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Sub Contractor Code","id":"subContractorCode","valuePrefix":"VT-SC-"},{"title":"Sub Contractor Name","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true}],"page":{"link":"purchase/subContractorMaster/list","name":"list"}},"poSubContractor":{"id":"poSubContractor","title":"Purchase Order - Sub Contractor","masterData":{"poNo":null,"date":null,"subContractorCode":null,"gstin":null,"status":0,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationTo":null,"qty":null,"uomCode":null,"rate":null,"total":null}]},"form":{"name":"poSubContractor","id":"poSubContractor","autoGenKey":"poNo","fields":{"poNo":{"name":"PO Code","id":"poNo","type":"span","valuePrefix":"VT-SC-PO-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["gstin","gst","sgst","cgst","igst","mapping"],"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isSingle":true,"callBack":false},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Part Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isDisable":true},"acceptedQty":{"name":"Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"input","inputType":"text","action":"updatePORmTotal","required":true},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"PO NO","id":"poNo","valuePrefix":"VT-SC-PO-"},{"title":"SubContractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"purchase/poSubContractor/list","name":"list"},"services":{"list":{"params":{"year":true}}}}},"store":{"id":"store","name":"Store","title":"Store","icon":"suitcase","grnSupplier":{"id":"grnSupplier","title":"Good Receipt Note - Supplier","masterData":{"grnNo":null,"date":null,"supplierCode":null,"poNo":null,"supplierInvoiceNo":null,"supplierInvoiceDate":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"cost":null,"total":null}]},"form":{"name":"grnSupplier","id":"grnSupplier","autoGenKey":"grnNo","disableByField":"id","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"Supplier Code","id":"supplierCode","type":"select","options":{},"action":"getPOSupplier","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isSingle":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"dataFrom":"purchase.poSupplier","replaceName":"poNo","valuePrefix":"VT-SP-PO-","filter":{"status":0},"isEditDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"Supplier Invoice No","id":"supplierInvoiceNo","type":"input","inputType":"text","required":true},"supplierInvoiceDate":{"name":"Supplier Invoice Date","id":"supplierInvoiceDate","type":"input","inputType":"date","required":true},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"RM Name","id":"id","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isDisable":true},"qty":{"name":"PO Qty","id":"qty","type":"span"},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updateRmTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updateRmTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-GRN-"},{"title":"Supplier","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","type":"select","isFilterBy":true}],"page":{"link":"store/grnSupplier/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"grnGeneralSupplier":{"id":"grnGeneralSupplier","title":"Good Receipt Note - General Supplier","masterData":{"grnNo":null,"date":null,"generalSupplierCode":null,"poNo":null,"generalSupplierInvoiceNo":null,"generalSupplierInvoiceDate":null,"status":0,"subTotal":null,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"qty":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"cost":null,"total":null}]},"form":{"name":"grnSupplier","id":"grnSupplier","autoGenKey":"grnNo","disableByField":"id","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"supplierCode":{"name":"General Supplier Code","id":"generalSupplierCode","type":"select","options":{},"action":"getPOGeneralSupplier","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","isSingle":true,"isEditDisable":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"dataFrom":"purchase.poGeneralSupplier","replaceName":"poNo","valuePrefix":"VT-GSP-PO-","filter":{"status":0},"isEditDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"General Supplier Invoice No","id":"generalSupplierInvoiceNo","type":"input","inputType":"text","required":true},"supplierInvoiceDate":{"name":"General Supplier Invoice Date","id":"generalSupplierInvoiceDate","type":"input","inputType":"date","required":true},"subTotal":{"name":"Sub Total","id":"subTotal","afterMapping":true,"type":"span"},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"Tax Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"qty":{"name":"PO Qty","id":"qty","type":"span"},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updatePTTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePTTotal","required":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"Total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-GRN-"},{"title":"General General Supplier","id":"generalSupplierCode","dataFrom":"purchase.generalSupplierMaster","replaceName":"generalSupplierName","type":"select","isFilterBy":true}],"page":{"link":"store/grnGeneralSupplier/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"dcSubContractor":{"id":"dcSubContractor","title":"Delivery Chellan - Sub Contractor","masterData":{"dcNo":null,"date":null,"subContractorCode":null,"address":null,"gstin":null,"poNo":null,"status":0,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationFrom":null,"operationTo":null,"acceptedQty":null,"uomCode":null,"rate":null,"total":null}]},"form":{"name":"dcSubContractor","id":"dcSubContractor","disableByField":"id","autoGenKey":"dcNo","fields":{"dcNo":{"name":"DC No","id":"dcNo","type":"span","valuePrefix":"VT-DC-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"To Sub Contractor","id":"subContractorCode","type":"select","options":{},"action":"getPOSubContractor","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","updateData":["address","gstin"],"isSingle":true,"isEditDisable":true},"address":{"name":"Address","id":"address","type":"span"},"gstin":{"name":"GSTIN","id":"gstin","type":"span"},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"changeMapping","dataFrom":"purchase.poSubContractor","replaceName":"poNo","valuePrefix":"VT-SC-PO-","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"filter":{"status":0},"isSingle":true,"isEditDisable":true},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"GST/IGST Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationFrom":{"name":"Part From","id":"operationFrom","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"operationTo":{"name":"For the purpose","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"acceptedQty":{"name":"Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"DC NO","id":"dcNo","valuePrefix":"VT-DC-"},{"title":"Sub Contractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Stutus","id":"status"}],"page":{"link":"store/dcSubContractor/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"grnSubContractor":{"id":"grnSubContractor","title":"Good Receipt Note - Sub Contractor","masterData":{"grnNo":null,"date":null,"subContractorCode":null,"poNo":null,"subContractorDCNo":null,"subContractorDCDate":null,"dcNo":null,"status":0,"extraAmount":null,"gst":null,"sgst":null,"cgst":null,"igst":null,"gstTotal":null,"total":null,"mapping":[{"id":null,"operationFrom":null,"operationTo":null,"uomCode":null,"receivedQty":null,"acceptedQty":null,"rate":null,"gst":null,"cost":null,"total":null}]},"form":{"name":"grnSubContractor","id":"grnSubContractor","disableByField":"id","autoGenKey":"grnNo","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"span","valuePrefix":"VT-SC-GRN-"},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"subContractorCode":{"name":"Sub Contractor Code","id":"subContractorCode","type":"select","options":{},"action":"getPOSubContractor","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isSingle":true},"poNo":{"name":"PO No","id":"poNo","type":"select","options":{},"action":"getDCSubContractor","dataFrom":"purchase.poSubContractor","replaceName":"poNo","valuePrefix":"VT-SC-PO-","filter":{"status":0},"isSingle":true,"isEditDisable":true},"dcNo":{"name":"Our DC No","id":"dcNo","type":"select","options":{},"dataFrom":"store.dcSubContractor","action":"changeMapping","replaceName":"dcNo","valuePrefix":"VT-DC-","updateMapping":true,"updateData":["mapping","subTotal","extraAmount","gst","sgst","cgst","igst","gstTotal","total"],"filter":{"status":0},"isSingle":true,"isEditDisable":true,"onLoadActions":true},"subContractorDCCode":{"name":"Sub Contractor DC Code","id":"subContractorDCCode","type":"input","inputType":"number","required":true},"subContractorDCDate":{"name":"Sub Contractor DC Date","id":"subContractorDCDate","type":"input","inputType":"date","required":true},"extraAmount":{"name":"Extra Amount","id":"extraAmount","type":"input","inputType":"number","action":"updatePOTotalAmount","afterMapping":true},"gstTotal":{"name":"GST/IGST Total","id":"gstTotal","type":"span","afterMapping":true},"total":{"name":"Total","id":"total","type":"span","afterMapping":true}},"mapping":{"name":"Detail Mapping","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"operationFrom":{"name":"Part From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"operationTo":{"name":"Op Name","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isDisable":true},"receivedQty":{"name":"Received Qty","id":"receivedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"text","action":"updatePartTotal","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isDisable":true},"rate":{"name":"Rate","id":"rate","type":"span"},"total":{"name":"total","id":"total","type":"span"}},"actions":{"add":false}}},"listView":[{"title":"GRN NO","id":"grnNo","valuePrefix":"VT-SC-GRN-"},{"title":"Sub Contractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true}],"page":{"link":"store/grnSubContractor/list","name":"list"},"services":{"list":{"params":{"year":true}}}}},"production":{"id":"production","name":"Production","title":"Production","icon":"cogs","operationMaster":{"id":"operationMaster","title":"Operation Master","masterData":{"opCode":null,"opName":null,"source":null},"form":{"name":"operationMaster","id":"operationMaster","fields":{"opCode":{"name":"Operation","id":"opCode","type":"input","inputType":"number","required":true},"opName":{"name":"Operation Name","id":"opName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"source":{"name":"Source","id":"source","type":"select","options":{"Supplier":{"optionId":"Supplier","optionName":"Supplier"},"In-House":{"optionId":"In-House","optionName":"IN House"},"Sub-Contractor":{"optionId":"Sub-Contractor","optionName":"Sub Contractor"}},"makeFieldOptions":false,"required":true}}},"listView":[{"title":"Operation","id":"opCode"},{"title":"Operation Name","id":"id","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true}],"page":{"link":"production/operationMaster/list","name":"list"}},"bom":{"id":"bom","title":"BOM","masterData":{"partNo":null,"partName":null,"rmCode":null,"partNorms":null},"form":{"name":"bom","id":"bom","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","updateData":["rmCode","partName"],"action":"changeMapping","existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"rmCode":{"name":"RM Code","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"RM Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","type":"select","isFilterBy":true}],"page":{"link":"production/bom/list","name":"list"}},"bomAssemblePart":{"id":"bomAssemblePart","title":"BOM Assemble Part","masterData":{"partNo":null,"partName":null,"mapping":[{"id":null,"partName":null,"partNorms":null}]},"form":{"name":"bomAssemblePart","id":"bomAssemblePart","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","updateData":["partName"],"action":"changeMapping","existingCheck":true,"isSingle":true,"filter":{"isAssemblePart":1}},"partName":{"name":"Part Name","id":"partName","type":"span"}},"mapping":{"name":"Sub Part Mapping","enabled":false,"fields":{"id":{"name":"Sub Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"changeMapping","updateData":["partName"],"existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true}}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"filter":{"isAssemblePart":1}}],"page":{"link":"production/bomAssemblePart/list","name":"list"}},"machineMaster":{"id":"machineMaster","title":"Machine Master","masterData":{"machineNo":null,"machineName":null,"make":null,"model":null,"capacity":null,"yop":null,"id":null,"machineShiftRate":null,"shiftHrs":null},"form":{"name":"machineMaster","id":"machineMaster","autoGenKey":"machineNo","fields":{"machineNo":{"name":"Machine No","id":"machineNo","type":"span","valuePrefix":"VT-M/C-"},"machineName":{"name":"Machine Name","id":"machineName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"make":{"name":"Make","id":"make","type":"input","inputType":"text","required":true},"model":{"name":"Model","id":"model","type":"input","inputType":"text","required":true},"capacity":{"name":"Capacity","id":"capacity","type":"input","inputType":"text","required":true},"yop":{"name":"Year of Purchase","id":"yop","type":"input","inputType":"text","required":true},"value":{"name":"Value","id":"value","type":"input","inputType":"text","required":true},"machineShiftRate":{"name":"Machine Shift Rate","id":"machineShiftRate","type":"input","inputType":"text","required":true},"shiftHrs":{"name":"Shift Hrs","id":"shiftHrs","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Machine No","id":"machineNo","valuePrefix":"VT-M/C-"},{"title":"Machine Name","id":"machineNo","dataFrom":"production.machineMaster","replaceName":"machineName","type":"select","isFilterBy":true}],"page":{"link":"production/machineMaster/list","name":"list"}},"flowMaster":{"id":"flowMaster","title":"Flow Master","masterData":{"partNo":null,"partName":null,"mapping":[{"id":null,"opName":null,"source":null,"toolNo":null,"machineNo":null,"palnQtyPerHr":null,"costAnalysis":null,"otherCost":null}],"totalCost":null},"form":{"name":"flowMaster","id":"flowMaster","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"required":true,"action":"changeMapping","updateData":["partName"],"dataFrom":"marketing.partMaster","replaceName":"partNo","existingCheck":true,"isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"totalCost":{"name":"Total Cost","id":"totalCost","type":"span","afterMapping":true}},"mapping":{"name":"OP Mapping","fields":{"id":{"name":"Part op code","id":"id","type":"select","options":{},"action":"changeMapping","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","required":true},"opName":{"name":"op Name","id":"opName","type":"span"},"source":{"name":"Source","id":"source","type":"span"},"toolNo":{"name":"Tool Name","id":"toolNo","type":"select","options":{},"dataFrom":"production.toolMaster","replaceName":"toolName","required":true},"machineNo":{"name":"M/C No","id":"machineNo","type":"select","options":{},"dataFrom":"production.machineMaster","replaceName":"machineName","action":"updateCostAnalysis","required":true},"palnQtyPerHr":{"name":"Paln Qty Per Hr","id":"palnQtyPerHr","type":"input","inputType":"number","action":"updateCostAnalysis","required":true},"costAnalysis":{"name":"Cost Analysis","id":"costAnalysis","type":"span"},"otherCost":{"name":"Other Cost","id":"otherCost","type":"input","inputType":"number","action":"updateTotalCost"}}}},"listView":[{"title":"Part NO","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true}],"page":{"link":"store/flowMaster/list","name":"list"}},"toolMaster":{"id":"toolMaster","title":"Tool Master","masterData":{"toolNo":null,"toolName":null,"make":null,"type":null,"toolLife":null,"yop":null,"id":null},"form":{"name":"toolMaster","id":"toolMaster","autoGenKey":"toolNo","fields":{"toolNo":{"name":"Tool No","id":"toolNo","type":"span","valuePrefix":"VT-T-"},"toolName":{"name":"Tool Name","id":"toolName","type":"input","inputType":"text","action":"isCheckExistField","required":true},"make":{"name":"Make","id":"make","type":"input","inputType":"text","required":true},"type":{"name":"Type","id":"type","type":"input","inputType":"text","required":true},"toolLife":{"name":"Tool Life","id":"toolLife","type":"input","inputType":"text","required":true},"yop":{"name":"Year of Purchase","id":"yop","type":"input","inputType":"text","required":true},"value":{"name":"Value","id":"value","type":"input","inputType":"text","required":true}}},"listView":[{"title":"Tool No","id":"toolNo","valuePrefix":"VT-T-"},{"title":"Tool Name","id":"toolNo","dataFrom":"production.toolMaster","replaceName":"toolName","type":"select","isFilterBy":true}],"page":{"link":"production/toolMaster/list","name":"list"}},"materialIssueNote":{"id":"materialIssueNote","title":"Material Issue Note","masterData":{"jobCardNo":null,"date":null,"rmCode":null,"partNo":null,"partNorms":null,"issueQty":null,"qtyCanMake":null,"operationTo":null,"status":0},"form":{"name":"materialIssueNote","id":"materialIssueNote","autoGenKey":"jobCardNo","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"span","valuePrefix":"VT-"},"date":{"name":"Job Card Date","id":"date","type":"input","inputType":"date","required":true},"rmCode":{"name":"RM Code","id":"rmCode","type":"select","options":{},"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","action":"getPartNo","isEditDisable":true,"isSingle":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"getNorms","isEditDisable":true,"isSingle":true},"partNorms":{"name":"Part Norms","id":"partNorms","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"issueQty":{"name":"Issue Qty","id":"issueQty","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"qtyCanMake":{"name":"Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true},"operationTo":{"name":"Issue Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","filter":{"source":["Supplier"]},"isEditDisable":true,"isSingle":true}}},"listView":[{"title":"Job Card No","id":"jobCardNo","valuePrefix":"VT-"},{"title":"PartNo","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Qty Can Make","id":"qtyCanMake"},{"title":"Date","id":"date","type":"date"},{"title":"Status","id":"status"}],"page":{"link":"production/materialIssueNote/list","name":"list"},"services":{"list":{"params":{"year":true}}}},"assembleMaterialIssueNote":{"id":"assembleMaterialIssueNote","title":"Assemble Material Issue Note","masterData":{"jobCardNo":null,"date":null,"partNo":null,"status":0,"operationTo":null,"qtyCanMake":null,"isAssemblePart":1,"mapping":[{"id":null,"partName":null,"partNorms":null,"issueQty":null,"qtyCanMake":null,"operationTo":null}]},"form":{"name":"assembleMaterialIssueNote","id":"assembleMaterialIssueNote","autoGenKey":"jobCardNo","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"span","valuePrefix":"VT-"},"date":{"name":"Job Card Date","id":"date","type":"input","inputType":"date","required":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"getSubParts","isSingle":true,"filter":{"isAssemblePart":1}},"operationTo":{"name":"Issue Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isEditDisable":true,"filter":{"opCode":["105"]},"isSingle":true},"qtyCanMake":{"name":"Total Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true,"afterMapping":true}},"mapping":{"name":"Sub Part Mapping","enabled":false,"fields":{"id":{"name":"Sub Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isSingle":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"partNorms":{"name":"Part Norms","id":"partNorms","type":"span"},"issueQty":{"name":"Issue Qty","id":"issueQty","type":"input","inputType":"text","required":true,"action":"updateQtyMake"},"qtyCanMake":{"name":"Qty Can Make","id":"qtyCanMake","type":"input","inputType":"text","isDisable":true,"required":true}},"actions":{"add":false}}},"listView":[{"title":"Job Card No","id":"jobCardNo","valuePrefix":"VT-"},{"title":"PartNo","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"filter":{"isAssemblePart":1}},{"title":"Qty Can Make","id":"qtyCanMake"},{"title":"Date","id":"date","type":"date"},{"title":"Status","id":"status"}],"page":{"link":"production/assembleMaterialIssueNote/list","name":"list","filter":{"isAssemblePart":1}},"services":{"list":{"params":{"year":true}}}},"productionEntry":{"id":"productionEntry","title":"Production Entry","masterData":{"jobCardNo":null,"partNo":null,"mapping":[{"date":null,"machineNo":null,"operationFrom":null,"operationTo":null,"toolNo":null,"operator":null,"startTime":null,"endTime":null,"planQty":null,"acceptedQty":null,"rejectionQty":null,"rwQty":null}]},"form":{"name":"productionEntry","id":"productionEntry","disableByField":"id","fields":{"jobCardNo":{"name":"Job Card No","id":"jobCardNo","type":"select","options":{},"required":true,"dataFrom":"production.materialIssueNote","replaceName":"jobCardNo","valuePrefix":"VT-","action":"changeMapping","updateData":["partNo"],"existingCheck":true,"isEditDisable":true,"isSingle":true,"onLoadActions":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"required":true,"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true,"isEditDisable":true,"isSingle":true}},"mapping":{"name":"Production Mapping","fields":{"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"machineNo":{"name":"M/C No","id":"machineNo","type":"select","options":{},"dataFrom":"production.machineMaster","replaceName":"machineName","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"action":"updateOperationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","required":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","action":"updateToolNo","valuePrefixData":"opCode"},"toolName":{"name":"Tool Name","id":"toolNo","type":"select","options":{},"dataFrom":"production.toolMaster","replaceName":"toolName"},"operator":{"name":"Operator","id":"operator","type":"select","options":{},"required":true,"dataFrom":"marketing.empMaster","replaceName":"employeeName"},"startTime":{"name":"Start Time: (1-24)","id":"startTime","type":"input","inputType":"number","required":true},"endTime":{"name":"End Time: (1-24)","id":"endTime","type":"input","inputType":"number","required":true,"action":"calculatePlanQty"},"planQty":{"name":"Plan Qty","id":"planQty","type":"input","inputType":"number","required":true},"acceptedQty":{"name":"Accepted Qty","id":"acceptedQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"},"rejectionQty":{"name":"Rejection Qty","id":"rejectionQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"},"rwQty":{"name":"R/w Qty","id":"rwQty","type":"input","inputType":"number","required":true,"action":"checkAcceptedQty"}},"actions":{"add":false,"delete":false}}},"listView":[{"title":"Job Card No","id":"jobCardNo","dataFrom":"production.materialIssueNote","isFilterBy":true,"replaceName":"id","valuePrefix":"VT-","type":"select","options":{}},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true,"options":{}}],"page":{"link":"production/productionEntry/list","name":"list","downloadTableData":"prodEntryDownload"},"services":{"list":{"params":{"year":true}}}}},"report":{"id":"report","name":"Report","title":"Report","icon":"tasks","rmStock":{"id":"rmStock","title":"Raw Material Stock","masterData":{"rmName":null,"rmStockQty":null,"uomCode":null},"form":{"name":"RMStock","id":"RMStock","fields":{"rmName":{"name":"RM Name","id":"rmCode","type":"select","options":{},"action":"changeMapping","updateData":["uomCode"],"dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isSingle":true},"rmStockQty":{"name":"Stock Qty","id":"rmStockQty","type":"input","inputType":"number","required":true},"uomCode":{"name":"UOM","id":"uomCode","type":"select","options":{},"dataFrom":"marketing.uomMaster","replaceName":"uomName","isSingle":true}}},"listView":[{"title":"Raw Material Name","id":"rmCode","dataFrom":"purchase.rmMaster","replaceName":"rmName","valuePrefixData":"grade","isFilterBy":true,"type":"select","options":{}},{"title":"Rm Stock Qty","id":"rmStockQty"},{"title":"UOM","id":"uomCode","dataFrom":"marketing.uomMaster","replaceName":"uomName"},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/rmStock/list","name":"list","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}}},"partStock":{"id":"partStock","title":"Part Stock","masterData":{"partNo":null,"partStockQty":null,"operationFrom":null,"operationTo":null},"form":{"name":"PartStock","id":"PartStock","fields":{"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"updateOperationFrom","isSingle":true},"partStockQty":{"name":"Part Qty","id":"partStockQty","type":"input","inputType":"number","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","action":"updateOperationTo","replaceName":"opName","isSingle":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isSingle":true}}},"listView":[{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Part Stock Qty","id":"partStockQty"},{"title":"Operation From","id":"operationFrom","dataFrom":"production.operationMaster","replaceName":"opName","type":"select"},{"title":"Operation To","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","type":"select"},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/partStock/list","name":"list","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}}},"subContractorStock":{"id":"subContractorStock","title":"SubContractor Stock","masterData":{"subContractorCode":null,"partStockQty":null,"operationFrom":null,"operationTo":null},"form":{"name":"subContractorStock","id":"subContractorStock","fields":{"subContractorCode":{"name":"SubContractor Code","id":"subContractorCode","type":"select","options":{},"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","action":"getPartNos","isSingle":true},"partNo":{"name":"Part No","id":"partNo","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","action":"updateOperationFrom","isSingle":true},"partStockQty":{"name":"SubContractor Qty","id":"partStockQty","type":"input","inputType":"number","required":true},"operationFrom":{"name":"Operation From","id":"operationFrom","type":"select","options":{},"dataFrom":"production.operationMaster","action":"updateOperationTo","replaceName":"opName","isSingle":true},"operationTo":{"name":"Operation To","id":"operationTo","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","isSingle":true}}},"listView":[{"title":"SubContractor Code","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","type":"select","isFilterBy":true},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Part Stock Qty","id":"partStockQty"},{"title":"Operation From","id":"operationFrom","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true},{"title":"Operation To","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","type":"select","isFilterBy":true},{"title":"Rate","id":"rate"},{"title":"Total Amount","id":"totalAmount"},{"title":"Updated","id":"updated","type":"input","inputType":"date"}],"page":{"link":"report/subContractorStock/list","name":"list","downloadExcel":true,"downloadTableData":true,"actions":{"add":true,"edit":true,"print":true,"delete":false}}},"salesAnalysisInvoice":{"id":"salesAnalysisInvoice","title":"Sales Analysis - Invoice","filterView":{"title":"Filter","data":{"customerCode":null,"frmDate":null,"toDate":null},"fields":[{"title":"Customer","id":"customerCode","type":"select","dataFrom":"marketing.customerMaster","replaceName":"customerName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Customer","id":"customerCode","type":"select","dataFrom":"marketing.customerMaster","replaceName":"customerName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Part Qty","id":"unit"},{"title":"Part Price","id":"rate"},{"title":"Sales Value","id":"amount"},{"title":"Dates","id":"dates"},{"title":"Invoice Nos","id":"invoiceNos"}],"page":{"link":"report/salesAnalysisInvoice/list","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"invoice","params":{"year":true}}}},"salesAnalysisCashBill":{"id":"salesAnalysisCashBill","name":"salesAnalysisCashBill","title":"Sales Analysis - Cash Bill","parentModule":"report.salesAnalysisInvoice","page":{"link":"report/salesAnalysisInvoice/list?type=cashBill","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"cashBill","params":{"year":true}}}},"costAnalysis":{"id":"costAnalysisInvoice","title":"Cost Analysis","listView":[{"title":"PartNo","id":"id","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select","isFilterBy":true},{"title":"Input Weight","id":"inputWeight"},{"title":"Finished Weight","id":"finishedWeight"},{"title":"RM Rate","id":"rmRate"},{"title":"Scrap Rate","id":"scrapRate"},{"title":"Material Cost","id":"materialCost"},{"title":"Conversion Cost","id":"conversionCost"},{"title":"Sub Total","id":"subTotal"},{"title":"Rej Cost","id":"rejCost"},{"title":"ICC cost","id":"iccCost"},{"title":"Tool Maint cost","id":"toolMaintCost"},{"title":"Trans Cost","id":"transCost"},{"title":"Profit Cost","id":"profitCost"},{"title":"Total","id":"total"},{"title":"Sales Rate","id":"salesRate"},{"title":"Difference in cost","id":"differenceInCost"},{"title":"% of Gain or Loss","id":"gainOrLoss"}],"page":{"link":"report/costAnalysis/list","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"partMaster"}}},"productionEntryReport":{"id":"productionEntryReport","title":"Production Entry Report","filterView":{"title":"Filter","data":{"frmDate":null,"toDate":null},"fields":[{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"M/C No","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"Job Card No","id":"jobCardNo","type":"input"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Operation","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","type":"select"},{"title":"Operator","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"Start Time","id":"startTime"},{"title":"End Time","id":"endTime"},{"title":"Plan Qty","id":"planQty"},{"title":"Qty","id":"acceptedQty"},{"title":"Rejection Qty","id":"rejectionQty"},{"title":"RW Qty","id":"rwQty"}],"page":{"link":"report/productionEntryReport/list","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"productionEntry","params":{"year":true}}}},"toolHistoryCard":{"id":"toolHistoryCard","title":"Tool History Card","filterView":{"title":"Filter","data":{"toolNo":null,"partNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Tool Name","id":"toolNo","type":"select","dataFrom":"production.toolMaster","replaceName":"toolName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Tool Name","id":"toolNo","type":"select","dataFrom":"production.toolMaster","replaceName":"toolName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Qty","id":"qty"},{"title":"Cummulative Qty","id":"cummulativeQty"},{"title":"Activity","id":"activity","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode"}],"page":{"link":"report/productionEntryReport/list?type=toolHistoryCard","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"productionEntry","params":{"year":true}}}},"machineRunningTime":{"id":"machineRunningTime","title":"Machine Running Time","filterView":{"title":"Filter","data":{"machineNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Machine Name","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Machine No","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"machineName"},{"title":"Year","id":"machineNo","type":"select","dataFrom":"production.machineMaster","replaceName":"yop"},{"title":"Time On","id":"startTime"},{"title":"Time Off","id":"endTime"},{"title":"Running Time","id":"runningTime"},{"title":"Cum Running Time","id":"cumRunningTime"}],"page":{"link":"report/productionEntryReport/list?type=machineRunningTime","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"productionEntry","params":{"year":true}}}},"empPerformanceReport":{"id":"empPerformanceReport","title":"Employee Performance Report","filterView":{"title":"Filter","data":{"partNo":null,"frmDate":null,"toDate":null},"fields":[{"title":"Part No","id":"partNo","type":"select","dataFrom":"marketing.partMaster","replaceName":"partNo"},{"title":"Employee Name","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"}]},"listView":[{"title":"Date","id":"date","type":"input","inputType":"date"},{"title":"Employee Name","id":"operator","type":"select","dataFrom":"marketing.empMaster","replaceName":"employeeName"},{"title":"Part No","id":"partNo","dataFrom":"marketing.partMaster","replaceName":"partNo","type":"select"},{"title":"Operation","id":"operationTo","dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","type":"select"},{"title":"Start Time","id":"startTime"},{"title":"End Time","id":"endTime"},{"title":"Plan Qty","id":"planQty"},{"title":"Qty","id":"acceptedQty"}],"page":{"link":"report/productionEntryReport/list?type=empPerformanceReport","name":"list","downloadExcel":true,"actions":false},"services":{"list":{"id":"productionEntry","params":{"year":true}}}}},"accounts":{"id":"accounts","name":"Accounts","title":"Accounts","icon":"money","customerPaymentInvoice":{"id":"customerPaymentInvoice","title":"Customer Payment - Invoice","masterData":{"invoiceNo":null,"customerCode":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Customer Payment","id":"customerPayment","fields":{"invoiceNo":{"name":"Invoice No","id":"invoiceNo","type":"select","options":{},"action":"changeMapping","updateData":["customerCode","total","date"],"dataFrom":"marketing.invoice","replaceName":"invoiceNo","valuePrefix":"VT-","required":true,"existingCheck":true,"isSingle":true},"customerCode":{"name":"Customer Code","id":"customerCode","type":"select","options":{},"dataFrom":"marketing.customerMaster","replaceName":"customerName","isSingle":true,"isDisable":true},"date":{"name":"Invoice Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"Invoice No","id":"invoiceNo","dataFrom":"marketing.invoice","valuePrefix":"VT-","replaceName":"invoiceNo","isFilterBy":true,"type":"select","options":{}},{"title":"Customer","id":"customerCode","dataFrom":"marketing.customerMaster","replaceName":"customerName","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/customerPaymentInvoice/list","name":"list","downloadExcel":true},"services":{"list":{"params":{"year":true}}}},"customerPaymentCashBill":{"id":"customerPaymentCashBill","name":"customerPaymentCashBill","title":"Customer Payment - Cash Bill","parentModule":"accounts.customerPaymentInvoice","form":{"fields":{"invoiceNo":{"name":"CashBill No","id":"invoiceNo","options":{},"action":"changeMapping","updateData":["date","customerCode","total"],"dataFrom":"marketing.cashBill","replaceName":"invoiceNo","valuePrefix":"","required":true,"existingCheck":true,"isSingle":true}}},"listView":[{"title":"Cash Bill No","id":"invoiceNo","valuePrefix":"","dataFrom":"marketing.cashBill","replaceName":"invoiceNo","isFilterBy":true,"type":"select","options":{}}],"page":{"link":"accounts/customerPaymentInvoice/list?type=cashBill","name":"list","downloadExcel":true},"services":{"list":{"params":{"year":true}}}},"suppilerPayment":{"id":"suppilerPayment","title":"Suppiler Payment","masterData":{"grnNo":null,"supplierCode":null,"supplierInvoiceNo":null,"supplierInvoiceDate":null,"invoiceDate":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Suppiler Payment","id":"suppilerPayment","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"select","options":{},"action":"changeMapping","updateData":["supplierCode","supplierInvoiceNo","supplierInvoiceDate","date"],"dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","required":true,"existingCheck":true,"isSingle":true},"supplierCode":{"name":"Supplier Name","id":"supplierCode","type":"select","options":{},"dataFrom":"purchase.supplierMaster","replaceName":"supplierName","required":true,"isDisable":true,"isSingle":true},"supplierInvoiceNo":{"name":"Supplier Invoice No","id":"supplierInvoiceNo","type":"span"},"supplierInvoiceDate":{"name":"Supplier Invoice Date","id":"supplierInvoiceDate","type":"span"},"date":{"name":"GRN Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"GRN No","id":"grnNo","dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","isFilterBy":true,"type":"select","options":{}},{"title":"Supplier Name","id":"supplierCode","dataFrom":"purchase.supplierMaster","replaceName":"supplierName","isFilterBy":true,"type":"select","options":{}},{"title":"Supplier InvoiceNo No","id":"supplierInvoiceNo","dataFrom":"store.grnSupplier","replaceName":"supplierInvoiceNo","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/suppilerPayment/list","name":"list","downloadExcel":true},"services":{"list":{"params":{"year":true}}}},"subContractorPayment":{"id":"subContractorPayment","title":"Sub Contractor Payment","masterData":{"grnNo":null,"subContractorCode":null,"subContractorDCCode":null,"subContractorDCDate":null,"date":null,"total":null,"balanceAmount":0,"mapping":[{"amount":null,"date":null,"remark":null}]},"form":{"name":"Sub Contractor Payment","id":"subContractorPayment","fields":{"grnNo":{"name":"GRN No","id":"grnNo","type":"select","options":{},"action":"changeMapping","updateData":["subContractorCode","subContractorDCCode","subContractorDCDate","date"],"dataFrom":"store.grnSubContractor","replaceName":"grnNo","valuePrefix":"VT-SC-GRN","required":true,"existingCheck":true,"isSingle":true},"subContractorCode":{"name":"Sub Contractor Name","id":"subContractorCode","type":"select","options":{},"dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","required":true,"isDisable":true,"isSingle":true},"subContractorDCCode":{"name":"Sub Contractor Invoice No","id":"subContractorDCCode","type":"span"},"subContractorDCDate":{"name":"Sub Contractor Invoice Date","id":"subContractorDCDate","type":"span"},"date":{"name":"GRN Date","id":"date","type":"span"},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Received instalment","fields":{"amount":{"name":"Amount","id":"amount","type":"input","inputType":"number","action":"updateBalanceAmount","required":true},"date":{"name":"Date","id":"date","type":"input","inputType":"date","required":true},"remark":{"name":"Remark","id":"remark","type":"input","inputType":"text"}}}},"listView":[{"title":"GRN No","id":"grnNo","dataFrom":"store.grnSupplier","replaceName":"grnNo","valuePrefix":"VT-GRN-","isFilterBy":true,"type":"select","options":{}},{"title":"Sub Contractor Name","id":"subContractorCode","dataFrom":"purchase.subContractorMaster","replaceName":"subContractorName","isFilterBy":true,"type":"select","options":{}},{"title":"Sub Contractor InvoiceNo No","id":"subContractorDCCode","dataFrom":"store.grnSupplier","replaceName":"subContractorDCCode","isFilterBy":true,"type":"select","options":{}},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/subContractorPayment/list","name":"list","downloadExcel":true},"services":{"list":{"params":{"year":true}}}},"empPayment":{"id":"empPayment","title":"Employee Labor Payment","masterData":{"employeeCode":null,"frmDate":null,"toDate":null,"total":0,"balanceAmount":0,"mapping":[{"id":null,"operationTo":null,"qty":null,"laborCost":null,"totalCost":null,"date":null,"paidStatus":false,"productionEntryKey":null,"productionEntryDate":null}]},"form":{"name":"Employee Payment","id":"employeePayment","disableByField":"id","fields":{"employeeCode":{"name":"Employee Name","id":"employeeCode","type":"select","options":{},"action":"addPartMap","updateMapping":true,"updateData":["mapping"],"required":true,"dataFrom":"marketing.empMaster","replaceName":"employeeName","isEditDisable":true},"frmDate":{"name":"From Date","id":"frmDate","type":"input","action":"addPartMap","inputType":"date","isEditDisable":true},"toDate":{"name":"To Date","id":"toDate","type":"input","action":"addPartMap","inputType":"date","isEditDisable":true},"total":{"name":"Total","id":"total","type":"span"},"balanceAmount":{"name":"Balance Amount","id":"balanceAmount","type":"span"}},"mapping":{"name":"Payment","fields":{"id":{"name":"Part No","id":"id","type":"select","options":{},"dataFrom":"marketing.partMaster","replaceName":"partNo","isDisable":true},"partName":{"name":"Part Name","id":"partName","type":"span"},"operationTo":{"name":"Stage","id":"operationTo","type":"select","options":{},"required":true,"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode","isSingle":true,"isDisable":true},"qty":{"name":"Qty","id":"qty","type":"span"},"laborCost":{"name":"Labor Cost","id":"laborCost","type":"span"},"totalLaborCost":{"name":"Total Labor Cost","id":"totalLaborCost","type":"span"},"date":{"name":"Date","id":"date","type":"input","inputType":"date"},"paidStatus":{"name":"Paid Status","id":"paidStatus","type":"input","action":"updateBalanceAmount","inputType":"checkbox"}},"actions":{"add":false,"delete":false}}},"listView":[{"title":"Employee Name","id":"employeeCode","dataFrom":"marketing.empMaster","replaceName":"employeeName","isFilterBy":true,"type":"select","options":{}},{"title":"From Date","id":"frmDate","type":"input","inputType":"date"},{"title":"To Date","id":"toDate","type":"input","inputType":"date"},{"title":"Total Amount","id":"total"},{"title":"Balance Amount","id":"balanceAmount"}],"page":{"link":"accounts/empPayment/list","name":"list","downloadExcel":true},"services":{"list":{"params":{"year":true}}}}},"admin":{"id":"admin","name":"Admin","title":"Admin","icon":"cog","defaultRelease":true,"settings":{"id":"settings","title":"Settings","masterData":{"companyName":null,"companyLogoUrl":null,"companyAddress":null,"companyMobile":null,"companyEmail":null,"companyGstin":null,"finalStageOpp":null,"mapping":[{"module":null,"restrictUser":null,"add":null,"edit":null,"delete":null}]},"form":{"name":"Settings","id":"settings","fields":{"companyName":{"name":"Company Name","id":"companyName","type":"input","inputType":"text","required":true},"companyLogoUrl":{"name":"Company Logo Url","id":"companyLogoUrl","type":"input","inputType":"text"},"companyAddress":{"name":"Company Address","id":"companyAddress","type":"input","inputType":"text"},"companyMobile":{"name":"Company Mobile","id":"companyMobile","type":"input","inputType":"text"},"companyEmail":{"name":"Company Email","id":"companyEmail","type":"input","inputType":"text"},"companyGstin":{"name":"Company GSTIN","id":"companyGstin","type":"input","inputType":"text"},"finalStageOpp":{"name":"Operation Final Stage","id":"finalStageOpp","type":"select","options":{},"dataFrom":"production.operationMaster","replaceName":"opName","valuePrefixData":"opCode"}},"mapping":{"name":"Restrict User Modules","fields":{"module":{"name":"Page name","id":"module","type":"select","options":{},"makeFieldOptions":false},"restrictUser":{"name":"Restrict Type","id":"restrictUser","type":"select","options":{},"dataFrom":"admin.userTypes","replaceName":"userType"},"add":{"name":"Show Add action","id":"add","type":"input","inputType":"checkbox"},"edit":{"name":"Show Edit action","id":"edit","type":"input","inputType":"checkbox"},"delete":{"name":"Show Delete action","id":"delete","type":"input","inputType":"checkbox"}}}},"listView":[{"title":"Company Name","id":"companyName"}],"page":{"link":"admin/settings/list","name":"list","actions":{"edit":true}}},"userTypes":{"id":"userTypes","title":"User Types","masterData":{"userType":null,"desc":null},"form":{"name":"User Types","id":"userTypes","fields":{"userType":{"name":"User Type","id":"userType","type":"input","inputType":"text","required":true},"desc":{"name":"Description","id":"desc","type":"input","inputType":"text","required":true}}},"listView":[{"title":"User Name","id":"userType"}],"page":{"link":"admin/userTypes/list","name":"list"}},"users":{"id":"users","title":"Users","masterData":{"userName":null,"password":null,"userType":null},"form":{"name":"Users","id":"users","fields":{"userName":{"name":"User Name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true},"userType":{"name":"User Type","id":"userType","type":"select","options":{},"required":true}}},"listView":[{"title":"User Name","id":"userName"}],"page":{"link":"admin/users/list","name":"list"}}},"superAdmin":{"id":"superAdmin","name":"Super Admin","title":"Super Admin","icon":"cog","restricked":true,"defaultRelease":true,"users":{"id":"users","title":"Users","restricked":true,"masterData":{"userName":null,"password":null,"userType":"SUPERADMIN"},"form":{"name":"Users","id":"Users","fields":{"userName":{"name":"User Name","id":"userName","type":"input","inputType":"text","required":true},"password":{"name":"Password","id":"password","type":"input","inputType":"password","required":true}}},"listView":[{"title":"User Name","id":"userName"}],"page":{"link":"superAdmin/users/list","name":"list"},"services":{"list":{"dataUri":"restrict"}}},"appCustomers":{"name":"App Customers","id":"appCustomers","title":"App Customers","restricked":true,"masterData":{"companyName":null,"address":null,"mapping":[{"module":null}]},"form":{"name":"App Customers","id":"appCustomers","fields":{"companyName":{"name":"Company Name","id":"companyName","type":"input","inputType":"text","required":true},"address":{"name":"Company Adress","id":"address","type":"input","inputType":"text","required":true}},"mapping":{"name":"Module Mapping","fields":{"module":{"name":"Page name","id":"module","type":"select","options":{},"makeFieldOptions":false}}}},"listView":[{"title":"Company Name","id":"companyName"}],"page":{"link":"appCustomers/list","name":"list","custumActions":{"downloadZip":{"title":"Download app","class":"download","method":"downloadAppCustomer"}}},"services":{"list":{"dataUri":"restrict"}}}}},"components":{"header":{"id":"header"},"customForm":{"id":"customForm"},"mappingForm":{"id":"mappingForm"},"entryInvoice":{"id":"entryInvoice"},"listView":{"id":"listView"},"filterView":{"id":"filterView"},"fileModel":{"id":"fileModel","restrict":"A","template":false}},"filters":{"startFrom":{"id":"startFrom"}},"factory":{"appFact":{"id":"appFact"},"authFact":{"id":"authFact"},"commonFact":{"id":"commonFact"}}},"moduleFiles":{}};
 var erpApp = (function() {
     var routers = [];
     var erpAngularApp = angular.module('erpApp', ['ngRoute']).directive('myApp', function() {
@@ -53,7 +53,7 @@ var erpApp = (function() {
                 var compLink = compMethods && compMethods(appFact);
                 return {
                     restrict: comp.restrict || 'E',
-                    templateUrl: 'template/components/' + comp.id + '.html',
+                    templateUrl: comp.template || comp.template === undefined ? 'template/components/' + comp.id + '.html' : '',
                     link: compLink
                 };
             });
@@ -78,17 +78,15 @@ erpConfig.moduleFiles.alertRol = function(appFact) {
 };
 erpConfig.moduleFiles.fileModel = function() {
     return function(scope, element, attrs) {
-        var model = JSON.parse(attrs.fileModel);
-        var modelSetter = model.assign;
 
         element.bind('change', function(changeEvent) {
             var reader = new FileReader();
             reader.onload = function(loadEvent) {
                 scope.$apply(function() {
                     try {
-                        modelSetter(scope, JSON.parse(loadEvent.target.result));
+                        scope.context.controller.data.databaseUpload = JSON.parse(loadEvent.target.result);
                     } catch (err) {
-                        modelSetter(scope, {});
+                        scope.context.controller.data.databaseUpload = {};
                     }
 
                 });
@@ -99,9 +97,9 @@ erpConfig.moduleFiles.fileModel = function() {
     };
 };
 erpConfig.moduleFiles.header = function(appFact) {
-    var context = angular.copy(appFact.context) || null;
+    var context = appFact.context || null;
     context.erpAppConfig.calendarYear = new Date().getMonth() >= context.erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
-    context.downloadDbName = context.erpAppConfig.calendarYear + '-' + ('' + parseInt(context.erpAppConfig.calendarYear + 1)).substring(2);
+
     context.calendarYearList = [];
     for (var i = 10; i >= 0; i--) {
         var nextYear = parseInt(context.erpAppConfig.calendarYear - i + 1);
@@ -174,7 +172,10 @@ erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
                     context.controller.methods.onLoad && context.controller.methods.onLoad();
                     returnPageProm.resolve();
                 });
-            };
+            } else {
+                context.controller.methods.onLoad && context.controller.methods.onLoad();
+                returnPageProm.resolve();
+            }
 
             return returnPageProm.promise;
         });
@@ -274,8 +275,6 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 if (context.controller.data.date === null) {
                     context.controller.data.date = new Date();
                 }
-                context.controller.page.editKey = undefined;
-                context.controller.page.printView = undefined;
                 return context.commonFact.formRender().then(function() {
                     context.controller.methods.callBackAdd && context.controller.methods.callBackAdd();
                     return true;
@@ -325,6 +324,9 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             list: function() {
                 var pageProm = [];
                 var promiseRes = context.commonFact.getPromiseRes();
+                context.controller.existEditData = null;
+                context.controller.page.editKey = undefined;
+                context.controller.page.printView = undefined;
                 context.controller.page.name = 'list';
                 context.controller.currentPage = 0;
                 context.controller.pageSize = 10;
@@ -421,9 +423,9 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             matchFilter: function(field, list) {
                 var returnFlag = false;
-                if (context && context.controller.page.name === 'edit') {
-                    return true;
-                }
+                // if (context && context.controller.page.name === 'edit') {
+                //     return true;
+                // }
                 for (var i in field.filter) {
                     if (typeof(field.filter[i]) === 'object' && field.filter[i].indexOf(list[i]) < 0) {
                         return false;
@@ -455,7 +457,8 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         field.allOptions[optionVal] = list[i];
                         field.allOptions[optionVal]['optionName'] = optionNameVal;
                         field.allOptions[optionVal]['optionId'] = optionIdVal;
-                        if ((field.filter === undefined || context.commonFact.matchFilter(field, list[i], context) === true) &&
+                        if ((field.filter === undefined ||
+                                context.commonFact.matchFilter(field, list[i], context) === true) &&
                             (!isCheckExistVal || editOption)) {
                             field.options[optionVal] = field.allOptions[optionVal];
                         }
@@ -478,7 +481,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 for (var dataKey in data) {
                     if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
                         if (key === null) {
-                            data[dataKey] = context.controller.masterData[dataKey];
+                            data[dataKey] = angular.copy(context.controller.masterData[dataKey]);
                         } else if (key !== undefined && field.options[key][dataKey]) {
                             if (typeof(field.options[key][dataKey]) !== 'object') {
                                 data[dataKey] = field.options[key][dataKey];
@@ -530,6 +533,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         context.commonFact.getData('production.flowMaster').then(function(res) {
                             var flowMasterData = res.data,
                                 flowMasterVal;
+                            var isPartFlow = false;
                             field.options = {};
                             for (var i in flowMasterData) {
                                 if (flowMasterData[i].partNo === partNo) {
@@ -547,9 +551,11 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                                         }
                                         promiseRes.resolve(field);
                                     });
-                                } else {
-                                    promiseRes.resolve(field);
+                                    isPartFlow = true;
                                 }
+                            }
+                            if (!isPartFlow) {
+                                promiseRes.resolve(field);
                             }
                         });
                     });
@@ -562,6 +568,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 var self = this;
                 var localContext = newContext || context;
                 var promiseRes = context.commonFact.getPromiseRes();
+                var currentPartProm = context.commonFact.getPromiseRes();
                 var currentData;
                 var prevData;
                 context.commonFact.getData('report.partStock').then(function(res) {
@@ -583,30 +590,34 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         }
                         context.commonFact.updateData('report.partStock', currentData).then(function() {
                             context.commonFact.getPartStock();
-                            var existingPrevStock = partStock[localContext.controller.data.partNo + '-' + localContext.controller.data.operationFrom];
-                            if (existingPrevStock && (localContext.controller.updatePrevStock === undefined || localContext.controller.updatePrevStock)) {
-                                var existPartStockQty = parseInt(localContext.controller.data.acceptedQty);
-                                existPartStockQty += parseInt(localContext.controller.data.rejectionQty) || 0;
-                                existPartStockQty += parseInt(localContext.controller.data.rwQty) || 0;
-                                existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
-                                prevData = {
-                                    id: existingPrevStock.id,
-                                    partNo: localContext.controller.data.partNo,
-                                    partStockQty: existPartStockQty,
-                                    operationFrom: existingPrevStock.operationFrom,
-                                    operationTo: existingPrevStock.operationTo
-                                }
-                                context.commonFact.updateData('report.partStock', prevData).then(function() {
-                                    context.commonFact.getPartStock();
-                                    promiseRes.resolve();
-                                });
-                            } else {
-                                promiseRes.resolve();
-                            }
+                            currentPartProm.resolve();
                         });
                     } else {
-                        promiseRes.resolve();
+                        currentPartProm.resolve();
                     }
+                    currentPartProm.promise.then(function() {
+                        var existingPrevStock = partStock[localContext.controller.data.partNo + '-' + localContext.controller.data.operationFrom];
+                        if (existingPrevStock && (localContext.controller.updatePrevStock === undefined || localContext.controller.updatePrevStock)) {
+                            var existPartStockQty = parseInt(localContext.controller.data.acceptedQty);
+                            existPartStockQty += parseInt(localContext.controller.data.rejectionQty) || 0;
+                            existPartStockQty += parseInt(localContext.controller.data.rwQty) || 0;
+                            existPartStockQty = parseInt(existingPrevStock.partStockQty) - parseInt(existPartStockQty);
+                            prevData = {
+                                id: existingPrevStock.id,
+                                partNo: localContext.controller.data.partNo,
+                                partStockQty: existPartStockQty,
+                                operationFrom: existingPrevStock.operationFrom,
+                                operationTo: existingPrevStock.operationTo
+                            }
+                            context.commonFact.updateData('report.partStock', prevData).then(function() {
+                                context.commonFact.getPartStock();
+                                promiseRes.resolve();
+                            });
+                        } else {
+                            promiseRes.resolve();
+                        }
+                    });
+
                 });
 
                 return promiseRes.promise;
@@ -655,7 +666,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
 
             },
             getServiceConfig: function(ctrl, replaceMethod) {
-                var currentYear = new Date().getMonth() >= context.erpAppConfig.yearChangeMonth ? new Date().getFullYear() : new Date().getFullYear() - 1;
+                var currentYear = context.erpAppConfig.calendarYear;
                 var serviceConfig = ctrl;
                 var genUrl = function(serviceConfig) {
                     var url = context.erpAppConfig.serverApiUri;
@@ -668,7 +679,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 if (typeof(ctrl) !== 'object') {
                     ctrl = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, ctrl);
                 }
-                if (ctrl.id) {
+                if (ctrl.id && ctrl.page) {
                     serviceConfig = ctrl.services && ctrl.services.list || {};
                     serviceConfig.id = serviceConfig.id || ctrl.id;
                 }
@@ -954,6 +965,13 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     document.body.removeChild(downloadLink);
                 }
             },
+            downloadDatabase: function(year) {
+                var downloadDbName = 'database' + (year ? context.erpAppConfig.calendarYear + '-' + ('' + parseInt(context.erpAppConfig.calendarYear + 1)).substring(2) : '');
+
+                context.commonFact.getData({ id: 'databaseDownload', params: { year: year } }).then(function(res) {
+                    context.commonFact.downloadFile(res.data, downloadDbName + '.json');
+                });
+            },
             showLoadingHttp: function(scope) {
                 var showLoader = function(v) {
                     if (v) {
@@ -975,7 +993,6 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             location: $location,
             changeCalendarYear: function() {
-                context.commonFact.getData('calendarYear');
                 context.commonFact.goToPage(context.erpAppConfig.modules.controllers.dashboard.page.link);
             },
             downloadData: function() {
@@ -1051,7 +1068,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 return e;
             },
             callActions: function(actionName, params) {
-                var actionMethod = context.controller.methods[actionName] || context.authFact[actionName] || context.commonFact[actionName];
+                var actionMethod = actionName && (context.controller.methods[actionName] || context.authFact[actionName] || context.commonFact[actionName]);
                 actionMethod && actionMethod.apply(this, params);
             },
             appModuleAccess: function() {
@@ -1110,7 +1127,7 @@ erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $q, $httpParam
                 httpCache = $cacheFactory.get('$http');
             var promiseRes = context.commonFact.getPromiseRes();
             var removeCacheUrl;
-            serviceConf['data'] = angular.extend(serviceConf['data'] || {}, inputData || {});
+            serviceConf['data'] = inputData;
             if (serviceConf.method === 'POST') {
                 removeCacheUrl = serviceConf.url;
                 removeCacheUrl += serviceConf.params ? '?' + $httpParamSerializer(serviceConf.params) : '';
@@ -1192,6 +1209,9 @@ erpConfig.moduleFiles.databaseUpload = function(context) {
                 context.controller.message = undefined;
             }
 
+        },
+        onLoad: function() {
+            context.controller.data = context.controller.masterData;
         }
     };
 };
@@ -1599,6 +1619,472 @@ erpConfig.moduleFiles.invoice = function(context) {
 };
 
 erpConfig.moduleFiles.cashBill = erpConfig.moduleFiles.invoice;
+erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
+    var orgItemVal = null;
+    return {
+        callBackEdit: function() {
+            orgItemVal = angular.copy(context.controller.data);
+        },
+        callBackAdd: function() {
+            orgItemVal = angular.copy(context.controller.data);
+        },
+        callBackList: function() {
+            context.commonFact.getPartStock();
+            orgItemVal = null;
+            var listViewData = angular.copy(context.controller.listViewDataMaster);
+            var partDetailList = [];
+            for (var i in listViewData) {
+                if (listViewData[i].isAssemblePart === 1) {
+                    partDetailList.push(listViewData[i]);
+                }
+
+            }
+            context.controller.listViewData = partDetailList;
+        },
+        getSubParts: function() {
+            context.commonFact.getData('production.bomAssemblePart').then(function(res) {
+                var bomData = res.data;
+                for (var i in bomData) {
+                    if (bomData[i].partNo === context.controller.data.partNo) {
+                        context.controller.data.mapping = angular.extend(context.controller.data.mapping, bomData[i].mapping);
+                    }
+                }
+            });
+        },
+        updateQtyMake: function(mappingData, value, field, fieldMapkey) {
+            if (mappingData.id) {
+                var partStockVal = context.controller.partStock[mappingData.id + '-' + context.erpAppConfig.finalStageOpp];
+                if (partStockVal) {
+                    if (context.controller.page.name === 'edit' && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[fieldMapkey].issueQty) {
+                        field.max = parseInt(orgItemVal.mapping[fieldMapkey].issueQty) + parseInt(partStockVal.partStockQty);
+                    } else {
+                        field.max = partStockVal.partStockQty;
+                    }
+
+                    mappingData.operationFrom = partStockVal.operationFrom;
+                    mappingData.operationTo = partStockVal.operationTo;
+                }
+                if (mappingData.partNorms && mappingData.issueQty && field.max && field.max >= mappingData.issueQty) {
+                    mappingData.qtyCanMake = mappingData.issueQty / mappingData.partNorms;
+                } else {
+                    mappingData.qtyCanMake = null;
+                }
+
+            }
+            context.controller.methods.updateTotalQtyMake();
+        },
+        updateTotalQtyMake: function() {
+            var subPartsLength = context.controller.data.mapping.length;
+            var totalQtyMake = 0;
+            var qtyCanMake;
+            var prevCanMake;
+            var isValid = false;
+            for (var i in context.controller.data.mapping) {
+                if (context.controller.data.mapping[i].qtyCanMake) {
+                    totalQtyMake += context.controller.data.mapping[i].qtyCanMake;
+                }
+                if (!prevCanMake || prevCanMake === context.controller.data.mapping[i].qtyCanMake) {
+                    isValid = true;
+                } else {
+                    isValid = false;
+                }
+                prevCanMake = context.controller.data.mapping[i].qtyCanMake;
+            }
+            qtyCanMake = totalQtyMake / subPartsLength;
+            if (Number.isInteger(qtyCanMake) && isValid) {
+                context.controller.data.qtyCanMake = qtyCanMake;
+            } else {
+                context.controller.data.qtyCanMake = null;
+            }
+
+        },
+        updateSubPartStock: function() {
+            var mapStockUpdate = function(map, key, del) {
+                var data = angular.copy(map);
+                var newContext = angular.copy(context);
+                data.partNo = data.id;
+                if (!del && orgItemVal) {
+                    if (orgItemVal.id && orgItemVal.mapping && orgItemVal.mapping[key]) {
+                        data.acceptedQty = parseInt(orgItemVal.mapping[key].qtyCanMake) - parseInt(map.qtyCanMake);
+                    } else {
+                        data.acceptedQty = 0 - parseInt(map.qtyCanMake);
+                    }
+                } else {
+                    data.acceptedQty = parseInt(map.qtyCanMake);
+                }
+                newContext.controller.data = data;
+                newContext.controller.updatePrevStock = false;
+                context.commonFact.updatePartStock(newContext);
+            };
+            for (var i in context.controller.data.mapping) {
+                mapStockUpdate(context.controller.data.mapping[i], i, false);
+            }
+        },
+        callBackSubmit: function() {
+            var qtyCanMake;
+            context.controller.methods.updateSubPartStock();
+            if (orgItemVal && orgItemVal.qtyCanMake) {
+                qtyCanMake = parseInt(context.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
+                context.controller.data.acceptedQty = qtyCanMake;
+            } else {
+                context.controller.data.acceptedQty = context.controller.data.qtyCanMake;
+            }
+            context.commonFact.updatePartStock();
+        },
+        callBeforeDelete: function(id, item) {
+            var qtyCanMake;
+            context.controller.data = item;
+            context.controller.methods.updateSubPartStock(true);
+            context.controller.data.acceptedQty = 0 - parseInt(context.controller.data.qtyCanMake);
+            context.commonFact.updatePartStock();
+        }
+    };
+};
+erpConfig.moduleFiles.flowMaster = function(context) {
+    return {
+        updateCostAnalysis: function(mappingData, value, field, fieldMapkey) {
+            var machineDetails = context.controller.form.mapping.fields.machineNo.options[mappingData.machineNo];
+            var costAnalysis = 0;
+
+            costAnalysis = machineDetails && (machineDetails.machineShiftRate / machineDetails.shiftHrs);
+            mappingData.costAnalysis = costAnalysis > 0 && mappingData.palnQtyPerHr > 0 && (costAnalysis / mappingData.palnQtyPerHr) || 0;
+            context.controller.methods.updateTotalCost();
+        },
+        updateTotalCost: function() {
+            var totalCost = 0;
+            for (var i in context.controller.data.mapping) {
+                var mappingData = context.controller.data.mapping[i];
+                var otherCost = mappingData.otherCost || 0;
+                var costAnalysis = mappingData.costAnalysis || 0;
+
+                totalCost += parseFloat(otherCost) + parseFloat(costAnalysis);
+            }
+            context.controller.data.totalCost = totalCost;
+        }
+    }
+};
+erpConfig.moduleFiles.materialIssueNote = function(context) {
+    var orgItemVal = null;
+    return {
+        callBackEdit: function() {
+            orgItemVal = angular.copy(context.controller.data);
+        },
+        callBackAdd: function() {
+            var rmStock = [];
+            orgItemVal = null;
+
+            for (var i in context.controller.rmStock) {
+                if (context.controller.rmStock[i] && context.controller.rmStock[i].rmStockQty > 0) {
+                    rmStock.push(context.controller.rmStock[i].rmCode);
+                }
+
+            }
+            context.controller.form.fields['rmCode'] = angular.extend(context.controller.form.fields['rmCode'], {
+                filter: {
+                    id: rmStock
+                }
+            });
+            context.commonFact.makeOptionsFields(context.controller.form.fields['rmCode']);
+
+        },
+        callBackList: function() {
+            context.commonFact.getRMStock();
+            context.controller.listView[1].filter = {
+                isAssemblePart: undefined
+            };
+            context.commonFact.makeOptionsFields(context.controller.listView[1]);
+
+            var listViewData = angular.copy(context.controller.listViewDataMaster);
+            var partDetailList = [];
+            for (var i in listViewData) {
+                if (listViewData[i].isAssemblePart === undefined) {
+                    partDetailList.push(listViewData[i]);
+                }
+
+            }
+            context.controller.listViewData = partDetailList;
+        },
+        getPartNo: function() {
+            if (context.controller.data.rmCode) {
+                context.controller.form.fields['partNo'].filter = {
+                    rmCode: context.controller.data.rmCode
+                };
+                context.commonFact.makeOptionsFields(context.controller.form.fields['partNo']);
+            }
+        },
+        getNorms: function() {
+            if (context.controller.data.rmCode && context.controller.data.partNo) {
+                context.controller.data.partNorms = null;
+                context.controller.data.qtyCanMake = null;
+                context.controller.data.issueQty = null;
+                context.commonFact.getData('production.bom').then(function(res) {
+                    var bomData = res.data;
+                    for (var i in bomData) {
+                        if (bomData[i].partNo === context.controller.data.partNo && bomData[i].rmCode === context.controller.data.rmCode) {
+                            context.controller.data.partNorms = bomData[i].partNorms;
+                        }
+                    }
+                });
+            }
+        },
+        updateQtyMake: function() {
+            if (context.controller.data.rmCode) {
+
+                if (orgItemVal && orgItemVal.issueQty) {
+                    context.controller.form.fields['issueQty'].max = parseInt(orgItemVal.issueQty) + parseInt(context.controller.rmStock[context.controller.data.rmCode].rmStockQty);
+                } else {
+                    context.controller.form.fields['issueQty'].max = context.controller.rmStock[context.controller.data.rmCode].rmStockQty;
+                }
+
+                if (context.controller.data.partNorms && context.controller.data.issueQty && context.controller.form.fields['issueQty'].max >= context.controller.data.issueQty) {
+                    context.controller.data.qtyCanMake = context.controller.data.issueQty / context.controller.data.partNorms;
+                } else {
+                    context.controller.data.qtyCanMake = null;
+                }
+
+            }
+        },
+        removeRMStockQty: function(del) {
+            var rmCode = context.controller.data.rmCode,
+                existingStock = null,
+                removeQty = context.controller.data.issueQty;
+
+            existingStock = context.controller.rmStock[rmCode];
+            if (existingStock) {
+                var rmStockQty;
+                if (!del && orgItemVal && orgItemVal.issueQty) {
+                    removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
+                    rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
+                } else if (del) {
+                    rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
+                } else {
+                    rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
+                }
+                var data = {
+                    id: existingStock.id,
+                    rmCode: rmCode,
+                    rmStockQty: rmStockQty,
+                    uomCode: existingStock.uomCode
+                };
+                context.commonFact.updateData('report.rmStock', data);
+            }
+        },
+        callBackSubmit: function() {
+            var qtyCanMake;
+            context.controller.methods.removeRMStockQty();
+
+            if (orgItemVal && orgItemVal.issueQty) {
+                qtyCanMake = parseInt(context.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
+                context.controller.data.acceptedQty = qtyCanMake;
+            } else {
+                context.controller.data.acceptedQty = context.controller.data.qtyCanMake;
+            }
+            context.commonFact.updatePartStock();
+        },
+        callBeforeDelete: function(id, item) {
+            var qtyCanMake;
+            context.controller.data = item;
+            context.controller.methods.removeRMStockQty(true);
+            context.controller.data.acceptedQty = 0 - parseInt(context.controller.data.qtyCanMake);
+            context.commonFact.updatePartStock();
+        }
+    };
+};
+erpConfig.moduleFiles.productionEntry = function(context) {
+    return {
+        callBackAdd: function() {
+            context.controller.page.printViewMapping = false;
+            context.controller.finalMapping = 0;
+        },
+        callBackEdit: function() {
+            if (!context.controller.page.printView) {
+                context.controller.page.printViewMapping = true;
+                context.commonFact.addMapping(context.controller.data.mapping);
+                context.controller.finalMapping = context.controller.data.mapping.length - 1;
+                context.controller.methods.callBackChangeMapping();
+            }
+        },
+        callBackList: function() {
+            context.commonFact.getPartStock();
+            context.controller.methods.getPRQty();
+            context.commonFact.getFlowMaster();
+            context.commonFact.getOperations();
+        },
+        checkAcceptedQty: function(mappingData, value, field, fieldMapkey) {
+            var qtyCanMake = 0,
+                rejectionQty = mappingData.rejectionQty || 0,
+                rwQty = mappingData.rwQty || 0,
+                acceptedQty = mappingData.acceptedQty || 0,
+                qty = acceptedQty + rejectionQty + rwQty;
+            var fullQty;
+            var prFrmQtyMap;
+            var prFrmToQtyMap;
+            var prToQtyMap;
+            var stockQty;
+
+            prFrmQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-frm';
+            prToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationTo + '-to';
+            prFrmToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-to';
+
+            if (context.controller.data.partNo && mappingData.operationFrom) {
+                if (context.controller.operationsData[mappingData.operationFrom].source === 'Supplier' || context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].isAssemblePart === 1) {
+                    qtyCanMake = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].qtyCanMake;
+                } else if (context.controller.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
+                    qtyCanMake = context.controller.prQty[context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to'].prAcpQty || 0;
+                } else {
+                    qtyCanMake = context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty || 0;
+                }
+                stockQty = context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom] && context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].partStockQty || 0;
+                fullQty = context.controller.prQty[prFrmQtyMap] && parseInt(context.controller.prQty[prFrmQtyMap].prQty) + parseInt(qty) || qty;
+            }
+
+            if (qty > stockQty || fullQty > qtyCanMake || (context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty < qty)) {
+                mappingData[field.id] = null
+            }
+        },
+        callBackChangeMapping: function(data, key, field) {
+            context.controller.methods.updateOperationFrom(data, key, field);
+            context.controller.methods.updateOperationTo(data, key, field);
+        },
+        updateOperationFrom: function(data, key, field) {
+            var prQtyFrmMap;
+            var prQtyPrevMap;
+            var prQtyToMap;
+            var flwMap;
+            var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
+            var jobCardQty = jobCard && jobCard.qtyCanMake;
+
+            if (context.controller.data.jobCardNo) {
+                var restriction = {
+                        partNo: context.controller.data.partNo
+                    },
+                    operation = [];
+                for (var i in context.controller.partStock) {
+                    if (context.controller.partStock[i].partStockQty > 0 && context.controller.data.partNo === context.controller.partStock[i].partNo) {
+                        prQtyPrevMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationFrom + '-frm';
+                        prQtyFrmMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationTo + '-frm';
+                        prQtyToMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationFrom + '-to';
+                        flwMap = context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationTo;
+
+                        if ((!context.controller.prQty[prQtyFrmMap] &&
+                                (!context.controller.partStock[i].operationFrom ||
+                                    (context.controller.prQty[prQtyPrevMap] &&
+                                        context.controller.prQty[prQtyPrevMap].prQty > 0))) ||
+                            (context.controller.prQty[prQtyFrmMap] &&
+                                context.controller.prQty[prQtyFrmMap].prQty < jobCardQty) ||
+                            (context.controller.flowMasterByPartOpr[flwMap] &&
+                                context.controller.flowMasterByPartOpr[flwMap].source === "Sub-Contractor")) {
+                            operation.push(context.controller.partStock[i].operationTo);
+                        }
+                    }
+                }
+                restriction.filter = {
+                    id: operation
+                }
+                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationFrom'], restriction);
+            }
+        },
+        updateOperationTo: function(mappingData) {
+            context.controller.form.mapping.fields['operationTo'].options = {};
+            if (context.controller.data.jobCardNo) {
+                var partNo = context.controller.data.partNo,
+                    restriction = {
+                        partNo: partNo
+                    };
+                if (mappingData && mappingData.operationFrom) {
+                    restriction = angular.extend(restriction, {
+                        limit: 1,
+                        startWith: mappingData.operationFrom
+                    });
+                }
+
+                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationTo'], restriction).then(function() {
+                    var options = context.controller.form.mapping.fields['operationTo'].options;
+                    var firstOption = options[Object.keys(options)[0]];
+                    if (firstOption && firstOption.source === 'Sub-Contractor') {
+                        context.controller.form.mapping.fields['operationTo'].options = {};
+                    }
+                });
+            }
+        },
+        updateToolNo: function(mappingData) {
+            mappingData.toolNo = context.controller.data.partNo && mappingData.operationTo && context.controller.flowMasterByPartOpr[context.controller.data.partNo + '-' + mappingData.operationTo].toolNo || null;
+        },
+        calculatePlanQty: function(mappingData) {
+            var startDate = mappingData.startTime;
+            var endDate = mappingData.endTime;
+            var timeDiff = endDate - startDate;
+            var palnQtyPerHr = context.controller.data.partNo && mappingData.operationTo && context.controller.flowMasterByPartOpr[context.controller.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
+            mappingData.planQty = timeDiff * palnQtyPerHr;
+        },
+        updateMaterialIssue: function() {
+            var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
+            var jobCardQty = jobCard && jobCard.qtyCanMake;
+            jobCard.status = 1;
+            context.commonFact.updateData('production.materialIssueNote', jobCard);
+        },
+        getPRQty: function() {
+            context.controller.prQty = {};
+            return context.commonFact.getData('production.productionEntry').then(function(res) {
+                var listViewData = res.data;
+                for (var i in listViewData) {
+                    for (var j in listViewData[i].mapping) {
+                        var prFrmQty = 0;
+                        var prToQty = 0;
+                        var prQty = 0;
+                        var prFrmAcpQty = 0;
+                        var prToAcpQty = 0;
+                        var prFrmQtyMap;
+                        var prToQtyMap;
+                        prFrmQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationFrom + '-frm';
+                        prToQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationTo + '-to';
+                        prQty = parseInt(listViewData[i].mapping[j].acceptedQty) + parseInt(listViewData[i].mapping[j].rejectionQty) + parseInt(listViewData[i].mapping[j].rwQty);
+                        prFrmAcpQty = context.controller.prQty[prFrmQtyMap] ? parseInt(context.controller.prQty[prFrmQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
+                        prFrmQty = context.controller.prQty[prFrmQtyMap] ? parseInt(context.controller.prQty[prFrmQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
+                        prToQty = context.controller.prQty[prToQtyMap] ? parseInt(context.controller.prQty[prToQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
+                        prToAcpQty = context.controller.prQty[prToQtyMap] ? parseInt(context.controller.prQty[prToQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
+
+                        context.controller.prQty[prFrmQtyMap] = listViewData[i].mapping[j];
+                        context.controller.prQty[prFrmQtyMap].prQty = prFrmQty;
+                        context.controller.prQty[prFrmQtyMap].prAcpQty = prFrmAcpQty;
+                        context.controller.prQty[prToQtyMap] = listViewData[i].mapping[j];
+                        context.controller.prQty[prToQtyMap].prQty = prToQty;
+                        context.controller.prQty[prToQtyMap].prAcpQty = prToAcpQty;
+                    }
+                };
+                return context.controller.prQty;
+            });
+        },
+        callBackSubmit: function() {
+            var newQty;
+            var data = angular.copy(context.controller.data.mapping[context.controller.finalMapping]);
+            var newContext = angular.copy(context);
+            data.partNo = context.controller.data.partNo;
+            newContext.controller.data = data;
+            context.commonFact.updatePartStock(newContext);
+            context.controller.methods.updateMaterialIssue();
+        },
+        prodEntryDownload: function() {
+            if (!context.selectedTableData) {
+                return;
+            }
+            var prodData = context.selectedTableData[context.controller.id];
+            context.commonFact.getData('production.materialIssueNote').then(function(res) {
+                var materData = res.data;
+                var jobCardNo = 1;
+                context.selectedTableData['materialIssueNote'] = {};
+                for (var i in prodData) {
+                    context.selectedTableData['materialIssueNote'][jobCardNo] = materData[prodData[i].jobCardNo];
+                    context.selectedTableData['materialIssueNote'][jobCardNo].id = jobCardNo;
+                    context.selectedTableData['materialIssueNote'][jobCardNo].jobCardNo = jobCardNo;
+                    prodData[i].jobCardNo = jobCardNo;
+                    jobCardNo++;
+                }
+                context.commonFact.downloadFile(context.selectedTableData, context.controller.id + '.json');
+            });
+        }
+    };
+};
 erpConfig.moduleFiles.poGeneralSupplier = function(context) {
     return {
         updatePartDetails: function(mapping) {
@@ -1641,7 +2127,7 @@ erpConfig.moduleFiles.subContractorMaster = function(context) {
     return {
         callBackList: function() {
             var partNos = [];
-            context.commonFact.getData().then(function(res) {
+            context.commonFact.getData('production.flowMaster').then(function(res) {
                 var flowMasterData = res.data;
                 for (var i in flowMasterData) {
                     for (var j in flowMasterData[i].mapping) {
@@ -2010,7 +2496,7 @@ erpConfig.moduleFiles.salesAnalysisInvoice = function(context) {
                             unit: listViewData[i].mapping[j].unit,
                             customerCode: listViewData[i]['customerCode'],
                             dates: context.commonFact.dateFormatChange(date),
-                            invoiceNos: !cashBill ? 'H-' + listViewData[i]['invoiceNo'] : listViewData[i]['invoiceNo']
+                            invoiceNos: !cashBill ? 'VT-' + listViewData[i]['invoiceNo'] : listViewData[i]['invoiceNo']
                         };
 
                         if (!cashBill) {
@@ -2133,468 +2619,79 @@ erpConfig.moduleFiles.subContractorStock = function(context) {
         }
     };
 };
-erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
-    var orgItemVal = null;
+erpConfig.moduleFiles.appCustomers = function(context) {
     return {
-        callBackEdit: function() {
-            orgItemVal = angular.copy(context.controller.data);
-        },
-        callBackAdd: function() {
-            orgItemVal = angular.copy(context.controller.data);
-        },
         callBackList: function() {
-            context.commonFact.getPartStock();
-            orgItemVal = null;
-            var listViewData = angular.copy(context.controller.listViewDataMaster);
-            var partDetailList = [];
-            for (var i in listViewData) {
-                if (listViewData[i].isAssemblePart === 1) {
-                    partDetailList.push(listViewData[i]);
+            var moduleField = context.controller.form.mapping.fields['module'];
+            moduleField.options = {
+                all: {
+                    'optionName': 'All',
+                    'optionId': 'all'
                 }
-
-            }
-            context.controller.listViewData = partDetailList;
-        },
-        getSubParts: function() {
-            context.commonFact.getData('production.bomAssemblePart').then(function(res) {
-                var bomData = res.data;
-                for (var i in bomData) {
-                    if (bomData[i].partNo === context.controller.data.partNo) {
-                        context.controller.data.mapping = angular.extend(context.controller.data.mapping, bomData[i].mapping);
-                    }
-                }
-            });
-        },
-        updateQtyMake: function(mappingData, value, field, fieldMapkey) {
-            if (mappingData.id) {
-                var partStockVal = context.controller.partStock[mappingData.id + '-' + context.erpAppConfig.finalStageOpp];
-                if (partStockVal) {
-                    if (context.controller.page.name === 'edit' && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[fieldMapkey].issueQty) {
-                        field.max = parseInt(orgItemVal.mapping[fieldMapkey].issueQty) + parseInt(partStockVal.partStockQty);
-                    } else {
-                        field.max = partStockVal.partStockQty;
-                    }
-
-                    mappingData.operationFrom = partStockVal.operationFrom;
-                    mappingData.operationTo = partStockVal.operationTo;
-                }
-                if (mappingData.partNorms && mappingData.issueQty && field.max && field.max >= mappingData.issueQty) {
-                    mappingData.qtyCanMake = mappingData.issueQty / mappingData.partNorms;
-                } else {
-                    mappingData.qtyCanMake = null;
-                }
-
-            }
-            context.controller.methods.updateTotalQtyMake();
-        },
-        updateTotalQtyMake: function() {
-            var subPartsLength = context.controller.data.mapping.length;
-            var totalQtyMake = 0;
-            var qtyCanMake;
-            var prevCanMake;
-            var isValid = false;
-            for (var i in context.controller.data.mapping) {
-                if (context.controller.data.mapping[i].qtyCanMake) {
-                    totalQtyMake += context.controller.data.mapping[i].qtyCanMake;
-                }
-                if (!prevCanMake || prevCanMake === context.controller.data.mapping[i].qtyCanMake) {
-                    isValid = true;
-                } else {
-                    isValid = false;
-                }
-                prevCanMake = context.controller.data.mapping[i].qtyCanMake;
-            }
-            qtyCanMake = totalQtyMake / subPartsLength;
-            if (Number.isInteger(qtyCanMake) && isValid) {
-                context.controller.data.qtyCanMake = qtyCanMake;
-            } else {
-                context.controller.data.qtyCanMake = null;
-            }
-
-        },
-        updateSubPartStock: function() {
-            var mapStockUpdate = function(map, key, del) {
-                var data = angular.copy(map);
-                var newContext = angular.copy(context);
-                data.partNo = data.id;
-                if (!del && orgItemVal) {
-                    if (orgItemVal.id && orgItemVal.mapping && orgItemVal.mapping[key]) {
-                        data.acceptedQty = parseInt(orgItemVal.mapping[key].qtyCanMake) - parseInt(map.qtyCanMake);
-                    } else {
-                        data.acceptedQty = 0 - parseInt(map.qtyCanMake);
-                    }
-                } else {
-                    data.acceptedQty = parseInt(map.qtyCanMake);
-                }
-                newContext.controller.data = data;
-                newContext.controller.updatePrevStock = false;
-                context.commonFact.updatePartStock(newContext);
             };
-            for (var i in context.controller.data.mapping) {
-                mapStockUpdate(context.controller.data.mapping[i], i, false);
-            }
-        },
-        callBackSubmit: function() {
-            var qtyCanMake;
-            context.controller.methods.updateSubPartStock();
-            if (orgItemVal && orgItemVal.qtyCanMake) {
-                qtyCanMake = parseInt(context.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
-                context.controller.data.acceptedQty = qtyCanMake;
-            } else {
-                context.controller.data.acceptedQty = context.controller.data.qtyCanMake;
-            }
-            context.commonFact.updatePartStock();
-        },
-        callBeforeDelete: function(id, item) {
-            var qtyCanMake;
-            context.controller.data = item;
-            context.controller.methods.updateSubPartStock(true);
-            context.controller.data.acceptedQty = 0 - parseInt(context.controller.data.qtyCanMake);
-            context.commonFact.updatePartStock();
-        }
-    };
-};
-erpConfig.moduleFiles.flowMaster = function(context) {
-    return {
-        updateCostAnalysis: function(mappingData, value, field, fieldMapkey) {
-            var machineDetails = context.controller.form.mapping.fields.machineNo.options[mappingData.machineNo];
-            var costAnalysis = 0;
-
-            costAnalysis = machineDetails && (machineDetails.machineShiftRate / machineDetails.shiftHrs);
-            mappingData.costAnalysis = costAnalysis > 0 && mappingData.palnQtyPerHr > 0 && (costAnalysis / mappingData.palnQtyPerHr) || 0;
-            context.controller.methods.updateTotalCost();
-        },
-        updateTotalCost: function() {
-            var totalCost = 0;
-            for (var i in context.controller.data.mapping) {
-                var mappingData = context.controller.data.mapping[i];
-                var otherCost = mappingData.otherCost || 0;
-                var costAnalysis = mappingData.costAnalysis || 0;
-
-                totalCost += parseFloat(otherCost) + parseFloat(costAnalysis);
-            }
-            context.controller.data.totalCost = totalCost;
-        }
-    }
-};
-erpConfig.moduleFiles.materialIssueNote = function(context) {
-    var orgItemVal = null;
-    return {
-        callBackEdit: function() {
-            orgItemVal = angular.copy(context.controller.data);
-        },
-        callBackAdd: function() {
-            var rmStock = [];
-            orgItemVal = null;
-
-            for (var i in context.controller.rmStock) {
-                if (context.controller.rmStock[i] && context.controller.rmStock[i].rmStockQty > 0) {
-                    rmStock.push(context.controller.rmStock[i].rmCode);
+            moduleField.allOptions = {
+                all: {
+                    'optionName': 'All',
+                    'optionId': 'all'
                 }
-
-            }
-            context.controller.form.fields['rmCode'] = angular.extend(context.controller.form.fields['rmCode'], {
-                filter: {
-                    id: rmStock
-                }
-            });
-            context.commonFact.makeOptionsFields(context.controller.form.fields['rmCode']);
-
-        },
-        callBackList: function() {
-            context.commonFact.getRMStock();
-            context.controller.listView[1].filter = {
-                isAssemblePart: undefined
             };
-            context.commonFact.makeOptionsFields(context.controller.listView[1]);
+            context.controller.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
 
-            var listViewData = angular.copy(context.controller.listViewDataMaster);
-            var partDetailList = [];
-            for (var i in listViewData) {
-                if (listViewData[i].isAssemblePart === undefined) {
-                    partDetailList.push(listViewData[i]);
-                }
 
-            }
-            context.controller.listViewData = partDetailList;
         },
-        getPartNo: function() {
-            if (context.controller.data.rmCode) {
-                context.controller.form.fields['partNo'].filter = {
-                    rmCode: context.controller.data.rmCode
-                };
-                context.commonFact.makeOptionsFields(context.controller.form.fields['partNo']);
-            }
-        },
-        getNorms: function() {
-            if (context.controller.data.rmCode && context.controller.data.partNo) {
-                context.controller.data.partNorms = null;
-                context.controller.data.qtyCanMake = null;
-                context.controller.data.issueQty = null;
-                context.commonFact.getData('production.bom').then(function(res) {
-                    var bomData = res.data;
-                    for (var i in bomData) {
-                        if (bomData[i].partNo === context.controller.data.partNo && bomData[i].rmCode === context.controller.data.rmCode) {
-                            context.controller.data.partNorms = bomData[i].partNorms;
-                        }
-                    }
-                });
-            }
-        },
-        updateQtyMake: function() {
-            if (context.controller.data.rmCode) {
+        makeModuleOptions: function(modules, field, parentModule) {
+            for (var i in modules) {
+                var module = angular.copy(modules[i]);
+                var optionIdVal = parentModule && parentModule.id + '/' + module.id || module.id;
+                var optionNameVal = parentModule && '-- ' + module.title || module.title;
+                if (module.defaultRelease === undefined) {
+                    field.allOptions[optionIdVal] = module;
+                    field.allOptions[optionIdVal]['optionName'] = optionNameVal;
+                    field.allOptions[optionIdVal]['optionId'] = optionIdVal;
+                    field.options[optionIdVal] = field.allOptions[optionIdVal];
 
-                if (orgItemVal && orgItemVal.issueQty) {
-                    context.controller.form.fields['issueQty'].max = parseInt(orgItemVal.issueQty) + parseInt(context.controller.rmStock[context.controller.data.rmCode].rmStockQty);
-                } else {
-                    context.controller.form.fields['issueQty'].max = context.controller.rmStock[context.controller.data.rmCode].rmStockQty;
-                }
-
-                if (context.controller.data.partNorms && context.controller.data.issueQty && context.controller.form.fields['issueQty'].max >= context.controller.data.issueQty) {
-                    context.controller.data.qtyCanMake = context.controller.data.issueQty / context.controller.data.partNorms;
-                } else {
-                    context.controller.data.qtyCanMake = null;
-                }
-
-            }
-        },
-        removeRMStockQty: function(del) {
-            var rmCode = context.controller.data.rmCode,
-                existingStock = null,
-                removeQty = context.controller.data.issueQty;
-
-            existingStock = context.controller.rmStock[rmCode];
-            if (existingStock) {
-                var rmStockQty;
-                if (!del && orgItemVal && orgItemVal.issueQty) {
-                    removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
-                    rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
-                } else if (del) {
-                    rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
-                } else {
-                    rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
-                }
-                var data = {
-                    id: existingStock.id,
-                    rmCode: rmCode,
-                    rmStockQty: rmStockQty,
-                    uomCode: existingStock.uomCode
-                };
-                context.commonFact.updateData('report.rmStock', data);
-            }
-        },
-        callBackSubmit: function() {
-            var qtyCanMake;
-            context.controller.methods.removeRMStockQty();
-
-            if (orgItemVal && orgItemVal.issueQty) {
-                qtyCanMake = parseInt(context.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
-                context.controller.data.acceptedQty = qtyCanMake;
-            } else {
-                context.controller.data.acceptedQty = context.controller.data.qtyCanMake;
-            }
-            context.commonFact.updatePartStock();
-        },
-        callBeforeDelete: function(id, item) {
-            var qtyCanMake;
-            context.controller.data = item;
-            context.controller.methods.removeRMStockQty(true);
-            context.controller.data.acceptedQty = 0 - parseInt(context.controller.data.qtyCanMake);
-            context.commonFact.updatePartStock();
-        }
-    };
-};
-erpConfig.moduleFiles.productionEntry = function(context) {
-    return {
-        callBackAdd: function() {
-            context.controller.page.printViewMapping = false;
-            context.controller.finalMapping = 0;
-        },
-        callBackEdit: function() {
-            if (!context.controller.page.printView) {
-                context.controller.page.printViewMapping = true;
-                context.commonFact.addMapping(context.controller.data.mapping);
-                context.controller.finalMapping = context.controller.data.mapping.length - 1;
-            }
-        },
-        callBackList: function() {
-            context.commonFact.getPartStock();
-            context.controller.methods.getPRQty();
-            context.commonFact.getFlowMaster();
-            context.commonFact.getOperations();
-        },
-        checkAcceptedQty: function(mappingData, value, field, fieldMapkey) {
-            var qtyCanMake = 0,
-                rejectionQty = mappingData.rejectionQty || 0,
-                rwQty = mappingData.rwQty || 0,
-                acceptedQty = mappingData.acceptedQty || 0,
-                qty = acceptedQty + rejectionQty + rwQty;
-            var fullQty;
-            var prFrmQtyMap;
-            var prFrmToQtyMap;
-            var prToQtyMap;
-            var stockQty;
-
-            prFrmQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-frm';
-            prToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationTo + '-to';
-            prFrmToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-to';
-
-            if (context.controller.data.partNo && mappingData.operationFrom) {
-                if (context.controller.operationsData[mappingData.operationFrom].source === 'Supplier' || context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].isAssemblePart === 1) {
-                    qtyCanMake = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].qtyCanMake;
-                } else if (context.controller.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
-                    qtyCanMake = context.controller.prQty[context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to'].prAcpQty || 0;
-                } else {
-                    qtyCanMake = context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty || 0;
-                }
-                stockQty = context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom] && context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].partStockQty || 0;
-                fullQty = context.controller.prQty[prFrmQtyMap] && parseInt(context.controller.prQty[prFrmQtyMap].prQty) + parseInt(qty) || qty;
-            }
-
-            if (qty > stockQty || fullQty > qtyCanMake || (context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty < qty)) {
-                mappingData[field.id] = null
-            }
-        },
-        callBackChangeMapping: function(data, key, field) {
-            context.controller.methods.updateOperationFrom(data, key, field);
-            context.controller.methods.updateOperationTo(data, key, field);
-        },
-        updateOperationFrom: function(data, key, field) {
-            var prQtyFrmMap;
-            var prQtyPrevMap;
-            var prQtyToMap;
-            var flwMap;
-            var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
-            var jobCardQty = jobCard && jobCard.qtyCanMake;
-
-            if (context.controller.data.jobCardNo) {
-                var restriction = {
-                        partNo: context.controller.data.partNo
-                    },
-                    operation = [];
-                for (var i in context.controller.partStock) {
-                    if (context.controller.partStock[i].partStockQty > 0 && context.controller.data.partNo === context.controller.partStock[i].partNo) {
-                        prQtyPrevMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationFrom + '-frm';
-                        prQtyFrmMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationTo + '-frm';
-                        prQtyToMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationFrom + '-to';
-                        flwMap = context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationTo;
-
-                        if ((!context.controller.prQty[prQtyFrmMap] &&
-                                (!context.controller.partStock[i].operationFrom ||
-                                    (context.controller.prQty[prQtyPrevMap] && context.controller.prQty[prQtyPrevMap].prQty > 0))) ||
-                            (context.controller.prQty[prQtyFrmMap] && context.controller.prQty[prQtyFrmMap].prQty < jobCardQty) ||
-                            (context.controller.flowMasterByPartOpr[flwMap] && context.controller.flowMasterByPartOpr[flwMap].source === "Sub-Contractor" && context.controller.prQty[prQtyToMap])) {
-                            operation.push(context.controller.partStock[i].operationTo);
-                        }
+                    if (!module.page) {
+                        context.controller.methods.makeModuleOptions(context.commonFact.showSubModule(modules[i]), field, modules[i]);
                     }
                 }
-                restriction.filter = {
-                    id: operation
-                }
-                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationFrom'], restriction);
             }
         },
-        updateOperationTo: function(mappingData, key, field) {
-            if (context.controller.data.jobCardNo) {
-                var partNo = context.controller.data.partNo,
-                    restriction = {
-                        partNo: partNo
-                    },
-                    operation = [];
-                var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
-                var jobCardQty = jobCard && jobCard.qtyCanMake;
-
-                if (mappingData.operationFrom) {
-                    restriction = angular.extend(restriction, {
-                        limit: 1,
-                        startWith: mappingData.operationFrom
-                    });
+        callBackSubmit: function(data) {
+            var appCustomer = data.id;
+            var userData = {
+                userName: data.companyName.replace(' ', '').toLowerCase(),
+                password: data.companyName.replace(' ', '').toLowerCase(),
+                userType: 'ADMIN'
+            };
+            var appSettings = {
+                dataUri: 'restrict/settings',
+                params: {
+                    appCustomer: appCustomer
                 }
+            };
 
-                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationTo'], restriction).then(function() {
-                    var options = context.controller.form.mapping.fields['operationTo'].options;
-                    var firstOption = options[Object.keys(options)[0]];
-                    if (firstOption && firstOption.source === 'Sub-Contractor') {
-                        context.controller.form.mapping.fields['operationTo'].options = {};
-                    }
-                });
-            }
-        },
-        updateToolNo: function(mappingData) {
-            mappingData.toolNo = context.controller.data.partNo && mappingData.operationTo && context.controller.flowMasterByPartOpr[context.controller.data.partNo + '-' + mappingData.operationTo].toolNo || null;
-        },
-        calculatePlanQty: function(mappingData) {
-            var startDate = mappingData.startTime;
-            var endDate = mappingData.endTime;
-            var timeDiff = endDate - startDate;
-            var palnQtyPerHr = context.controller.data.partNo && mappingData.operationTo && context.controller.flowMasterByPartOpr[context.controller.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
-            mappingData.planQty = timeDiff * palnQtyPerHr;
-        },
-        updateMaterialIssue: function() {
-            var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
-            var jobCardQty = jobCard && jobCard.qtyCanMake;
-            jobCard.status = 1;
-            context.commonFact.updateData('production.materialIssueNote', jobCard);
-        },
-        getPRQty: function() {
-            context.controller.prQty = {};
-            return context.commonFact.getData('production.productionEntry').then(function(res) {
-                var listViewData = res.data;
-                for (var i in listViewData) {
-                    for (var j in listViewData[i].mapping) {
-                        var prFrmQty = 0;
-                        var prToQty = 0;
-                        var prQty = 0;
-                        var prFrmAcpQty = 0;
-                        var prToAcpQty = 0;
-                        var prFrmQtyMap;
-                        var prToQtyMap;
-                        prFrmQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationFrom + '-frm';
-                        prToQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationTo + '-to';
-                        prQty = parseInt(listViewData[i].mapping[j].acceptedQty) + parseInt(listViewData[i].mapping[j].rejectionQty) + parseInt(listViewData[i].mapping[j].rwQty);
-                        prFrmAcpQty = context.controller.prQty[prFrmQtyMap] ? parseInt(context.controller.prQty[prFrmQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
-                        prFrmQty = context.controller.prQty[prFrmQtyMap] ? parseInt(context.controller.prQty[prFrmQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
-                        prToQty = context.controller.prQty[prToQtyMap] ? parseInt(context.controller.prQty[prToQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
-                        prToAcpQty = context.controller.prQty[prToQtyMap] ? parseInt(context.controller.prQty[prToQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
-
-                        context.controller.prQty[prFrmQtyMap] = listViewData[i].mapping[j];
-                        context.controller.prQty[prFrmQtyMap].prQty = prFrmQty;
-                        context.controller.prQty[prFrmQtyMap].prAcpQty = prFrmAcpQty;
-                        context.controller.prQty[prToQtyMap] = listViewData[i].mapping[j];
-                        context.controller.prQty[prToQtyMap].prQty = prToQty;
-                        context.controller.prQty[prToQtyMap].prAcpQty = prToAcpQty;
-                    }
-                };
-                return context.controller.prQty;
+            var appUsers = {
+                dataUri: 'data/users',
+                params: {
+                    appCustomer: appCustomer
+                }
+            };
+            context.commonFact.updateData(appSettings, { id: appCustomer, appModules: data.mapping }).then(function() {
+                !context.controller.page.editKey && context.commonFact.updateData(appUsers, userData);
             });
         },
-        callBackSubmit: function() {
-            var newQty;
-            var data = angular.copy(context.controller.data.mapping[context.controller.finalMapping]);
-            var newContext = angular.copy(context);
-            data.partNo = context.controller.data.partNo;
-            newContext.controller.data = data;
-            context.commonFact.updatePartStock(newContext);
-            context.controller.methods.updateMaterialIssue();
-        },
-        prodEntryDownload: function() {
-            if (!context.selectedTableData) {
-                return;
-            }
-            var prodData = context.selectedTableData[context.controller.id];
-            context.commonFact.getData('production.materialIssueNote').then(function(res) {
-                var materData = res.data;
-                var jobCardNo = 1;
-                context.selectedTableData['materialIssueNote'] = {};
-                for (var i in prodData) {
-                    context.selectedTableData['materialIssueNote'][jobCardNo] = materData[prodData[i].jobCardNo];
-                    context.selectedTableData['materialIssueNote'][jobCardNo].id = jobCardNo;
-                    context.selectedTableData['materialIssueNote'][jobCardNo].jobCardNo = jobCardNo;
-                    prodData[i].jobCardNo = jobCardNo;
-                    jobCardNo++;
+        callBackDelete: function(id) {
+            var removeAppCustomer = {
+                dataUri: 'removeAppCustomer',
+                params: {
+                    appCustomer: id
                 }
-                context.commonFact.downloadFile(context.selectedTableData, context.controller.id + '.json');
-            });
+            };
+            context.commonFact.getData(removeAppCustomer);
+        },
+        downloadAppCustomer: function(data) {
+            var id = data.id;
+            window.open('/appCustomers/' + id);
         }
     };
 };
@@ -2643,9 +2740,9 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
                                 }
 
                                 if (operationFrom) {
-                                    dcPartStockQty = context.controller.partStock[partNo + '-' + operationFrom].partStockQty;
+                                    dcPartStockQty = context.controller.partStock[partNo + '-' + operationFrom];
 
-                                    if (dcPartStockQty === undefined || dcPartStockQty < qty) {
+                                    if (dcPartStockQty === undefined || dcPartStockQty.partStockQty < qty) {
                                         context.controller.data.mapping[i].acceptedQty = qty = null;
                                     }
                                 }
@@ -2741,7 +2838,7 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
         },
         callBeforeDelete: function(id, item) {
             var acceptedQty;
-            var poSubContractor = context.controller.form.fields['poNo'].allOptions[item.poNo];
+            var poSubContractor;
             for (var i in item.mapping) {
                 var data = angular.copy(item.mapping[i]);
                 var newContext = angular.copy(context);
@@ -2755,8 +2852,13 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
                 newContext.controller.updateCurStock = false;
                 context.commonFact.updatePartStock(newContext);
             }
-            poSubContractor.status = 0;
-            context.commonFact.updateData('purchase.poSubContractor', poSubContractor);
+
+            context.commonFact.getData('purchase.poSubContractor', item.poNo).then(function(res) {
+                poSubContractor = res.data;
+                poSubContractor.status = 0;
+                context.commonFact.updateData('purchase.poSubContractor', poSubContractor);
+            });
+
         }
     };
 };
@@ -3031,82 +3133,6 @@ erpConfig.moduleFiles.grnSupplier = function(context) {
         }
     };
 };
-erpConfig.moduleFiles.appCustomers = function(context) {
-    return {
-        callBackList: function() {
-            var moduleField = context.controller.form.mapping.fields['module'];
-            moduleField.options = {
-                all: {
-                    'optionName': 'All',
-                    'optionId': 'all'
-                }
-            };
-            moduleField.allOptions = {
-                all: {
-                    'optionName': 'All',
-                    'optionId': 'all'
-                }
-            };
-            context.controller.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
-
-
-        },
-        makeModuleOptions: function(modules, field, parentModule) {
-            for (var i in modules) {
-                var module = angular.copy(modules[i]);
-                var optionIdVal = parentModule && parentModule.id + '/' + module.id || module.id;
-                var optionNameVal = parentModule && '-- ' + module.title || module.title;
-                if (module.defaultRelease === undefined) {
-                    field.allOptions[optionIdVal] = module;
-                    field.allOptions[optionIdVal]['optionName'] = optionNameVal;
-                    field.allOptions[optionIdVal]['optionId'] = optionIdVal;
-                    field.options[optionIdVal] = field.allOptions[optionIdVal];
-
-                    if (!module.page) {
-                        context.controller.methods.makeModuleOptions(context.commonFact.showSubModule(modules[i]), field, modules[i]);
-                    }
-                }
-            }
-        },
-        callBackSubmit: function(data) {
-            var appCustomer = data.id;
-            var userData = {
-                userName: data.companyName.replace(' ', '').toLowerCase(),
-                password: data.companyName.replace(' ', '').toLowerCase(),
-                userType: 'ADMIN'
-            };
-            var appSettings = {
-                dataUri: 'restrict/settings',
-                params: {
-                    appCustomer: appCustomer
-                }
-            };
-
-            var appUsers = {
-                dataUri: 'data/users',
-                params: {
-                    appCustomer: appCustomer
-                }
-            };
-            context.commonFact.updateData(appSettings, { id: appCustomer, appModules: data.mapping }).then(function() {
-                !context.controller.page.editKey && context.commonFact.updateData(appUsers, userData);
-            });
-        },
-        callBackDelete: function(id) {
-            var removeAppCustomer = {
-                dataUri: 'removeAppCustomer',
-                params: {
-                    appCustomer: id
-                }
-            };
-            context.commonFact.getData(removeAppCustomer);
-        },
-        downloadAppCustomer: function(data) {
-            var id = data.id;
-            window.open('/appCustomers/' + id);
-        }
-    };
-};
 (function(module) {
 try {
   module = angular.module('erpApp');
@@ -3267,12 +3293,12 @@ module.run(['$templateCache', function($templateCache) {
     '            </div>\n' +
     '            <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>\n' +
     '            <div ng-switch-when="input" class="col-6">\n' +
-    '                <input type="{{field.inputType}}" id="{{field.id}}" name="{{context.controller.form.id}}-{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"\n' +
+    '                <input type="{{field.inputType}}" id="{{field.id}}" name="{{context.controller.form.id}}-{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"\n' +
     '                    max="{{field.max}}" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])" />\n' +
     '            </div>\n' +
     '            <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>\n' +
     '            <div ng-switch-when="select" class="col-6">\n' +
-    '                <select id="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.commonFact.callActions(field.action,[context.controller.data, context.controller.data[field.id], field])"\n' +
+    '                <select id="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="context.commonFact.callActions(field.action,[context.controller.data, context.controller.data[field.id], field])"\n' +
     '                    ng-options="option.optionId as option.optionName for option in field.options" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])">\n' +
     '                    <option value="">--Select--</option>\n' +
     '                </select>\n' +
@@ -3299,12 +3325,12 @@ module.run(['$templateCache', function($templateCache) {
     '            </div>\n' +
     '            <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>\n' +
     '            <div ng-switch-when="input" class="col-6">\n' +
-    '                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"\n' +
+    '                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"\n' +
     '                    max="{{field.max}}" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])" />\n' +
     '            </div>\n' +
     '            <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>\n' +
     '            <div ng-switch-when="select" class="col-6">\n' +
-    '                <select id="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"\n' +
+    '                <select id="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"\n' +
     '                    ng-options="option.optionId as option.optionName for option in field.options" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])">\n' +
     '                    <option value="">--Select--</option>\n' +
     '                </select>\n' +
@@ -3361,7 +3387,7 @@ module.run(['$templateCache', function($templateCache) {
     '                    <td><b>{{context.controller.form.fields.customerCode.name}}</b></td>\n' +
     '                    <td colspan="6">\n' +
     '                        <select ng-if="!context.controller.page.printView" id="{{context.controller.form.fields.customerCode.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.customerCode.id]" ng-required="{{context.controller.form.fields.customerCode.required}}"\n' +
-    '                            ng-change="context.controller.form.fields.customerCode.action && context.commonFact.callActions(context.controller.form.fields.customerCode.action, [context.controller.data, context.controller.data[context.controller.form.fields.customerCode.id], context.controller.form.fields.customerCode])"\n' +
+    '                            ng-change="context.commonFact.callActions(context.controller.form.fields.customerCode.action, [context.controller.data, context.controller.data[context.controller.form.fields.customerCode.id], context.controller.form.fields.customerCode])"\n' +
     '                            ng-options="option.optionId as option.optionName for option in context.controller.form.fields.customerCode.options" ng-disabled="context.controller.form.fields.customerCode.isDisable || (context.controller.form.fields.customerCode.isEditDisable && context.controller.data[context.controller.form.disableByField])"\n' +
     '                            ng-required="{{context.controller.form.fields.customerCode.required}}">\n' +
     '                            <option value="">--Select--</option>\n' +
@@ -3389,9 +3415,9 @@ module.run(['$templateCache', function($templateCache) {
     '                <tr ng-repeat="(key, map) in context.controller.data.mapping" ng-if="!context.controller.page.printView">\n' +
     '                    <td ng-switch="field.type" ng-repeat="field in context.controller.form.mapping.fields">\n' +
     '                        <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>\n' +
-    '                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-required="{{field.required}}"\n' +
+    '                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-required="{{field.required}}"\n' +
     '                        />\n' +
-    '                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="field.action && context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options"\n' +
+    '                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options"\n' +
     '                            ng-required="{{field.required}}" ng-disabled="field.isDisable">\n' +
     '                            <option value="">--Select--</option>\n' +
     '                        </select>\n' +
@@ -3413,7 +3439,7 @@ module.run(['$templateCache', function($templateCache) {
     '                </tr>\n' +
     '                <tr ng-if="context.controller.cashBill">\n' +
     '                    <td colspan="4" align="right"><b>Previous Balance:</b></td>\n' +
-    '                    <td colspan="2"><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.preBalance.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.preBalance.id]" ng-change="context.controller.form.fields.preBalance.action && context.commonFact.callActions(context.controller.form.fields.preBalance.action, [map, map[context.controller.form.fields.preBalance.id], field])"\n' +
+    '                    <td colspan="2"><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.preBalance.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.preBalance.id]" ng-change="context.commonFact.callActions(context.controller.form.fields.preBalance.action, [map, map[context.controller.form.fields.preBalance.id], field])"\n' +
     '                        />\n' +
     '                        <span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.preBalance.id}}">{{context.controller.data[context.controller.form.fields.preBalance.id]}}</span></td>\n' +
     '                </tr>\n' +
@@ -3575,8 +3601,8 @@ module.run(['$templateCache', function($templateCache) {
     '                        <button type="button" class="close" data-dismiss="modal">&times;</button>\n' +
     '                    </div>\n' +
     '                    <div class="modal-body modal-Scroll">\n' +
-    '                        <a href="{{context.erpAppConfig.modules.controllers[\'databaseDownload\'].page.link}}" download="master_database.json"> Master database</a> ||\n' +
-    '                        <a href="YEAR-{{context.calendarYear}}/{{context.erpAppConfig.modules.controllers[\'databaseDownload\'].page.link}}" download="database_{{context.downloadDbName}}.json"> Current Year database</a>\n' +
+    '                        <a href="" ng-click="context.commonFact.downloadDatabase()"> Master database</a> ||\n' +
+    '                        <a href="" ng-click="context.commonFact.downloadDatabase(true)"> Current Year database</a>\n' +
     '                    </div>\n' +
     '                </div>\n' +
     '            </div>\n' +
@@ -3687,9 +3713,9 @@ module.run(['$templateCache', function($templateCache) {
     '                <tr ng-repeat="(key, map) in context.controller.data.mapping" ng-if="(!context.controller.page.printView && (!context.controller.page.printViewMapping || (context.controller.page.printViewMapping && ((context.controller.data.mapping.length-1)===key))))">\n' +
     '                    <td ng-switch="field.type" ng-repeat="field in context.controller.form.mapping.fields">\n' +
     '                        <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>\n' +
-    '                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-required="{{field.required}}"\n' +
+    '                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-required="{{field.required}}"\n' +
     '                            max="{{field.max}}" ng-disabled="field.isDisable" />\n' +
-    '                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-focus="field.focusAction && context.commonFact.callActions(field.focusAction, [map, map[field.id], field, key])" ng-change="field.action && context.commonFact.callActions(field.action, [map, map[field.id], field, key])"\n' +
+    '                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-focus="context.commonFact.callActions(field.focusAction, [map, map[field.id], field, key])" ng-change="context.commonFact.callActions(field.action, [map, map[field.id], field, key])"\n' +
     '                            ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}" ng-disabled="field.isDisable">\n' +
     '                            <option value="">--Select--</option>\n' +
     '                        </select>\n' +

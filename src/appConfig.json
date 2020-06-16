@@ -4,7 +4,7 @@
     "calendarYear": "",
     "finalStageOpp": 9,
     "yearChangeMonth": 3,
-    "httpCache": false,
+    "httpCache": true,
     "serverApiUri": "api",
     "serverDataUri": "data",
     "serverAuth": "auth",
@@ -84,11 +84,7 @@
                 "name": "Database Download",
                 "title": "Database Download",
                 "disableMenu": true,
-                "defaultRelease": true,
-                "page": {
-                    "link": "/api/download",
-                    "name": "databaseUpload"
-                }
+                "defaultRelease": true
             },
             "calendarYear": {
                 "id": "calendarYear",
@@ -640,6 +636,7 @@
                 "invoice": {
                     "id": "invoice",
                     "title": "Invoice",
+                    "cashBill": false,
                     "masterData": {
                         "invoiceNo": null,
                         "date": null,
@@ -836,6 +833,7 @@
                     "id": "cashBill",
                     "name": "cashBill",
                     "title": "Cash Bill",
+                    "cashBill": true,
                     "parentModule": "marketing.invoice",
                     "form": {
                         "autoGenValStart": null,
@@ -862,9 +860,9 @@
                         "valuePrefix": ""
                     }],
                     "page": {
-                        "link": "marketing/invoice/list?type=cashBill",
+                        "link": "marketing/cashBill/list",
                         "name": "list",
-                        "templateUrl": "template/marketing/invoice.html"
+                        "templateUrl": "template/controllers/marketing/invoice.html"
                     },
                     "services": {
                         "list": {
@@ -3610,9 +3608,7 @@
                                 "valuePrefix": "VT-",
                                 "action": "changeMapping",
                                 "updateData": ["partNo"],
-                                "filter": {
-                                    "status": 0
-                                },
+                                "existingCheck": true,
                                 "isEditDisable": true,
                                 "isSingle": true,
                                 "onLoadActions": true
@@ -3868,13 +3864,6 @@
                             "print": true,
                             "delete": false
                         }
-                    },
-                    "services": {
-                        "list": {
-                            "params": {
-                                "year": true
-                            }
-                        }
                     }
                 },
                 "partStock": {
@@ -3979,13 +3968,6 @@
                             "edit": true,
                             "print": true,
                             "delete": false
-                        }
-                    },
-                    "services": {
-                        "list": {
-                            "params": {
-                                "year": true
-                            }
                         }
                     }
                 },
@@ -4110,13 +4092,6 @@
                             "edit": true,
                             "print": true,
                             "delete": false
-                        }
-                    },
-                    "services": {
-                        "list": {
-                            "params": {
-                                "year": true
-                            }
                         }
                     }
                 },
@@ -5680,7 +5655,8 @@
             },
             "fileModel": {
                 "id": "fileModel",
-                "restrict": "A"
+                "restrict": "A",
+                "template": false
             }
         },
         "filters": {

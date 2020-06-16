@@ -18,7 +18,7 @@
                     <td><b>{{context.controller.form.fields.customerCode.name}}</b></td>
                     <td colspan="6">
                         <select ng-if="!context.controller.page.printView" id="{{context.controller.form.fields.customerCode.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.customerCode.id]" ng-required="{{context.controller.form.fields.customerCode.required}}"
-                            ng-change="context.controller.form.fields.customerCode.action && context.commonFact.callActions(context.controller.form.fields.customerCode.action, [context.controller.data, context.controller.data[context.controller.form.fields.customerCode.id], context.controller.form.fields.customerCode])"
+                            ng-change="context.commonFact.callActions(context.controller.form.fields.customerCode.action, [context.controller.data, context.controller.data[context.controller.form.fields.customerCode.id], context.controller.form.fields.customerCode])"
                             ng-options="option.optionId as option.optionName for option in context.controller.form.fields.customerCode.options" ng-disabled="context.controller.form.fields.customerCode.isDisable || (context.controller.form.fields.customerCode.isEditDisable && context.controller.data[context.controller.form.disableByField])"
                             ng-required="{{context.controller.form.fields.customerCode.required}}">
                             <option value="">--Select--</option>
@@ -46,9 +46,9 @@
                 <tr ng-repeat="(key, map) in context.controller.data.mapping" ng-if="!context.controller.page.printView">
                     <td ng-switch="field.type" ng-repeat="field in context.controller.form.mapping.fields">
                         <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="map[field.id]"></span>
-                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="field.action && context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-required="{{field.required}}"
+                        <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-required="{{field.required}}"
                         />
-                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="field.action && context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options"
+                        <select class="form-control" ng-switch-when="select" id="{{field.id}}-{{key}}" ng-change="context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options"
                             ng-required="{{field.required}}" ng-disabled="field.isDisable">
                             <option value="">--Select--</option>
                         </select>
@@ -70,7 +70,7 @@
                 </tr>
                 <tr ng-if="context.controller.cashBill">
                     <td colspan="4" align="right"><b>Previous Balance:</b></td>
-                    <td colspan="2"><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.preBalance.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.preBalance.id]" ng-change="context.controller.form.fields.preBalance.action && context.commonFact.callActions(context.controller.form.fields.preBalance.action, [map, map[context.controller.form.fields.preBalance.id], field])"
+                    <td colspan="2"><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.preBalance.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.preBalance.id]" ng-change="context.commonFact.callActions(context.controller.form.fields.preBalance.action, [map, map[context.controller.form.fields.preBalance.id], field])"
                         />
                         <span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.preBalance.id}}">{{context.controller.data[context.controller.form.fields.preBalance.id]}}</span></td>
                 </tr>

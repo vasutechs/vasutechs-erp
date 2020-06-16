@@ -40,6 +40,7 @@ module.exports = function(config) {
         }
         try {
             dbConfig.databaseType && dbConfig.currentDb.push('/type', dbConfig.databaseType, true);
+            dbConfig.year && dbConfig.currentDb.push('/year', dbConfig.year, true);
             dbConfig.appCustomer && dbConfig.currentDb.push('/appCustomer', dbConfig.appCustomer, true);
             dbConfig.currentDb.push('/updated', new Date(), true);
             dbConfig.currentDb.push('/updatedUserId', inputData.updatedUserId, true);
@@ -58,37 +59,16 @@ module.exports = function(config) {
         return data;
     };
 
-    var uploadTableData = function(inputData, dbConfig) {
-        var inputVal = JSON.parse(inputData);
-        dbConfig.databaseType = "yearly-" + new Date().getFullYear();
-        for (var table in inputVal) {
-            for (var data in inputVal[table]) {
-                setTableData('/' + table, JSON.stringify(inputVal[table][data]));
-            }
-        }
-        return currentYearDb.getData('/tables');
-    };
-
     var uploadDb = function(inputData, dbConfig) {
-        var inputVal = JSON.parse(inputData);
-        var type = inputVal.type || null;
-        var year = type && type.split('yearly-');
-        var uploadThisDb = masterDb;
-        if (!inputVal.tables) {
-            return uploadTableData(inputData);
-        } else {
-            if (!type) {
-                return {};
-            }
-            if (type !== 'master') {
-                uploadThisDb = new JsonDB("data/" + year[1] + "/database", true, true);
-            }
-            uploadThisDb.delete('/');
-            uploadThisDb.push('/', inputVal, true);
-            uploadThisDb.push('/updated', new Date(), true);
-            return uploadThisDb.getData('/tables');
+        var type = inputData.type || null;
+        if (inputData.appCustomer && type && dbConfig.appCustomer === inputData.appCustomer && dbConfig.databaseType === type) {
+            dbConfig.currentDb.delete('/');
+            dbConfig.currentDb.push('/', inputData, true);
+            dbConfig.currentDb.push('/updatedUserId', inputData.updatedUserId, true);
+            dbConfig.currentDb.push('/updated', new Date(), true);
+            return dbConfig.currentDb.getData('/tables');
         }
-
+        return {};
     };
 
     var getListDb = function() {
@@ -104,13 +84,13 @@ module.exports = function(config) {
         return listDbYears;
     };
 
-    var setCustomerCurrentDb = function(query, appCustomer) {
-        var year = query.year;
+    var setCustomerCurrentDb = function(appCustomer, year) {
         var dbConfig = {};
         if (appCustomer) {
             if (year) {
                 dbConfig.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/" + year + "/database", true, true);
                 dbConfig.databaseType = "yearly-" + year;
+                dbConfig.year = year;
             } else {
                 dbConfig.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/database", true, true);
                 dbConfig.databaseType = "appCustomerMaster";
@@ -135,16 +115,16 @@ module.exports = function(config) {
         var params = req.params;
         var query = req.query;
         var table = updateDataId(params, inputData, query);
-        var dbConfig = setCustomerCurrentDb(query, inputData.appCustomer || query.appCustomer) || {};
+        var dbConfig = setCustomerCurrentDb(inputData.appCustomer || query.appCustomer, inputData.year || query.year) || {};
         if (localDb) {
             dbConfig.currentDb = localDb;
         }
         if (dbConfig.currentDb) {
-            if (table === 'download') {
-                data = getTableData(inputData, dbConfig);
-            } else if (table === 'getDatabases') {
+            if (table === '/databaseDownload') {
+                data = dbConfig.currentDb.getData('/');
+            } else if (table === '/getDatabases') {
                 data = { list: getListDb(inputData, dbConfig) };
-            } else if (table === 'upload') {
+            } else if (table === '/databaseUpload') {
                 data = uploadDb(inputData, dbConfig);
             } else if (req.method === 'POST') {
                 data = setTableData(table, inputData, dbConfig);
@@ -160,7 +140,7 @@ module.exports = function(config) {
         var data = null;
         var inputData = req.body;
         var query = req.query;
-        var dbConfig = setCustomerCurrentDb(query, inputData.appCustomer || query.appCustomer) || {};
+        var dbConfig = setCustomerCurrentDb(inputData.appCustomer || query.appCustomer, inputData.year || query.year) || {};
         if (localDb) {
             dbConfig.currentDb = localDb;
         }

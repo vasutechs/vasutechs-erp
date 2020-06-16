@@ -50,7 +50,10 @@ erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
                     context.controller.methods.onLoad && context.controller.methods.onLoad();
                     returnPageProm.resolve();
                 });
-            };
+            } else {
+                context.controller.methods.onLoad && context.controller.methods.onLoad();
+                returnPageProm.resolve();
+            }
 
             return returnPageProm.promise;
         });

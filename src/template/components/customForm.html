@@ -10,12 +10,12 @@
             </div>
             <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="input" class="col-6">
-                <input type="{{field.inputType}}" id="{{field.id}}" name="{{context.controller.form.id}}-{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"
+                <input type="{{field.inputType}}" id="{{field.id}}" name="{{context.controller.form.id}}-{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"
                     max="{{field.max}}" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])" />
             </div>
             <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="select" class="col-6">
-                <select id="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.commonFact.callActions(field.action,[context.controller.data, context.controller.data[field.id], field])"
+                <select id="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="context.commonFact.callActions(field.action,[context.controller.data, context.controller.data[field.id], field])"
                     ng-options="option.optionId as option.optionName for option in field.options" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])">
                     <option value="">--Select--</option>
                 </select>
@@ -42,12 +42,12 @@
             </div>
             <label ng-switch-when="input" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="input" class="col-6">
-                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"
+                <input type="{{field.inputType}}" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"
                     max="{{field.max}}" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])" />
             </div>
             <label ng-switch-when="select" for="{{field.id}}" class="col-2 col-form-label"><b>{{field.name}}:</b></label>
             <div ng-switch-when="select" class="col-6">
-                <select id="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="field.action && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"
+                <select id="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])"
                     ng-options="option.optionId as option.optionName for option in field.options" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])">
                     <option value="">--Select--</option>
                 </select>

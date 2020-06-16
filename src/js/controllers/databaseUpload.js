@@ -12,6 +12,9 @@ erpConfig.moduleFiles.databaseUpload = function(context) {
                 context.controller.message = undefined;
             }
 
+        },
+        onLoad: function() {
+            context.controller.data = context.controller.masterData;
         }
     };
 };

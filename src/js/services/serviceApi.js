@@ -5,7 +5,7 @@ erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $q, $httpParam
                 httpCache = $cacheFactory.get('$http');
             var promiseRes = context.commonFact.getPromiseRes();
             var removeCacheUrl;
-            serviceConf['data'] = angular.extend(serviceConf['data'] || {}, inputData || {});
+            serviceConf['data'] = inputData;
             if (serviceConf.method === 'POST') {
                 removeCacheUrl = serviceConf.url;
                 removeCacheUrl += serviceConf.params ? '?' + $httpParamSerializer(serviceConf.params) : '';
