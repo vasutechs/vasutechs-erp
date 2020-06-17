@@ -4,12 +4,21 @@ erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $q, $httpParam
             var servicePromise,
                 httpCache = $cacheFactory.get('$http');
             var promiseRes = context.commonFact.getPromiseRes();
-            var removeCacheUrl;
+            var removeListCacheUrl;
+            var removeEditCacheUrl;
+            var paramsId;
             serviceConf['data'] = inputData;
             if (serviceConf.method === 'POST') {
-                removeCacheUrl = serviceConf.url;
-                removeCacheUrl += serviceConf.params ? '?' + $httpParamSerializer(serviceConf.params) : '';
-                httpCache.remove(removeCacheUrl);
+                removeListCacheUrl = serviceConf.url;
+                removeListCacheUrl += serviceConf.params ? '?' + $httpParamSerializer(serviceConf.params) : '';
+                httpCache.remove(removeListCacheUrl);
+                if (inputData && inputData.id) {
+                    paramsId = angular.extend({}, angular.copy(serviceConf.params), { id: inputData.id });
+                }
+                removeEditCacheUrl = serviceConf.url;
+                removeEditCacheUrl += paramsId ? '?' + $httpParamSerializer(paramsId) : '';
+                httpCache.remove(removeEditCacheUrl);
+
             }
             if (!serviceConf.url) {
                 setTimeout(function() {

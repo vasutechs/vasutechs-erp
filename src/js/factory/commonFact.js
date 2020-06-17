@@ -126,6 +126,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 var ctrl = angular.copy(module || context.controller);
                 var userDetails = context.authFact.getUserDetail();
                 var serviceConf = context.commonFact.getServiceConfig(ctrl, 'POST');
+                serviceConf.cache = false;
                 data.updatedUserId = userDetails && context.commonFact.isSuperAdmin() ? context.commonFact.isSuperAdmin() + '-' + userDetails.id : userDetails.id || null;
                 //Get Part master data
                 return context.serviceApi.callServiceApi(serviceConf, data);
@@ -412,7 +413,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 };
 
                 if (typeof(ctrl) !== 'object') {
-                    ctrl = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, ctrl);
+                    ctrl = angular.copy(context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, ctrl));
                 }
                 if (ctrl.id && ctrl.page) {
                     serviceConfig = ctrl.services && ctrl.services.list || {};
