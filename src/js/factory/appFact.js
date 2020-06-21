@@ -39,9 +39,7 @@ erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
             }
             context.showLoading = true;
 
-
-            scope.$broadcast('showAlertRol');
-
+            context.commonFact.showAlertRol();
 
             if (context.commonFact[context.controller.page.name]) {
                 context.commonFact[context.controller.page.name]().then(function() {

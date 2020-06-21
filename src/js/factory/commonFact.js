@@ -273,20 +273,21 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                             field.options = {};
                             for (var i in flowMasterData) {
                                 if (flowMasterData[i].partNo === partNo) {
-                                    context.commonFact.mergeOprFlowMap(flowMasterData[i].mapping).then(function(flowMasterMap) {
-                                        var startWith = context.commonFact.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
-                                        flowMasterMap = context.commonFact.objectSort(flowMasterMap, 'opCode');
-                                        for (var j in flowMasterMap) {
-                                            flowMasterVal = flowMasterMap[j];
-                                            if ((!restriction.limit || limit < restriction.limit) &&
-                                                (!restriction.startWith || (startWith.opCode < flowMasterVal.opCode)) &&
-                                                (restriction.filter === undefined || context.commonFact.matchFilter(restriction, flowMasterVal) === true)) {
-                                                limit++;
-                                                field.options[flowMasterVal.id] = localOptions[flowMasterVal.id];
-                                            }
+                                    //context.commonFact.mergeOprFlowMap(flowMasterData[i].mapping).then(function(flowMasterMap) {
+                                    var flowMasterMap = flowMasterData[i].mapping;
+                                    var startWith = context.commonFact.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
+                                    //flowMasterMap = context.commonFact.objectSort(flowMasterMap, 'opCode');
+                                    for (var j in flowMasterMap) {
+                                        flowMasterVal = flowMasterMap[j];
+                                        if ((!restriction.limit || limit < restriction.limit) &&
+                                            (!restriction.startWith || (startWith.index < j)) &&
+                                            (restriction.filter === undefined || context.commonFact.matchFilter(restriction, flowMasterVal) === true)) {
+                                            limit++;
+                                            field.options[flowMasterVal.id] = localOptions[flowMasterVal.id];
                                         }
-                                        promiseRes.resolve(field);
-                                    });
+                                    }
+                                    promiseRes.resolve(field);
+                                    //});
                                     isPartFlow = true;
                                 }
                             }
@@ -534,10 +535,12 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         for (var j in key) {
                             if ((!isExist || typeof(isExist) === 'object') && array[i][j] === key[j]) {
                                 isExist = array[i];
+                                isExist['index'] = i;
                             }
                         }
                     } else if (array[i][key] === value) {
                         isExist = array[i];
+                        isExist['index'] = i;
                     }
                 }
                 return isExist;
@@ -735,14 +738,11 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 angular.element('#downloadModal').modal('show');
             },
             showAlertRol: function() {
-                var showROL = true;
                 var userDetail = context.authFact.getUserDetail();
-                var alertRolContext = {
+                context.alertRolContext = context.alertRolContext || {
                     partRolYellow: [],
                     partRolRed: [],
-                    hideROL: function() {
-                        showROL = false;
-                    }
+                    showROL: true
                 };
                 if (userDetail && userDetail.userType) {
                     context.commonFact.getData('marketing.partMaster').then(function(res) {
@@ -761,20 +761,19 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                                 if (checkPartStock) {
                                     checkPartStock.partName = partMaster[j].partName;
                                     if (redAlert >= checkPartStock.partStockQty) {
-                                        alertRolContext.alertRolContext.partRolRed.push(checkPartStock);
+                                        context.alertRolContext.partRolRed.push(checkPartStock);
                                     } else if (yellowAlert >= checkPartStock.partStockQty) {
-                                        alertRolContext.alertRolContext.partRolYellow.push(checkPartStock);
+                                        context.alertRolContext.partRolYellow.push(checkPartStock);
                                     }
                                 }
 
                             }
-                            if ((alertRolContext.alertRolContext.partRolRed.length > 0 || alertRolContext.alertRolContext.partRolYellow.length > 0) && showROL) {
+                            if ((context.alertRolContext.partRolRed.length > 0 || context.alertRolContext.partRolYellow.length > 0) && context.alertRolContext.showROL) {
                                 angular.element('#RolModal').modal('show');
                             }
                         });
                     });
                 }
-                return alertRolContext;
             },
             isAppUser: function() {
                 var userDetail = context.authFact.getUserDetail();

@@ -12,7 +12,7 @@
 
                         <div class="col-6">
                             <p><b>Red alert:</b></p>
-                            <div ng-repeat="rolRed in alertRolContext.partRolRed | orderBy:'partStockQty'">
+                            <div ng-repeat="rolRed in context.alertRolContext.partRolRed | orderBy:'partStockQty'">
                                 <div class="alert alert-danger" role="alert">
                                     <b>Part name:</b> {{rolRed.partName}} - <b>Qty:</b> {{rolRed.partStockQty}}
                                 </div>
@@ -20,7 +20,7 @@
                         </div>
                         <div class="col-6">
                             <p><b>Yellow alert:</b></p>
-                            <div ng-repeat="rolYellow in alertRolContext.partRolYellow | orderBy:'partStockQty'">
+                            <div ng-repeat="rolYellow in context.alertRolContext.partRolYellow | orderBy:'partStockQty'">
                                 <div class="alert alert-warning" role="alert">
                                     <b>Part name:</b> {{rolYellow.partName}} - <b>Qty:</b> {{rolYellow.partStockQty}}
                                 </div>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="hideROL()" data-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-default" ng-click="context.alertRolContext.showROL=false" data-dismiss="modal">OK</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>

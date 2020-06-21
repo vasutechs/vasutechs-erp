@@ -84,12 +84,12 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
                 data.partNo = data.id;
                 if (!del && orgItemVal) {
                     if (orgItemVal.id && orgItemVal.mapping && orgItemVal.mapping[key]) {
-                        data.acceptedQty = parseInt(orgItemVal.mapping[key].qtyCanMake) - parseInt(map.qtyCanMake);
+                        data.acceptedQty = parseInt(orgItemVal.mapping[key].issueQty) - parseInt(map.issueQty);
                     } else {
-                        data.acceptedQty = 0 - parseInt(map.qtyCanMake);
+                        data.acceptedQty = 0 - parseInt(map.issueQty);
                     }
                 } else {
-                    data.acceptedQty = parseInt(map.qtyCanMake);
+                    data.acceptedQty = parseInt(map.issueQty);
                 }
                 newContext.controller.data = data;
                 newContext.controller.updatePrevStock = false;

@@ -2767,6 +2767,10 @@
                                         "optionId": "In-House",
                                         "optionName": "IN House"
                                     },
+                                    "In-House-Assembly": {
+                                        "optionId": "In-House-Assembly",
+                                        "optionName": "IN House Assembly"
+                                    },
                                     "Sub-Contractor": {
                                         "optionId": "Sub-Contractor",
                                         "optionName": "Sub Contractor"
@@ -3467,7 +3471,7 @@
                                 "valuePrefixData": "opCode",
                                 "isEditDisable": true,
                                 "filter": {
-                                    "opCode": ["105"]
+                                    "source": ["In-House-Assembly", "105"]
                                 },
                                 "isSingle": true
                             },
@@ -3492,6 +3496,7 @@
                                     "options": {},
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
+                                    "isDisable": true,
                                     "isSingle": true
                                 },
                                 "partName": {
@@ -3565,6 +3570,7 @@
                     },
                     "services": {
                         "list": {
+                            "id": "materialIssueNote",
                             "params": {
                                 "year": true
                             }
@@ -5652,6 +5658,9 @@
             },
             "filterView": {
                 "id": "filterView"
+            },
+            "alertRol": {
+                "id": "alertRol"
             },
             "fileModel": {
                 "id": "fileModel",
