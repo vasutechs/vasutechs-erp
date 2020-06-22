@@ -289,7 +289,7 @@
                         }
                     ],
                     "page": {
-                        "link": "marketing/partMaster/list",
+                        "link": "marketing/partMaster",
                         "name": "list"
                     }
                 },
@@ -420,7 +420,7 @@
                         }
                     ],
                     "page": {
-                        "link": "marketing/customerMaster/list",
+                        "link": "marketing/customerMaster",
                         "name": "list"
                     }
                 },
@@ -586,7 +586,7 @@
                         }
                     ],
                     "page": {
-                        "link": "marketing/empMaster/list",
+                        "link": "marketing/empMaster",
                         "name": "list"
                     }
                 },
@@ -629,7 +629,7 @@
                         }
                     ],
                     "page": {
-                        "link": "marketing/uomMaster/list",
+                        "link": "marketing/uomMaster",
                         "name": "list"
                     }
                 },
@@ -817,7 +817,7 @@
                         }
                     ],
                     "page": {
-                        "link": "marketing/invoice/list",
+                        "link": "marketing/invoice",
                         "name": "list",
                         "templateUrl": "template/controllers/marketing/invoice.html"
                     },
@@ -860,7 +860,7 @@
                         "valuePrefix": ""
                     }],
                     "page": {
-                        "link": "marketing/cashBill/list",
+                        "link": "marketing/cashBill",
                         "name": "list",
                         "templateUrl": "template/controllers/marketing/invoice.html"
                     },
@@ -981,7 +981,7 @@
                         }
                     ],
                     "page": {
-                        "link": "purchase/rmMaster/list",
+                        "link": "purchase/rmMaster",
                         "name": "list",
                         "templateUrl": "template/defaultView.html"
                     }
@@ -1108,7 +1108,7 @@
                         }
                     ],
                     "page": {
-                        "link": "purchase/supplierMaster/list",
+                        "link": "purchase/supplierMaster",
                         "name": "list"
                     }
                 },
@@ -1269,7 +1269,7 @@
                         }
                     ],
                     "page": {
-                        "link": "purchase/poSupplier/list",
+                        "link": "purchase/poSupplier",
                         "name": "list"
                     },
                     "services": {
@@ -1406,7 +1406,7 @@
                         }
                     ],
                     "page": {
-                        "link": "purchase/generalSupplierMaster/list",
+                        "link": "purchase/generalSupplierMaster",
                         "name": "list"
                     }
                 },
@@ -1566,7 +1566,7 @@
                         }
                     ],
                     "page": {
-                        "link": "purchase/poGeneralSupplier/list",
+                        "link": "purchase/poGeneralSupplier",
                         "name": "list"
                     },
                     "services": {
@@ -1711,7 +1711,7 @@
                         }
                     ],
                     "page": {
-                        "link": "purchase/subContractorMaster/list",
+                        "link": "purchase/subContractorMaster",
                         "name": "list"
                     }
                 },
@@ -1869,7 +1869,7 @@
                         }
                     ],
                     "page": {
-                        "link": "purchase/poSubContractor/list",
+                        "link": "purchase/poSubContractor",
                         "name": "list"
                     },
                     "services": {
@@ -2077,7 +2077,7 @@
                         }
                     ],
                     "page": {
-                        "link": "store/grnSupplier/list",
+                        "link": "store/grnSupplier",
                         "name": "list"
                     },
                     "services": {
@@ -2279,7 +2279,7 @@
                         }
                     ],
                     "page": {
-                        "link": "store/grnGeneralSupplier/list",
+                        "link": "store/grnGeneralSupplier",
                         "name": "list"
                     },
                     "services": {
@@ -2482,7 +2482,7 @@
                         }
                     ],
                     "page": {
-                        "link": "store/dcSubContractor/list",
+                        "link": "store/dcSubContractor",
                         "name": "list"
                     },
                     "services": {
@@ -2710,7 +2710,7 @@
                         }
                     ],
                     "page": {
-                        "link": "store/grnSubContractor/list",
+                        "link": "store/grnSubContractor",
                         "name": "list"
                     },
                     "services": {
@@ -2743,7 +2743,7 @@
                                 "name": "Operation",
                                 "id": "opCode",
                                 "type": "input",
-                                "inputType": "number",
+                                "inputType": "text",
                                 "required": true
                             },
                             "opName": {
@@ -2795,7 +2795,7 @@
                         }
                     ],
                     "page": {
-                        "link": "production/operationMaster/list",
+                        "link": "production/operationMaster",
                         "name": "list"
                     }
                 },
@@ -2867,7 +2867,7 @@
                         }
                     ],
                     "page": {
-                        "link": "production/bom/list",
+                        "link": "production/bom",
                         "name": "list"
                     }
                 },
@@ -2951,7 +2951,7 @@
                         }
                     }],
                     "page": {
-                        "link": "production/bomAssemblePart/list",
+                        "link": "production/bomAssemblePart",
                         "name": "list"
                     }
                 },
@@ -3055,7 +3055,7 @@
                         }
                     ],
                     "page": {
-                        "link": "production/machineMaster/list",
+                        "link": "production/machineMaster",
                         "name": "list"
                     }
                 },
@@ -3181,7 +3181,7 @@
                         "isFilterBy": true
                     }],
                     "page": {
-                        "link": "store/flowMaster/list",
+                        "link": "store/flowMaster",
                         "name": "list"
                     }
                 },
@@ -3268,7 +3268,7 @@
                         }
                     ],
                     "page": {
-                        "link": "production/toolMaster/list",
+                        "link": "production/toolMaster",
                         "name": "list"
                     }
                 },
@@ -3397,7 +3397,7 @@
                         }
                     ],
                     "page": {
-                        "link": "production/materialIssueNote/list",
+                        "link": "production/materialIssueNote",
                         "name": "list"
                     },
                     "services": {
@@ -3562,7 +3562,7 @@
                         }
                     ],
                     "page": {
-                        "link": "production/assembleMaterialIssueNote/list",
+                        "link": "production/assembleMaterialIssueNote",
                         "name": "list",
                         "filter": {
                             "isAssemblePart": 1
@@ -3764,7 +3764,7 @@
                         }
                     ],
                     "page": {
-                        "link": "production/productionEntry/list",
+                        "link": "production/productionEntry",
                         "name": "list",
                         "downloadTableData": "prodEntryDownload"
                     },
@@ -3860,7 +3860,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/rmStock/list",
+                        "link": "report/rmStock",
                         "name": "list",
                         "downloadExcel": true,
                         "downloadTableData": true,
@@ -3965,7 +3965,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/partStock/list",
+                        "link": "report/partStock",
                         "name": "list",
                         "downloadExcel": true,
                         "downloadTableData": true,
@@ -4089,7 +4089,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/subContractorStock/list",
+                        "link": "report/subContractorStock",
                         "name": "list",
                         "downloadExcel": true,
                         "downloadTableData": true,
@@ -4168,7 +4168,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/salesAnalysisInvoice/list",
+                        "link": "report/salesAnalysisInvoice",
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
@@ -4188,7 +4188,7 @@
                     "title": "Sales Analysis - Cash Bill",
                     "parentModule": "report.salesAnalysisInvoice",
                     "page": {
-                        "link": "report/salesAnalysisInvoice/list?type=cashBill",
+                        "link": "report/salesAnalysisCashBill",
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
@@ -4203,7 +4203,7 @@
                     }
                 },
                 "costAnalysis": {
-                    "id": "costAnalysisInvoice",
+                    "id": "costAnalysis",
                     "title": "Cost Analysis",
                     "listView": [{
                             "title": "PartNo",
@@ -4279,7 +4279,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/costAnalysis/list",
+                        "link": "report/costAnalysis",
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
@@ -4379,7 +4379,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/productionEntryReport/list",
+                        "link": "report/productionEntryReport",
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
@@ -4469,7 +4469,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/productionEntryReport/list?type=toolHistoryCard",
+                        "link": "report/productionEntryReport?type=toolHistoryCard",
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
@@ -4552,7 +4552,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/productionEntryReport/list?type=machineRunningTime",
+                        "link": "report/productionEntryReport?type=machineRunningTime",
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
@@ -4650,7 +4650,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/productionEntryReport/list?type=empPerformanceReport",
+                        "link": "report/productionEntryReport?type=empPerformanceReport",
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
@@ -4785,7 +4785,7 @@
                         }
                     ],
                     "page": {
-                        "link": "accounts/customerPaymentInvoice/list",
+                        "link": "accounts/customerPaymentInvoice",
                         "name": "list",
                         "downloadExcel": true
                     },
@@ -4830,7 +4830,7 @@
                         "options": {}
                     }],
                     "page": {
-                        "link": "accounts/customerPaymentInvoice/list?type=cashBill",
+                        "link": "accounts/customerPaymentInvoice?type=cashBill",
                         "name": "list",
                         "downloadExcel": true
                     },
@@ -4980,7 +4980,7 @@
                         }
                     ],
                     "page": {
-                        "link": "accounts/suppilerPayment/list",
+                        "link": "accounts/suppilerPayment",
                         "name": "list",
                         "downloadExcel": true
                     },
@@ -5129,7 +5129,7 @@
                         }
                     ],
                     "page": {
-                        "link": "accounts/subContractorPayment/list",
+                        "link": "accounts/subContractorPayment",
                         "name": "list",
                         "downloadExcel": true
                     },
@@ -5302,7 +5302,7 @@
                         }
                     ],
                     "page": {
-                        "link": "accounts/empPayment/list",
+                        "link": "accounts/empPayment",
                         "name": "list",
                         "downloadExcel": true
                     },
@@ -5435,7 +5435,7 @@
                         "id": "companyName"
                     }],
                     "page": {
-                        "link": "admin/settings/list",
+                        "link": "admin/settings",
                         "name": "list",
                         "actions": {
                             "edit": true
@@ -5474,7 +5474,7 @@
                         "id": "userType"
                     }],
                     "page": {
-                        "link": "admin/userTypes/list",
+                        "link": "admin/userTypes",
                         "name": "list"
                     }
                 },
@@ -5518,7 +5518,7 @@
                         "id": "userName"
                     }],
                     "page": {
-                        "link": "admin/users/list",
+                        "link": "admin/users",
                         "name": "list"
                     }
                 }
@@ -5564,7 +5564,7 @@
                         "id": "userName"
                     }],
                     "page": {
-                        "link": "superAdmin/users/list",
+                        "link": "superAdmin/users",
                         "name": "list"
                     },
                     "services": {
@@ -5622,7 +5622,7 @@
                         "id": "companyName"
                     }],
                     "page": {
-                        "link": "appCustomers/list",
+                        "link": "appCustomers",
                         "name": "list",
                         "custumActions": {
                             "downloadZip": {

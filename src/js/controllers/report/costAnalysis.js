@@ -9,18 +9,6 @@ erpConfig.moduleFiles.costAnalysis = function(context) {
                         var rmCode = context.controller.listViewData[i].rmCode;
                         var rmDetails = rmCode && res.data[rmCode];
                         var flowMasterDetails = context.controller.flowMasterByPart[partDetails.id];
-                        var materialCost;
-                        var conversionCost;
-                        var subTotal;
-                        var rejCost;
-                        var iccCost;
-                        var toolMaintCost;
-                        var transCost;
-                        var profitCost;
-                        var total;
-                        var salesRate;
-                        var differenceInCost;
-                        var gainOrLoss;
                         if (rmDetails) {
                             partDetails.rmRate = rmDetails.rate;
                             partDetails.scrapRate = rmDetails.scrapRate;
