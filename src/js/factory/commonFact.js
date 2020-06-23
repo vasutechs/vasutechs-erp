@@ -422,7 +422,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 }
                 serviceConfig.params = angular.extend(serviceConfig.params || {}, { appCustomer: serviceConfig.params && serviceConfig.params.appCustomer || context.commonFact.isAppCustomer() || '' })
 
-                if (serviceConfig.params.year) {
+                if (!!serviceConfig.params.year) {
                     serviceConfig.params.year = context.erpAppConfig.calendarYear || currentYear;
                 }
                 serviceConfig.url = genUrl(serviceConfig);
@@ -600,7 +600,6 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 return Number(n) === n && n % 1 !== 0;
             },
             downloadExcel: function(table) {
-                context.controller.filterBy = [];
                 var uri = 'data:application/vnd.ms-excel;base64,',
                     template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
                     base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
@@ -849,6 +848,27 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     resolve: returnPromiseRes,
                     reject: returnPromiseRej
                 };
+            },
+            getAllYearData: function() {
+                var listOfDbsConfig = {
+                    id: 'getDatabases'
+                };
+                var prodTabConfig = context.erpAppConfig.modules.controllers.report.productionEntryReport.services.list;
+                var dataList = [];
+                return context.commonFact.getData(listOfDbsConfig).then(function(res) {
+                    var listOfDbs = res.data.list;
+                    var listOfDbsProm = [];
+                    for (var i in listOfDbs) {
+                        var serConf = angular.copy(prodTabConfig);
+                        serConf.params.year = listOfDbs[i];
+                        listOfDbsProm.push(context.commonFact.getData(serConf).then(function(prodRes) {
+                            dataList.push(prodRes.data);
+                        }));
+                    }
+                    return Promise.all(listOfDbsProm).then(function() {
+                        return dataList;
+                    });
+                });
             }
         };
     };

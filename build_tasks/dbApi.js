@@ -71,8 +71,8 @@ module.exports = function(config) {
         return {};
     };
 
-    var getListDb = function() {
-        var dir = './data';
+    var getListDb = function(dbConfig) {
+        var dir = "./data/appCustomer-" + dbConfig.appCustomer;
         var files = fs.readdirSync(dir);
         var listDbYears = [];
         for (var i in files) {
@@ -123,7 +123,7 @@ module.exports = function(config) {
             if (table === '/databaseDownload') {
                 data = dbConfig.currentDb.getData('/');
             } else if (table === '/getDatabases') {
-                data = { list: getListDb(inputData, dbConfig) };
+                data = { list: getListDb(dbConfig) };
             } else if (table === '/databaseUpload') {
                 data = uploadDb(inputData, dbConfig);
             } else if (req.method === 'POST') {

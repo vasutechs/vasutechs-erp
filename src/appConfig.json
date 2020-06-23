@@ -4469,7 +4469,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/productionEntryReport?type=toolHistoryCard",
+                        "link": "report/toolHistoryCard",
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
@@ -4552,7 +4552,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/productionEntryReport?type=machineRunningTime",
+                        "link": "report/machineRunningTime",
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
@@ -4650,7 +4650,7 @@
                         }
                     ],
                     "page": {
-                        "link": "report/productionEntryReport?type=empPerformanceReport",
+                        "link": "report/empPerformanceReport",
                         "name": "list",
                         "downloadExcel": true,
                         "actions": false
