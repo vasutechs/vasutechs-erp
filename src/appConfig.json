@@ -4104,6 +4104,7 @@
                 "salesAnalysisInvoice": {
                     "id": "salesAnalysisInvoice",
                     "title": "Sales Analysis - Invoice",
+                    "cashBill": false,
                     "filterView": {
                         "title": "Filter",
                         "data": {
@@ -4187,6 +4188,7 @@
                     "name": "salesAnalysisCashBill",
                     "title": "Sales Analysis - Cash Bill",
                     "parentModule": "report.salesAnalysisInvoice",
+                    "cashBill": true,
                     "page": {
                         "link": "report/salesAnalysisCashBill",
                         "name": "list",

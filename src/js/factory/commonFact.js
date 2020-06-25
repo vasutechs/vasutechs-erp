@@ -738,10 +738,9 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             showAlertRol: function() {
                 var userDetail = context.authFact.getUserDetail();
-                context.alertRolContext = context.alertRolContext || {
+                context.alertRolContext = {
                     partRolYellow: [],
-                    partRolRed: [],
-                    showROL: true
+                    partRolRed: []
                 };
                 if (userDetail && userDetail.userType) {
                     context.commonFact.getData('marketing.partMaster').then(function(res) {
@@ -767,7 +766,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                                 }
 
                             }
-                            if ((context.alertRolContext.partRolRed.length > 0 || context.alertRolContext.partRolYellow.length > 0) && context.alertRolContext.showROL) {
+                            if ((context.alertRolContext.partRolRed.length > 0 || context.alertRolContext.partRolYellow.length > 0) && !context.alertRolHideROL) {
                                 angular.element('#RolModal').modal('show');
                             }
                         });

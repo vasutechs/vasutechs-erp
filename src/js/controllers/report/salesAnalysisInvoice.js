@@ -1,5 +1,4 @@
 erpConfig.moduleFiles.salesAnalysisInvoice = function(context) {
-    var cashBill = false;
     return {
         callBackList: function() {
             var partDetailList = [];
@@ -23,10 +22,10 @@ erpConfig.moduleFiles.salesAnalysisInvoice = function(context) {
                             unit: listViewData[i].mapping[j].unit,
                             customerCode: listViewData[i]['customerCode'],
                             dates: context.commonFact.dateFormatChange(date),
-                            invoiceNos: !cashBill ? 'VT-' + listViewData[i]['invoiceNo'] : listViewData[i]['invoiceNo']
+                            invoiceNos: !context.controller.cashBill ? 'VT-' + listViewData[i]['invoiceNo'] : listViewData[i]['invoiceNo']
                         };
 
-                        if (!cashBill) {
+                        if (!context.controller.cashBill) {
                             partDetail.amount = parseFloat(partDetail.amount) + (parseFloat(partDetail.amount) * parseFloat(partDetail.taxRate / 100));
                         }
                         var isPartExist = context.commonFact.findObjectByKey(partDetailList, 'partNo', partDetail['partNo']);
