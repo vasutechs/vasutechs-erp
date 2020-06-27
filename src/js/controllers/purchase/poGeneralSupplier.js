@@ -3,7 +3,7 @@ erpConfig.moduleFiles.poGeneralSupplier = function(context) {
         updatePartDetails: function(mapping) {
             context.commonFact.getData('marketing.partMaster', mapping.id).then(function(res) {
                 var partData = res.data;
-                for (var mapKey in rmData) {
+                for (var mapKey in partData) {
                     if (mapping[mapKey] === null || mapping[mapKey] === '') {
                         mapping[mapKey] = partData[mapKey];
                     }

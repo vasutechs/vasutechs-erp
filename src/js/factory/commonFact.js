@@ -422,7 +422,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 }
                 serviceConfig.params = angular.extend(serviceConfig.params || {}, { appCustomer: serviceConfig.params && serviceConfig.params.appCustomer || context.commonFact.isAppCustomer() || '' })
 
-                if (!!serviceConfig.params.year) {
+                if (serviceConfig.params.year && typeof(serviceConfig.params.year) !== 'string') {
                     serviceConfig.params.year = context.erpAppConfig.calendarYear || currentYear;
                 }
                 serviceConfig.url = genUrl(serviceConfig);
@@ -528,21 +528,28 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     data[field.id] = null;
                 }
             },
-            findObjectByKey: function(array, key, value) {
+            findObjectByKey: function(array, findKey, value) {
                 var isExist = false;
-                for (var i = 0; i < array.length; i++) {
-                    if (typeof(key) === 'object') {
-                        for (var j in key) {
-                            if ((!isExist || typeof(isExist) === 'object') && array[i][j] === key[j]) {
-                                isExist = array[i];
-                                isExist['index'] = i;
-                            }
+                var data = array;
+                var filter = findKey;
+                if (typeof(filter) === 'object') {
+                    isExist = data.filter(function(item) {
+                        for (var key in filter) {
+                            if (item[key] === undefined || item[key] != filter[key])
+                                return false;
                         }
-                    } else if (array[i][key] === value) {
-                        isExist = array[i];
-                        isExist['index'] = i;
+                        return true;
+                    });
+                    isExist = isExist && isExist[0];
+                } else {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i][filter] === value) {
+                            isExist = data[i];
+                            isExist['index'] = i;
+                        }
                     }
                 }
+
                 return isExist;
             },
             updateGstPart: function(data, newValue, field, fieldMapKey) {
@@ -853,10 +860,11 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     id: 'getDatabases'
                 };
                 var prodTabConfig = context.erpAppConfig.modules.controllers.report.productionEntryReport.services.list;
-                var dataList = [];
+
                 return context.commonFact.getData(listOfDbsConfig).then(function(res) {
                     var listOfDbs = res.data.list;
                     var listOfDbsProm = [];
+                    var dataList = [];
                     for (var i in listOfDbs) {
                         var serConf = angular.copy(prodTabConfig);
                         serConf.params.year = listOfDbs[i];

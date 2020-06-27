@@ -4832,7 +4832,7 @@
                         "options": {}
                     }],
                     "page": {
-                        "link": "accounts/customerPaymentInvoice?type=cashBill",
+                        "link": "accounts/customerPaymentCashBill",
                         "name": "list",
                         "downloadExcel": true
                     },
