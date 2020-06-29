@@ -42,7 +42,7 @@
                 </td>
             </tr>
             <tr ng-if="context.controller.listViewData.length > 0 && context.controller.listViewData.length >= context.controller.pageSize">
-                <td colspan="{{context.controller.listView.length + 1}}" align="center">
+                <td colspan="{{context.controller.listView.length + 2}}" align="center">
                     <button ng-disabled="context.controller.currentPage == 0" class="btn btn-primary" ng-click="context.controller.currentPage=context.controller.currentPage-1">
                         Previous
                     </button> {{context.controller.currentPage+1}}/{{context.commonFact.numberOfPages()}}

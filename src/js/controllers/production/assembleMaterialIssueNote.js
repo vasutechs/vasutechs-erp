@@ -5,7 +5,7 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
             orgItemVal = angular.copy(context.controller.data);
         },
         callBackAdd: function() {
-            orgItemVal = angular.copy(context.controller.data);
+            orgItemVal = null;
         },
         callBackList: function() {
             context.commonFact.getPartStock();
@@ -77,13 +77,13 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
             }
 
         },
-        updateSubPartStock: function() {
+        updateSubPartStock: function(isDel) {
             var mapStockUpdate = function(map, key, del) {
                 var data = angular.copy(map);
                 var newContext = angular.copy(context);
                 data.partNo = data.id;
-                if (!del && orgItemVal) {
-                    if (orgItemVal.id && orgItemVal.mapping && orgItemVal.mapping[key]) {
+                if (!del) {
+                    if (orgItemVal && orgItemVal.id && orgItemVal.mapping && orgItemVal.mapping[key]) {
                         data.acceptedQty = parseInt(orgItemVal.mapping[key].issueQty) - parseInt(map.issueQty);
                     } else {
                         data.acceptedQty = 0 - parseInt(map.issueQty);
@@ -96,26 +96,31 @@ erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
                 context.commonFact.updatePartStock(newContext);
             };
             for (var i in context.controller.data.mapping) {
-                mapStockUpdate(context.controller.data.mapping[i], i, false);
+                mapStockUpdate(context.controller.data.mapping[i], i, isDel || false);
             }
         },
         callBackSubmit: function() {
             var qtyCanMake;
-            context.controller.methods.updateSubPartStock();
+            var newContext = angular.copy(context);
             if (orgItemVal && orgItemVal.qtyCanMake) {
-                qtyCanMake = parseInt(context.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
-                context.controller.data.acceptedQty = qtyCanMake;
+                qtyCanMake = parseInt(newContext.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
+                newContext.controller.data.acceptedQty = qtyCanMake;
             } else {
-                context.controller.data.acceptedQty = context.controller.data.qtyCanMake;
+                newContext.controller.data.acceptedQty = newContext.controller.data.qtyCanMake;
             }
-            context.commonFact.updatePartStock();
+            context.commonFact.updatePartStock(newContext).then(function() {
+                context.controller.methods.updateSubPartStock();
+            });
+
         },
         callBeforeDelete: function(id, item) {
             var qtyCanMake;
-            context.controller.data = item;
-            context.controller.methods.updateSubPartStock(true);
-            context.controller.data.acceptedQty = 0 - parseInt(context.controller.data.qtyCanMake);
-            context.commonFact.updatePartStock();
+            var newContext = angular.copy(context);
+            newContext.controller.data = item;
+            newContext.controller.data.acceptedQty = 0 - parseInt(newContext.controller.data.qtyCanMake);
+            context.commonFact.updatePartStock(newContext).then(function() {
+                context.controller.methods.updateSubPartStock(true);
+            });
         }
     };
 };

@@ -11,10 +11,10 @@
         <thead>
             <tr>
                 <th ng-repeat="(key, list) in context.controller.filterView.fields">
-                    {{list.title}}:<select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.commonFact.callActions(list.action, [list]) || context.commonFact.viewFilterBy(list)"
+                    {{list.title}}:<select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[list.id]" ng-change="context.commonFact.callActions(list.action, [list]) || context.commonFact['list']()"
                         ng-options="option.optionId as option.optionName for option in list.options">
                         <option value="">--Select--</option>
-                    </select> <input ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.commonFact.callActions(list.action, [list]) || context.commonFact.viewFilterBy(list)"
+                    </select> <input ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[list.id]" ng-change="context.commonFact.callActions(list.action, [list]) || context.commonFact['list']()"
                     />
                 </th>
             </tr>

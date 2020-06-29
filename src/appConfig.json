@@ -2927,7 +2927,6 @@
                                     "replaceName": "partNo",
                                     "action": "changeMapping",
                                     "updateData": ["partName"],
-                                    "existingCheck": true,
                                     "isSingle": true
                                 },
                                 "partName": {
