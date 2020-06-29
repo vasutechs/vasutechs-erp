@@ -173,34 +173,41 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 }
                 return returnFlag;
             },
-            makeOptionsFields: function(field) {
+            makeOptionsFields: function(field, fields) {
                 var self = this,
                     list;
 
                 field.options = {};
                 field.allOptions = {};
+                if (field.dataFrom && (typeof(field.dataFrom) === 'object' || context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, field.dataFrom))) {
+                    return context.commonFact.getData(field.dataFrom).then(function(res) {
+                        list = res.data;
+                        for (var i in list) {
+                            var optionVal = field.optionId && list[i][field.optionId] || list[i]['id'];
+                            var optionIdVal = field.optionId && list[i][field.optionId] || list[i]['id'];
+                            var optionNameVal = field.valuePrefix && field.valuePrefix || '';
+                            var editOption = context.controller.existEditData && optionIdVal === context.controller.existEditData[field.id] || false;
+                            optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
+                            optionNameVal += list[i][field.replaceName] || '';
+                            var isCheckExistVal = field.existingCheck && context.controller.listViewDataMaster && context.commonFact.findObjectByKey(context.controller.listViewDataMaster, field.id, optionIdVal) || false;
+                            field.allOptions[optionVal] = list[i];
+                            if (optionVal && field.allOptions[optionVal]) {
+                                field.allOptions[optionVal]['optionName'] = optionNameVal;
+                                field.allOptions[optionVal]['optionId'] = optionIdVal;
+                            }
 
-                return context.commonFact.getData(field.dataFrom).then(function(res) {
-                    list = res.data;
-                    for (var i in list) {
-                        var optionVal = field.optionId && list[i][field.optionId] || list[i]['id'];
-                        var optionIdVal = field.optionId && list[i][field.optionId] || list[i]['id'];
-                        var optionNameVal = field.valuePrefix && field.valuePrefix || '';
-                        var editOption = context.controller.existEditData && optionIdVal === context.controller.existEditData[field.id] || false;
-                        optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
-                        optionNameVal += list[i][field.replaceName] || '';
-                        var isCheckExistVal = field.existingCheck && context.controller.listViewDataMaster && context.commonFact.findObjectByKey(context.controller.listViewDataMaster, field.id, optionIdVal) || false;
-                        field.allOptions[optionVal] = list[i];
-                        field.allOptions[optionVal]['optionName'] = optionNameVal;
-                        field.allOptions[optionVal]['optionId'] = optionIdVal;
-                        if ((field.filter === undefined ||
-                                context.commonFact.matchFilter(field, list[i], context) === true) &&
-                            (!isCheckExistVal || editOption)) {
-                            field.options[optionVal] = field.allOptions[optionVal];
+                            if ((field.filter === undefined ||
+                                    context.commonFact.matchFilter(field, list[i], context) === true) &&
+                                (!isCheckExistVal || editOption)) {
+                                field.options[optionVal] = field.allOptions[optionVal];
+                            }
                         }
-                    }
-                    return field;
-                });
+                        return field;
+                    });
+                } else if (fields && fields[field.id] && fields[field.id].dataFrom) {
+                    delete fields[field.id];
+                    return true;
+                }
             },
             addMapping: function(mapping) {
                 var newMapping = angular.extend({}, mapping[0]);
@@ -540,7 +547,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         }
                         return true;
                     });
-                    isExist = isExist && isExist[0];
+                    isExist = isExist && isExist[isExist.length - 1];
                 } else {
                     for (var i = 0; i < data.length; i++) {
                         if (data[i][filter] === value) {
@@ -570,10 +577,8 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             updateFields: function(fields) {
                 var returnPromise = [];
                 for (var i in fields) {
-                    if (fields[i].dataFrom && (typeof(fields[i].dataFrom) === 'object' || context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, fields[i].dataFrom)) && (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions)) {
-                        returnPromise.push(context.commonFact.makeOptionsFields(fields[i]));
-                    } else if (fields[i].dataFrom) {
-                        delete fields[i];
+                    if (fields[i].makeFieldOptions === undefined || fields[i].makeFieldOptions) {
+                        returnPromise.push(context.commonFact.makeOptionsFields(fields[i], fields));
                     }
                 }
                 return Promise.all(returnPromise);
@@ -765,6 +770,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
 
                                 if (checkPartStock) {
                                     checkPartStock.partName = partMaster[j].partName;
+                                    checkPartStock.partNo = partMaster[j].partNo;
                                     if (redAlert >= checkPartStock.partStockQty) {
                                         context.alertRolContext.partRolRed.push(checkPartStock);
                                     } else if (yellowAlert >= checkPartStock.partStockQty) {

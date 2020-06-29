@@ -14,6 +14,9 @@ erpConfig.moduleFiles.login = function(context) {
             context.commonFact.goToPage(context.erpAppConfig.modules.controllers.login.page.link, true);
         },
         onLoad: function() {
+            if (!context.erpAppConfig.serverAuth) {
+                delete context.controller.form.fields['appCustomer'];
+            }
             if (context.commonFact.location.search() && context.commonFact.location.search()['type'] === 'logout') {
                 context.erpAppConfig.serverAuth && context.authFact.logout().then(function() {
                     context.controller.methods.redirectLogin();

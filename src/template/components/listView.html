@@ -36,7 +36,7 @@
                             <a href="javascript: void(0);" title="Delete" ng-click="context.commonFact.delete(dataList.id, dataList)" class="fa fa-fw fa-times"> </a>
                         </div>
                         <div class="col" ng-if="context.controller.page.custumActions" ng-repeat="(key, actions) in context.controller.page.custumActions">
-                            <a href="javascript: void(0);" title="{{actions.title}}" ng-click="context.commonFact.callActions(actions.method)" class="fa fa-fw fa-{{actions.class}}"> </a>
+                            <a href="javascript: void(0);" title="{{actions.title}}" ng-click="context.commonFact.callActions(actions.method, [dataList.id, dataList])" class="fa fa-fw fa-{{actions.class}}"> </a>
                         </div>
                     </div>
                 </td>

@@ -656,6 +656,7 @@
                         "total": null,
                         "mapping": [{
                             "id": null,
+                            "partName": null,
                             "hsnCode": null,
                             "unit": null,
                             "rate": null,
@@ -769,6 +770,11 @@
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
                                     "isDisable": true
+                                },
+                                "partName": {
+                                    "name": "Part Name",
+                                    "id": "partName",
+                                    "type": "span"
                                 },
                                 "hsnCode": {
                                     "name": "HSN Code",
@@ -5532,8 +5538,8 @@
                 "icon": "cog",
                 "restricked": true,
                 "defaultRelease": true,
-                "users": {
-                    "id": "users",
+                "superUsers": {
+                    "id": "superUsers",
                     "title": "Users",
                     "restricked": true,
                     "masterData": {
@@ -5543,7 +5549,7 @@
                     },
                     "form": {
                         "name": "Users",
-                        "id": "Users",
+                        "id": "superUsers",
                         "fields": {
                             "userName": {
                                 "name": "User Name",
@@ -5571,6 +5577,7 @@
                     },
                     "services": {
                         "list": {
+                            "id": "users",
                             "dataUri": "restrict"
                         }
                     }

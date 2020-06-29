@@ -111,9 +111,9 @@ module.exports = function(config) {
 
     config.task.dbData = function(req, res, localDb) {
         var data = {};
-        var inputData = req.body;
-        var params = req.params;
-        var query = req.query;
+        var inputData = req.body || {};
+        var params = req.params || {};
+        var query = req.query || {};
         var table = updateDataId(params, inputData, query);
         var dbConfig = setCustomerCurrentDb(inputData.appCustomer || query.appCustomer, inputData.year || query.year) || {};
         if (localDb) {
@@ -138,8 +138,8 @@ module.exports = function(config) {
 
     config.task.login = function(req, localDb) {
         var data = null;
-        var inputData = req.body;
-        var query = req.query;
+        var inputData = req.body || {};
+        var query = req.query || {};
         var dbConfig = setCustomerCurrentDb(inputData.appCustomer || query.appCustomer, inputData.year || query.year) || {};
         if (localDb) {
             dbConfig.currentDb = localDb;

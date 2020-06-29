@@ -9,19 +9,7 @@ module.exports = function() {
             serverPath: 'http://localhost:9000'
         },
         buildTasks: './build_tasks',
-        task: {},
-        release: {
-            path: './release',
-            dist: './release/dist',
-            namePefix: 'VasuTechsERP-',
-            defaultFiles: [
-                'index.html',
-                'build_tasks/server.js',
-                'build_tasks/dbApi.js',
-                'build_tasks/config.js',
-                'package.json'
-            ]
-        }
+        task: {}
     };
     config.buildProRes = null;
     config.buildPromise = new Promise(function(res) {

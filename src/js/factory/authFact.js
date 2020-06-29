@@ -26,12 +26,20 @@ erpConfig.moduleFiles.authFact = function($window) {
         };
 
         var logout = function() {
+            var promiseRes = context.commonFact.getPromiseRes();
             setUserDetail();
             erpUserDetails = null;
-            return context.commonFact.getData({
-                dataUri: 'logout',
-                cache: false
-            });
+            if (context.erpAppConfig.serverAuth) {
+                context.commonFact.getData({
+                    dataUri: 'logout',
+                    cache: false
+                }).then(function(res) {
+                    promiseRes.resolve();
+                });
+            } else {
+                promiseRes.resolve();
+            }
+            return promiseRes.promise;
 
         };
 

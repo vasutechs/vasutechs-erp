@@ -23,7 +23,7 @@ erpConfig.moduleFiles.machineRunningTime = function(context) {
                                 };
 
                                 details.runningTime = details.cumRunningTime = parseFloat(details.endTime) - parseFloat(details.startTime);
-                                var isExist = context.commonFact.findObjectByKey(list, machineNo, details.machineNo);
+                                var isExist = context.commonFact.findObjectByKey(list, 'machineNo', details.machineNo);
                                 if (isExist) {
                                     details.cumRunningTime += parseFloat(isExist.cumRunningTime);
                                 }

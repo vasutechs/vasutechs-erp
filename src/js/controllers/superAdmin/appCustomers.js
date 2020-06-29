@@ -68,9 +68,8 @@ erpConfig.moduleFiles.appCustomers = function(context) {
             };
             context.commonFact.getData(removeAppCustomer);
         },
-        downloadAppCustomer: function(data) {
-            var id = data.id;
-            window.open('/appCustomers/' + id);
+        downloadAppCustomer: function(id) {
+            window.open('/api/auth/downloadAppCustomers/?appCustomer=' + id);
         }
     };
 };

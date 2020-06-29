@@ -87,6 +87,16 @@ module.exports = function(config) {
         res.status(200).send(data);
     };
 
+    var downloadAppCustomers = function(req, res) {
+        if (checkSuperAdminUser(req) && req.query.appCustomer) {
+            var releaseProjectData = masterDb.getData('/tables/appCustomers/' + req.query.appCustomer);
+            config.task.releaseProject(req, res, releaseProjectData);
+        } else {
+            res.status(401).send({});
+        }
+    };
+
+
     config.task.checkLoggedIn = function(req, res) {
         if (req.session.auth && req.session.auth.loggedIn) {
             res.status(200).send(req.session.auth);
@@ -113,5 +123,6 @@ module.exports = function(config) {
     config.app.use("/api/auth/checkLoggedIn", config.task.checkLoggedIn);
     config.app.use("/api/auth/removeAppCustomer", removeAppCustomer);
     config.app.use("/api/auth/getAppCustomer", getAppCustomer);
+    config.app.use("/api/auth/downloadAppCustomers", downloadAppCustomers);
     config.app.use("/api/auth/restrict/:table", restrictedDbData);
 };

@@ -11,14 +11,15 @@ module.exports = function(config) {
         applyAppConfig = function() {
             appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
             if (config.release.status) {
-                for (var i in appConfig.modules) {
-                    let module = appConfig.modules[i];
+                delete appConfig.serverAuth;
+                for (var i in appConfig.modules.controllers) {
+                    let module = appConfig.modules.controllers[i];
                     let isSubModule = false;
                     if (!module.page) {
                         for (var j in module) {
                             if (typeof(module[j]) === 'object') {
                                 if (!config.src.defaultModules.includes(i + '/' + j) && !config.src.defaultModules.includes(i + '/**')) {
-                                    delete appConfig.modules[i][j];
+                                    delete appConfig.modules.controllers[i][j];
                                 } else {
                                     isSubModule = true;
                                 }
@@ -26,7 +27,7 @@ module.exports = function(config) {
                         }
                     }
                     if (!config.src.defaultModules.includes(i) && !isSubModule) {
-                        delete appConfig.modules[i];
+                        delete appConfig.modules.controllers[i];
                     }
                 };
             }
@@ -54,8 +55,46 @@ module.exports = function(config) {
         },
         dist: {
             path: './dist'
+        },
+        release: {
+            path: './release',
+            dist: './release/dist',
+            namePefix: 'VasuTechsERP-',
+            defaultFiles: [
+                'index.html',
+                'build_tasks/app.js',
+                'build_tasks/server.js',
+                'build_tasks/dbApi.js',
+                'build_tasks/config.js',
+                'package.json'
+            ]
         }
     });
+
+    config.task.releaseProject = function(req, res, releaseProjectData) {
+        var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
+        config.dist.path = config.release.dist;
+        if (releaseProjectData) {
+            for (var i in releaseProjectData.mapping) {
+                config.src.defaultModules.push(releaseProjectData.mapping[i].module);
+            }
+            config.src.defaultModules = Object.assign(config.src.defaultModules, releaseProjectData.modules);
+            config.release.status = true;
+            config.task.buildProject();
+            config.buildPromise.then(function(resData) {
+                res.writeHead(200, {
+                    'Content-Type': 'application/octet-stream',
+                    'Content-Disposition': 'attachment; filename=' + projectName,
+                    'Content-Length': resData.length
+                });
+
+                res.end(resData);
+            });
+        } else {
+            res.writeHead(401, { 'Content-Type': 'application/json' });
+            res.end();
+        }
+    };
 
 
     gulp.task('clean', config.task.clean = () => {
@@ -116,51 +155,24 @@ module.exports = function(config) {
         return gulp.src(config.release.defaultFiles, { base: "." })
             .pipe(gulp.dest(config.release.path));
     });
+    gulp.task('build-release-data', buildReleaseFiles = () => {
+        fs.writeFile(config.release.path + '/start.bat', 'npm run app-start-node');
+        return gulp.src(config.release.defaultFiles, { base: "." })
+            .pipe(gulp.dest(config.release.path));
+    });
 
     gulp.task('build-project-zip', buildProjectZip = (done) => {
         const zip = new AdmZip();
         zip.addLocalFolder(config.release.path);
         const data = zip.toBuffer();
-        del([config.release.path]);
+        //del([config.release.path]);
         config.buildProRes(data);
         done();
     });
     gulp.task('build-project', config.task.buildProject = gulp.series('build', 'build-release-files', 'build-project-zip'));
 
-    gulp.task('create-api', config.task.createApi = (done) => {
-        config.app.use('/releaseProject', function(req, res) {
-            var releaseProjectData = dbApi.dbConnect(req, res);
-            var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
-            config.dist.path = config.release.dist;
-            if (releaseProjectData) {
-                for (var i in releaseProjectData.mapping) {
-                    config.src.defaultModules.push(releaseProjectData.mapping[i].module);
-                }
-                config.src.defaultModules = Object.assign(config.src.defaultModules, releaseProjectData.modules);
-                config.release.status = true;
-                config.task.buildProject();
-                config.buildPromise.then(function(resData) {
-                    res.writeHead(200, {
-                        'Content-Type': 'application/octet-stream',
-                        'Content-Disposition': 'attachment; filename=' + projectName,
-                        'Content-Length': resData.length
-                    });
 
-                    res.end(resData);
-                });
-            } else {
-                res.writeHead(401, { 'Content-Type': 'application/json' });
-                res.end();
-            }
-
-        });
-        done();
+    gulp.task('server', () => {
+        config.task.server()
     });
-
-    gulp.task('create-server', config.task.createServer = (done) => {
-        config.task.server();
-        done();
-    });
-
-    gulp.task('server', config.task.server = gulp.series('create-api', 'create-server'));
 };
