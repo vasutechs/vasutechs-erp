@@ -51,10 +51,15 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 context.controller.methods.callBackDelete && context.controller.methods.callBackDelete(id, item);
             },
             delete: function(id, item) {
-                context.controller.methods.callBeforeDelete && context.controller.methods.callBeforeDelete(id, item);
-                context.commonFact.updateData(context.controller, { id: id, delete: 'yes' });
-                context.commonFact.list();
-                context.controller.methods.callBackDelete && context.controller.methods.callBackDelete(id, item);
+                var isConfirmed = confirm("Are you sure to delete this record ?");
+                if (isConfirmed) {
+                    context.controller.methods.callBeforeDelete && context.controller.methods.callBeforeDelete(id, item);
+                    context.commonFact.updateData(context.controller, { id: id, delete: 'yes' });
+                    context.commonFact.list();
+                    context.controller.methods.callBackDelete && context.controller.methods.callBackDelete(id, item);
+                } else {
+                    return false;
+                }
             },
             list: function() {
                 var pageProm = [];

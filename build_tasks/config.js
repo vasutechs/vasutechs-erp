@@ -5,8 +5,8 @@ module.exports = function() {
         app: require("express")(),
         webServer: {
             distPath: './',
-            serverPort: '9000',
-            serverPath: 'http://localhost:9000'
+            serverPort: 9000,
+            serverPath: 'http://localhost'
         },
         buildTasks: './build_tasks',
         task: {}

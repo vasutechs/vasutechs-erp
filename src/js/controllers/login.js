@@ -16,6 +16,7 @@ erpConfig.moduleFiles.login = function(context) {
         onLoad: function() {
             if (!context.erpAppConfig.serverAuth) {
                 delete context.controller.form.fields['appCustomer'];
+                context.controller.data.appCustomer = context.erpAppConfig.appCustomer || '';
             }
             if (context.commonFact.location.search() && context.commonFact.location.search()['type'] === 'logout') {
                 context.erpAppConfig.serverAuth && context.authFact.logout().then(function() {

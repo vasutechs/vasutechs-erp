@@ -9,9 +9,10 @@ module.exports = function(config) {
         dbApi = require('./dbApi')(config),
         AdmZip = require('adm-zip'),
         applyAppConfig = function() {
-            appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
+            var appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
             if (config.release.status) {
                 delete appConfig.serverAuth;
+                appConfig.appCustomer = config.release.releaseProjectData.id;
                 for (var i in appConfig.modules.controllers) {
                     let module = appConfig.modules.controllers[i];
                     let isSubModule = false;
@@ -49,8 +50,8 @@ module.exports = function(config) {
         src: {
             js: './src/js',
             template: './src/template',
-            defaultSrcJsFiles: ['./src/js/boot.js', './src/js/components/**.**', './src/js/factory/**.**', './src/js/services/**.**', './src/js/controllers/admin/**', './src/js/controllers/dashboard.js', './src/js/controllers/databaseUpload.js'],
-            defaultModules: ['databaseUpload', 'databaseDownload', 'calendarYear', 'dashboard', 'admin/**'],
+            defaultSrcJsFiles: ['./src/js/boot.js', './src/js/components/**.**', './src/js/factory/**.**', './src/js/services/**.**', './src/js/controllers/admin/**', './src/js/controllers/login.js', './src/js/controllers/databaseUpload.js'],
+            defaultModules: ['login', 'databaseUpload', 'databaseDownload', 'calendarYear', 'dashboard', 'admin/**'],
             assets: './src/assets'
         },
         dist: {
@@ -80,6 +81,7 @@ module.exports = function(config) {
             }
             config.src.defaultModules = Object.assign(config.src.defaultModules, releaseProjectData.modules);
             config.release.status = true;
+            config.release.releaseProjectData = releaseProjectData;
             config.task.buildProject();
             config.buildPromise.then(function(resData) {
                 res.writeHead(200, {
@@ -156,8 +158,8 @@ module.exports = function(config) {
             .pipe(gulp.dest(config.release.path));
     });
     gulp.task('build-release-data', buildReleaseFiles = () => {
-        fs.writeFile(config.release.path + '/start.bat', 'npm run app-start-node');
-        return gulp.src(config.release.defaultFiles, { base: "." })
+        var appCustomerData = './data/appCustomer-' + config.release.releaseProjectData.id + '/**';
+        return gulp.src(appCustomerData, { base: "." })
             .pipe(gulp.dest(config.release.path));
     });
 
@@ -165,11 +167,11 @@ module.exports = function(config) {
         const zip = new AdmZip();
         zip.addLocalFolder(config.release.path);
         const data = zip.toBuffer();
-        //del([config.release.path]);
+        del([config.release.path]);
         config.buildProRes(data);
         done();
     });
-    gulp.task('build-project', config.task.buildProject = gulp.series('build', 'build-release-files', 'build-project-zip'));
+    gulp.task('build-project', config.task.buildProject = gulp.series('build', 'build-release-files', 'build-release-data', 'build-project-zip'));
 
 
     gulp.task('server', () => {
