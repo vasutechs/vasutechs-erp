@@ -167,11 +167,11 @@ module.exports = function(config) {
         const zip = new AdmZip();
         zip.addLocalFolder(config.release.path);
         const data = zip.toBuffer();
-        del([config.release.path]);
+        //del([config.release.path]);
         config.buildProRes(data);
         done();
     });
-    gulp.task('build-project', config.task.buildProject = gulp.series('build', 'build-release-files', 'build-release-data', 'build-project-zip'));
+    gulp.task('build-project', config.task.buildProject = gulp.series('build', 'build-release-files', 'build-project-zip'));
 
 
     gulp.task('server', () => {

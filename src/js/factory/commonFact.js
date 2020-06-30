@@ -123,7 +123,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 var ctrl = angular.copy(module || context.controller);
                 var serviceConf = context.commonFact.getServiceConfig(ctrl, 'GET');
                 var params = data && typeof(data) !== 'object' ? { id: data } : data;
-                serviceConf.params = angular.extend(serviceConf.params, params);
+                serviceConf.params = angular.extend(serviceConf.params || {}, params);
                 //Get Part master data
                 return context.serviceApi.callServiceApi(serviceConf);
             },
@@ -428,11 +428,14 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 if (typeof(ctrl) !== 'object') {
                     ctrl = angular.copy(context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, ctrl));
                 }
+                if (!ctrl) {
+                    return {};
+                }
                 if (ctrl.id && ctrl.page) {
                     serviceConfig = ctrl.services && ctrl.services.list || {};
                     serviceConfig.id = serviceConfig.id || ctrl.id;
                 }
-                serviceConfig.params = angular.extend(serviceConfig.params || {}, { appCustomer: serviceConfig.params && serviceConfig.params.appCustomer || context.commonFact.isAppCustomer() || '' })
+                serviceConfig.params = angular.extend(serviceConfig.params || {}, { appCustomer: serviceConfig.params && serviceConfig.params.appCustomer || context.commonFact.isAppCustomer() || context.erpAppConfig.appCustomer || '' })
 
                 if (serviceConfig.params.year && typeof(serviceConfig.params.year) !== 'string') {
                     serviceConfig.params.year = context.erpAppConfig.calendarYear || currentYear;

@@ -8,7 +8,6 @@
     "serverApiUri": "api",
     "serverDataUri": "data",
     "serverAuth": "auth",
-    "appCustomer": false,
     "modules": {
         "controllers": {
             "login": {
@@ -3869,13 +3868,7 @@
                         "link": "report/rmStock",
                         "name": "list",
                         "downloadExcel": true,
-                        "downloadTableData": true,
-                        "actions": {
-                            "add": true,
-                            "edit": true,
-                            "print": true,
-                            "delete": false
-                        }
+                        "downloadTableData": true
                     }
                 },
                 "partStock": {
@@ -3974,13 +3967,7 @@
                         "link": "report/partStock",
                         "name": "list",
                         "downloadExcel": true,
-                        "downloadTableData": true,
-                        "actions": {
-                            "add": true,
-                            "edit": true,
-                            "print": true,
-                            "delete": false
-                        }
+                        "downloadTableData": true
                     }
                 },
                 "subContractorStock": {
@@ -4098,13 +4085,7 @@
                         "link": "report/subContractorStock",
                         "name": "list",
                         "downloadExcel": true,
-                        "downloadTableData": true,
-                        "actions": {
-                            "add": true,
-                            "edit": true,
-                            "print": true,
-                            "delete": false
-                        }
+                        "downloadTableData": true
                     }
                 },
                 "salesAnalysisInvoice": {
@@ -5517,7 +5498,9 @@
                                 "id": "userType",
                                 "type": "select",
                                 "options": {},
-                                "required": true
+                                "required": true,
+                                "dataFrom": "admin.userTypes",
+                                "replaceName": "userType"
                             }
                         }
                     },

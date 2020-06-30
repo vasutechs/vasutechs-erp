@@ -26,7 +26,7 @@ erpConfig.moduleFiles.toolHistoryCard = function(context) {
                                     cummulativeQty: parseInt(listViewData[i].mapping[j].acceptedQty)
                                 };
 
-                                var isPartExist = context.commonFact.findObjectByKey(list, { toolNo: details.toolNo, partNo: details.partNo });
+                                var isPartExist = context.commonFact.findObjectByKey(list, 'toolNo', details.toolNo);
                                 if (isPartExist) {
                                     details.cummulativeQty += parseInt(isPartExist.cummulativeQty);
                                 }

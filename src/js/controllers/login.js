@@ -14,9 +14,8 @@ erpConfig.moduleFiles.login = function(context) {
             context.commonFact.goToPage(context.erpAppConfig.modules.controllers.login.page.link, true);
         },
         onLoad: function() {
-            if (!context.erpAppConfig.serverAuth) {
+            if (!context.erpAppConfig.serverAuth && context.erpAppConfig.appCustomer) {
                 delete context.controller.form.fields['appCustomer'];
-                context.controller.data.appCustomer = context.erpAppConfig.appCustomer || '';
             }
             if (context.commonFact.location.search() && context.commonFact.location.search()['type'] === 'logout') {
                 context.erpAppConfig.serverAuth && context.authFact.logout().then(function() {
