@@ -132,7 +132,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 var userDetails = context.authFact.getUserDetail();
                 var serviceConf = context.commonFact.getServiceConfig(ctrl, 'POST');
                 serviceConf.cache = false;
-                data.updatedUserId = userDetails && context.commonFact.isSuperAdmin() ? context.commonFact.isSuperAdmin() + '-' + userDetails.id : userDetails.id || null;
+                data.updatedUserId = (userDetails && context.commonFact.isSuperAdmin()) ? context.commonFact.isSuperAdmin() + '-' + userDetails.id : userDetails ? userDetails.id : null;
                 //Get Part master data
                 return context.serviceApi.callServiceApi(serviceConf, data);
             },
@@ -222,8 +222,12 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 mapping.push(newMapping);
             },
             removeMapping: function(data, key) {
-                delete data.splice(key, 1);
-                context.controller.methods.callBackRemoveMapping && context.controller.methods.callBackRemoveMapping(data, key);
+                var isConfirmed = confirm("Are you sure to delete this record ?");
+                if (isConfirmed) {
+                    delete data.splice(key, 1);
+                    context.controller.methods.callBackRemoveMapping && context.controller.methods.callBackRemoveMapping(data, key);
+
+                }
             },
             changeMapping: function(data, key, field, fieldMapKey) {
                 for (var dataKey in data) {
@@ -435,7 +439,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     serviceConfig = ctrl.services && ctrl.services.list || {};
                     serviceConfig.id = serviceConfig.id || ctrl.id;
                 }
-                serviceConfig.params = angular.extend(serviceConfig.params || {}, { appCustomer: serviceConfig.params && serviceConfig.params.appCustomer || context.commonFact.isAppCustomer() || context.erpAppConfig.appCustomer || '' })
+                serviceConfig.params = angular.extend(serviceConfig.params || {}, { appCustomer: serviceConfig.params && serviceConfig.params.appCustomer || context.commonFact.isAppCustomer() || '' })
 
                 if (serviceConfig.params.year && typeof(serviceConfig.params.year) !== 'string') {
                     serviceConfig.params.year = context.erpAppConfig.calendarYear || currentYear;
@@ -808,7 +812,10 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             isAppCustomer: function() {
                 var userDetails = context.authFact.getUserDetail();
-                return userDetails && userDetails.appCustomer;
+                return userDetails && userDetails.appCustomer || context.commonFact.isLocalAppCustomer();
+            },
+            isLocalAppCustomer: function() {
+                return context.erpAppConfig.appCustomer;
             },
             isShowMenu: function(menu) {
                 var disabled = menu.disableMenu || menu.disable;
@@ -829,10 +836,10 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 var promiseRes = context.commonFact.getPromiseRes();
                 var isAppCustomer = context.commonFact.isAppCustomer();
                 var userDetail = context.authFact.getUserDetail();
-                if (isAppCustomer && userDetail) {
+                if (isAppCustomer) {
                     context.commonFact.getData(context.erpAppConfig.modules.controllers.admin.settings, isAppCustomer).then(function(res) {
                         context.erpAppConfig = angular.extend(context.erpAppConfig, res.data);
-                        if (context.commonFact.isAppUser()) {
+                        if (userDetail && context.commonFact.isAppUser()) {
                             for (var i in context.erpAppConfig.mapping) {
                                 var map = context.erpAppConfig.mapping[i];
                                 var module = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, map.module) || {};
@@ -871,7 +878,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             },
             getAllYearData: function() {
                 var listOfDbsConfig = {
-                    id: 'getDatabases'
+                    id: 'getYearDatabases'
                 };
                 var prodTabConfig = context.erpAppConfig.modules.controllers.report.productionEntryReport.services.list;
 

@@ -3476,7 +3476,7 @@
                                 "valuePrefixData": "opCode",
                                 "isEditDisable": true,
                                 "filter": {
-                                    "source": ["In-House-Assembly", "105"]
+                                    "source": ["In-House-Assembly"]
                                 },
                                 "isSingle": true
                             },

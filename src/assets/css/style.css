@@ -513,7 +513,6 @@ footer.sticky-footer {
     }
     .print-title {
         text-align: center;
-        ;
     }
     table {
         line-height: 0.5;
@@ -560,4 +559,12 @@ input::-webkit-inner-spin-button {
     text-align: center;
     padding-top: 25%;
     opacity: .80;
+}
+
+.company-name {
+    padding: .75rem 1rem;
+    margin-bottom: 1rem;
+    list-style: none;
+    background-color: #e9ecef;
+    border-radius: .25rem;
 }

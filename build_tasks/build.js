@@ -12,31 +12,36 @@ module.exports = function(config) {
             var appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
             if (config.release.status) {
                 delete appConfig.serverAuth;
+                delete appConfig.modules.controllers.login.form.fields.appCustomer;
+                delete appConfig.modules.controllers.superAdmin;
                 appConfig.appCustomer = config.release.releaseProjectData.id;
-                for (var i in appConfig.modules.controllers) {
-                    let module = appConfig.modules.controllers[i];
-                    let isSubModule = false;
-                    if (!module.page) {
-                        for (var j in module) {
-                            if (typeof(module[j]) === 'object') {
-                                if (!config.src.defaultModules.includes(i + '/' + j) && !config.src.defaultModules.includes(i + '/**')) {
-                                    delete appConfig.modules.controllers[i][j];
-                                } else {
-                                    isSubModule = true;
+                if (!config.release.allModule) {
+                    for (var i in appConfig.modules.controllers) {
+                        let module = appConfig.modules.controllers[i];
+                        let isSubModule = false;
+                        if (!module.page) {
+                            for (var j in module) {
+                                if (typeof(module[j]) === 'object') {
+                                    if (!config.src.defaultModules.includes(i + '/' + j) && !config.src.defaultModules.includes(i + '/**')) {
+                                        delete appConfig.modules.controllers[i][j];
+                                    } else {
+                                        isSubModule = true;
+                                    }
                                 }
                             }
                         }
+                        if (!config.src.defaultModules.includes(i) && !isSubModule) {
+                            delete appConfig.modules.controllers[i];
+                        }
                     }
-                    if (!config.src.defaultModules.includes(i) && !isSubModule) {
-                        delete appConfig.modules.controllers[i];
-                    }
+
                 };
             }
             return JSON.stringify(appConfig);
         },
         getDefaultSrcFiles = function() {
             var defaultSrcJsFiles = config.src.defaultSrcJsFiles;
-            if (config.release.status) {
+            if (config.release.status && !config.release.allModule) {
                 for (var i in config.src.defaultModules) {
                     defaultSrcJsFiles.push('./src/js/controllers/' + config.src.defaultModules[i] + '**');
                 }
@@ -76,10 +81,12 @@ module.exports = function(config) {
         var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
         config.dist.path = config.release.dist;
         if (releaseProjectData) {
-            for (var i in releaseProjectData.mapping) {
-                config.src.defaultModules.push(releaseProjectData.mapping[i].module);
+            if (releaseProjectData.mapping[0].module === 'all') {
+                config.release.allModule = true;
+            } else {
+                config.src.defaultModules = Object.assign(config.src.defaultModules, releaseProjectData.appModules);
             }
-            config.src.defaultModules = Object.assign(config.src.defaultModules, releaseProjectData.modules);
+
             config.release.status = true;
             config.release.releaseProjectData = releaseProjectData;
             config.task.buildProject();
@@ -171,7 +178,7 @@ module.exports = function(config) {
         config.buildProRes(data);
         done();
     });
-    gulp.task('build-project', config.task.buildProject = gulp.series('build', 'build-release-files', 'build-project-zip'));
+    gulp.task('build-project', config.task.buildProject = gulp.series('build', 'build-release-files', 'build-release-data', 'build-project-zip'));
 
 
     gulp.task('server', () => {

@@ -55,7 +55,7 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                     appCustomer: appCustomer
                 }
             };
-            context.commonFact.updateData(appSettings, { id: appCustomer, appModules: data.mapping }).then(function() {
+            context.commonFact.updateData(appSettings, { id: appCustomer, appModules: data.mapping, mapping: [] }).then(function() {
                 !context.controller.page.editKey && context.commonFact.updateData(appUsers, userData);
             });
         },

@@ -72,7 +72,7 @@ module.exports = function(config) {
         return {};
     };
 
-    var getListDb = function(dbConfig) {
+    var getYearListDb = function(dbConfig) {
         var dir = "./data/appCustomer-" + dbConfig.appCustomer;
         var files = fs.readdirSync(dir);
         var listDbYears = [];
@@ -123,8 +123,8 @@ module.exports = function(config) {
         if (dbConfig.currentDb) {
             if (table === '/databaseDownload') {
                 data = dbConfig.currentDb.getData('/');
-            } else if (table === '/getDatabases') {
-                data = { list: getListDb(dbConfig) };
+            } else if (table === '/getYearDatabases') {
+                data = { list: getYearListDb(dbConfig) };
             } else if (table === '/databaseUpload') {
                 data = uploadDb(inputData, dbConfig);
             } else if (req.method === 'POST') {
