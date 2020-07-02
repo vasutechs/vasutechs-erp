@@ -5603,6 +5603,7 @@
                                     "name": "Page name",
                                     "id": "module",
                                     "type": "select",
+                                    "isMultiple": true,
                                     "options": {},
                                     "makeFieldOptions": false
                                 }

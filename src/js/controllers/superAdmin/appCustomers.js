@@ -1,5 +1,12 @@
 erpConfig.moduleFiles.appCustomers = function(context) {
+    var editKey = null;
     return {
+        callBackEdit: function() {
+            editKey = context.controller.page.editKey;
+        },
+        callBackAdd: function() {
+            editKey = null;
+        },
         callBackList: function() {
             var moduleField = context.controller.form.mapping.fields['module'];
             moduleField.options = {
@@ -55,8 +62,10 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                     appCustomer: appCustomer
                 }
             };
-            context.commonFact.updateData(appSettings, { id: appCustomer, appModules: data.mapping, mapping: [] }).then(function() {
-                !context.controller.page.editKey && context.commonFact.updateData(appUsers, userData);
+            var appModules = data.mapping.map(function(key) { return key.module; });
+            console.log(appModules);
+            context.commonFact.updateData(appSettings, { id: appCustomer, appModules: appModules, mapping: [] }).then(function() {
+                !editKey && context.commonFact.updateData(appUsers, userData);
             });
         },
         callBackDelete: function(id) {

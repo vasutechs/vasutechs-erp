@@ -839,6 +839,27 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 if (isAppCustomer) {
                     context.commonFact.getData(context.erpAppConfig.modules.controllers.admin.settings, isAppCustomer).then(function(res) {
                         context.erpAppConfig = angular.extend(context.erpAppConfig, res.data);
+                        if (context.erpAppConfig.appModules && !context.erpAppConfig.appModules.includes('all')) {
+                            for (var i in context.erpAppConfig.modules.controllers) {
+                                let module = context.erpAppConfig.modules.controllers[i];
+                                let isSubModule = false;
+                                if (!module.page) {
+                                    for (var j in module) {
+                                        if (typeof(module[j]) === 'object') {
+                                            if (!context.erpAppConfig.appModules.includes(i + '/' + j) && !context.erpAppConfig.appModules.includes(i + '/**')) {
+                                                delete context.erpAppConfig.modules.controllers[i][j];
+                                            } else {
+                                                isSubModule = true;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (!context.erpAppConfig.appModules.includes(i) && !isSubModule) {
+                                    delete context.erpAppConfig.modules.controllers[i];
+                                }
+                            }
+
+                        }
                         if (userDetail && context.commonFact.isAppUser()) {
                             for (var i in context.erpAppConfig.mapping) {
                                 var map = context.erpAppConfig.mapping[i];
