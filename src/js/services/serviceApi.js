@@ -22,7 +22,7 @@ erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $q, $httpParam
             }
             if (!serviceConf.url) {
                 setTimeout(function() {
-                    promiseRes.reject();
+                    promiseRes.resolve({});
                 }, 200);
                 servicePromise = promiseRes.promise;
             } else {

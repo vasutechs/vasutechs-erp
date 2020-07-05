@@ -5310,6 +5310,116 @@
                 "title": "Admin",
                 "icon": "cog",
                 "defaultRelease": true,
+                "allUser": true,
+                "superUsers": {
+                    "id": "superUsers",
+                    "title": "Super Users",
+                    "superAdmin": true,
+                    "masterData": {
+                        "userName": null,
+                        "password": null,
+                        "userType": "SUPERADMIN"
+                    },
+                    "form": {
+                        "name": "Users",
+                        "id": "superUsers",
+                        "fields": {
+                            "userName": {
+                                "name": "User Name",
+                                "id": "userName",
+                                "type": "input",
+                                "inputType": "text",
+                                "required": true
+                            },
+                            "password": {
+                                "name": "Password",
+                                "id": "password",
+                                "type": "input",
+                                "inputType": "password",
+                                "required": true
+                            }
+                        }
+                    },
+                    "listView": [{
+                        "title": "User Name",
+                        "id": "userName"
+                    }],
+                    "page": {
+                        "link": "superAdmin/users",
+                        "name": "list"
+                    },
+                    "services": {
+                        "list": {
+                            "id": "users",
+                            "dataUri": "restrict"
+                        }
+                    }
+                },
+                "appCustomers": {
+                    "name": "App Customers",
+                    "id": "appCustomers",
+                    "title": "App Customers",
+                    "superAdmin": true,
+                    "masterData": {
+                        "companyName": null,
+                        "address": null,
+                        "appModules": null
+                    },
+                    "form": {
+                        "name": "App Customers",
+                        "id": "appCustomers",
+                        "fields": {
+                            "companyName": {
+                                "name": "Company Name",
+                                "id": "companyName",
+                                "type": "input",
+                                "inputType": "text",
+                                "required": true
+                            },
+                            "address": {
+                                "name": "Company Adress",
+                                "id": "address",
+                                "type": "input",
+                                "inputType": "text",
+                                "required": true
+                            },
+                            "appModules": {
+                                "name": "App Modules",
+                                "id": "appModules",
+                                "type": "multiSelect",
+                                "isMultiple": true,
+                                "required": true,
+                                "options": {},
+                                "makeFieldOptions": false
+                            }
+                        }
+                    },
+                    "listView": [{
+                        "title": "Company Name",
+                        "id": "companyName"
+                    }],
+                    "page": {
+                        "link": "appCustomers",
+                        "name": "list",
+                        "custumActions": {
+                            "downloadZip": {
+                                "title": "Download app",
+                                "class": "download",
+                                "method": "downloadAppCustomer"
+                            },
+                            "appCustomerlogin": {
+                                "title": "App Customer login",
+                                "class": "sign-in",
+                                "method": "appCustomerlogin"
+                            }
+                        }
+                    },
+                    "services": {
+                        "list": {
+                            "dataUri": "restrict"
+                        }
+                    }
+                },
                 "settings": {
                     "id": "settings",
                     "title": "Settings",
@@ -5513,124 +5623,6 @@
                         "name": "list"
                     }
                 }
-            },
-            "superAdmin": {
-                "id": "superAdmin",
-                "name": "Super Admin",
-                "title": "Super Admin",
-                "icon": "cog",
-                "restricked": true,
-                "defaultRelease": true,
-                "superUsers": {
-                    "id": "superUsers",
-                    "title": "Users",
-                    "restricked": true,
-                    "masterData": {
-                        "userName": null,
-                        "password": null,
-                        "userType": "SUPERADMIN"
-                    },
-                    "form": {
-                        "name": "Users",
-                        "id": "superUsers",
-                        "fields": {
-                            "userName": {
-                                "name": "User Name",
-                                "id": "userName",
-                                "type": "input",
-                                "inputType": "text",
-                                "required": true
-                            },
-                            "password": {
-                                "name": "Password",
-                                "id": "password",
-                                "type": "input",
-                                "inputType": "password",
-                                "required": true
-                            }
-                        }
-                    },
-                    "listView": [{
-                        "title": "User Name",
-                        "id": "userName"
-                    }],
-                    "page": {
-                        "link": "superAdmin/users",
-                        "name": "list"
-                    },
-                    "services": {
-                        "list": {
-                            "id": "users",
-                            "dataUri": "restrict"
-                        }
-                    }
-                },
-                "appCustomers": {
-                    "name": "App Customers",
-                    "id": "appCustomers",
-                    "title": "App Customers",
-                    "restricked": true,
-                    "masterData": {
-                        "companyName": null,
-                        "address": null,
-                        "mapping": [{
-                            "module": null
-                        }]
-                    },
-                    "form": {
-                        "name": "App Customers",
-                        "id": "appCustomers",
-                        "fields": {
-                            "companyName": {
-                                "name": "Company Name",
-                                "id": "companyName",
-                                "type": "input",
-                                "inputType": "text",
-                                "required": true
-                            },
-                            "address": {
-                                "name": "Company Adress",
-                                "id": "address",
-                                "type": "input",
-                                "inputType": "text",
-                                "required": true
-                            }
-                        },
-                        "mapping": {
-                            "name": "Module Mapping",
-                            "fields": {
-                                "module": {
-                                    "name": "Page name",
-                                    "id": "module",
-                                    "type": "select",
-                                    "isMultiple": true,
-                                    "options": {},
-                                    "makeFieldOptions": false
-                                }
-                            }
-                        }
-                    },
-                    "listView": [{
-                        "title": "Company Name",
-                        "id": "companyName"
-                    }],
-                    "page": {
-                        "link": "appCustomers",
-                        "name": "list",
-                        "custumActions": {
-                            "downloadZip": {
-                                "title": "Download app",
-                                "class": "download",
-                                "method": "downloadAppCustomer"
-                            }
-                        }
-                    },
-                    "services": {
-                        "list": {
-                            "dataUri": "restrict"
-                        }
-                    }
-                }
             }
         },
         "components": {
@@ -5657,6 +5649,11 @@
             },
             "fileModel": {
                 "id": "fileModel",
+                "restrict": "A",
+                "template": false
+            },
+            "multipleSelect": {
+                "id": "multipleSelect",
                 "restrict": "A",
                 "template": false
             }

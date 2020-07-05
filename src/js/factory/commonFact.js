@@ -215,7 +215,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 }
             },
             addMapping: function(mapping) {
-                var newMapping = angular.extend({}, mapping[0]);
+                var newMapping = angular.extend({}, context.controller.masterData.mapping[0]);
                 for (var mapKey in newMapping) {
                     newMapping[mapKey] = null;
                 }
@@ -818,10 +818,10 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 return context.erpAppConfig.appCustomer;
             },
             isShowMenu: function(menu) {
-                var disabled = menu.disableMenu || menu.disable;
-                var restricked = context.commonFact.isSuperAdmin() && !context.commonFact.isAppCustomer() && menu.restricked || false;
-                var isAppCustomer = !menu.restricked && context.commonFact.isAppCustomer();
-                return !disabled && (restricked || isAppCustomer);
+                var disabled = menu.disableMenu || menu.disable || (context.commonFact.isAppCustomer() ? context.erpAppConfig.appModules ? (!context.erpAppConfig.appModules.includes('all') && !menu.show) : true : false);
+                var superAdmin = context.commonFact.isSuperAdmin() && menu.superAdmin || false;
+                var isAppCustomer = !menu.superAdmin && context.commonFact.isAppCustomer();
+                return !disabled && (superAdmin || isAppCustomer || menu.allUser);
             },
             errorHandler: function(e) {
                 context.authFact.logout();
@@ -836,7 +836,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 var promiseRes = context.commonFact.getPromiseRes();
                 var isAppCustomer = context.commonFact.isAppCustomer();
                 var userDetail = context.authFact.getUserDetail();
-                if (isAppCustomer) {
+                if (userDetail && isAppCustomer) {
                     context.commonFact.getData(context.erpAppConfig.modules.controllers.admin.settings, isAppCustomer).then(function(res) {
                         context.erpAppConfig = angular.extend(context.erpAppConfig, res.data);
                         if (context.erpAppConfig.appModules && !context.erpAppConfig.appModules.includes('all')) {
@@ -846,21 +846,24 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                                 if (!module.page) {
                                     for (var j in module) {
                                         if (typeof(module[j]) === 'object') {
-                                            if (!context.erpAppConfig.appModules.includes(i + '/' + j) && !context.erpAppConfig.appModules.includes(i + '/**')) {
+                                            if (!module.defaultRelease && !context.erpAppConfig.appModules.includes(i + '/' + j) && !context.erpAppConfig.appModules.includes(i + '/**')) {
                                                 delete context.erpAppConfig.modules.controllers[i][j];
                                             } else {
                                                 isSubModule = true;
+                                                context.erpAppConfig.modules.controllers[i][j].show = true;
                                             }
                                         }
                                     }
                                 }
-                                if (!context.erpAppConfig.appModules.includes(i) && !isSubModule) {
+                                if (!context.erpAppConfig.appModules.includes(i) && !isSubModule && !module.defaultRelease) {
                                     delete context.erpAppConfig.modules.controllers[i];
+                                } else {
+                                    context.erpAppConfig.modules.controllers[i].show = true;
                                 }
                             }
 
                         }
-                        if (userDetail && context.commonFact.isAppUser()) {
+                        if (context.commonFact.isAppUser()) {
                             for (var i in context.erpAppConfig.mapping) {
                                 var map = context.erpAppConfig.mapping[i];
                                 var module = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, map.module) || {};

@@ -174,7 +174,7 @@ module.exports = function(config) {
         const zip = new AdmZip();
         zip.addLocalFolder(config.release.path);
         const data = zip.toBuffer();
-        //del([config.release.path]);
+        del([config.release.path]);
         config.buildProRes(data);
         done();
     });
@@ -182,6 +182,6 @@ module.exports = function(config) {
 
 
     gulp.task('server', () => {
-        config.task.server()
+        config.task.server();
     });
 };

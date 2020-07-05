@@ -568,3 +568,7 @@ input::-webkit-inner-spin-button {
     background-color: #e9ecef;
     border-radius: .25rem;
 }
+
+select.form-control[multiple] {
+    height: 700px;
+}

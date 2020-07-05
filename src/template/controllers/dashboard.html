@@ -3,7 +3,7 @@
     <alert-rol></alert-rol>
     <div class="mb-3">
         <h3>{{context.controller.title}}</h3>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" ng-if="context.authFact.isLogged() && context.erpLoaded">
             <li ng-if="context.commonFact.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">
                 <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
                     <i class="fa fa-fw fa-{{module.icon}}"></i>

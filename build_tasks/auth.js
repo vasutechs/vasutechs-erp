@@ -16,17 +16,33 @@ module.exports = function(config) {
             //cookie: { maxAge: 15000 } /* 6000 ms? 6 seconds -> wut? :S */
         })
     );
+    config.app.use(express.json());
+    config.app.use(express.urlencoded({ extended: false }));
 
-    config.task.authLogout = function(req, res, next) {
+    var authLogout = function(req, res, next) {
         req.session.destroy();
         res.status(200).send({});
     };
 
-    config.task.authLogin = function(req, res) {
+    var authLogin = function(req, res) {
         var data = config.task.login(req, masterDb) || config.task.login(req) || {};
         if (data.userName) {
             setAuthSession(req, data);
             res.status(200).send(data);
+        } else {
+            res.status(200).send({});
+        }
+    };
+
+    var appCustomerlogin = function(req, res) {
+        var user = req.session.auth || {};
+        var inputData = req.body;
+        var query = req.query;
+        var appCustomer = inputData.appCustomer || query.appCustomer;
+        if (checkSuperAdminUser(req)) {
+            user.appCustomer = appCustomer;
+            setAuthSession(req, user);
+            res.status(200).send(user);
         } else {
             res.status(200).send({});
         }
@@ -63,7 +79,7 @@ module.exports = function(config) {
         var data = {};
         var query = req.query;
         if (checkSuperAdminUser(req)) {
-            data = config.task.dbData(req, res, !query.appCustomer && masterDb);
+            data = config.task.dbData(req, res, masterDb);
             res.status(200).send(data);
         } else {
             res.status(401).send(data);
@@ -97,7 +113,7 @@ module.exports = function(config) {
     };
 
 
-    config.task.checkLoggedIn = function(req, res) {
+    var checkLoggedIn = function(req, res) {
         if (req.session.auth && req.session.auth.loggedIn) {
             res.status(200).send(req.session.auth);
         } else {
@@ -105,8 +121,7 @@ module.exports = function(config) {
         }
     };
 
-    config.app.use(express.json());
-    config.app.use(express.urlencoded({ extended: false }));
+
 
     // redirect to login form
     config.app.use('/api/auth/data/:table', function(req, res, next) {
@@ -118,9 +133,10 @@ module.exports = function(config) {
         }
 
     });
-    config.app.use('/api/auth/logout', config.task.authLogout);
-    config.app.use('/api/auth/login', config.task.authLogin);
-    config.app.use("/api/auth/checkLoggedIn", config.task.checkLoggedIn);
+    config.app.use('/api/auth/logout', authLogout);
+    config.app.use('/api/auth/login', authLogin);
+    config.app.use('/api/auth/appCustomerlogin', appCustomerlogin);
+    config.app.use("/api/auth/checkLoggedIn", checkLoggedIn);
     config.app.use("/api/auth/removeAppCustomer", removeAppCustomer);
     config.app.use("/api/auth/getAppCustomer", getAppCustomer);
     config.app.use("/api/auth/downloadAppCustomers", downloadAppCustomers);

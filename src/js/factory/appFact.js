@@ -12,9 +12,9 @@ erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
             authFact: authFact(context)
         });
         context.authFact.loadAuth().then(function() {
-            return context.commonFact.appModuleAccess();
-        }).then(function() {
-            erpLoadProm.resolve();
+            context.commonFact.appModuleAccess().then(function() {
+                erpLoadProm.resolve();
+            });
         });
     })();
 
@@ -25,6 +25,7 @@ erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
 
             context.controller = angular.extend(angular.copy(module), { methods: methods && methods(context) || {} });
             var isLogged = context.authFact.isLogged();
+            context.erpLoaded = true;
             scope.context = context;
             if (context.controller.parentModule) {
                 parentModule = angular.copy(context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, context.controller.parentModule));
