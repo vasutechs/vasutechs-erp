@@ -1,0 +1,30 @@
+{
+    "name": "vasuteshs-erp",
+    "version": "1.0.0",
+    "description": "Vasutechs ERP",
+    "directories": {
+        "lib": "lib"
+    },
+    "scripts": {
+        "app-clean": "rm -rf node_modules",
+        "app-update": "npm install",
+        "app-start": "npm run app-update && npm run app-node-server",
+        "app-node-server": "node build_tasks\\app.js --run"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "angular": "^1.7.9",
+        "angular-route": "^1.7.9",
+        "bootstrap": "^4.3.1",
+        "cookie-parser": "^1.4.4",
+        "cryptr": "^6.0.2",
+        "del": "^3.0.0",
+        "express": "^4.16.1",
+        "express-session": "^1.16.2",
+        "font-awesome": "^4.7.0",
+        "jquery": "^3.4.0",
+        "node-json-db": "^0.7.5",
+        "open": "^6.0.0"
+    }
+}
