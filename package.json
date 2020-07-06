@@ -8,17 +8,12 @@
     "scripts": {
         "app-clean": "rm -rf node_modules",
         "app-update": "npm install",
-        "app-start": "npm run app-update && npm run app-server",
-        "app-build": "node_modules\\.bin\\gulp build",
-        "app-qa": "node_modules\\.bin\\gulp build-minify",
-        "app-server": "node_modules\\.bin\\gulp server",
-        "app-node-server": "node build_tasks\\app.js --run",
-        "app-start-node": "npm run app-update && npm run app-node-server"
+        "app-start": "npm run app-update && npm run app-node-server",
+        "app-node-server": "node build_tasks\\app.js --run"
     },
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "adm-zip": "^0.4.13",
         "angular": "^1.7.9",
         "angular-route": "^1.7.9",
         "bootstrap": "^4.3.1",
@@ -28,11 +23,6 @@
         "express": "^4.16.1",
         "express-session": "^1.16.2",
         "font-awesome": "^4.7.0",
-        "gulp": "^4.0.0",
-        "gulp-concat": "^2.6.1",
-        "gulp-ng-html2js": "^0.2.3",
-        "gulp-replace": "^1.0.0",
-        "gulp-uglify": "^3.0.0",
         "jquery": "^3.4.0",
         "node-json-db": "^0.7.5",
         "open": "^6.0.0"
