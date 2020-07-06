@@ -15,15 +15,3 @@ erpConfig.moduleFiles.header = function(appFact) {
         scope.context = context;
     };
 };
-
-erpConfig.moduleFiles.multipleSelect = function() {
-    return function(scope, element, attrs) {
-        var field = scope.context.controller.form.fields[attrs.id];
-        if (field && field.isMultiple) {
-            element.attr('multiple', "true");
-            $compile(element)(scope);
-            scope.$digest();
-        }
-    };
-
-};

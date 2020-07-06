@@ -5387,7 +5387,6 @@
                                 "name": "App Modules",
                                 "id": "appModules",
                                 "type": "multiSelect",
-                                "isMultiple": true,
                                 "required": true,
                                 "options": {},
                                 "makeFieldOptions": false
