@@ -4652,6 +4652,113 @@
                             }
                         }
                     }
+                },
+                "salesDetailsTax": {
+                    "id": "salesDetailsTax",
+                    "title": "Sales Details - Tax",
+                    "listView": [{
+                            "title": "Customer",
+                            "id": "customerCode",
+                            "type": "select",
+                            "dataFrom": "marketing.customerMaster",
+                            "replaceName": "customerName",
+                            "isFilterBy": true
+                        }, {
+                            "title": "Invoice No",
+                            "id": "invoiceNo",
+                            "valuePrefix": "VT-"
+                        },
+                        {
+                            "title": "Date",
+                            "id": "date",
+                            "type": "date"
+                        },
+                        {
+                            "title": "Basic Amount",
+                            "id": "subTotal"
+                        },
+                        {
+                            "title": "SGST @9%",
+                            "id": "sgstTotal"
+                        },
+                        {
+                            "title": "CGST @9%",
+                            "id": "cgstTotal"
+                        },
+                        {
+                            "title": "IGST @18%",
+                            "id": "igstTotal"
+                        },
+                        {
+                            "title": "Total Amount",
+                            "id": "total"
+                        },
+                        {
+                            "title": "Customer GSTIN",
+                            "id": "gstin"
+                        }
+                    ],
+                    "page": {
+                        "link": "report/salesDetailsTax",
+                        "name": "list",
+                        "downloadExcel": true,
+                        "actions": false
+                    },
+                    "services": {
+                        "list": {
+                            "id": "invoice",
+                            "params": {
+                                "year": true
+                            }
+                        }
+                    }
+                },
+                "purchaseDetailsTax": {
+                    "id": "purchaseDetailsTax",
+                    "title": "Purchase Details - Tax",
+                    "listView": [{
+                            "title": "Supplier/Sub-Contractor Name",
+                            "id": "supplierCode"
+                        }, {
+                            "title": "Supplier/Sub-Contractor Invoice No",
+                            "id": "supplierInvoiceNo"
+                        },
+                        {
+                            "title": "Date",
+                            "id": "date",
+                            "type": "date"
+                        },
+                        {
+                            "title": "Basic Amount",
+                            "id": "subTotal"
+                        },
+                        {
+                            "title": "GST/IGST @18%",
+                            "id": "gstTotal"
+                        },
+                        {
+                            "title": "Total Amount",
+                            "id": "total"
+                        },
+                        {
+                            "title": "Supplier/Sub-Contractor GSTIN",
+                            "id": "gstin"
+                        }
+                    ],
+                    "page": {
+                        "link": "report/purchaseDetailsTax",
+                        "name": "list",
+                        "downloadExcel": true,
+                        "actions": false
+                    },
+                    "services": {
+                        "list": {
+                            "id": "grnSupplier",
+                            "params": {
+                                "year": true
+                            }
+                        }
+                    }
                 }
             },
             "accounts": {

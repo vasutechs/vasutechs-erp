@@ -1,7 +1,7 @@
 erpConfig.moduleFiles.machineRunningTime = function(context) {
     return {
         callBackList: function() {
-            var list = [];
+            context.showLoading = true;
             context.controller.listViewData = [];
             context.commonFact.getAllYearData().then(function(listViewYearData) {
                 for (var x in listViewYearData) {
@@ -23,16 +23,16 @@ erpConfig.moduleFiles.machineRunningTime = function(context) {
                                 };
 
                                 details.runningTime = details.cumRunningTime = parseFloat(details.endTime) - parseFloat(details.startTime);
-                                var isExist = context.commonFact.findObjectByKey(list, 'machineNo', details.machineNo);
+                                var isExist = context.commonFact.findObjectByKey(context.controller.listViewData, 'machineNo', details.machineNo);
                                 if (isExist) {
                                     details.cumRunningTime += parseFloat(isExist.cumRunningTime);
                                 }
-                                list.push(details);
+                                context.controller.listViewData.push(details);
                             }
                         }
                     }
                 }
-                context.controller.listViewData = list;
+                context.showLoading = false;
             });
 
         }

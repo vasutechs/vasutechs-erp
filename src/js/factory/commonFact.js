@@ -632,7 +632,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
                 var downloadLink = document.createElement("a");
                 downloadLink.href = uri + base64(format(template, ctx));
-                downloadLink.download = "downloadExcel.xls";
+                downloadLink.download = context.controller.id + "Report.xls";
 
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
@@ -669,6 +669,8 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
 
                 gstTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
                 total = subTotal + gstTotal + extraAmount;
+                context.controller.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
+                context.controller.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
                 context.controller.data.gstTotal = parseFloat(gstTotal).toFixed(2);
                 context.controller.data.subTotal = parseFloat(subTotal).toFixed(2);
                 context.controller.data.total = parseInt(total);

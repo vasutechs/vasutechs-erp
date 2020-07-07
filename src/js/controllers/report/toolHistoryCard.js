@@ -1,7 +1,7 @@
 erpConfig.moduleFiles.toolHistoryCard = function(context) {
     return {
         callBackList: function() {
-            var list = [];
+            context.showLoading = true;
             context.controller.listViewData = [];
             context.commonFact.getAllYearData().then(function(listViewYearData) {
                 for (var x in listViewYearData) {
@@ -26,16 +26,16 @@ erpConfig.moduleFiles.toolHistoryCard = function(context) {
                                     cummulativeQty: parseInt(listViewData[i].mapping[j].acceptedQty)
                                 };
 
-                                var isPartExist = context.commonFact.findObjectByKey(list, 'toolNo', details.toolNo);
+                                var isPartExist = context.commonFact.findObjectByKey(context.controller.listViewData, 'toolNo', details.toolNo);
                                 if (isPartExist) {
                                     details.cummulativeQty += parseInt(isPartExist.cummulativeQty);
                                 }
-                                list.push(details);
+                                context.controller.listViewData.push(details);
                             }
                         }
                     }
                 }
-                context.controller.listViewData = list;
+                context.showLoading = false;
             });
 
         }
