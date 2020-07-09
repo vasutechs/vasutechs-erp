@@ -1,7 +1,11 @@
 <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top  hide-print" id="mainNav">
         <div><a class="navbar-brand" href="#/">{{context.erpAppConfig.appName}}</a></div>
-        <div ng-if="context.authFact.isLogged() && context.erpLoaded" class="collapse navbar-collapse" id="navbarSupportedContent">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <div ng-if="context.authFact.isLogged() && context.erpLoaded" class="navbar-collapse collapse" id="navbarResponsive">
+
             <ul class="navbar-nav mr-auto">
                 <li ng-if="context.commonFact.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">
                     <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">
@@ -20,7 +24,7 @@
                     </div>
                 </li>
             </ul>
-            <ul ng-if="context.erpAppConfig.modules.controllers && context.commonFact.isAppCustomer()" class="navbar-nav">
+            <ul ng-if="context.erpAppConfig.modules.controllers && context.commonFact.isAppCustomer()" class="navbar-nav mr-auto">
                 <li class="nav-item dropdown">
                 </li>
                 <li ng-if="!context.erpAppConfig.modules.controllers['calendarYear'].disable" class="nav-item">
@@ -40,7 +44,7 @@
 
                 </li>
             </ul>
-            <ul ng-if="context.erpAppConfig.modules.controllers" class="navbar-nav">
+            <ul ng-if="context.erpAppConfig.modules.controllers" class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a title="Logout" class="nav-link" href="#!{{context.erpAppConfig.modules.controllers['login'].page.link}}?type=logout">
                         <i class="fa fa-fw fa-sign-out"></i>

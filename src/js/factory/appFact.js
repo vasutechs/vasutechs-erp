@@ -1,7 +1,7 @@
 erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
     var erpLoadProm = $q.defer();
     var context = {
-        erpAppConfig: erpConfig,
+        erpAppConfig: angular.copy(erpConfig),
         erpLoadProm: erpLoadProm,
         showLoading: true
     };

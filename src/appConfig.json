@@ -164,6 +164,13 @@
                                 "action": "isCheckExistField",
                                 "required": true
                             },
+                            "rate": {
+                                "name": "Rate",
+                                "id": "rate",
+                                "type": "input",
+                                "inputType": "number",
+                                "required": true
+                            },
                             "rmCode": {
                                 "name": "Raw material",
                                 "id": "rmCode",
@@ -178,22 +185,19 @@
                                 "name": "Input weight",
                                 "id": "inputWeight",
                                 "type": "input",
-                                "inputType": "number",
-                                "required": true
+                                "inputType": "number"
                             },
                             "finishedWeight": {
                                 "name": "Finished weight",
                                 "id": "finishedWeight",
                                 "type": "input",
-                                "inputType": "number",
-                                "required": true
+                                "inputType": "number"
                             },
                             "hsnCode": {
                                 "name": "HSN Code",
                                 "id": "hsnCode",
                                 "type": "input",
-                                "inputType": "text",
-                                "required": true
+                                "inputType": "text"
                             },
                             "uomCode": {
                                 "name": "UOM",
@@ -208,64 +212,49 @@
                                 "name": "Prod Rate/ hr",
                                 "id": "prodRateHr",
                                 "type": "input",
-                                "inputType": "number",
-                                "required": true
-                            },
-                            "rate": {
-                                "name": "Rate",
-                                "id": "rate",
-                                "type": "input",
-                                "inputType": "number",
-                                "required": true
+                                "inputType": "number"
                             },
                             "rolQtyYellowRage": {
                                 "name": "ROL Qty Yellow Rage",
                                 "id": "rolQtyYellowRage",
                                 "type": "input",
-                                "inputType": "number",
-                                "required": true
+                                "inputType": "number"
                             },
                             "rolQtyRedRage": {
                                 "name": "ROL Qty Red Rage",
                                 "id": "rolQtyRedRage",
                                 "type": "input",
-                                "inputType": "number",
-                                "required": true
+                                "inputType": "number"
                             },
                             "rejection": {
                                 "name": "Rejection %",
                                 "id": "rejection",
                                 "type": "input",
-                                "inputType": "number",
-                                "required": true
+                                "inputType": "number"
                             },
                             "icc": {
                                 "name": "ICC %",
                                 "id": "icc",
                                 "type": "input",
-                                "inputType": "number",
-                                "required": true
+                                "inputType": "number"
                             },
                             "toolMaintenance": {
                                 "name": "Tool Maintenance %",
                                 "id": "toolMaintenance",
                                 "type": "input",
-                                "inputType": "number",
-                                "required": true
+                                "inputType": "number"
                             },
                             "profit": {
                                 "name": "Profit %",
                                 "id": "profit",
                                 "type": "input",
-                                "inputType": "number",
-                                "required": true
+                                "inputType": "number"
                             },
                             "transportCostKg": {
                                 "name": "Transport cost per kg",
                                 "id": "transportCostKg",
                                 "type": "input",
-                                "inputType": "number",
-                                "required": true
+                                "inputType": "number"
                             },
                             "isAssemblePart": {
                                 "name": "Is Assemble Part",

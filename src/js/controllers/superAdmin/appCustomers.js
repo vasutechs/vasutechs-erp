@@ -32,7 +32,7 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                     'optionId': 'all'
                 }
             };
-            context.controller.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
+            context.controller.methods.makeModuleOptions(erpConfig.modules.controllers, moduleField);
 
 
         },
