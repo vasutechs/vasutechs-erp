@@ -5,7 +5,7 @@ erpConfig.moduleFiles.appCustomers = function(context) {
         callBackEdit: function() {
             editKey = context.controller.page.editKey;
             var appSettings = {
-                dataUri: 'restrict/settings',
+                id: 'settings',
                 params: {
                     appCustomer: editKey
                 }
@@ -61,14 +61,14 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                 userType: 'ADMIN'
             };
             var appSettings = {
-                dataUri: 'restrict/settings',
+                id: 'settings',
                 params: {
                     appCustomer: appCustomer
                 }
             };
 
             var appUsers = {
-                dataUri: 'data/users',
+                id: 'users',
                 params: {
                     appCustomer: appCustomer
                 }

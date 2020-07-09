@@ -3201,7 +3201,7 @@ erpConfig.moduleFiles.appCustomers = function(context) {
         callBackEdit: function() {
             editKey = context.controller.page.editKey;
             var appSettings = {
-                dataUri: 'restrict/settings',
+                id: 'settings',
                 params: {
                     appCustomer: editKey
                 }
@@ -3257,14 +3257,14 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                 userType: 'ADMIN'
             };
             var appSettings = {
-                dataUri: 'restrict/settings',
+                id: 'settings',
                 params: {
                     appCustomer: appCustomer
                 }
             };
 
             var appUsers = {
-                dataUri: 'data/users',
+                id: 'users',
                 params: {
                     appCustomer: appCustomer
                 }
@@ -3750,7 +3750,7 @@ module.run(['$templateCache', function($templateCache) {
     '\n' +
     '                </li>\n' +
     '            </ul>\n' +
-    '            <ul ng-if="context.erpAppConfig.modules.controllers" class="navbar-nav mr-auto">\n' +
+    '            <ul ng-if="context.erpAppConfig.modules.controllers" class="navbar-nav">\n' +
     '                <li class="nav-item">\n' +
     '                    <a title="Logout" class="nav-link" href="#!{{context.erpAppConfig.modules.controllers[\'login\'].page.link}}?type=logout">\n' +
     '                        <i class="fa fa-fw fa-sign-out"></i>\n' +
