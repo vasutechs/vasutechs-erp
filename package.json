@@ -8,8 +8,8 @@
     "scripts": {
         "app-clean": "rm -rf node_modules",
         "app-update": "npm install",
-        "app-start": "npm run app-update && npm run app-node-server",
-        "app-node-server": "node build_tasks\\app.js --run"
+        "app-start": "npm run app-update && npm run app-server",
+        "app-server": "node build_tasks\\app.js --run"
     },
     "author": "",
     "license": "ISC",

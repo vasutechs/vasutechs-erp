@@ -3394,6 +3394,83 @@ try {
   module = angular.module('erpApp', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('template/controllers/dashboard.html',
+    '<div class="container-fluid">\n' +
+    '    <h1 class="align-center company-name" ng-if="context.erpAppConfig.companyName">{{context.erpAppConfig.companyName}}</h1>\n' +
+    '    <alert-rol></alert-rol>\n' +
+    '    <div class="mb-3">\n' +
+    '        <h3>{{context.controller.title}}</h3>\n' +
+    '        <ul class="navbar-nav" ng-if="context.authFact.isLogged() && context.erpLoaded">\n' +
+    '            <li ng-if="context.commonFact.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">\n' +
+    '                <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">\n' +
+    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
+    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
+    '                </a>\n' +
+    '                <a ng-if="!module.page" class="nav-link">\n' +
+    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
+    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
+    '                </a>\n' +
+    '                <ul>\n' +
+    '                    <li ng-if="context.commonFact.isShowMenu(subModule)" ng-repeat="subModule in context.commonFact.showSubModule(module)">\n' +
+    '                        <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
+    '                    </li>\n' +
+    '                </ul>\n' +
+    '            </li>\n' +
+    '        </ul>\n' +
+    '    </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('erpApp');
+} catch (e) {
+  module = angular.module('erpApp', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('template/controllers/databaseUpload.html',
+    '<div class="container-fluid">\n' +
+    '    <!-- Breadcrumbs-->\n' +
+    '    <ol class="breadcrumb">\n' +
+    '        <li class="breadcrumb-item">\n' +
+    '            <a href="#/">Dashboard</a>\n' +
+    '        </li>\n' +
+    '        <li class="breadcrumb-item active">Upload</li>\n' +
+    '    </ol>\n' +
+    '    <!-- Example DataTables Card-->\n' +
+    '    <div class="mb-3">\n' +
+    '        <h3>{{context.controller.title}}</h3>\n' +
+    '        <div>\n' +
+    '            <div class="card">\n' +
+    '                <div class="card-body">\n' +
+    '                    <div ng-if="context.controller.alertMessage!==undefined" class="alert alert-danger" role="alert">\n' +
+    '                        {{context.controller.alertMessage}}\n' +
+    '                    </div>\n' +
+    '                    <div ng-if="context.controller.message!==undefined" class="alert alert-success" role="alert">\n' +
+    '                        {{context.controller.message}}\n' +
+    '                    </div>\n' +
+    '                    <h5 style="color:green;">{{context.controller.data.uploadSuccess}}</h5>\n' +
+    '                    <form name="customForm">\n' +
+    '                        <input type="file" file-model="context.controller.data.databaseUpload" class="form-control" />\n' +
+    '\n' +
+    '                        <button ng-click="context.controller.methods.uploadDatabase()" class="btn btn-primary">Submit</button>\n' +
+    '                    </form>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('erpApp');
+} catch (e) {
+  module = angular.module('erpApp', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/components/alertRol.html',
     '<div>\n' +
     '    <div class="modal fade" id="RolModal" role="dialog">\n' +
@@ -3815,7 +3892,7 @@ module.run(['$templateCache', function($templateCache) {
     '                <td>\n' +
     '                    <div class="row">\n' +
     '                        <div ng-if="context.controller.page.actions.print" class="col">\n' +
-    '                            <a href="javascript: void(0);" ng-click="context.commonFact.printView(dataList.id, true)" title="Print View" class="fa fa-fw fa-print">\n' +
+    '                            <a href="?pageName=add" ng-click="context.commonFact.printView(dataList.id, true)" title="Print View" class="fa fa-fw fa-print">\n' +
     '                            </a>\n' +
     '                        </div>\n' +
     '                        <div class="col" ng-if="context.controller.page.actions.edit">\n' +
@@ -3896,83 +3973,6 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="row" ng-if="!context.controller.page.printView && (context.controller.form.mapping.actions.add || context.controller.form.mapping.actions.add==undefined)">\n' +
     '            <div class="col">\n' +
     '                <a class="fa fa-fw fa-plus-square-o" href="javascript: void(0);" ng-click="context.commonFact.addMapping(context.controller.data.mapping)"> </a>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('erpApp');
-} catch (e) {
-  module = angular.module('erpApp', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('template/controllers/dashboard.html',
-    '<div class="container-fluid">\n' +
-    '    <h1 class="align-center company-name" ng-if="context.erpAppConfig.companyName">{{context.erpAppConfig.companyName}}</h1>\n' +
-    '    <alert-rol></alert-rol>\n' +
-    '    <div class="mb-3">\n' +
-    '        <h3>{{context.controller.title}}</h3>\n' +
-    '        <ul class="navbar-nav" ng-if="context.authFact.isLogged() && context.erpLoaded">\n' +
-    '            <li ng-if="context.commonFact.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">\n' +
-    '                <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">\n' +
-    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
-    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
-    '                </a>\n' +
-    '                <a ng-if="!module.page" class="nav-link">\n' +
-    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
-    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
-    '                </a>\n' +
-    '                <ul>\n' +
-    '                    <li ng-if="context.commonFact.isShowMenu(subModule)" ng-repeat="subModule in context.commonFact.showSubModule(module)">\n' +
-    '                        <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
-    '                    </li>\n' +
-    '                </ul>\n' +
-    '            </li>\n' +
-    '        </ul>\n' +
-    '    </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('erpApp');
-} catch (e) {
-  module = angular.module('erpApp', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('template/controllers/databaseUpload.html',
-    '<div class="container-fluid">\n' +
-    '    <!-- Breadcrumbs-->\n' +
-    '    <ol class="breadcrumb">\n' +
-    '        <li class="breadcrumb-item">\n' +
-    '            <a href="#/">Dashboard</a>\n' +
-    '        </li>\n' +
-    '        <li class="breadcrumb-item active">Upload</li>\n' +
-    '    </ol>\n' +
-    '    <!-- Example DataTables Card-->\n' +
-    '    <div class="mb-3">\n' +
-    '        <h3>{{context.controller.title}}</h3>\n' +
-    '        <div>\n' +
-    '            <div class="card">\n' +
-    '                <div class="card-body">\n' +
-    '                    <div ng-if="context.controller.alertMessage!==undefined" class="alert alert-danger" role="alert">\n' +
-    '                        {{context.controller.alertMessage}}\n' +
-    '                    </div>\n' +
-    '                    <div ng-if="context.controller.message!==undefined" class="alert alert-success" role="alert">\n' +
-    '                        {{context.controller.message}}\n' +
-    '                    </div>\n' +
-    '                    <h5 style="color:green;">{{context.controller.data.uploadSuccess}}</h5>\n' +
-    '                    <form name="customForm">\n' +
-    '                        <input type="file" file-model="context.controller.data.databaseUpload" class="form-control" />\n' +
-    '\n' +
-    '                        <button ng-click="context.controller.methods.uploadDatabase()" class="btn btn-primary">Submit</button>\n' +
-    '                    </form>\n' +
-    '                </div>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
