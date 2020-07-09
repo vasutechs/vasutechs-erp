@@ -6,7 +6,6 @@ module.exports = function(config) {
         ngHtml2Js = require("gulp-ng-html2js"),
         del = require('del'),
         fs = require('fs'),
-        dbApi = require('./dbApi')(config),
         AdmZip = require('adm-zip'),
         applyAppConfig = function() {
             var appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
