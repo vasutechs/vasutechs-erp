@@ -1,23 +1,8 @@
 module.exports = function(config) {
-    var express = require("express");
-    var cookieParser = require("cookie-parser");
-    var session = require("express-session");
+
     var JsonDB = require('node-json-db');
     var del = require('del');
     var masterDb = new JsonDB("./data/database", true, true);
-
-    config.app.use(cookieParser());
-    config.app.use(
-        session({
-            secret: config.appName,
-            name: config.appName,
-            resave: true,
-            saveUninitialized: true,
-            //cookie: { maxAge: 15000 } /* 6000 ms? 6 seconds -> wut? :S */
-        })
-    );
-    config.app.use(express.json());
-    config.app.use(express.urlencoded({ extended: false }));
 
     var authLogout = function(req, res, next) {
         req.session.destroy();

@@ -1,5 +1,4 @@
 module.exports = function(config) {
-    var express = require("express");
     var JsonDB = require('node-json-db');
     var fs = require('fs');
     var cryptr = new(require('cryptr'))(config.appName);
@@ -164,8 +163,7 @@ module.exports = function(config) {
         return data;
     };
 
-    config.app.use(express.json());
-    config.app.use(express.urlencoded({ extended: false }));
+
 
     // respond to all requests
     config.app.use('/api/data/:table', function(req, res) {
