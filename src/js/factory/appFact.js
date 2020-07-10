@@ -63,4 +63,4 @@ erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
     };
 };
 
-erpApp.factory('appFact', erpConfig.moduleFiles.appFact);
+erpApp.factory('appFact', ['authFact', 'commonFact', 'serviceApi', '$q', erpConfig.moduleFiles.appFact]);

@@ -5746,11 +5746,6 @@
                 "id": "fileModel",
                 "restrict": "A",
                 "template": false
-            },
-            "multipleSelect": {
-                "id": "multipleSelect",
-                "restrict": "A",
-                "template": false
             }
         },
         "filters": {

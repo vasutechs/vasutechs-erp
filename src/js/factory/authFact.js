@@ -81,4 +81,4 @@ erpConfig.moduleFiles.authFact = function($window) {
     };
 };
 
-erpApp.factory('authFact', erpConfig.moduleFiles.authFact);
+erpApp.factory('authFact', ['$window', erpConfig.moduleFiles.authFact]);

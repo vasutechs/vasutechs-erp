@@ -843,8 +843,8 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         context.erpAppConfig = angular.extend(context.erpAppConfig, res.data);
                         if (context.erpAppConfig.appModules && !context.erpAppConfig.appModules.includes('all')) {
                             for (var i in context.erpAppConfig.modules.controllers) {
-                                let module = context.erpAppConfig.modules.controllers[i];
-                                let isSubModule = false;
+                                var module = context.erpAppConfig.modules.controllers[i];
+                                var isSubModule = false;
                                 if (!module.page) {
                                     for (var j in module) {
                                         if (typeof(module[j]) === 'object') {
@@ -928,4 +928,4 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
     };
 };
 
-erpApp.factory('commonFact', erpConfig.moduleFiles.commonFact);
+erpApp.factory('commonFact', ['$filter', '$location', '$window', '$http', erpConfig.moduleFiles.commonFact]);

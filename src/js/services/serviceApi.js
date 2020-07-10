@@ -1,4 +1,4 @@
-erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $q, $httpParamSerializer) {
+erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $httpParamSerializer) {
     return function(context) {
         var callServiceApi = function(serviceConf, inputData) {
             var servicePromise,
@@ -42,4 +42,4 @@ erpConfig.moduleFiles.serviceApi = function($http, $cacheFactory, $q, $httpParam
     };
 };
 
-erpApp.service('serviceApi', erpConfig.moduleFiles.serviceApi);
+erpApp.service('serviceApi', ['$http', '$cacheFactory', '$httpParamSerializer', erpConfig.moduleFiles.serviceApi]);

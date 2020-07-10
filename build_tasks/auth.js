@@ -3,6 +3,9 @@ module.exports = function(config) {
     var JsonDB = require('node-json-db');
     var del = require('del');
     var masterDb = new JsonDB("./data/database", true, true);
+    var authApis = {
+
+    };
 
     var authLogout = function(req, res, next) {
         req.session.destroy();
@@ -91,7 +94,22 @@ module.exports = function(config) {
     var downloadAppCustomers = function(req, res) {
         if (checkSuperAdminUser(req) && req.query.appCustomer) {
             var releaseProjectData = masterDb.getData('/tables/appCustomers/' + req.query.appCustomer);
-            config.task.releaseProject(req, res, releaseProjectData);
+            var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
+            if (releaseProjectData) {
+                config.task.releaseProject(req, res, releaseProjectData);
+                config.buildPromise.then(function(resData) {
+
+                    res.writeHead(200, {
+                        'Content-Type': 'application/octet-stream',
+                        'Content-Disposition': 'attachment; filename=' + projectName,
+                        'Content-Length': resData.length
+                    });
+
+                    res.end(resData);
+                });
+            } else {
+                res.status(401).send({});
+            }
         } else {
             res.status(401).send({});
         }

@@ -7,42 +7,57 @@ module.exports = function(config) {
         del = require('del'),
         fs = require('fs'),
         AdmZip = require('adm-zip'),
+        appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8')),
         applyAppConfig = function() {
-            var appConfig = JSON.parse(fs.readFileSync('./src/appConfig.json', 'utf8'));
             if (config.release.status) {
                 delete appConfig.serverAuth;
                 delete appConfig.modules.controllers.login.form.fields.appCustomer;
                 delete appConfig.modules.controllers.superAdmin;
                 appConfig.appCustomer = config.release.releaseProjectData.id;
+                appConfig.appModules = config.release.releaseProjectData.appModules;
                 if (!config.release.allModule) {
                     for (var i in appConfig.modules.controllers) {
-                        let module = appConfig.modules.controllers[i];
-                        let isSubModule = false;
+                        var module = appConfig.modules.controllers[i];
+                        var isSubModule = false;
                         if (!module.page) {
                             for (var j in module) {
                                 if (typeof(module[j]) === 'object') {
-                                    if (!config.src.defaultModules.includes(i + '/' + j) && !config.src.defaultModules.includes(i + '/**')) {
+                                    if (!module.defaultRelease && !appConfig.appModules.includes(i + '/' + j) && !appConfig.appModules.includes(i + '/**')) {
                                         delete appConfig.modules.controllers[i][j];
                                     } else {
                                         isSubModule = true;
+                                        appConfig.modules.controllers[i][j].show = true;
                                     }
                                 }
                             }
                         }
-                        if (!config.src.defaultModules.includes(i) && !isSubModule) {
+                        if (!appConfig.appModules.includes(i) && !isSubModule && !module.defaultRelease) {
                             delete appConfig.modules.controllers[i];
+                        } else {
+                            appConfig.modules.controllers[i].show = true;
                         }
                     }
 
-                };
+                }
             }
             return JSON.stringify(appConfig);
         },
         getDefaultSrcFiles = function() {
             var defaultSrcJsFiles = config.src.defaultSrcJsFiles;
+            applyAppConfig();
             if (config.release.status && !config.release.allModule) {
-                for (var i in config.src.defaultModules) {
-                    defaultSrcJsFiles.push('./src/js/controllers/' + config.src.defaultModules[i] + '**');
+                for (var i in appConfig.modules.controllers) {
+                    var module = appConfig.modules.controllers[i];
+                    if (!module.page) {
+                        for (var j in module) {
+                            if (module.show) {
+                                defaultSrcJsFiles.push('./src/js/controllers/' + appConfig.modules.controllers[i].id + '/' + appConfig.modules.controllers[i][j].id + '**');
+                            }
+                        }
+                    }
+                    if (module.show) {
+                        defaultSrcJsFiles.push('./src/js/controllers/' + appConfig.modules.controllers[i].id + '**');
+                    }
                 }
             } else {
                 defaultSrcJsFiles.push('./src/js/**');
@@ -54,8 +69,7 @@ module.exports = function(config) {
         src: {
             js: './src/js',
             template: './src/template',
-            defaultSrcJsFiles: ['./src/js/boot.js', './src/js/components/**.**', './src/js/factory/**.**', './src/js/services/**.**', './src/js/controllers/admin/**', './src/js/controllers/login.js', './src/js/controllers/databaseUpload.js'],
-            defaultModules: ['login', 'databaseUpload', 'databaseDownload', 'calendarYear', 'dashboard', 'admin/**'],
+            defaultSrcJsFiles: ['./src/js/boot.js', './src/js/services/**.**', './src/js/factory/**.**', './src/js/components/**.**'],
             assets: './src/assets'
         },
         dist: {
@@ -67,41 +81,25 @@ module.exports = function(config) {
             namePefix: 'VasuTechsERP-',
             defaultFiles: [
                 'index.html',
+                'start**',
                 'build_tasks/app.js',
                 'build_tasks/server.js',
                 'build_tasks/dbApi.js',
-                'build_tasks/config.js',
-                'package.json'
+                'build_tasks/config.js'
             ]
         }
     });
 
     config.task.releaseProject = function(req, res, releaseProjectData) {
-        var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
         config.dist.path = config.release.dist;
-        if (releaseProjectData) {
-            if (releaseProjectData.mapping[0].module === 'all') {
-                config.release.allModule = true;
-            } else {
-                config.src.defaultModules = Object.assign(config.src.defaultModules, releaseProjectData.appModules);
-            }
-
-            config.release.status = true;
-            config.release.releaseProjectData = releaseProjectData;
-            config.task.buildProject();
-            config.buildPromise.then(function(resData) {
-                res.writeHead(200, {
-                    'Content-Type': 'application/octet-stream',
-                    'Content-Disposition': 'attachment; filename=' + projectName,
-                    'Content-Length': resData.length
-                });
-
-                res.end(resData);
-            });
-        } else {
-            res.writeHead(401, { 'Content-Type': 'application/json' });
-            res.end();
+        if (releaseProjectData.appModules.includes('all')) {
+            config.release.allModule = true;
         }
+
+        config.release.status = true;
+        config.release.releaseProjectData = releaseProjectData;
+        config.task.buildProject();
+
     };
 
 
@@ -147,19 +145,20 @@ module.exports = function(config) {
     gulp.task('build-minify', config.task.buildMinify = gulp.series('clean', 'build-template', 'build-assets', 'build-js-minify', 'clean-template'));
 
     gulp.task('build-relase-package-json', buildReleaseCreateFiles = (done) => {
-        //fs.writeFile(config.release.path + '/start', 'node build_tasks\\server.js --run');
         var packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-        console.log(packageJson);
         delete packageJson.scripts['app-build'];
         delete packageJson.scripts['app-qa'];
-        delete packageJson.scripts['app-server'];
-        packageJson.scripts['app-start'] = 'npm run app-update && npm run app-node-server'
+        delete packageJson.devDependencies['adm-zip'];
+        delete packageJson.devDependencies['gulp'];
+        delete packageJson.devDependencies['gulp-concat'];
+        delete packageJson.devDependencies['gulp-ng-html2js'];
+        delete packageJson.devDependencies['gulp-replace'];
+        delete packageJson.devDependencies['gulp-uglify'];
         fs.writeFile(config.release.path + '/package.json', JSON.stringify(packageJson));
         done();
     });
 
     gulp.task('build-release-files', buildReleaseFiles = () => {
-        fs.writeFile(config.release.path + '/start.bat', 'npm run app-start-node');
         return gulp.src(config.release.defaultFiles, { base: "." })
             .pipe(gulp.dest(config.release.path));
     });
@@ -177,7 +176,7 @@ module.exports = function(config) {
         config.buildProRes(data);
         done();
     });
-    gulp.task('build-project', config.task.buildProject = gulp.series('build', 'build-release-files', 'build-release-data', 'build-project-zip'));
+    gulp.task('build-project', config.task.buildProject = gulp.series('build-minify', 'build-relase-package-json', 'build-release-files', 'build-release-data', 'build-project-zip'));
 
 
     gulp.task('server', () => {
