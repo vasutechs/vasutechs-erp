@@ -6,14 +6,11 @@ module.exports = function(config) {
     var getTableData = function(table, dbConfig) {
         var data;
         try {
-            data = table && dbConfig.currentDb.getData('/tables' + table) || dbConfig.currentDb.getData('/');
-            if (data.password) {
-                data.password = '';
-            }
+            data = table && dbConfig.currentDb.getData('/tables/' + table) || dbConfig.currentDb.getData('/tables');
         } catch (error) {
             data = null;
         };
-        return data;
+        return data || {};
     };
 
 
@@ -22,15 +19,11 @@ module.exports = function(config) {
             newId,
             id = '';
         var data;
-        if (inputData.password) {
-            inputData.password = cryptr.encrypt(inputData.password);
-        }
         if (!inputData.id && !inputData.delete) {
             try {
-                lastData = dbConfig.currentDb.getData('/tables' + table);
+                lastData = getTableData(table, dbConfig);
             } catch (error) {
-                dbConfig.currentDb.push('/tables' + table, {}, true);
-                lastData = dbConfig.currentDb.getData('/tables' + table);
+
             };
             lastData = lastData && lastData[Object.keys(lastData)[Object.keys(lastData).length - 1]];
             newId = lastData && lastData.id && parseInt(lastData.id) + 1 || 1;
@@ -39,34 +32,43 @@ module.exports = function(config) {
             table += '/' + newId;
         }
         try {
-            dbConfig.databaseType && dbConfig.currentDb.push('/type', dbConfig.databaseType, true);
-            dbConfig.year && dbConfig.currentDb.push('/year', dbConfig.year, true);
-            dbConfig.appCustomer && dbConfig.currentDb.push('/appCustomer', dbConfig.appCustomer, true);
-            dbConfig.currentDb.push('/updated', new Date(), true);
-            dbConfig.currentDb.push('/updatedUserId', inputData.updatedUserId, true);
+
             if (inputData.delete) {
-                dbConfig.currentDb.delete('/tables' + table);
+                dbConfig.currentDb.delete('/tables/' + table);
                 data = {};
             } else {
                 inputData['updated'] = new Date();
-                dbConfig.currentDb.push('/tables' + table, inputData, true);
-                data = dbConfig.currentDb.getData('/tables' + table);
+                dbConfig.currentDb.push('/tables/' + table, inputData, true);
+                data = getTableData(table, dbConfig);
             }
 
         } catch (error) {
+            console.log(error);
             data = null;
         };
         return data;
     };
 
+    var updateDatabaseDetails = function(dbConfig, inputData) {
+        var details = {
+            id: 1,
+            type: dbConfig.type || 'appMaster',
+            year: dbConfig.year,
+            appCustomer: dbConfig.appCustomer,
+            updated: new Date(),
+            updatedUserId: inputData.updatedUserId
+        };
+
+        setTableData('databaseDetails/1', details, dbConfig);
+    };
+
     var uploadDb = function(inputData, dbConfig) {
-        var type = inputData.type || null;
-        if (inputData.appCustomer && type && dbConfig.appCustomer === inputData.appCustomer && dbConfig.databaseType === type) {
+        var databaseDetails = inputData.tables && inputData.tables.databaseDetails[1];
+        if (databaseDetails && databaseDetails.appCustomer && databaseDetails.type && dbConfig.appCustomer === databaseDetails.appCustomer && dbConfig.type === databaseDetails.type) {
             dbConfig.currentDb.delete('/');
             dbConfig.currentDb.push('/', inputData, true);
-            dbConfig.currentDb.push('/updatedUserId', inputData.updatedUserId, true);
-            dbConfig.currentDb.push('/updated', new Date(), true);
-            return dbConfig.currentDb.getData('/tables');
+            updateDatabaseDetails(dbConfig, inputData);
+            return getTableData(null, dbConfig);
         }
         return {};
     };
@@ -89,11 +91,11 @@ module.exports = function(config) {
         if (appCustomer) {
             if (year) {
                 dbConfig.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/" + year + "/database", true, true);
-                dbConfig.databaseType = "yearly-" + year;
+                dbConfig.type = "yearly-" + year;
                 dbConfig.year = year;
             } else {
                 dbConfig.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/database", true, true);
-                dbConfig.databaseType = "appCustomerMaster";
+                dbConfig.type = "appCustomerMaster";
             }
             dbConfig.appCustomer = appCustomer;
             return dbConfig;
@@ -103,7 +105,7 @@ module.exports = function(config) {
 
 
     var updateDataId = function(params, inputData, query) {
-        var table = '/' + params.table;
+        var table = params.table;
         var id = inputData.id || query.id
         table += id ? ('/' + id) : '';
         return table;
@@ -127,9 +129,16 @@ module.exports = function(config) {
             } else if (table === '/databaseUpload') {
                 data = uploadDb(inputData, dbConfig);
             } else if (req.method === 'POST') {
+                if (inputData.password) {
+                    inputData.password = cryptr.encrypt(inputData.password);
+                }
                 data = setTableData(table, inputData, dbConfig);
+                updateDatabaseDetails(dbConfig, inputData);
             } else {
                 data = getTableData(table, dbConfig);
+                if (data.password) {
+                    data.password = '';
+                }
             }
 
         }
@@ -145,7 +154,7 @@ module.exports = function(config) {
             dbConfig.currentDb = localDb;
         }
         if (dbConfig.currentDb) {
-            var users = dbConfig.currentDb.getData('/tables/users');
+            var users = getTableData('users', dbConfig);
             for (var i in users) {
                 if (users[i].userName === inputData.userName && inputData.password === cryptr.decrypt(users[i].password)) {
                     data = {
@@ -156,7 +165,7 @@ module.exports = function(config) {
                         loggedIn: true
                     };
                     users[i].laskLogin = new Date();
-                    dbConfig.currentDb.push('/tables/users/' + users[i].id, users[i], true);
+                    setTableData('users/' + users[i].id, users[i], dbConfig);
                 }
             }
         }

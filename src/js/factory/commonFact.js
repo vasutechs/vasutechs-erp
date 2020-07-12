@@ -826,8 +826,11 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 return !disabled && (superAdmin || isAppCustomer || menu.allUser);
             },
             errorHandler: function(e) {
-                context.authFact.logout();
-                context.commonFact.goToPage(context.erpAppConfig.modules.controllers.login.page.link);
+                if (!context.controller || context.controller.id !== 'login') {
+                    context.authFact.logout();
+                    context.commonFact.goToPage(context.erpAppConfig.modules.controllers.login.page.link);
+                }
+
                 return e;
             },
             callActions: function(actionName, params) {
