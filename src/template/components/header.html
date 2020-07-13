@@ -73,4 +73,13 @@
             </div>
         </div>
     </div>
+    <div class="row company-name">
+        <div class="col-5 align-left" ng-if="context.authFact.isLogged()">
+            <h5>Hello {{context.authFact.getUserDetail().userName}}!!</h5>
+        </div>
+        <div class="col-6 align-left" ng-if="context.erpAppConfig.companyName">
+            <h4>{{context.erpAppConfig.companyName}}</h4>
+        </div>
+
+    </div>
 </div>

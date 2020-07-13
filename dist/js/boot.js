@@ -1717,6 +1717,477 @@ erpConfig.moduleFiles.invoice = function(context) {
 };
 
 erpConfig.moduleFiles.cashBill = erpConfig.moduleFiles.invoice;
+erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
+    var orgItemVal = null;
+    return {
+        callBackEdit: function() {
+            orgItemVal = angular.copy(context.controller.data);
+        },
+        callBackAdd: function() {
+            orgItemVal = null;
+        },
+        callBackList: function() {
+            context.commonFact.getPartStock();
+            orgItemVal = null;
+            var listViewData = angular.copy(context.controller.listViewDataMaster);
+            var partDetailList = [];
+            for (var i in listViewData) {
+                if (listViewData[i].isAssemblePart === 1) {
+                    partDetailList.push(listViewData[i]);
+                }
+
+            }
+            context.controller.listViewData = partDetailList;
+        },
+        getSubParts: function() {
+            context.commonFact.getData('production.bomAssemblePart').then(function(res) {
+                var bomData = res.data;
+                for (var i in bomData) {
+                    if (bomData[i].partNo === context.controller.data.partNo) {
+                        context.controller.data.mapping = angular.extend(context.controller.data.mapping, bomData[i].mapping);
+                    }
+                }
+            });
+        },
+        updateQtyMake: function(mappingData, value, field, fieldMapkey) {
+            if (mappingData.id) {
+                var partStockVal = context.controller.partStock[mappingData.id + '-' + context.erpAppConfig.finalStageOpp];
+                if (partStockVal) {
+                    if (context.controller.page.name === 'edit' && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[fieldMapkey].issueQty) {
+                        field.max = parseInt(orgItemVal.mapping[fieldMapkey].issueQty) + parseInt(partStockVal.partStockQty);
+                    } else {
+                        field.max = partStockVal.partStockQty;
+                    }
+
+                    mappingData.operationFrom = partStockVal.operationFrom;
+                    mappingData.operationTo = partStockVal.operationTo;
+                }
+                if (mappingData.partNorms && mappingData.issueQty && field.max && field.max >= mappingData.issueQty) {
+                    mappingData.qtyCanMake = mappingData.issueQty / mappingData.partNorms;
+                } else {
+                    mappingData.qtyCanMake = null;
+                }
+
+            }
+            context.controller.methods.updateTotalQtyMake();
+        },
+        updateTotalQtyMake: function() {
+            var subPartsLength = context.controller.data.mapping.length;
+            var totalQtyMake = 0;
+            var qtyCanMake;
+            var prevCanMake;
+            var isValid = false;
+            for (var i in context.controller.data.mapping) {
+                if (context.controller.data.mapping[i].qtyCanMake) {
+                    totalQtyMake += context.controller.data.mapping[i].qtyCanMake;
+                }
+                if (!prevCanMake || prevCanMake === context.controller.data.mapping[i].qtyCanMake) {
+                    isValid = true;
+                } else {
+                    isValid = false;
+                }
+                prevCanMake = context.controller.data.mapping[i].qtyCanMake;
+            }
+            qtyCanMake = totalQtyMake / subPartsLength;
+            if (Number.isInteger(qtyCanMake) && isValid) {
+                context.controller.data.qtyCanMake = qtyCanMake;
+            } else {
+                context.controller.data.qtyCanMake = null;
+            }
+
+        },
+        updateSubPartStock: function(isDel) {
+            var mapStockUpdate = function(map, key, del) {
+                var data = angular.copy(map);
+                var newContext = angular.copy(context);
+                data.partNo = data.id;
+                if (!del) {
+                    if (orgItemVal && orgItemVal.id && orgItemVal.mapping && orgItemVal.mapping[key]) {
+                        data.acceptedQty = parseInt(orgItemVal.mapping[key].issueQty) - parseInt(map.issueQty);
+                    } else {
+                        data.acceptedQty = 0 - parseInt(map.issueQty);
+                    }
+                } else {
+                    data.acceptedQty = parseInt(map.issueQty);
+                }
+                newContext.controller.data = data;
+                newContext.controller.updatePrevStock = false;
+                context.commonFact.updatePartStock(newContext);
+            };
+            for (var i in context.controller.data.mapping) {
+                mapStockUpdate(context.controller.data.mapping[i], i, isDel || false);
+            }
+        },
+        callBackSubmit: function() {
+            var qtyCanMake;
+            var newContext = angular.copy(context);
+            if (orgItemVal && orgItemVal.qtyCanMake) {
+                qtyCanMake = parseInt(newContext.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
+                newContext.controller.data.acceptedQty = qtyCanMake;
+            } else {
+                newContext.controller.data.acceptedQty = newContext.controller.data.qtyCanMake;
+            }
+            context.commonFact.updatePartStock(newContext).then(function() {
+                context.controller.methods.updateSubPartStock();
+            });
+
+        },
+        callBeforeDelete: function(id, item) {
+            var qtyCanMake;
+            var newContext = angular.copy(context);
+            newContext.controller.data = item;
+            newContext.controller.data.acceptedQty = 0 - parseInt(newContext.controller.data.qtyCanMake);
+            context.commonFact.updatePartStock(newContext).then(function() {
+                context.controller.methods.updateSubPartStock(true);
+            });
+        }
+    };
+};
+erpConfig.moduleFiles.flowMaster = function(context) {
+    return {
+        updateCostAnalysis: function(mappingData, value, field, fieldMapkey) {
+            var machineDetails = context.controller.form.mapping.fields.machineNo.options[mappingData.machineNo];
+            var costAnalysis = 0;
+
+            costAnalysis = machineDetails && (machineDetails.machineShiftRate / machineDetails.shiftHrs);
+            mappingData.costAnalysis = costAnalysis > 0 && mappingData.palnQtyPerHr > 0 && (costAnalysis / mappingData.palnQtyPerHr) || 0;
+            context.controller.methods.updateTotalCost();
+        },
+        updateTotalCost: function() {
+            var totalCost = 0;
+            for (var i in context.controller.data.mapping) {
+                var mappingData = context.controller.data.mapping[i];
+                var otherCost = mappingData.otherCost || 0;
+                var costAnalysis = mappingData.costAnalysis || 0;
+
+                totalCost += parseFloat(otherCost) + parseFloat(costAnalysis);
+            }
+            context.controller.data.totalCost = totalCost;
+        }
+    }
+};
+erpConfig.moduleFiles.materialIssueNote = function(context) {
+    var orgItemVal = null;
+    return {
+        callBackEdit: function() {
+            orgItemVal = angular.copy(context.controller.data);
+        },
+        callBackAdd: function() {
+            var rmStock = [];
+            orgItemVal = null;
+
+            for (var i in context.controller.rmStock) {
+                if (context.controller.rmStock[i] && context.controller.rmStock[i].rmStockQty > 0) {
+                    rmStock.push(context.controller.rmStock[i].rmCode);
+                }
+
+            }
+            context.controller.form.fields['rmCode'] = angular.extend(context.controller.form.fields['rmCode'], {
+                filter: {
+                    id: rmStock
+                }
+            });
+            context.commonFact.makeOptionsFields(context.controller.form.fields['rmCode']);
+
+        },
+        callBackList: function() {
+            context.commonFact.getRMStock();
+            context.controller.listView[1].filter = {
+                isAssemblePart: undefined
+            };
+            context.commonFact.makeOptionsFields(context.controller.listView[1]);
+
+            var listViewData = angular.copy(context.controller.listViewDataMaster);
+            var partDetailList = [];
+            for (var i in listViewData) {
+                if (listViewData[i].isAssemblePart === undefined) {
+                    partDetailList.push(listViewData[i]);
+                }
+
+            }
+            context.controller.listViewData = partDetailList;
+        },
+        getPartNo: function() {
+            if (context.controller.data.rmCode) {
+                context.controller.form.fields['partNo'].filter = {
+                    rmCode: context.controller.data.rmCode
+                };
+                context.commonFact.makeOptionsFields(context.controller.form.fields['partNo']);
+            }
+        },
+        getNorms: function() {
+            if (context.controller.data.rmCode && context.controller.data.partNo) {
+                context.controller.data.partNorms = null;
+                context.controller.data.qtyCanMake = null;
+                context.controller.data.issueQty = null;
+                context.commonFact.getData('production.bom').then(function(res) {
+                    var bomData = res.data;
+                    for (var i in bomData) {
+                        if (bomData[i].partNo === context.controller.data.partNo && bomData[i].rmCode === context.controller.data.rmCode) {
+                            context.controller.data.partNorms = bomData[i].partNorms;
+                        }
+                    }
+                });
+            }
+        },
+        updateQtyMake: function() {
+            if (context.controller.data.rmCode) {
+
+                if (orgItemVal && orgItemVal.issueQty) {
+                    context.controller.form.fields['issueQty'].max = parseInt(orgItemVal.issueQty) + parseInt(context.controller.rmStock[context.controller.data.rmCode].rmStockQty);
+                } else {
+                    context.controller.form.fields['issueQty'].max = context.controller.rmStock[context.controller.data.rmCode].rmStockQty;
+                }
+
+                if (context.controller.data.partNorms && context.controller.data.issueQty && context.controller.form.fields['issueQty'].max >= context.controller.data.issueQty) {
+                    context.controller.data.qtyCanMake = context.controller.data.issueQty / context.controller.data.partNorms;
+                } else {
+                    context.controller.data.qtyCanMake = null;
+                }
+
+            }
+        },
+        removeRMStockQty: function(del) {
+            var rmCode = context.controller.data.rmCode,
+                existingStock = null,
+                removeQty = context.controller.data.issueQty;
+
+            existingStock = context.controller.rmStock[rmCode];
+            if (existingStock) {
+                var rmStockQty;
+                if (!del && orgItemVal && orgItemVal.issueQty) {
+                    removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
+                    rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
+                } else if (del) {
+                    rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
+                } else {
+                    rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
+                }
+                var data = {
+                    id: existingStock.id,
+                    rmCode: rmCode,
+                    rmStockQty: rmStockQty,
+                    uomCode: existingStock.uomCode
+                };
+                context.commonFact.updateData('report.rmStock', data);
+            }
+        },
+        callBackSubmit: function() {
+            var qtyCanMake;
+            context.controller.methods.removeRMStockQty();
+
+            if (orgItemVal && orgItemVal.issueQty) {
+                qtyCanMake = parseInt(context.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
+                context.controller.data.acceptedQty = qtyCanMake;
+            } else {
+                context.controller.data.acceptedQty = context.controller.data.qtyCanMake;
+            }
+            context.commonFact.updatePartStock();
+        },
+        callBeforeDelete: function(id, item) {
+            var qtyCanMake;
+            context.controller.data = item;
+            context.controller.methods.removeRMStockQty(true);
+            context.controller.data.acceptedQty = 0 - parseInt(context.controller.data.qtyCanMake);
+            context.commonFact.updatePartStock();
+        }
+    };
+};
+erpConfig.moduleFiles.productionEntry = function(context) {
+    return {
+        callBackAdd: function() {
+            context.controller.page.printViewMapping = false;
+            context.controller.finalMapping = 0;
+        },
+        callBackEdit: function() {
+            if (!context.controller.page.printView) {
+                context.controller.page.printViewMapping = true;
+                context.commonFact.addMapping(context.controller.data.mapping);
+                context.controller.finalMapping = context.controller.data.mapping.length - 1;
+                context.controller.methods.callBackChangeMapping();
+            }
+        },
+        callBackList: function() {
+            context.commonFact.getPartStock();
+            context.controller.methods.getPRQty();
+            context.commonFact.getFlowMaster();
+            context.commonFact.getOperations();
+        },
+        checkAcceptedQty: function(mappingData, value, field, fieldMapkey) {
+            var qtyCanMake = 0,
+                rejectionQty = mappingData.rejectionQty || 0,
+                rwQty = mappingData.rwQty || 0,
+                acceptedQty = mappingData.acceptedQty || 0,
+                qty = acceptedQty + rejectionQty + rwQty;
+            var fullQty;
+            var prFrmQtyMap;
+            var prFrmToQtyMap;
+            var prToQtyMap;
+            var stockQty;
+
+            prFrmQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-frm';
+            prToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationTo + '-to';
+            prFrmToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-to';
+
+            if (context.controller.data.partNo && mappingData.operationFrom) {
+                if (context.controller.operationsData[mappingData.operationFrom].source === 'Supplier' || context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].isAssemblePart === 1) {
+                    qtyCanMake = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].qtyCanMake;
+                } else if (context.controller.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
+                    qtyCanMake = context.controller.prQty[context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to'].prAcpQty || 0;
+                } else {
+                    qtyCanMake = context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty || 0;
+                }
+                stockQty = context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom] && context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].partStockQty || 0;
+                fullQty = context.controller.prQty[prFrmQtyMap] && parseInt(context.controller.prQty[prFrmQtyMap].prQty) + parseInt(qty) || qty;
+            }
+
+            if (qty > stockQty || fullQty > qtyCanMake || (context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty < qty)) {
+                mappingData[field.id] = null
+            }
+        },
+        callBackChangeMapping: function(data, key, field) {
+            context.controller.methods.updateOperationFrom(data, key, field);
+            context.controller.methods.updateOperationTo(data, key, field);
+        },
+        updateOperationFrom: function(data, key, field) {
+            var prQtyFrmMap;
+            var prQtyPrevMap;
+            var prQtyToMap;
+            var flwMap;
+            var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
+            var jobCardQty = jobCard && jobCard.qtyCanMake;
+
+            if (context.controller.data.jobCardNo) {
+                var restriction = {
+                        partNo: context.controller.data.partNo
+                    },
+                    operation = [];
+                for (var i in context.controller.partStock) {
+                    if (context.controller.partStock[i].partStockQty > 0 && context.controller.data.partNo === context.controller.partStock[i].partNo) {
+                        prQtyPrevMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationFrom + '-frm';
+                        prQtyFrmMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationTo + '-frm';
+                        prQtyToMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationFrom + '-to';
+                        flwMap = context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationTo;
+
+                        if ((!context.controller.prQty[prQtyFrmMap] &&
+                                (!context.controller.partStock[i].operationFrom ||
+                                    (context.controller.prQty[prQtyPrevMap] &&
+                                        context.controller.prQty[prQtyPrevMap].prQty > 0))) ||
+                            (context.controller.prQty[prQtyFrmMap] &&
+                                context.controller.prQty[prQtyFrmMap].prQty < jobCardQty) ||
+                            (context.controller.flowMasterByPartOpr[flwMap] &&
+                                context.controller.flowMasterByPartOpr[flwMap].source === "Sub-Contractor")) {
+                            operation.push(context.controller.partStock[i].operationTo);
+                        }
+                    }
+                }
+                restriction.filter = {
+                    id: operation
+                }
+                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationFrom'], restriction);
+            }
+        },
+        updateOperationTo: function(mappingData) {
+            context.controller.form.mapping.fields['operationTo'].options = {};
+            if (context.controller.data.jobCardNo) {
+                var partNo = context.controller.data.partNo,
+                    restriction = {
+                        partNo: partNo
+                    };
+                if (mappingData && mappingData.operationFrom) {
+                    restriction = angular.extend(restriction, {
+                        limit: 1,
+                        startWith: mappingData.operationFrom
+                    });
+                }
+
+                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationTo'], restriction).then(function() {
+                    var options = context.controller.form.mapping.fields['operationTo'].options;
+                    var firstOption = options[Object.keys(options)[0]];
+                    if (firstOption && firstOption.source === 'Sub-Contractor') {
+                        context.controller.form.mapping.fields['operationTo'].options = {};
+                    }
+                });
+            }
+        },
+        updateToolNo: function(mappingData) {
+            mappingData.toolNo = context.controller.data.partNo && mappingData.operationTo && context.controller.flowMasterByPartOpr[context.controller.data.partNo + '-' + mappingData.operationTo].toolNo || null;
+        },
+        calculatePlanQty: function(mappingData) {
+            var startDate = mappingData.startTime;
+            var endDate = mappingData.endTime;
+            var timeDiff = endDate - startDate;
+            var palnQtyPerHr = context.controller.data.partNo && mappingData.operationTo && context.controller.flowMasterByPartOpr[context.controller.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
+            mappingData.planQty = timeDiff * palnQtyPerHr;
+        },
+        updateMaterialIssue: function() {
+            var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
+            var jobCardQty = jobCard && jobCard.qtyCanMake;
+            jobCard.status = 1;
+            context.commonFact.updateData('production.materialIssueNote', jobCard);
+        },
+        getPRQty: function() {
+            context.controller.prQty = {};
+            return context.commonFact.getData('production.productionEntry').then(function(res) {
+                var listViewData = res.data;
+                for (var i in listViewData) {
+                    for (var j in listViewData[i].mapping) {
+                        var prFrmQty = 0;
+                        var prToQty = 0;
+                        var prQty = 0;
+                        var prFrmAcpQty = 0;
+                        var prToAcpQty = 0;
+                        var prFrmQtyMap;
+                        var prToQtyMap;
+                        prFrmQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationFrom + '-frm';
+                        prToQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationTo + '-to';
+                        prQty = parseInt(listViewData[i].mapping[j].acceptedQty) + parseInt(listViewData[i].mapping[j].rejectionQty) + parseInt(listViewData[i].mapping[j].rwQty);
+                        prFrmAcpQty = context.controller.prQty[prFrmQtyMap] ? parseInt(context.controller.prQty[prFrmQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
+                        prFrmQty = context.controller.prQty[prFrmQtyMap] ? parseInt(context.controller.prQty[prFrmQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
+                        prToQty = context.controller.prQty[prToQtyMap] ? parseInt(context.controller.prQty[prToQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
+                        prToAcpQty = context.controller.prQty[prToQtyMap] ? parseInt(context.controller.prQty[prToQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
+
+                        context.controller.prQty[prFrmQtyMap] = listViewData[i].mapping[j];
+                        context.controller.prQty[prFrmQtyMap].prQty = prFrmQty;
+                        context.controller.prQty[prFrmQtyMap].prAcpQty = prFrmAcpQty;
+                        context.controller.prQty[prToQtyMap] = listViewData[i].mapping[j];
+                        context.controller.prQty[prToQtyMap].prQty = prToQty;
+                        context.controller.prQty[prToQtyMap].prAcpQty = prToAcpQty;
+                    }
+                };
+                return context.controller.prQty;
+            });
+        },
+        callBackSubmit: function() {
+            var newQty;
+            var data = angular.copy(context.controller.data.mapping[context.controller.finalMapping]);
+            var newContext = angular.copy(context);
+            data.partNo = context.controller.data.partNo;
+            newContext.controller.data = data;
+            context.commonFact.updatePartStock(newContext);
+            context.controller.methods.updateMaterialIssue();
+        },
+        prodEntryDownload: function() {
+            if (!context.selectedTableData) {
+                return;
+            }
+            var prodData = context.selectedTableData[context.controller.id];
+            context.commonFact.getData('production.materialIssueNote').then(function(res) {
+                var materData = res.data;
+                var jobCardNo = 1;
+                context.selectedTableData['materialIssueNote'] = {};
+                for (var i in prodData) {
+                    context.selectedTableData['materialIssueNote'][jobCardNo] = materData[prodData[i].jobCardNo];
+                    context.selectedTableData['materialIssueNote'][jobCardNo].id = jobCardNo;
+                    context.selectedTableData['materialIssueNote'][jobCardNo].jobCardNo = jobCardNo;
+                    prodData[i].jobCardNo = jobCardNo;
+                    jobCardNo++;
+                }
+                context.commonFact.downloadFile(context.selectedTableData, context.controller.id + '.json');
+            });
+        }
+    };
+};
 erpConfig.moduleFiles.poGeneralSupplier = function(context) {
     return {
         updatePartDetails: function(mapping) {
@@ -2853,477 +3324,6 @@ erpConfig.moduleFiles.appCustomers = function(context) {
         }
     };
 };
-erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
-    var orgItemVal = null;
-    return {
-        callBackEdit: function() {
-            orgItemVal = angular.copy(context.controller.data);
-        },
-        callBackAdd: function() {
-            orgItemVal = null;
-        },
-        callBackList: function() {
-            context.commonFact.getPartStock();
-            orgItemVal = null;
-            var listViewData = angular.copy(context.controller.listViewDataMaster);
-            var partDetailList = [];
-            for (var i in listViewData) {
-                if (listViewData[i].isAssemblePart === 1) {
-                    partDetailList.push(listViewData[i]);
-                }
-
-            }
-            context.controller.listViewData = partDetailList;
-        },
-        getSubParts: function() {
-            context.commonFact.getData('production.bomAssemblePart').then(function(res) {
-                var bomData = res.data;
-                for (var i in bomData) {
-                    if (bomData[i].partNo === context.controller.data.partNo) {
-                        context.controller.data.mapping = angular.extend(context.controller.data.mapping, bomData[i].mapping);
-                    }
-                }
-            });
-        },
-        updateQtyMake: function(mappingData, value, field, fieldMapkey) {
-            if (mappingData.id) {
-                var partStockVal = context.controller.partStock[mappingData.id + '-' + context.erpAppConfig.finalStageOpp];
-                if (partStockVal) {
-                    if (context.controller.page.name === 'edit' && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[fieldMapkey].issueQty) {
-                        field.max = parseInt(orgItemVal.mapping[fieldMapkey].issueQty) + parseInt(partStockVal.partStockQty);
-                    } else {
-                        field.max = partStockVal.partStockQty;
-                    }
-
-                    mappingData.operationFrom = partStockVal.operationFrom;
-                    mappingData.operationTo = partStockVal.operationTo;
-                }
-                if (mappingData.partNorms && mappingData.issueQty && field.max && field.max >= mappingData.issueQty) {
-                    mappingData.qtyCanMake = mappingData.issueQty / mappingData.partNorms;
-                } else {
-                    mappingData.qtyCanMake = null;
-                }
-
-            }
-            context.controller.methods.updateTotalQtyMake();
-        },
-        updateTotalQtyMake: function() {
-            var subPartsLength = context.controller.data.mapping.length;
-            var totalQtyMake = 0;
-            var qtyCanMake;
-            var prevCanMake;
-            var isValid = false;
-            for (var i in context.controller.data.mapping) {
-                if (context.controller.data.mapping[i].qtyCanMake) {
-                    totalQtyMake += context.controller.data.mapping[i].qtyCanMake;
-                }
-                if (!prevCanMake || prevCanMake === context.controller.data.mapping[i].qtyCanMake) {
-                    isValid = true;
-                } else {
-                    isValid = false;
-                }
-                prevCanMake = context.controller.data.mapping[i].qtyCanMake;
-            }
-            qtyCanMake = totalQtyMake / subPartsLength;
-            if (Number.isInteger(qtyCanMake) && isValid) {
-                context.controller.data.qtyCanMake = qtyCanMake;
-            } else {
-                context.controller.data.qtyCanMake = null;
-            }
-
-        },
-        updateSubPartStock: function(isDel) {
-            var mapStockUpdate = function(map, key, del) {
-                var data = angular.copy(map);
-                var newContext = angular.copy(context);
-                data.partNo = data.id;
-                if (!del) {
-                    if (orgItemVal && orgItemVal.id && orgItemVal.mapping && orgItemVal.mapping[key]) {
-                        data.acceptedQty = parseInt(orgItemVal.mapping[key].issueQty) - parseInt(map.issueQty);
-                    } else {
-                        data.acceptedQty = 0 - parseInt(map.issueQty);
-                    }
-                } else {
-                    data.acceptedQty = parseInt(map.issueQty);
-                }
-                newContext.controller.data = data;
-                newContext.controller.updatePrevStock = false;
-                context.commonFact.updatePartStock(newContext);
-            };
-            for (var i in context.controller.data.mapping) {
-                mapStockUpdate(context.controller.data.mapping[i], i, isDel || false);
-            }
-        },
-        callBackSubmit: function() {
-            var qtyCanMake;
-            var newContext = angular.copy(context);
-            if (orgItemVal && orgItemVal.qtyCanMake) {
-                qtyCanMake = parseInt(newContext.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
-                newContext.controller.data.acceptedQty = qtyCanMake;
-            } else {
-                newContext.controller.data.acceptedQty = newContext.controller.data.qtyCanMake;
-            }
-            context.commonFact.updatePartStock(newContext).then(function() {
-                context.controller.methods.updateSubPartStock();
-            });
-
-        },
-        callBeforeDelete: function(id, item) {
-            var qtyCanMake;
-            var newContext = angular.copy(context);
-            newContext.controller.data = item;
-            newContext.controller.data.acceptedQty = 0 - parseInt(newContext.controller.data.qtyCanMake);
-            context.commonFact.updatePartStock(newContext).then(function() {
-                context.controller.methods.updateSubPartStock(true);
-            });
-        }
-    };
-};
-erpConfig.moduleFiles.flowMaster = function(context) {
-    return {
-        updateCostAnalysis: function(mappingData, value, field, fieldMapkey) {
-            var machineDetails = context.controller.form.mapping.fields.machineNo.options[mappingData.machineNo];
-            var costAnalysis = 0;
-
-            costAnalysis = machineDetails && (machineDetails.machineShiftRate / machineDetails.shiftHrs);
-            mappingData.costAnalysis = costAnalysis > 0 && mappingData.palnQtyPerHr > 0 && (costAnalysis / mappingData.palnQtyPerHr) || 0;
-            context.controller.methods.updateTotalCost();
-        },
-        updateTotalCost: function() {
-            var totalCost = 0;
-            for (var i in context.controller.data.mapping) {
-                var mappingData = context.controller.data.mapping[i];
-                var otherCost = mappingData.otherCost || 0;
-                var costAnalysis = mappingData.costAnalysis || 0;
-
-                totalCost += parseFloat(otherCost) + parseFloat(costAnalysis);
-            }
-            context.controller.data.totalCost = totalCost;
-        }
-    }
-};
-erpConfig.moduleFiles.materialIssueNote = function(context) {
-    var orgItemVal = null;
-    return {
-        callBackEdit: function() {
-            orgItemVal = angular.copy(context.controller.data);
-        },
-        callBackAdd: function() {
-            var rmStock = [];
-            orgItemVal = null;
-
-            for (var i in context.controller.rmStock) {
-                if (context.controller.rmStock[i] && context.controller.rmStock[i].rmStockQty > 0) {
-                    rmStock.push(context.controller.rmStock[i].rmCode);
-                }
-
-            }
-            context.controller.form.fields['rmCode'] = angular.extend(context.controller.form.fields['rmCode'], {
-                filter: {
-                    id: rmStock
-                }
-            });
-            context.commonFact.makeOptionsFields(context.controller.form.fields['rmCode']);
-
-        },
-        callBackList: function() {
-            context.commonFact.getRMStock();
-            context.controller.listView[1].filter = {
-                isAssemblePart: undefined
-            };
-            context.commonFact.makeOptionsFields(context.controller.listView[1]);
-
-            var listViewData = angular.copy(context.controller.listViewDataMaster);
-            var partDetailList = [];
-            for (var i in listViewData) {
-                if (listViewData[i].isAssemblePart === undefined) {
-                    partDetailList.push(listViewData[i]);
-                }
-
-            }
-            context.controller.listViewData = partDetailList;
-        },
-        getPartNo: function() {
-            if (context.controller.data.rmCode) {
-                context.controller.form.fields['partNo'].filter = {
-                    rmCode: context.controller.data.rmCode
-                };
-                context.commonFact.makeOptionsFields(context.controller.form.fields['partNo']);
-            }
-        },
-        getNorms: function() {
-            if (context.controller.data.rmCode && context.controller.data.partNo) {
-                context.controller.data.partNorms = null;
-                context.controller.data.qtyCanMake = null;
-                context.controller.data.issueQty = null;
-                context.commonFact.getData('production.bom').then(function(res) {
-                    var bomData = res.data;
-                    for (var i in bomData) {
-                        if (bomData[i].partNo === context.controller.data.partNo && bomData[i].rmCode === context.controller.data.rmCode) {
-                            context.controller.data.partNorms = bomData[i].partNorms;
-                        }
-                    }
-                });
-            }
-        },
-        updateQtyMake: function() {
-            if (context.controller.data.rmCode) {
-
-                if (orgItemVal && orgItemVal.issueQty) {
-                    context.controller.form.fields['issueQty'].max = parseInt(orgItemVal.issueQty) + parseInt(context.controller.rmStock[context.controller.data.rmCode].rmStockQty);
-                } else {
-                    context.controller.form.fields['issueQty'].max = context.controller.rmStock[context.controller.data.rmCode].rmStockQty;
-                }
-
-                if (context.controller.data.partNorms && context.controller.data.issueQty && context.controller.form.fields['issueQty'].max >= context.controller.data.issueQty) {
-                    context.controller.data.qtyCanMake = context.controller.data.issueQty / context.controller.data.partNorms;
-                } else {
-                    context.controller.data.qtyCanMake = null;
-                }
-
-            }
-        },
-        removeRMStockQty: function(del) {
-            var rmCode = context.controller.data.rmCode,
-                existingStock = null,
-                removeQty = context.controller.data.issueQty;
-
-            existingStock = context.controller.rmStock[rmCode];
-            if (existingStock) {
-                var rmStockQty;
-                if (!del && orgItemVal && orgItemVal.issueQty) {
-                    removeQty = parseInt(orgItemVal.issueQty) - parseInt(removeQty);
-                    rmStockQty = parseInt(existingStock.rmStockQty) + removeQty;
-                } else if (del) {
-                    rmStockQty = parseInt(existingStock.rmStockQty) + parseInt(removeQty);
-                } else {
-                    rmStockQty = parseInt(existingStock.rmStockQty) - parseInt(removeQty);
-                }
-                var data = {
-                    id: existingStock.id,
-                    rmCode: rmCode,
-                    rmStockQty: rmStockQty,
-                    uomCode: existingStock.uomCode
-                };
-                context.commonFact.updateData('report.rmStock', data);
-            }
-        },
-        callBackSubmit: function() {
-            var qtyCanMake;
-            context.controller.methods.removeRMStockQty();
-
-            if (orgItemVal && orgItemVal.issueQty) {
-                qtyCanMake = parseInt(context.controller.data.qtyCanMake) - parseInt(orgItemVal.qtyCanMake);
-                context.controller.data.acceptedQty = qtyCanMake;
-            } else {
-                context.controller.data.acceptedQty = context.controller.data.qtyCanMake;
-            }
-            context.commonFact.updatePartStock();
-        },
-        callBeforeDelete: function(id, item) {
-            var qtyCanMake;
-            context.controller.data = item;
-            context.controller.methods.removeRMStockQty(true);
-            context.controller.data.acceptedQty = 0 - parseInt(context.controller.data.qtyCanMake);
-            context.commonFact.updatePartStock();
-        }
-    };
-};
-erpConfig.moduleFiles.productionEntry = function(context) {
-    return {
-        callBackAdd: function() {
-            context.controller.page.printViewMapping = false;
-            context.controller.finalMapping = 0;
-        },
-        callBackEdit: function() {
-            if (!context.controller.page.printView) {
-                context.controller.page.printViewMapping = true;
-                context.commonFact.addMapping(context.controller.data.mapping);
-                context.controller.finalMapping = context.controller.data.mapping.length - 1;
-                context.controller.methods.callBackChangeMapping();
-            }
-        },
-        callBackList: function() {
-            context.commonFact.getPartStock();
-            context.controller.methods.getPRQty();
-            context.commonFact.getFlowMaster();
-            context.commonFact.getOperations();
-        },
-        checkAcceptedQty: function(mappingData, value, field, fieldMapkey) {
-            var qtyCanMake = 0,
-                rejectionQty = mappingData.rejectionQty || 0,
-                rwQty = mappingData.rwQty || 0,
-                acceptedQty = mappingData.acceptedQty || 0,
-                qty = acceptedQty + rejectionQty + rwQty;
-            var fullQty;
-            var prFrmQtyMap;
-            var prFrmToQtyMap;
-            var prToQtyMap;
-            var stockQty;
-
-            prFrmQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-frm';
-            prToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationTo + '-to';
-            prFrmToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-to';
-
-            if (context.controller.data.partNo && mappingData.operationFrom) {
-                if (context.controller.operationsData[mappingData.operationFrom].source === 'Supplier' || context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].isAssemblePart === 1) {
-                    qtyCanMake = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].qtyCanMake;
-                } else if (context.controller.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
-                    qtyCanMake = context.controller.prQty[context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to'].prAcpQty || 0;
-                } else {
-                    qtyCanMake = context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty || 0;
-                }
-                stockQty = context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom] && context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].partStockQty || 0;
-                fullQty = context.controller.prQty[prFrmQtyMap] && parseInt(context.controller.prQty[prFrmQtyMap].prQty) + parseInt(qty) || qty;
-            }
-
-            if (qty > stockQty || fullQty > qtyCanMake || (context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty < qty)) {
-                mappingData[field.id] = null
-            }
-        },
-        callBackChangeMapping: function(data, key, field) {
-            context.controller.methods.updateOperationFrom(data, key, field);
-            context.controller.methods.updateOperationTo(data, key, field);
-        },
-        updateOperationFrom: function(data, key, field) {
-            var prQtyFrmMap;
-            var prQtyPrevMap;
-            var prQtyToMap;
-            var flwMap;
-            var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
-            var jobCardQty = jobCard && jobCard.qtyCanMake;
-
-            if (context.controller.data.jobCardNo) {
-                var restriction = {
-                        partNo: context.controller.data.partNo
-                    },
-                    operation = [];
-                for (var i in context.controller.partStock) {
-                    if (context.controller.partStock[i].partStockQty > 0 && context.controller.data.partNo === context.controller.partStock[i].partNo) {
-                        prQtyPrevMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationFrom + '-frm';
-                        prQtyFrmMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationTo + '-frm';
-                        prQtyToMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationFrom + '-to';
-                        flwMap = context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationTo;
-
-                        if ((!context.controller.prQty[prQtyFrmMap] &&
-                                (!context.controller.partStock[i].operationFrom ||
-                                    (context.controller.prQty[prQtyPrevMap] &&
-                                        context.controller.prQty[prQtyPrevMap].prQty > 0))) ||
-                            (context.controller.prQty[prQtyFrmMap] &&
-                                context.controller.prQty[prQtyFrmMap].prQty < jobCardQty) ||
-                            (context.controller.flowMasterByPartOpr[flwMap] &&
-                                context.controller.flowMasterByPartOpr[flwMap].source === "Sub-Contractor")) {
-                            operation.push(context.controller.partStock[i].operationTo);
-                        }
-                    }
-                }
-                restriction.filter = {
-                    id: operation
-                }
-                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationFrom'], restriction);
-            }
-        },
-        updateOperationTo: function(mappingData) {
-            context.controller.form.mapping.fields['operationTo'].options = {};
-            if (context.controller.data.jobCardNo) {
-                var partNo = context.controller.data.partNo,
-                    restriction = {
-                        partNo: partNo
-                    };
-                if (mappingData && mappingData.operationFrom) {
-                    restriction = angular.extend(restriction, {
-                        limit: 1,
-                        startWith: mappingData.operationFrom
-                    });
-                }
-
-                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationTo'], restriction).then(function() {
-                    var options = context.controller.form.mapping.fields['operationTo'].options;
-                    var firstOption = options[Object.keys(options)[0]];
-                    if (firstOption && firstOption.source === 'Sub-Contractor') {
-                        context.controller.form.mapping.fields['operationTo'].options = {};
-                    }
-                });
-            }
-        },
-        updateToolNo: function(mappingData) {
-            mappingData.toolNo = context.controller.data.partNo && mappingData.operationTo && context.controller.flowMasterByPartOpr[context.controller.data.partNo + '-' + mappingData.operationTo].toolNo || null;
-        },
-        calculatePlanQty: function(mappingData) {
-            var startDate = mappingData.startTime;
-            var endDate = mappingData.endTime;
-            var timeDiff = endDate - startDate;
-            var palnQtyPerHr = context.controller.data.partNo && mappingData.operationTo && context.controller.flowMasterByPartOpr[context.controller.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
-            mappingData.planQty = timeDiff * palnQtyPerHr;
-        },
-        updateMaterialIssue: function() {
-            var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
-            var jobCardQty = jobCard && jobCard.qtyCanMake;
-            jobCard.status = 1;
-            context.commonFact.updateData('production.materialIssueNote', jobCard);
-        },
-        getPRQty: function() {
-            context.controller.prQty = {};
-            return context.commonFact.getData('production.productionEntry').then(function(res) {
-                var listViewData = res.data;
-                for (var i in listViewData) {
-                    for (var j in listViewData[i].mapping) {
-                        var prFrmQty = 0;
-                        var prToQty = 0;
-                        var prQty = 0;
-                        var prFrmAcpQty = 0;
-                        var prToAcpQty = 0;
-                        var prFrmQtyMap;
-                        var prToQtyMap;
-                        prFrmQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationFrom + '-frm';
-                        prToQtyMap = listViewData[i].jobCardNo + '-' + listViewData[i].partNo + '-' + listViewData[i].mapping[j].operationTo + '-to';
-                        prQty = parseInt(listViewData[i].mapping[j].acceptedQty) + parseInt(listViewData[i].mapping[j].rejectionQty) + parseInt(listViewData[i].mapping[j].rwQty);
-                        prFrmAcpQty = context.controller.prQty[prFrmQtyMap] ? parseInt(context.controller.prQty[prFrmQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
-                        prFrmQty = context.controller.prQty[prFrmQtyMap] ? parseInt(context.controller.prQty[prFrmQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
-                        prToQty = context.controller.prQty[prToQtyMap] ? parseInt(context.controller.prQty[prToQtyMap].prQty) + parseInt(prQty) : parseInt(prQty);
-                        prToAcpQty = context.controller.prQty[prToQtyMap] ? parseInt(context.controller.prQty[prToQtyMap].prAcpQty) + parseInt(listViewData[i].mapping[j].acceptedQty) : parseInt(listViewData[i].mapping[j].acceptedQty);
-
-                        context.controller.prQty[prFrmQtyMap] = listViewData[i].mapping[j];
-                        context.controller.prQty[prFrmQtyMap].prQty = prFrmQty;
-                        context.controller.prQty[prFrmQtyMap].prAcpQty = prFrmAcpQty;
-                        context.controller.prQty[prToQtyMap] = listViewData[i].mapping[j];
-                        context.controller.prQty[prToQtyMap].prQty = prToQty;
-                        context.controller.prQty[prToQtyMap].prAcpQty = prToAcpQty;
-                    }
-                };
-                return context.controller.prQty;
-            });
-        },
-        callBackSubmit: function() {
-            var newQty;
-            var data = angular.copy(context.controller.data.mapping[context.controller.finalMapping]);
-            var newContext = angular.copy(context);
-            data.partNo = context.controller.data.partNo;
-            newContext.controller.data = data;
-            context.commonFact.updatePartStock(newContext);
-            context.controller.methods.updateMaterialIssue();
-        },
-        prodEntryDownload: function() {
-            if (!context.selectedTableData) {
-                return;
-            }
-            var prodData = context.selectedTableData[context.controller.id];
-            context.commonFact.getData('production.materialIssueNote').then(function(res) {
-                var materData = res.data;
-                var jobCardNo = 1;
-                context.selectedTableData['materialIssueNote'] = {};
-                for (var i in prodData) {
-                    context.selectedTableData['materialIssueNote'][jobCardNo] = materData[prodData[i].jobCardNo];
-                    context.selectedTableData['materialIssueNote'][jobCardNo].id = jobCardNo;
-                    context.selectedTableData['materialIssueNote'][jobCardNo].jobCardNo = jobCardNo;
-                    prodData[i].jobCardNo = jobCardNo;
-                    jobCardNo++;
-                }
-                context.commonFact.downloadFile(context.selectedTableData, context.controller.id + '.json');
-            });
-        }
-    };
-};
 (function(module) {
 try {
   module = angular.module('erpApp');
@@ -3356,7 +3356,6 @@ try {
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/defaultView.html',
     '<div class="container-fluid">\n' +
-    '    <h1 class="align-center company-name" ng-if="context.erpAppConfig.companyName">{{context.erpAppConfig.companyName}}</h1>\n' +
     '    <alert-rol></alert-rol>\n' +
     '\n' +
     '    <div class="mb-3">\n' +
@@ -3403,6 +3402,82 @@ module.run(['$templateCache', function($templateCache) {
     '    <div ng-if="context.showLoading" id="overlay-loader" class="d-flex justify-content-center">\n' +
     '        <div class="spinner-border text-primary" role="status">\n' +
     '            <span class="sr-only">Loading...</span>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('erpApp');
+} catch (e) {
+  module = angular.module('erpApp', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('template/controllers/dashboard.html',
+    '<div class="container-fluid">\n' +
+    '    <alert-rol></alert-rol>\n' +
+    '    <div class="mb-3">\n' +
+    '        <h3>{{context.controller.title}}</h3>\n' +
+    '        <ul class="navbar-nav" ng-if="context.authFact.isLogged() && context.erpLoaded">\n' +
+    '            <li ng-if="context.commonFact.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">\n' +
+    '                <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">\n' +
+    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
+    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
+    '                </a>\n' +
+    '                <a ng-if="!module.page" class="nav-link">\n' +
+    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
+    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
+    '                </a>\n' +
+    '                <ul>\n' +
+    '                    <li ng-if="context.commonFact.isShowMenu(subModule)" ng-repeat="subModule in context.commonFact.showSubModule(module)">\n' +
+    '                        <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
+    '                    </li>\n' +
+    '                </ul>\n' +
+    '            </li>\n' +
+    '        </ul>\n' +
+    '    </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('erpApp');
+} catch (e) {
+  module = angular.module('erpApp', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('template/controllers/databaseUpload.html',
+    '<div class="container-fluid">\n' +
+    '    <!-- Breadcrumbs-->\n' +
+    '    <ol class="breadcrumb">\n' +
+    '        <li class="breadcrumb-item">\n' +
+    '            <a href="#/">Dashboard</a>\n' +
+    '        </li>\n' +
+    '        <li class="breadcrumb-item active">Upload</li>\n' +
+    '    </ol>\n' +
+    '    <!-- Example DataTables Card-->\n' +
+    '    <div class="mb-3">\n' +
+    '        <h3>{{context.controller.title}}</h3>\n' +
+    '        <div>\n' +
+    '            <div class="card">\n' +
+    '                <div class="card-body">\n' +
+    '                    <div ng-if="context.controller.alertMessage!==undefined" class="alert alert-danger" role="alert">\n' +
+    '                        {{context.controller.alertMessage}}\n' +
+    '                    </div>\n' +
+    '                    <div ng-if="context.controller.message!==undefined" class="alert alert-success" role="alert">\n' +
+    '                        {{context.controller.message}}\n' +
+    '                    </div>\n' +
+    '                    <h5 style="color:green;">{{context.controller.data.uploadSuccess}}</h5>\n' +
+    '                    <form name="customForm">\n' +
+    '                        <input type="file" file-model="context.controller.data.databaseUpload" class="form-control" />\n' +
+    '\n' +
+    '                        <button ng-click="context.controller.methods.uploadDatabase()" class="btn btn-primary">Submit</button>\n' +
+    '                    </form>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '</div>');
@@ -3801,6 +3876,15 @@ module.run(['$templateCache', function($templateCache) {
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
+    '    <div class="row company-name">\n' +
+    '        <div class="col-5 align-left" ng-if="context.authFact.isLogged()">\n' +
+    '            <h5>Hello {{context.authFact.getUserDetail().userName}}!!</h5>\n' +
+    '        </div>\n' +
+    '        <div class="col-6 align-left" ng-if="context.erpAppConfig.companyName">\n' +
+    '            <h4>{{context.erpAppConfig.companyName}}</h4>\n' +
+    '        </div>\n' +
+    '\n' +
+    '    </div>\n' +
     '</div>');
 }]);
 })();
@@ -3936,87 +4020,8 @@ try {
   module = angular.module('erpApp', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('template/controllers/dashboard.html',
-    '<div class="container-fluid">\n' +
-    '    <h1 class="align-center company-name" ng-if="context.erpAppConfig.companyName">{{context.erpAppConfig.companyName}}</h1>\n' +
-    '    <alert-rol></alert-rol>\n' +
-    '    <div class="mb-3">\n' +
-    '        <h3>{{context.controller.title}}</h3>\n' +
-    '        <ul class="navbar-nav" ng-if="context.authFact.isLogged() && context.erpLoaded">\n' +
-    '            <li ng-if="context.commonFact.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">\n' +
-    '                <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">\n' +
-    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
-    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
-    '                </a>\n' +
-    '                <a ng-if="!module.page" class="nav-link">\n' +
-    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
-    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
-    '                </a>\n' +
-    '                <ul>\n' +
-    '                    <li ng-if="context.commonFact.isShowMenu(subModule)" ng-repeat="subModule in context.commonFact.showSubModule(module)">\n' +
-    '                        <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
-    '                    </li>\n' +
-    '                </ul>\n' +
-    '            </li>\n' +
-    '        </ul>\n' +
-    '    </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('erpApp');
-} catch (e) {
-  module = angular.module('erpApp', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('template/controllers/databaseUpload.html',
-    '<div class="container-fluid">\n' +
-    '    <!-- Breadcrumbs-->\n' +
-    '    <ol class="breadcrumb">\n' +
-    '        <li class="breadcrumb-item">\n' +
-    '            <a href="#/">Dashboard</a>\n' +
-    '        </li>\n' +
-    '        <li class="breadcrumb-item active">Upload</li>\n' +
-    '    </ol>\n' +
-    '    <!-- Example DataTables Card-->\n' +
-    '    <div class="mb-3">\n' +
-    '        <h3>{{context.controller.title}}</h3>\n' +
-    '        <div>\n' +
-    '            <div class="card">\n' +
-    '                <div class="card-body">\n' +
-    '                    <div ng-if="context.controller.alertMessage!==undefined" class="alert alert-danger" role="alert">\n' +
-    '                        {{context.controller.alertMessage}}\n' +
-    '                    </div>\n' +
-    '                    <div ng-if="context.controller.message!==undefined" class="alert alert-success" role="alert">\n' +
-    '                        {{context.controller.message}}\n' +
-    '                    </div>\n' +
-    '                    <h5 style="color:green;">{{context.controller.data.uploadSuccess}}</h5>\n' +
-    '                    <form name="customForm">\n' +
-    '                        <input type="file" file-model="context.controller.data.databaseUpload" class="form-control" />\n' +
-    '\n' +
-    '                        <button ng-click="context.controller.methods.uploadDatabase()" class="btn btn-primary">Submit</button>\n' +
-    '                    </form>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('erpApp');
-} catch (e) {
-  module = angular.module('erpApp', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/controllers/marketing/invoice.html',
     '<div class="container-fluid">\n' +
-    '    <h1 class="align-center company-name" ng-if="context.erpAppConfig.companyName">{{context.erpAppConfig.companyName}}</h1>\n' +
-    '    <!-- Example DataTables Card-->\n' +
     '    <div class="mb-3">\n' +
     '        <h3 class="print-title">{{context.controller.title}}</h3>\n' +
     '        <div ng-if="context.controller.page.name==\'add\' || context.controller.page.name==\'edit\'">\n' +
