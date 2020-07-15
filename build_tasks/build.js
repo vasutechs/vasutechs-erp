@@ -173,7 +173,7 @@ module.exports = function(config) {
         zip.addLocalFolder(config.release.path);
         const data = zip.toBuffer();
         del([config.release.path]);
-        config.buildProRes(data);
+        config.apiProRes(data);
         done();
     });
     gulp.task('build-project', config.task.buildProject = gulp.series('build-minify', 'build-relase-package-json', 'build-release-files', 'build-release-data', 'build-project-zip'));

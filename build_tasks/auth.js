@@ -1,8 +1,5 @@
 module.exports = function(config) {
-
-    var JsonDB = require('node-json-db');
     var del = require('del');
-    var masterDb = new JsonDB("./data/database", true, true);
     var authApis = {
         '/api/auth/logout': 'authLogout',
         '/api/auth/login': 'authLogin',
@@ -18,7 +15,7 @@ module.exports = function(config) {
             return {};
         },
         authLogin: function(req, res) {
-            var data = config.task.login(req, masterDb) || config.task.login(req) || null;
+            var data = config.task.login(req, true) || config.task.login(req) || null;
             if (data && data.userName) {
                 setAuthSession(req, data);
             }
@@ -40,7 +37,7 @@ module.exports = function(config) {
         restrictedDbData: function(req, res) {
             var data;
             if (checkSuperAdminUser(req)) {
-                data = config.task.dbData(req, res, masterDb);
+                data = config.task.dbData(req, res, true);
             }
             if (data) {
                 res.status(200).send(data);
@@ -59,16 +56,17 @@ module.exports = function(config) {
         },
         getAppCustomer: function(req, res) {
             var data;
-            data = masterDb.getData('/tables/appCustomers');
+            data = config.task.dbData({ params: { table: 'appCustomers' } }, {}, true);
             return data;
         },
         downloadAppCustomers: function(req, res) {
+            var apiPromise = config.apiPromise();
             if (checkSuperAdminUser(req) && req.query.appCustomer) {
-                var releaseProjectData = masterDb.getData('/tables/appCustomers/' + req.query.appCustomer);
+                var releaseProjectData = config.task.dbData({ params: { table: 'appCustomers' }, query: req.query }, {}, true);
                 var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
                 if (releaseProjectData) {
                     config.task.releaseProject(req, res, releaseProjectData);
-                    config.buildPromise.then(function(resData) {
+                    apiPromise.then(function(resData) {
 
                         res.writeHead(200, {
                             'Content-Type': 'application/octet-stream',

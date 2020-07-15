@@ -9,11 +9,16 @@ module.exports = function() {
             serverPath: 'http://localhost'
         },
         buildTasks: './build_tasks',
-        task: {}
+        task: {},
+        useMangoDb: false,
+        mangoDbUrl: 'mongodb://localhost:27017',
+        apiProRes: null
     };
-    config.buildProRes = null;
-    config.buildPromise = new Promise(function(res) {
-        config.buildProRes = res;
-    });
+    config.apiPromise = function() {
+        config.apiProRes = null;
+        return new Promise(function(res) {
+            config.apiProRes = res;
+        });
+    };
     return config;
 };

@@ -8,6 +8,7 @@
     "serverApiUri": "api",
     "serverDataUri": "data",
     "serverAuth": "auth",
+    "useMangoDb": true,
     "modules": {
         "controllers": {
             "login": {
