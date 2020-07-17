@@ -177,9 +177,4 @@ module.exports = function(config) {
         done();
     });
     gulp.task('build-project', config.task.buildProject = gulp.series('build-minify', 'build-relase-package-json', 'build-release-files', 'build-release-data', 'build-project-zip'));
-
-
-    gulp.task('server', () => {
-        config.task.server();
-    });
 };

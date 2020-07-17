@@ -912,7 +912,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 var prodTabConfig = context.erpAppConfig.modules.controllers.report.productionEntryReport.services.list;
 
                 return context.commonFact.getData(listOfDbsConfig).then(function(res) {
-                    var listOfDbs = res.data.list;
+                    var listOfDbs = res.data;
                     var listOfDbsProm = [];
                     var dataList = [];
                     for (var i in listOfDbs) {

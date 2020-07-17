@@ -16,10 +16,10 @@ module.exports = function(config) {
         },
         authLogin: function(req, res) {
             var data = config.task.login(req, true) || config.task.login(req) || null;
-            if (data && data.userName) {
-                setAuthSession(req, data);
-            }
-            return data;
+
+            return data && data.then && data.then(function(resData) {
+                return resData.userName && setAuthSession(req, resData) || data;
+            }) || data.userName && setAuthSession(req, data) || data;
         },
         appCustomerlogin: function(req, res) {
             var user = req.session.auth || {};
@@ -39,11 +39,9 @@ module.exports = function(config) {
             if (checkSuperAdminUser(req)) {
                 data = config.task.dbData(req, res, true);
             }
-            if (data) {
-                res.status(200).send(data);
-            } else {
-                res.status(401).send({});
-            }
+            data && data.then && data.then(function(resData) {
+                returnRes(res, resData);
+            }) || returnRes(res, data);
         },
         removeAppCustomer: function(req, res) {
             var query = req.query;
@@ -95,16 +93,15 @@ module.exports = function(config) {
             if (checkUser(req)) {
                 data = config.task.dbData(req);
             }
-            if (data) {
-                res.status(200).send(data);
-            } else {
-                res.status(401).send({});
-            }
+            data && data.then && data.then(function(resData) {
+                returnRes(res, resData);
+            }) || returnRes(res, data);
         }
     }
 
     var setAuthSession = function(req, data) {
         req.session.auth = data;
+        return data;
     };
 
     var checkSuperAdminUser = function(req) {
@@ -129,14 +126,20 @@ module.exports = function(config) {
         }
     };
 
-    var callAuthApis = function(req, res) {
-        var api = req.baseUrl;
-        var data = authApis[api] && apiMethods[authApis[api]] && apiMethods[authApis[api]](req, res);
+    var returnRes = function(res, data) {
         if (data) {
             res.status(200).send(data);
         } else {
             res.status(401).send({});
         }
+    };
+
+    var callAuthApis = function(req, res) {
+        var api = req.baseUrl;
+        var data = authApis[api] && apiMethods[authApis[api]] && apiMethods[authApis[api]](req, res);
+        data && data.then && data.then(function(resData) {
+            returnRes(res, resData);
+        }) || returnRes(res, data);
 
     };
 

@@ -5,6 +5,19 @@ var app = function() {
     var express = require("express");
     var arg = require('minimist')(process.argv);
     const fs = require('fs');
+    var open = require('open');
+    var server = function() {
+        var createServer = function() {
+            config.app.listen(config.webServer.serverPort, function() {
+                open(config.webServer.serverPath + ':' + config.webServer.serverPort);
+            }).on('error', function(err) {
+                config.webServer.serverPort++;
+                createServer();
+            });
+        };
+        createServer();
+        config.dbApi();
+    };
 
     config.arg = arg;
     config.app = express();
@@ -21,11 +34,15 @@ var app = function() {
         })
     );
 
+    config.app.use(express.static(config.webServer.distPath));
+
     fs.readdirSync(config.buildTasks).forEach(file => {
         if (file !== 'app.js' && file !== 'config.js') {
             require('./' + file)(config);
         }
     });
+
+    server();
 }
 
 module.exports = app();

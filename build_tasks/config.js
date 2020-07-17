@@ -10,7 +10,7 @@ module.exports = function() {
         },
         buildTasks: './build_tasks',
         task: {},
-        useMangoDb: false,
+        mangoDb: false,
         mangoDbUrl: 'mongodb://localhost:27017',
         apiProRes: null
     };
