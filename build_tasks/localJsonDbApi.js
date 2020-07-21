@@ -13,6 +13,10 @@ module.exports = function(config) {
             return data || {};
         };
 
+        var downloadDb = function(dbConfig) {
+            return dbConfig.currentDb.getData('/');
+        };
+
 
         var setTableData = function(table, dbConfig, inputData, query) {
             var lastData,
@@ -88,7 +92,7 @@ module.exports = function(config) {
 
         var setCustomerCurrentDb = function(appCustomer, year, masterDb) {
             var dbConfig = {};
-            if (appCustomer) {
+            if (appCustomer && !masterDb) {
                 if (year) {
                     dbConfig.currentDb = new JsonDB("./data/appCustomer-" + appCustomer + "/" + year + "/database", true, true);
                     dbConfig.type = "yearly-" + year;
@@ -119,7 +123,8 @@ module.exports = function(config) {
             uploadDb: uploadDb,
             getYearListDb: getYearListDb,
             setCustomerCurrentDb: setCustomerCurrentDb,
-            updateDatabaseDetails: updateDatabaseDetails
+            updateDatabaseDetails: updateDatabaseDetails,
+            downloadDb: downloadDb
         };
     };
 };

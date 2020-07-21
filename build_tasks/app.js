@@ -42,7 +42,7 @@ var app = function() {
         }
     });
 
-    server();
+    config.arg.run && server();
 }
 
 module.exports = app();

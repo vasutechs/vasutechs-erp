@@ -3783,7 +3783,8 @@
                     "masterData": {
                         "rmName": null,
                         "rmStockQty": null,
-                        "uomCode": null
+                        "uomCode": null,
+                        "manual": true
                     },
                     "form": {
                         "name": "RMStock",
@@ -3868,7 +3869,8 @@
                         "partNo": null,
                         "partStockQty": null,
                         "operationFrom": null,
-                        "operationTo": null
+                        "operationTo": null,
+                        "manual": true
                     },
                     "form": {
                         "name": "PartStock",
@@ -3967,7 +3969,8 @@
                         "subContractorCode": null,
                         "partStockQty": null,
                         "operationFrom": null,
-                        "operationTo": null
+                        "operationTo": null,
+                        "manual": true
                     },
                     "form": {
                         "name": "subContractorStock",

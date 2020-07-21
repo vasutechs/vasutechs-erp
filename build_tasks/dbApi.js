@@ -12,7 +12,7 @@ module.exports = function(config) {
             var dbConfig = dbApi.setCustomerCurrentDb(inputData.appCustomer || query.appCustomer, inputData.year || query.year, masterDb) || {};
             if (dbConfig.currentDb) {
                 if (table === 'databaseDownload') {
-                    data = dbConfig.currentDb.getData('/');
+                    data = dbApi.downloadDb(dbConfig);
                 } else if (table === 'getYearDatabases') {
                     data = dbApi.getYearListDb(dbConfig);
                 } else if (table === 'databaseUpload') {
@@ -24,9 +24,6 @@ module.exports = function(config) {
                     data = dbApi.setTableData(table, dbConfig, inputData, query);
                 } else {
                     data = dbApi.getTableData(table, dbConfig, query);
-                    if (data.password) {
-                        data.password = '';
-                    }
                 }
 
             }

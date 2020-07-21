@@ -25,6 +25,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     return context.commonFact.getData(context.controller, key).then(function(res) {
                         context.controller.data = res.data;
                         context.controller.printData = angular.copy(context.controller.data);
+                        context.controller.data['password'] = '';
                         if (context.controller.data['date']) {
                             context.controller.data['date'] = new Date(context.controller.data['date']);
                         }
@@ -222,12 +223,10 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                 mapping.push(newMapping);
             },
             removeMapping: function(data, key) {
-                var isConfirmed = confirm("Are you sure to delete this record ?");
-                if (isConfirmed) {
-                    delete data.splice(key, 1);
-                    context.controller.methods.callBackRemoveMapping && context.controller.methods.callBackRemoveMapping(data, key);
 
-                }
+                delete data.splice(key, 1);
+                context.controller.methods.callBackRemoveMapping && context.controller.methods.callBackRemoveMapping(data, key);
+
             },
             changeMapping: function(data, key, field, fieldMapKey) {
                 for (var dataKey in data) {
