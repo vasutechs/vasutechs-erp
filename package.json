@@ -25,6 +25,7 @@
         "font-awesome": "^4.7.0",
         "jquery": "^3.4.0",
         "node-json-db": "^0.7.5",
-        "open": "^6.0.0"
+        "open": "^6.0.0",
+        "mongodb": "^3.5.9"
     }
 }
