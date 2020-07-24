@@ -11,7 +11,8 @@
         "app-start": "npm run app-update && npm run app-server",
         "app-build": "node_modules\\.bin\\gulp build",
         "app-qa": "node_modules\\.bin\\gulp build-minify",
-        "app-server": "node build_tasks\\app.js --run"
+        "app-server": "node build_tasks\\app.js --run",
+        "app-server-mangoDb": "node build_tasks\\app.js --run --mangoDb"
     },
     "author": "",
     "license": "ISC",

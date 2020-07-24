@@ -1,5 +1,6 @@
 module.exports = function(config) {
     config.localJsonDbApi = function() {
+        var del = require('del');
         var fs = require('fs');
         var JsonDB = require('node-json-db');
         var getTableData = function getTableData(table, dbConfig, query) {
@@ -117,9 +118,14 @@ module.exports = function(config) {
             return table;
         };
 
+        var deleteCustomer = function(appCustomer) {
+            del(["./data/appCustomer-" + appCustomer]);
+        };
+
         return {
             getTableData: getTableData,
             setTableData: setTableData,
+            deleteCustomer: deleteCustomer,
             uploadDb: uploadDb,
             getYearListDb: getYearListDb,
             setCustomerCurrentDb: setCustomerCurrentDb,

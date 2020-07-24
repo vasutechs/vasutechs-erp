@@ -270,7 +270,7 @@
                             "id": "id",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true
                         },
                         {
@@ -5750,6 +5750,9 @@
                 "id": "fileModel",
                 "restrict": "A",
                 "template": false
+            },
+            "autoComplete": {
+                "id": "autoComplete"
             }
         },
         "filters": {

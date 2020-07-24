@@ -925,6 +925,33 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                         return dataList;
                     });
                 });
+            },
+            autoComplete: function(field) {
+                var output = field.isFilterBy && [{
+                    optionId: '',
+                    optionName: 'All'
+                }] || [];
+                field.autoCompleteModel = field.autoCompleteModel || '';
+                for (var i in field.options) {
+                    if (field.options[i].optionName.toLowerCase().indexOf(field.autoCompleteModel.toLowerCase()) >= 0 || field.autoCompleteModel === '' || field.autoCompleteModel === 'All') {
+                        output.push(field.options[i]);
+                    }
+                }
+                field.autoCompleteOptions = output;
+            },
+            fillAutoComplete: function(option, field) {
+                field.autoCompleteModel = option.optionName;
+                if (field.isFilterBy) {
+                    field.selectedFilterBy = option.optionId;
+                    context.commonFact.viewFilterBy(field);
+                } else {
+                    context.controller.data[field.id] = option.optionId;
+                }
+                field.autoCompleteOptions = null;
+                return true;
+            },
+            closeAutoComplete: function(field) {
+                field.autoCompleteOptions = null;
             }
         };
     };

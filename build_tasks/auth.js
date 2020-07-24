@@ -1,5 +1,4 @@
 module.exports = function(config) {
-    var del = require('del');
     var authApis = {
         '/api/auth/logout': 'authLogout',
         '/api/auth/login': 'authLogin',
@@ -47,7 +46,7 @@ module.exports = function(config) {
             var query = req.query;
             var data;
             if (query.appCustomer) {
-                del(["./data/appCustomer-" + query.appCustomer]);
+                config.task.deleteCustomer(query.appCustomer);
                 data = {};
             }
             return data;

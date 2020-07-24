@@ -3,13 +3,14 @@
         <thead>
             <tr>
                 <th ng-if="context.controller.page.downloadTableData"></th>
-                <th ng-repeat="(key, list) in context.controller.listView">
-                    <div ng-if="!list.action && list.isFilterBy===undefined">{{list.title}}</div>
-                    <div ng-if="list.isFilterBy">
-                        <select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.commonFact.viewFilterBy(list)" ng-options="option.optionId as option.optionName for option in list.options">
-                            <option value="">{{list.title}}</option>
-                        </select>
-                        <input ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="list.selectedFilterBy" ng-change="context.commonFact.viewFilterBy(list)" />
+                <th ng-repeat="(key, field) in context.controller.listView">
+                    <div ng-if="!field.action && field.isFilterBy===undefined">{{field.title}}</div>
+                    <div ng-if="field.isFilterBy">
+                        <!-- <select ng-if="field.type==='select'" id="{{field.id}}" class="form-control font-weight-bold" ng-model="field.selectedFilterBy" ng-change="context.commonFact.viewFilterBy(field)" ng-options="option.optionId as option.optionName for option in field.options">
+                            <option value="">{{field.title}}</option>
+                        </select> -->
+                        <auto-complete ng-if="field.type==='autoComplete' || field.type==='select'"></auto-complete>
+                        <input ng-if="field.type==='input'" type="{{field.inputType}}" class="form-control font-weight-bold" ng-model="field.selectedFilterBy" ng-change="context.commonFact.viewFilterBy(field)" />
                     </div>
                 </th>
                 <th>
