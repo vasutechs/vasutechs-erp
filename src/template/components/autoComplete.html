@@ -1,7 +1,7 @@
 <div class="autoComplete">
-    <input type="input" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="field.autoCompleteModel" ng-required="{{field.required}}" placeholder="{{field.name || field.title}}" ng-disabled="field.isDisable" ng-keyup="context.commonFact.autoComplete(field)"
-        ng-blur="context.commonFact.closeAutoComplete(field)" />
-    <i class="fa fa-arrow-down" ng-click="context.commonFact.autoComplete(field)"></i>
+    <input type="input" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="field.autoCompleteModel" ng-required="{{field.required}}" placeholder="{{field.name || field.title}}" ng-disabled="field.isDisable" ng-click="context.commonFact.autoComplete(field)"
+        ng-keyup="context.commonFact.autoComplete(field)" />
+    <i class="down-arrow" ng-click="context.commonFact.autoComplete(field, true)"></i>
     <div ng-if="field.autoCompleteOptions">
         <ul class="list-group autoComplete-items">
             <li class="list-group-item" ng-repeat="(key, option) in field.autoCompleteOptions" ng-click="context.commonFact.fillAutoComplete(option, field, autoCompleteModel) && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])">{{option.optionName}}</li>

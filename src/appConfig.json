@@ -4097,7 +4097,8 @@
                                 "id": "customerCode",
                                 "type": "select",
                                 "dataFrom": "marketing.customerMaster",
-                                "replaceName": "customerName"
+                                "replaceName": "customerName",
+                                "isFilterView": true
                             },
                             {
                                 "title": "From Date",
@@ -4391,14 +4392,16 @@
                                 "id": "toolNo",
                                 "type": "select",
                                 "dataFrom": "production.toolMaster",
-                                "replaceName": "toolName"
+                                "replaceName": "toolName",
+                                "isFilterView": true
                             },
                             {
                                 "title": "Part No",
                                 "id": "partNo",
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
-                                "type": "select"
+                                "type": "select",
+                                "isFilterView": true
                             },
                             {
                                 "title": "From Date",
@@ -4480,7 +4483,8 @@
                                 "id": "machineNo",
                                 "type": "select",
                                 "dataFrom": "production.machineMaster",
-                                "replaceName": "machineName"
+                                "replaceName": "machineName",
+                                "isFilterView": true
                             },
                             {
                                 "title": "From Date",
@@ -4563,14 +4567,16 @@
                                 "id": "partNo",
                                 "type": "select",
                                 "dataFrom": "marketing.partMaster",
-                                "replaceName": "partNo"
+                                "replaceName": "partNo",
+                                "isFilterView": true
                             },
                             {
                                 "title": "Employee Name",
                                 "id": "operator",
                                 "type": "select",
                                 "dataFrom": "marketing.empMaster",
-                                "replaceName": "employeeName"
+                                "replaceName": "employeeName",
+                                "isFilterView": true
                             },
                             {
                                 "title": "From Date",

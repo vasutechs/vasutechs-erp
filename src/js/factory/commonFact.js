@@ -926,32 +926,33 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     });
                 });
             },
-            autoComplete: function(field) {
-                var output = field.isFilterBy && [{
+            autoComplete: function(field, icon) {
+                var output = (field.isFilterBy || field.isFilterView) ? [{
                     optionId: '',
                     optionName: 'All'
-                }] || [];
+                }] : [];
                 field.autoCompleteModel = field.autoCompleteModel || '';
                 for (var i in field.options) {
-                    if (field.options[i].optionName.toLowerCase().indexOf(field.autoCompleteModel.toLowerCase()) >= 0 || field.autoCompleteModel === '' || field.autoCompleteModel === 'All') {
+                    if (field.options[i].optionName.toLowerCase().indexOf(field.autoCompleteModel.toLowerCase()) >= 0 || field.autoCompleteModel === '' || field.autoCompleteModel === 'All' || icon) {
                         output.push(field.options[i]);
                     }
                 }
-                field.autoCompleteOptions = output;
+                field.autoCompleteOptions = icon ? field.autoCompleteOptions ? null : output : output;
+                return true;
             },
             fillAutoComplete: function(option, field) {
                 field.autoCompleteModel = option.optionName;
                 if (field.isFilterBy) {
                     field.selectedFilterBy = option.optionId;
                     context.commonFact.viewFilterBy(field);
+                } else if (field.isFilterView) {
+                    context.controller.filterView.data[field.id] = option.optionId;
+                    context.commonFact['list']();
                 } else {
                     context.controller.data[field.id] = option.optionId;
                 }
                 field.autoCompleteOptions = null;
                 return true;
-            },
-            closeAutoComplete: function(field) {
-                field.autoCompleteOptions = null;
             }
         };
     };

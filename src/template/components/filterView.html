@@ -10,11 +10,9 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th ng-repeat="(key, list) in context.controller.filterView.fields">
-                    {{list.title}}:<select ng-if="list.type==='select'" id="{{list.id}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[list.id]" ng-change="context.commonFact.callActions(list.action, [list]) || context.commonFact['list']()"
-                        ng-options="option.optionId as option.optionName for option in list.options">
-                        <option value="">--Select--</option>
-                    </select> <input ng-if="list.type==='input'" type="{{list.inputType}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[list.id]" ng-change="context.commonFact.callActions(list.action, [list]) || context.commonFact['list']()"
+                <th ng-repeat="(key, field) in context.controller.filterView.fields">
+                    {{field.title}}:
+                    <auto-complete ng-if="field.type==='autoComplete' || field.type==='select'"></auto-complete> <input ng-if="field.type==='input'" type="{{field.inputType}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[field.id]" ng-change="context.commonFact.callActions(field.action, [field]) || context.commonFact['list']()"
                     />
                 </th>
             </tr>
