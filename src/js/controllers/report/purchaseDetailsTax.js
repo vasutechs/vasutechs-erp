@@ -69,7 +69,7 @@ erpConfig.moduleFiles.purchaseDetailsTax = function(context) {
                     for (var x in listViewData) {
                         details = {
                             supplierCode: subContractorMaster[listViewData[x].subContractorCode].subContractorName,
-                            supplierInvoiceNo: listViewData[x].subContractorDCNo,
+                            supplierInvoiceNo: listViewData[x].subContractorDCCode,
                             date: listViewData[x].subContractorDCDate,
                             subTotal: listViewData[x].subTotal,
                             gstTotal: listViewData[x].gstTotal,

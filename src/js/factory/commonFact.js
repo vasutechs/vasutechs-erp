@@ -926,18 +926,57 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     });
                 });
             },
-            autoComplete: function(field, icon) {
+            startAutoComplete: function(element, attrs) {
+                element.find('input').bind('blur', function() {
+                    setTimeout(
+                        function() {
+                            element.find('ul').hide();
+                        }, 200
+                    )
+                });
+                element.find('input').bind('focus', function() {
+                    element.find('ul').show();
+                });
+            },
+            showAutoComplete: function(field, event) {
                 var output = (field.isFilterBy || field.isFilterView) ? [{
                     optionId: '',
                     optionName: 'All'
                 }] : [];
-                field.autoCompleteModel = field.autoCompleteModel || '';
-                for (var i in field.options) {
-                    if (field.options[i].optionName.toLowerCase().indexOf(field.autoCompleteModel.toLowerCase()) >= 0 || field.autoCompleteModel === '' || field.autoCompleteModel === 'All' || icon) {
-                        output.push(field.options[i]);
+                field.selectedOption = field.selectedOption || 0
+                if (event.keyCode === 40 && field.autoCompleteOptions) { //down key, increment selectedIndex
+                    event.preventDefault();
+                    if (field.selectedOption + 1 === field.autoCompleteOptions.length) {
+                        field.selectedOption = 0;
+                    } else {
+                        field.selectedOption++;
                     }
+                } else if (event.keyCode === 38 && field.autoCompleteOptions) { //up key, decrement selectedIndex
+                    event.preventDefault();
+
+                    if (field.selectedOption === 0) {
+                        field.selectedOption = field.autoCompleteOptions.length - 1;
+                    } else {
+                        field.selectedOption--;
+                    }
+
+                } else if ((event.keyCode === 13 || event.keyCode === 9) && field.autoCompleteOptions) { //enter pressed or tab
+
+                    context.commonFact.fillAutoComplete(field.autoCompleteOptions[field.selectedOption], field);
+
+                } else if (event.keyCode === 27) {
+                    field.autoCompleteOptions = null;
+                    field.selectedOption = null;
+                } else {
+                    field.selectedOption = null;
+                    field.autoCompleteModel = field.autoCompleteModel || '';
+                    for (var i in field.options) {
+                        if (field.options[i].optionName.toLowerCase().indexOf(field.autoCompleteModel.toLowerCase()) >= 0 || field.autoCompleteModel === '' || field.autoCompleteModel === 'All') {
+                            output.push(field.options[i]);
+                        }
+                    }
+                    field.autoCompleteOptions = output;
                 }
-                field.autoCompleteOptions = icon ? field.autoCompleteOptions ? null : output : output;
                 return true;
             },
             fillAutoComplete: function(option, field) {
@@ -952,6 +991,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     context.controller.data[field.id] = option.optionId;
                 }
                 field.autoCompleteOptions = null;
+                field.selectedOption = null;
                 return true;
             }
         };

@@ -49,12 +49,12 @@ var buildControllers = function(controllers) {
 var buildComponents = function(components) {
     var buildComp = function(comp) {
         erpApp.directive(comp.id, ['appFact', function(appFact) {
-            var compMethods = erpConfig.moduleFiles[comp.id];
-            var compLink = compMethods && compMethods(appFact);
+            var compMethods = erpConfig.moduleFiles[comp.id] && erpConfig.moduleFiles[comp.id](appFact);
             return {
                 restrict: comp.restrict || 'E',
                 templateUrl: comp.template || comp.template === undefined ? 'template/components/' + comp.id + '.html' : '',
-                link: compLink
+                link: compMethods && compMethods.link,
+                scope: compMethods && compMethods.scope
             };
         }]);
     };

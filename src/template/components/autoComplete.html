@@ -1,10 +1,7 @@
 <div class="autoComplete">
-    <input type="input" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="field.autoCompleteModel" ng-required="{{field.required}}" placeholder="{{field.name || field.title}}" ng-disabled="field.isDisable" ng-click="context.commonFact.autoComplete(field)"
-        ng-keyup="context.commonFact.autoComplete(field)" />
-    <i class="down-arrow" ng-click="context.commonFact.autoComplete(field, true)"></i>
-    <div ng-if="field.autoCompleteOptions">
-        <ul class="list-group autoComplete-items">
-            <li class="list-group-item" ng-repeat="(key, option) in field.autoCompleteOptions" ng-click="context.commonFact.fillAutoComplete(option, field, autoCompleteModel) && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])">{{option.optionName}}</li>
-        </ul>
-    </div>
+    <input type="input" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="field.autoCompleteModel" ng-required="{{field.required}}" placeholder="{{field.name || field.title}}" ng-disabled="field.isDisable" ng-click="context.commonFact.showAutoComplete(field, $event)"
+        ng-keyup="context.commonFact.showAutoComplete(field, $event)" />
+    <ul ng-if="field.autoCompleteOptions && field.autoCompleteOptions.length>0" class="list-group autoComplete-items">
+        <li ng-repeat="(key, option) in field.autoCompleteOptions" ng-class="{'list-group-item': true, 'list-group-item-active': field.selectedOption==key}" ng-click="context.commonFact.fillAutoComplete(option, field, $event) && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])">{{option.optionName}}</li>
+    </ul>
 </div>

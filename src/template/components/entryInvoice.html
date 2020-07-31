@@ -8,7 +8,7 @@
                         <span id="{{context.controller.form.fields.invoiceNo.id}}"><b>{{context.controller.form.fields.invoiceNo.valuePrefix}}{{context.controller.data[context.controller.form.fields.invoiceNo.id]}}</b></span>
                     </td>
                     <td align="right"><b>{{context.controller.form.fields.date.name}}</b></td>
-                    <td colspan="2">
+                    <td colspan="3">
                         <input ng-if="!context.controller.page.printView" type="date" id="{{context.controller.form.fields.date.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.date.id]" ng-required="{{context.controller.form.fields.date.required}}"
                         />
                         <span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.date.id}}" ng-bind="context.commonFact.replaceFieldVal(context.controller.data[context.controller.form.fields.date.id], context.controller.form.fields.date)">{{context.controller.data[context.controller.form.fields.date.id]}}</span>
@@ -17,6 +17,7 @@
                 <tr>
                     <td><b>{{context.controller.form.fields.customerCode.name}}</b></td>
                     <td colspan="6">
+                        <!-- <auto-complete data-field="context.controller.form.fields.customerCode"></auto-complete> -->
                         <select ng-if="!context.controller.page.printView" id="{{context.controller.form.fields.customerCode.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.customerCode.id]" ng-required="{{context.controller.form.fields.customerCode.required}}"
                             ng-change="context.commonFact.callActions(context.controller.form.fields.customerCode.action, [context.controller.data, context.controller.data[context.controller.form.fields.customerCode.id], context.controller.form.fields.customerCode])"
                             ng-options="option.optionId as option.optionName for option in context.controller.form.fields.customerCode.options" ng-disabled="context.controller.form.fields.customerCode.isDisable || (context.controller.form.fields.customerCode.isEditDisable && context.controller.data[context.controller.form.disableByField])"
@@ -66,11 +67,11 @@
 
                 <tr>
                     <td colspan="4" align="right"><b>Sub Total:</b></td>
-                    <td colspan="2"><span id="{{context.controller.form.fields.subTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.subTotal.id]"></span></td>
+                    <td colspan="3"><span id="{{context.controller.form.fields.subTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.subTotal.id]"></span></td>
                 </tr>
                 <tr ng-if="context.controller.cashBill">
                     <td colspan="4" align="right"><b>Previous Balance:</b></td>
-                    <td colspan="2"><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.preBalance.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.preBalance.id]" ng-change="context.commonFact.callActions(context.controller.form.fields.preBalance.action, [map, map[context.controller.form.fields.preBalance.id], field])"
+                    <td colspan="3"><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.preBalance.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.preBalance.id]" ng-change="context.commonFact.callActions(context.controller.form.fields.preBalance.action, [map, map[context.controller.form.fields.preBalance.id], field])"
                         />
                         <span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.preBalance.id}}">{{context.controller.data[context.controller.form.fields.preBalance.id]}}</span></td>
                 </tr>
@@ -79,21 +80,21 @@
                     <td rowspan="3"><span id="{{context.controller.form.fields.taxRate.id}}" ng-bind="context.controller.data[context.controller.form.fields.taxRate.id]"></span>%</td>
                     <td align="right"><b>{{context.controller.form.fields.cgst.name}}</b></td>
                     <td><span id="{{context.controller.form.fields.cgst.id}}" ng-bind="context.controller.data[context.controller.form.fields.cgst.id]"></span>%</td>
-                    <td colspan="2"><span id="{{context.controller.form.fields.cgstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.cgstTotal.id]"></span></td>
+                    <td colspan="3"><span id="{{context.controller.form.fields.cgstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.cgstTotal.id]"></span></td>
                 </tr>
                 <tr ng-if="!context.controller.cashBill">
                     <td align="right"><b>{{context.controller.form.fields.sgst.name}}</b></td>
                     <td><span id="{{context.controller.form.fields.sgst.id}}" ng-bind="context.controller.data[context.controller.form.fields.sgst.id]"></span>%</td>
-                    <td colspan="2"><span id="{{context.controller.form.fields.sgstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.sgstTotal.id]"></span></td>
+                    <td colspan="3"><span id="{{context.controller.form.fields.sgstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.sgstTotal.id]"></span></td>
                 </tr>
                 <tr ng-if="!context.controller.cashBill">
                     <td align="right"><b>{{context.controller.form.fields.igst.name}}</b></td>
                     <td><span id="{{context.controller.form.fields.igst.id}}" ng-bind="context.controller.data[context.controller.form.fields.igst.id]"></span>%</td>
-                    <td colspan="2"><span id="{{context.controller.form.fields.igstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.igstTotal.id]"></span></td>
+                    <td colspan="3"><span id="{{context.controller.form.fields.igstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.igstTotal.id]"></span></td>
                 </tr>
                 <tr>
                     <td colspan="4" align="right"><b>{{context.controller.form.fields.total.name}}:</b></td>
-                    <td colspan="2"><b><span id="{{context.controller.form.fields.total.id}}" ng-bind="context.controller.data[context.controller.form.fields.total.id]"></span></b></td>
+                    <td colspan="3"><b><span id="{{context.controller.form.fields.total.id}}" ng-bind="context.controller.data[context.controller.form.fields.total.id]"></span></b></td>
                 </tr>
             </tbody>
         </table>

@@ -49,12 +49,12 @@ var buildControllers = function(controllers) {
 var buildComponents = function(components) {
     var buildComp = function(comp) {
         erpApp.directive(comp.id, ['appFact', function(appFact) {
-            var compMethods = erpConfig.moduleFiles[comp.id];
-            var compLink = compMethods && compMethods(appFact);
+            var compMethods = erpConfig.moduleFiles[comp.id] && erpConfig.moduleFiles[comp.id](appFact);
             return {
                 restrict: comp.restrict || 'E',
                 templateUrl: comp.template || comp.template === undefined ? 'template/components/' + comp.id + '.html' : '',
-                link: compLink
+                link: compMethods && compMethods.link,
+                scope: compMethods && compMethods.scope
             };
         }]);
     };
@@ -1188,18 +1188,59 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     });
                 });
             },
-            autoComplete: function(field, icon) {
+            startAutoComplete: function(element, attrs) {
+                element.find('input').bind('blur', function() {
+                    setTimeout(
+                        function() {
+                            element.find('ul').hide();
+                        }, 200
+                    )
+                });
+                element.find('input').bind('focus', function() {
+                    element.find('ul').show();
+                });
+            },
+            showAutoComplete: function(field, event) {
                 var output = (field.isFilterBy || field.isFilterView) ? [{
                     optionId: '',
                     optionName: 'All'
                 }] : [];
-                field.autoCompleteModel = field.autoCompleteModel || '';
-                for (var i in field.options) {
-                    if (field.options[i].optionName.toLowerCase().indexOf(field.autoCompleteModel.toLowerCase()) >= 0 || field.autoCompleteModel === '' || field.autoCompleteModel === 'All' || icon) {
-                        output.push(field.options[i]);
+                field.selectedOption = field.selectedOption || 0
+                if (event.keyCode === 40 && field.autoCompleteOptions) { //down key, increment selectedIndex
+                    event.preventDefault();
+                    if (field.selectedOption + 1 === field.autoCompleteOptions.length) {
+                        field.selectedOption = 0;
+                    } else {
+                        field.selectedOption++;
                     }
+                } else if (event.keyCode === 38 && field.autoCompleteOptions) { //up key, decrement selectedIndex
+                    event.preventDefault();
+
+                    if (field.selectedOption === 0) {
+                        field.selectedOption = field.autoCompleteOptions.length - 1;
+                    } else {
+                        field.selectedOption--;
+                    }
+
+                } else if ((event.keyCode === 13 || event.keyCode === 9) && field.autoCompleteOptions) { //enter pressed or tab
+
+                    context.commonFact.fillAutoComplete(field.autoCompleteOptions[field.selectedOption], field);
+
+                } else if (event.keyCode === 27) {
+                    field.autoCompleteOptions = null;
+                    field.selectedOption = null;
+                } else {
+                    field.selectedOption = null;
+                    field.autoCompleteModel = field.autoCompleteModel || '';
+                    for (var i in field.options) {
+                        if (field.options[i].optionName.toLowerCase().indexOf(field.autoCompleteModel.toLowerCase()) >= 0 || field.autoCompleteModel === '' || field.autoCompleteModel === 'All') {
+                            output.push(field.options[i]);
+                        }
+                    }
+                    field.autoCompleteOptions = output;
                 }
-                field.autoCompleteOptions = icon ? field.autoCompleteOptions ? null : output : output;
+
+                console.log(field.selectedOption);
                 return true;
             },
             fillAutoComplete: function(option, field) {
@@ -1214,6 +1255,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     context.controller.data[field.id] = option.optionId;
                 }
                 field.autoCompleteOptions = null;
+                field.selectedOption = null;
                 return true;
             }
         };
@@ -1221,24 +1263,38 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
 };
 
 erpApp.factory('commonFact', ['$filter', '$location', '$window', '$http', erpConfig.moduleFiles.commonFact]);
-erpConfig.moduleFiles.fileModel = function() {
-    return function(scope, element, attrs) {
-
-        element.bind('change', function(changeEvent) {
-            var reader = new FileReader();
-            reader.onload = function(loadEvent) {
-                scope.$apply(function() {
-                    try {
-                        scope.context.controller.data.databaseUpload = JSON.parse(loadEvent.target.result);
-                    } catch (err) {
-                        scope.context.controller.data.databaseUpload = {};
-                    }
-
+erpConfig.moduleFiles.autoComplete = function() {
+    return {
+        link: function(scope, element, attrs) {
+            if (attrs.field) {
+                scope.$watch(attrs.field, function(value) {
+                    scope.field = value;
                 });
             }
-            reader.readAsText(changeEvent.target.files[0]);
+            scope.context.commonFact.startAutoComplete(element, attrs);
+        }
+    };
+};
+erpConfig.moduleFiles.fileModel = function() {
+    return {
+        link: function(scope, element, attrs) {
 
-        });
+            element.bind('change', function(changeEvent) {
+                var reader = new FileReader();
+                reader.onload = function(loadEvent) {
+                    scope.$apply(function() {
+                        try {
+                            scope.context.controller.data.databaseUpload = JSON.parse(loadEvent.target.result);
+                        } catch (err) {
+                            scope.context.controller.data.databaseUpload = {};
+                        }
+
+                    });
+                }
+                reader.readAsText(changeEvent.target.files[0]);
+
+            });
+        }
     };
 };
 erpConfig.moduleFiles.header = function(appFact) {
@@ -1254,8 +1310,10 @@ erpConfig.moduleFiles.header = function(appFact) {
             optionName: context.erpAppConfig.calendarYear - i + '-' + ('' + nextYear).substring(2)
         });
     }
-    return function(scope) {
-        scope.context = context;
+    return {
+        link: function(scope) {
+            scope.context = context;
+        }
     };
 };
 erpConfig.moduleFiles.startFrom = function() {
@@ -2554,7 +2612,7 @@ erpConfig.moduleFiles.purchaseDetailsTax = function(context) {
                     for (var x in listViewData) {
                         details = {
                             supplierCode: subContractorMaster[listViewData[x].subContractorCode].subContractorName,
-                            supplierInvoiceNo: listViewData[x].subContractorDCNo,
+                            supplierInvoiceNo: listViewData[x].subContractorDCCode,
                             date: listViewData[x].subContractorDCDate,
                             subTotal: listViewData[x].subTotal,
                             gstTotal: listViewData[x].gstTotal,
@@ -3434,82 +3492,6 @@ try {
   module = angular.module('erpApp', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('template/controllers/dashboard.html',
-    '<div class="container-fluid">\n' +
-    '    <alert-rol></alert-rol>\n' +
-    '    <div class="mb-3">\n' +
-    '        <h3>{{context.controller.title}}</h3>\n' +
-    '        <ul class="navbar-nav" ng-if="context.authFact.isLogged() && context.erpLoaded">\n' +
-    '            <li ng-if="context.commonFact.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">\n' +
-    '                <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">\n' +
-    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
-    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
-    '                </a>\n' +
-    '                <a ng-if="!module.page" class="nav-link">\n' +
-    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
-    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
-    '                </a>\n' +
-    '                <ul>\n' +
-    '                    <li ng-if="context.commonFact.isShowMenu(subModule)" ng-repeat="subModule in context.commonFact.showSubModule(module)">\n' +
-    '                        <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
-    '                    </li>\n' +
-    '                </ul>\n' +
-    '            </li>\n' +
-    '        </ul>\n' +
-    '    </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('erpApp');
-} catch (e) {
-  module = angular.module('erpApp', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('template/controllers/databaseUpload.html',
-    '<div class="container-fluid">\n' +
-    '    <!-- Breadcrumbs-->\n' +
-    '    <ol class="breadcrumb">\n' +
-    '        <li class="breadcrumb-item">\n' +
-    '            <a href="#/">Dashboard</a>\n' +
-    '        </li>\n' +
-    '        <li class="breadcrumb-item active">Upload</li>\n' +
-    '    </ol>\n' +
-    '    <!-- Example DataTables Card-->\n' +
-    '    <div class="mb-3">\n' +
-    '        <h3>{{context.controller.title}}</h3>\n' +
-    '        <div>\n' +
-    '            <div class="card">\n' +
-    '                <div class="card-body">\n' +
-    '                    <div ng-if="context.controller.alertMessage!==undefined" class="alert alert-danger" role="alert">\n' +
-    '                        {{context.controller.alertMessage}}\n' +
-    '                    </div>\n' +
-    '                    <div ng-if="context.controller.message!==undefined" class="alert alert-success" role="alert">\n' +
-    '                        {{context.controller.message}}\n' +
-    '                    </div>\n' +
-    '                    <h5 style="color:green;">{{context.controller.data.uploadSuccess}}</h5>\n' +
-    '                    <form name="customForm">\n' +
-    '                        <input type="file" file-model="context.controller.data.databaseUpload" class="form-control" />\n' +
-    '\n' +
-    '                        <button ng-click="context.controller.methods.uploadDatabase()" class="btn btn-primary">Submit</button>\n' +
-    '                    </form>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('erpApp');
-} catch (e) {
-  module = angular.module('erpApp', []);
-}
-module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/components/alertRol.html',
     '<div>\n' +
     '    <div class="modal fade" id="RolModal" role="dialog">\n' +
@@ -3561,14 +3543,11 @@ try {
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('template/components/autoComplete.html',
     '<div class="autoComplete">\n' +
-    '    <input type="input" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="field.autoCompleteModel" ng-required="{{field.required}}" placeholder="{{field.name || field.title}}" ng-disabled="field.isDisable" ng-click="context.commonFact.autoComplete(field)"\n' +
-    '        ng-keyup="context.commonFact.autoComplete(field)" />\n' +
-    '    <i class="down-arrow" ng-click="context.commonFact.autoComplete(field, true)"></i>\n' +
-    '    <div ng-if="field.autoCompleteOptions">\n' +
-    '        <ul class="list-group autoComplete-items">\n' +
-    '            <li class="list-group-item" ng-repeat="(key, option) in field.autoCompleteOptions" ng-click="context.commonFact.fillAutoComplete(option, field, autoCompleteModel) && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])">{{option.optionName}}</li>\n' +
-    '        </ul>\n' +
-    '    </div>\n' +
+    '    <input type="input" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="field.autoCompleteModel" ng-required="{{field.required}}" placeholder="{{field.name || field.title}}" ng-disabled="field.isDisable" ng-click="context.commonFact.showAutoComplete(field, $event)"\n' +
+    '        ng-keyup="context.commonFact.showAutoComplete(field, $event)" />\n' +
+    '    <ul ng-if="field.autoCompleteOptions && field.autoCompleteOptions.length>0" class="list-group autoComplete-items">\n' +
+    '        <li ng-repeat="(key, option) in field.autoCompleteOptions" ng-class="{\'list-group-item\': true, \'list-group-item-active\': field.selectedOption==key}" ng-click="context.commonFact.fillAutoComplete(option, field, $event) && context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field])">{{option.optionName}}</li>\n' +
+    '    </ul>\n' +
     '</div>');
 }]);
 })();
@@ -3681,7 +3660,7 @@ module.run(['$templateCache', function($templateCache) {
     '                        <span id="{{context.controller.form.fields.invoiceNo.id}}"><b>{{context.controller.form.fields.invoiceNo.valuePrefix}}{{context.controller.data[context.controller.form.fields.invoiceNo.id]}}</b></span>\n' +
     '                    </td>\n' +
     '                    <td align="right"><b>{{context.controller.form.fields.date.name}}</b></td>\n' +
-    '                    <td colspan="2">\n' +
+    '                    <td colspan="3">\n' +
     '                        <input ng-if="!context.controller.page.printView" type="date" id="{{context.controller.form.fields.date.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.date.id]" ng-required="{{context.controller.form.fields.date.required}}"\n' +
     '                        />\n' +
     '                        <span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.date.id}}" ng-bind="context.commonFact.replaceFieldVal(context.controller.data[context.controller.form.fields.date.id], context.controller.form.fields.date)">{{context.controller.data[context.controller.form.fields.date.id]}}</span>\n' +
@@ -3690,6 +3669,7 @@ module.run(['$templateCache', function($templateCache) {
     '                <tr>\n' +
     '                    <td><b>{{context.controller.form.fields.customerCode.name}}</b></td>\n' +
     '                    <td colspan="6">\n' +
+    '                        <!-- <auto-complete data-field="context.controller.form.fields.customerCode"></auto-complete> -->\n' +
     '                        <select ng-if="!context.controller.page.printView" id="{{context.controller.form.fields.customerCode.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.customerCode.id]" ng-required="{{context.controller.form.fields.customerCode.required}}"\n' +
     '                            ng-change="context.commonFact.callActions(context.controller.form.fields.customerCode.action, [context.controller.data, context.controller.data[context.controller.form.fields.customerCode.id], context.controller.form.fields.customerCode])"\n' +
     '                            ng-options="option.optionId as option.optionName for option in context.controller.form.fields.customerCode.options" ng-disabled="context.controller.form.fields.customerCode.isDisable || (context.controller.form.fields.customerCode.isEditDisable && context.controller.data[context.controller.form.disableByField])"\n' +
@@ -3739,11 +3719,11 @@ module.run(['$templateCache', function($templateCache) {
     '\n' +
     '                <tr>\n' +
     '                    <td colspan="4" align="right"><b>Sub Total:</b></td>\n' +
-    '                    <td colspan="2"><span id="{{context.controller.form.fields.subTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.subTotal.id]"></span></td>\n' +
+    '                    <td colspan="3"><span id="{{context.controller.form.fields.subTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.subTotal.id]"></span></td>\n' +
     '                </tr>\n' +
     '                <tr ng-if="context.controller.cashBill">\n' +
     '                    <td colspan="4" align="right"><b>Previous Balance:</b></td>\n' +
-    '                    <td colspan="2"><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.preBalance.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.preBalance.id]" ng-change="context.commonFact.callActions(context.controller.form.fields.preBalance.action, [map, map[context.controller.form.fields.preBalance.id], field])"\n' +
+    '                    <td colspan="3"><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.preBalance.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.preBalance.id]" ng-change="context.commonFact.callActions(context.controller.form.fields.preBalance.action, [map, map[context.controller.form.fields.preBalance.id], field])"\n' +
     '                        />\n' +
     '                        <span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.preBalance.id}}">{{context.controller.data[context.controller.form.fields.preBalance.id]}}</span></td>\n' +
     '                </tr>\n' +
@@ -3752,21 +3732,21 @@ module.run(['$templateCache', function($templateCache) {
     '                    <td rowspan="3"><span id="{{context.controller.form.fields.taxRate.id}}" ng-bind="context.controller.data[context.controller.form.fields.taxRate.id]"></span>%</td>\n' +
     '                    <td align="right"><b>{{context.controller.form.fields.cgst.name}}</b></td>\n' +
     '                    <td><span id="{{context.controller.form.fields.cgst.id}}" ng-bind="context.controller.data[context.controller.form.fields.cgst.id]"></span>%</td>\n' +
-    '                    <td colspan="2"><span id="{{context.controller.form.fields.cgstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.cgstTotal.id]"></span></td>\n' +
+    '                    <td colspan="3"><span id="{{context.controller.form.fields.cgstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.cgstTotal.id]"></span></td>\n' +
     '                </tr>\n' +
     '                <tr ng-if="!context.controller.cashBill">\n' +
     '                    <td align="right"><b>{{context.controller.form.fields.sgst.name}}</b></td>\n' +
     '                    <td><span id="{{context.controller.form.fields.sgst.id}}" ng-bind="context.controller.data[context.controller.form.fields.sgst.id]"></span>%</td>\n' +
-    '                    <td colspan="2"><span id="{{context.controller.form.fields.sgstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.sgstTotal.id]"></span></td>\n' +
+    '                    <td colspan="3"><span id="{{context.controller.form.fields.sgstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.sgstTotal.id]"></span></td>\n' +
     '                </tr>\n' +
     '                <tr ng-if="!context.controller.cashBill">\n' +
     '                    <td align="right"><b>{{context.controller.form.fields.igst.name}}</b></td>\n' +
     '                    <td><span id="{{context.controller.form.fields.igst.id}}" ng-bind="context.controller.data[context.controller.form.fields.igst.id]"></span>%</td>\n' +
-    '                    <td colspan="2"><span id="{{context.controller.form.fields.igstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.igstTotal.id]"></span></td>\n' +
+    '                    <td colspan="3"><span id="{{context.controller.form.fields.igstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.igstTotal.id]"></span></td>\n' +
     '                </tr>\n' +
     '                <tr>\n' +
     '                    <td colspan="4" align="right"><b>{{context.controller.form.fields.total.name}}:</b></td>\n' +
-    '                    <td colspan="2"><b><span id="{{context.controller.form.fields.total.id}}" ng-bind="context.controller.data[context.controller.form.fields.total.id]"></span></b></td>\n' +
+    '                    <td colspan="3"><b><span id="{{context.controller.form.fields.total.id}}" ng-bind="context.controller.data[context.controller.form.fields.total.id]"></span></b></td>\n' +
     '                </tr>\n' +
     '            </tbody>\n' +
     '        </table>\n' +
@@ -3804,8 +3784,11 @@ module.run(['$templateCache', function($templateCache) {
     '        <thead>\n' +
     '            <tr>\n' +
     '                <th ng-repeat="(key, field) in context.controller.filterView.fields">\n' +
-    '                    {{field.title}}:\n' +
-    '                    <auto-complete ng-if="field.type===\'autoComplete\' || field.type===\'select\'"></auto-complete> <input ng-if="field.type===\'input\'" type="{{field.inputType}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[field.id]" ng-change="context.commonFact.callActions(field.action, [field]) || context.commonFact[\'list\']()"\n' +
+    '                    {{field.title}}: <select ng-if="field.type===\'select\'" id="{{field.id}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[field.id]" ng-change="context.commonFact.callActions(field.action, [field]) || context.commonFact[\'list\']()"\n' +
+    '                        ng-options="option.optionId as option.optionName for option in field.options">\n' +
+    '                    <option value="">--Select--</option>\n' +
+    '                </select>\n' +
+    '                    <auto-complete ng-if="field.type===\'autoComplete\'"></auto-complete> <input ng-if="field.type===\'input\'" type="{{field.inputType}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[field.id]" ng-change="context.commonFact.callActions(field.action, [field]) || context.commonFact[\'list\']()"\n' +
     '                    />\n' +
     '                </th>\n' +
     '            </tr>\n' +
@@ -3943,10 +3926,10 @@ module.run(['$templateCache', function($templateCache) {
     '                <th ng-repeat="(key, field) in context.controller.listView">\n' +
     '                    <div ng-if="!field.action && field.isFilterBy===undefined">{{field.title}}</div>\n' +
     '                    <div ng-if="field.isFilterBy">\n' +
-    '                        <!-- <select ng-if="field.type===\'select\'" id="{{field.id}}" class="form-control font-weight-bold" ng-model="field.selectedFilterBy" ng-change="context.commonFact.viewFilterBy(field)" ng-options="option.optionId as option.optionName for option in field.options">\n' +
+    '                        <select ng-if="field.type===\'select\'" id="{{field.id}}" class="form-control font-weight-bold" ng-model="field.selectedFilterBy" ng-change="context.commonFact.viewFilterBy(field)" ng-options="option.optionId as option.optionName for option in field.options">\n' +
     '                            <option value="">{{field.title}}</option>\n' +
-    '                        </select> -->\n' +
-    '                        <auto-complete ng-if="field.type===\'autoComplete\' || field.type===\'select\'"></auto-complete>\n' +
+    '                        </select>\n' +
+    '                        <auto-complete ng-if="field.type===\'autoComplete\'" context="context" field="field"></auto-complete>\n' +
     '                        <input ng-if="field.type===\'input\'" type="{{field.inputType}}" class="form-control font-weight-bold" ng-model="field.selectedFilterBy" ng-change="context.commonFact.viewFilterBy(field)" />\n' +
     '                    </div>\n' +
     '                </th>\n' +
@@ -4045,6 +4028,82 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="row" ng-if="!context.controller.page.printView && (context.controller.form.mapping.actions.add || context.controller.form.mapping.actions.add==undefined)">\n' +
     '            <div class="col">\n' +
     '                <a class="fa fa-fw fa-plus-square-o" href="javascript: void(0);" ng-click="context.commonFact.addMapping(context.controller.data.mapping)"> </a>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('erpApp');
+} catch (e) {
+  module = angular.module('erpApp', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('template/controllers/dashboard.html',
+    '<div class="container-fluid">\n' +
+    '    <alert-rol></alert-rol>\n' +
+    '    <div class="mb-3">\n' +
+    '        <h3>{{context.controller.title}}</h3>\n' +
+    '        <ul class="navbar-nav" ng-if="context.authFact.isLogged() && context.erpLoaded">\n' +
+    '            <li ng-if="context.commonFact.isShowMenu(module)" class="nav-item dropdown" ng-repeat="(key, module) in context.erpAppConfig.modules.controllers">\n' +
+    '                <a ng-if="module.page" class="nav-link" href="#!{{module.page.link}}">\n' +
+    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
+    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
+    '                </a>\n' +
+    '                <a ng-if="!module.page" class="nav-link">\n' +
+    '                    <i class="fa fa-fw fa-{{module.icon}}"></i>\n' +
+    '                    <span class="nav-link-text">{{module.title}}</span>\n' +
+    '                </a>\n' +
+    '                <ul>\n' +
+    '                    <li ng-if="context.commonFact.isShowMenu(subModule)" ng-repeat="subModule in context.commonFact.showSubModule(module)">\n' +
+    '                        <a href="#!{{subModule.page.link}}">{{subModule.title}}</a>\n' +
+    '                    </li>\n' +
+    '                </ul>\n' +
+    '            </li>\n' +
+    '        </ul>\n' +
+    '    </div>\n' +
+    '</div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('erpApp');
+} catch (e) {
+  module = angular.module('erpApp', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('template/controllers/databaseUpload.html',
+    '<div class="container-fluid">\n' +
+    '    <!-- Breadcrumbs-->\n' +
+    '    <ol class="breadcrumb">\n' +
+    '        <li class="breadcrumb-item">\n' +
+    '            <a href="#/">Dashboard</a>\n' +
+    '        </li>\n' +
+    '        <li class="breadcrumb-item active">Upload</li>\n' +
+    '    </ol>\n' +
+    '    <!-- Example DataTables Card-->\n' +
+    '    <div class="mb-3">\n' +
+    '        <h3>{{context.controller.title}}</h3>\n' +
+    '        <div>\n' +
+    '            <div class="card">\n' +
+    '                <div class="card-body">\n' +
+    '                    <div ng-if="context.controller.alertMessage!==undefined" class="alert alert-danger" role="alert">\n' +
+    '                        {{context.controller.alertMessage}}\n' +
+    '                    </div>\n' +
+    '                    <div ng-if="context.controller.message!==undefined" class="alert alert-success" role="alert">\n' +
+    '                        {{context.controller.message}}\n' +
+    '                    </div>\n' +
+    '                    <h5 style="color:green;">{{context.controller.data.uploadSuccess}}</h5>\n' +
+    '                    <form name="customForm">\n' +
+    '                        <input type="file" file-model="context.controller.data.databaseUpload" class="form-control" />\n' +
+    '\n' +
+    '                        <button ng-click="context.controller.methods.uploadDatabase()" class="btn btn-primary">Submit</button>\n' +
+    '                    </form>\n' +
+    '                </div>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +

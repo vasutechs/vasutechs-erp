@@ -11,7 +11,9 @@ erpConfig.moduleFiles.header = function(appFact) {
             optionName: context.erpAppConfig.calendarYear - i + '-' + ('' + nextYear).substring(2)
         });
     }
-    return function(scope) {
-        scope.context = context;
+    return {
+        link: function(scope) {
+            scope.context = context;
+        }
     };
 };

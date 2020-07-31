@@ -83,7 +83,7 @@ module.exports = function(config) {
                 'index.html',
                 'start**',
                 'build_tasks/app.js',
-                'build_tasks/server.js',
+                'build_tasks/localJsonDbApi.js',
                 'build_tasks/dbApi.js',
                 'build_tasks/config.js'
             ]

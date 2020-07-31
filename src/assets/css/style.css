@@ -593,24 +593,9 @@ select.form-control[multiple] {
     padding: .25rem 1.25rem;
 }
 
-.list-group-item:hover {
+.list-group-item:hover,
+.list-group-item-active {
     color: #ffffff;
     background-color: #337ab7;
     cursor: pointer;
-}
-
-.autoComplete i {
-    position: absolute;
-    top: 13px;
-    right: 10px;
-    cursor: pointer;
-}
-
-.down-arrow {
-    border: solid black;
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
 }
