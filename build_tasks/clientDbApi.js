@@ -116,16 +116,21 @@ module.exports = function(config) {
         };
 
         var getYearListDb = function(dbConfig) {
-            var dir = "./data/appCustomer-" + dbConfig.appCustomer;
-            var files = fs.readdirSync(dir);
+            var appCustomer = dbConfig.appCustomer;
+            var adminDb = dbConfig.currentDb.admin();
             var listDbYears = [];
-            for (var i in files) {
-                var name = dir + '/' + files[i];
-                if (fs.statSync(name).isDirectory()) {
-                    listDbYears.push(files[i]);
+            // List all the available databases
+            return adminDb.listDatabases().then(function(result) {
+                for (var i in result.databases) {
+                    if (result.databases[i].name) {
+                        var dbSplit = result.databases[i].name.split('appCustomer-' + appCustomer + '-')
+                        if (dbSplit[1]) {
+                            listDbYears.push(dbSplit[1]);
+                        }
+                    }
                 }
-            }
-            return listDbYears;
+                return listDbYears;
+            });
         };
 
         var setCustomerCurrentDb = function(appCustomer, year, masterDb) {
@@ -161,10 +166,18 @@ module.exports = function(config) {
             Object.assign(filter, query && query.filter || {});
             return filter;
         };
+        var deleteCustomer = function(appCustomer) {
+            if (clientDb) {
+                if (appCustomer) {
+                    clientDb.db.dropDatabase('appCustomer-' + appCustomer);
+                }
+            }
+        };
 
         return {
             getTableData: getTableData,
             setTableData: setTableData,
+            deleteCustomer: deleteCustomer,
             uploadDb: uploadDb,
             getYearListDb: getYearListDb,
             setCustomerCurrentDb: setCustomerCurrentDb,
