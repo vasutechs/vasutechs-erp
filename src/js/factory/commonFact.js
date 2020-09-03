@@ -1,4 +1,4 @@
-erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) {
+erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http, $timeout) {
     return function(context) {
         return {
             add: function() {
@@ -195,7 +195,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                             var editOption = context.controller.existEditData && optionIdVal === context.controller.existEditData[field.id] || false;
                             optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
                             optionNameVal += list[i][field.replaceName] || '';
-                            var isCheckExistVal = field.existingCheck && context.controller.listViewDataMaster && context.commonFact.findObjectByKey(context.controller.listViewDataMaster, field.id, optionIdVal) || false;
+                            var isCheckExistVal = field.existingCheck && (context.controller.listViewDataMaster || field.existingCheckList) && context.commonFact.findObjectByKey(field.existingCheckList || context.controller.listViewDataMaster, field.id, optionIdVal) || false;
                             field.allOptions[optionVal] = list[i];
                             if (optionVal && field.allOptions[optionVal]) {
                                 field.allOptions[optionVal]['optionName'] = optionNameVal;
@@ -221,6 +221,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     newMapping[mapKey] = null;
                 }
                 mapping.push(newMapping);
+                context.controller.methods.callBackAddMapping && context.controller.methods.callBackAddMapping(newMapping, mapKey);
             },
             removeMapping: function(data, key) {
 
@@ -231,9 +232,9 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
             changeMapping: function(data, key, field, fieldMapKey) {
                 for (var dataKey in data) {
                     if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
-                        if (key === null) {
+                        if (key === null || key === '') {
                             data[dataKey] = angular.copy(context.controller.masterData[dataKey]);
-                        } else if (key !== undefined && field.options[key][dataKey]) {
+                        } else if (key !== undefined && field.options[key] && field.options[key][dataKey]) {
                             if (typeof(field.options[key][dataKey]) !== 'object') {
                                 data[dataKey] = field.options[key][dataKey];
                             } else if (field.updateMapping) {
@@ -867,29 +868,37 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                             }
 
                         }
-                        if (context.commonFact.isAppUser()) {
-                            for (var i in context.erpAppConfig.mapping) {
-                                var map = context.erpAppConfig.mapping[i];
-                                var module = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, map.module) || {};
-                                if (!userDetail.userType || (userDetail.userType && map.restrictUser !== userDetail.userType)) {
-                                    module.disable = map.restrictUser && true;
-                                }
-                                if (module.page && (module.page.actions || module.page.actions === undefined)) {
-                                    module.page.actions = {
-                                        print: true
-                                    };
-                                    module.page.actions.add = map.restrictUser === userDetail.userType && map['add'] || false;
-                                    module.page.actions.edit = map.restrictUser === userDetail.userType && map['edit'] || false;
-                                    module.page.actions.delete = map.restrictUser === userDetail.userType && map['delete'] || false;
-                                }
-                            }
-                        }
+                        context.commonFact.appModuleActionsAccess();
                         promiseRes.resolve();
                     });
                 } else {
                     promiseRes.resolve();
                 }
                 return promiseRes.promise;
+            },
+            appModuleActionsAccess: function(ctrl) {
+                var userDetail = context.authFact.getUserDetail();
+                if (context.commonFact.isAppUser()) {
+                    for (var i in context.erpAppConfig.mapping) {
+                        var map = context.erpAppConfig.mapping[i];
+                        var module = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, map.module) || {};
+                        if (!userDetail.userType || (userDetail.userType && map.restrictUser !== userDetail.userType)) {
+                            module.disable = map.restrictUser && true;
+                        }
+                        if (module.page && (module.page.actions || module.page.actions === undefined)) {
+                            module.page.actions = {
+                                print: true
+                            };
+                            module.page.actions.add = map.restrictUser === userDetail.userType && map['add'] || false;
+                            module.page.actions.edit = map.restrictUser === userDetail.userType && map['edit'] || false;
+                            module.page.actions.delete = map.restrictUser === userDetail.userType && map['delete'] || false;
+                        }
+                        if (ctrl && ctrl.id === module.id) {
+                            return module;
+                        }
+                    }
+                }
+                return ctrl;
             },
             getPromiseRes: function() {
                 var returnPromiseRes;
@@ -926,24 +935,44 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     });
                 });
             },
-            startAutoComplete: function(element, attrs) {
+            startAutoComplete: function(element, attrs, field) {
+                field.autoCompleteModel = '';
                 element.find('input').bind('blur', function() {
-                    setTimeout(
+                    $timeout(
                         function() {
-                            element.find('ul').hide();
+                            if (field.autoCompleteModel === '' || !field.autoCompleteModel) {
+                                element.find('li') && element.find('li')[0] && element.find('li')[0].click();
+                            }
+                            field.autoCompleteOptions = null;
+                            field.selectedOption = null;
+
                         }, 200
                     )
                 });
-                element.find('input').bind('focus', function() {
-                    element.find('ul').show();
+                element.find('i').bind('click', function(e) {
+                    element.find('input').focus();
+                    $timeout(
+                        function() {
+                            context.commonFact.showAutoComplete(field, e, true);
+                        }, 300);
                 });
+                $timeout(
+                    function() {
+                        if (context.controller.page.name === 'edit' && context.controller.data && context.controller.data[field.id]) {
+                            field.autoCompleteModel = context.commonFact.replaceFieldVal(context.controller.data[field.id], field);
+                        }
+                    }, 500
+                )
+
+
             },
-            showAutoComplete: function(field, event) {
-                var output = (field.isFilterBy || field.isFilterView) ? [{
+            showAutoComplete: function(field, event, icon) {
+                var output = [{
                     optionId: '',
-                    optionName: 'All'
-                }] : [];
-                field.selectedOption = field.selectedOption || 0
+                    optionName: field.name
+                }] || [];
+                field.selectedOption = field.selectedOption || 0;
+
                 if (event.keyCode === 40 && field.autoCompleteOptions) { //down key, increment selectedIndex
                     event.preventDefault();
                     if (field.selectedOption + 1 === field.autoCompleteOptions.length) {
@@ -951,6 +980,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     } else {
                         field.selectedOption++;
                     }
+                    field.autoCompleteModel = field.name !== field.autoCompleteOptions[field.selectedOption].optionName ? field.autoCompleteOptions[field.selectedOption].optionName : '';
                 } else if (event.keyCode === 38 && field.autoCompleteOptions) { //up key, decrement selectedIndex
                     event.preventDefault();
 
@@ -959,6 +989,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     } else {
                         field.selectedOption--;
                     }
+                    field.autoCompleteModel = field.name !== field.autoCompleteOptions[field.selectedOption].optionName ? field.autoCompleteOptions[field.selectedOption].optionName : '';
 
                 } else if ((event.keyCode === 13 || event.keyCode === 9) && field.autoCompleteOptions) { //enter pressed or tab
 
@@ -971,31 +1002,41 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http) 
                     field.selectedOption = null;
                     field.autoCompleteModel = field.autoCompleteModel || '';
                     for (var i in field.options) {
-                        if (field.options[i].optionName.toLowerCase().indexOf(field.autoCompleteModel.toLowerCase()) >= 0 || field.autoCompleteModel === '' || field.autoCompleteModel === 'All') {
+                        if (field.options[i].optionName.toLowerCase().indexOf(field.autoCompleteModel.toLowerCase()) >= 0 || field.autoCompleteModel === '' || icon) {
                             output.push(field.options[i]);
                         }
                     }
                     field.autoCompleteOptions = output;
+
+                    if (field.autoCompleteOptions && field.autoCompleteOptions.length === 2) {
+                        field.selectedOption = 1;
+                    }
+                    if ((field.autoCompleteModel === '' || !field.autoCompleteModel) && !field.isFilterBy && !field.isFilterView) {
+                        context.controller.data[field.id] = '';
+                        context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field]);
+                    }
                 }
                 return true;
             },
             fillAutoComplete: function(option, field) {
-                field.autoCompleteModel = option.optionName;
+                field.autoCompleteModel = (option && field.name !== option.optionName) ? option.optionName : '';
                 if (field.isFilterBy) {
-                    field.selectedFilterBy = option.optionId;
+                    field.selectedFilterBy = option && option.optionId || '';
                     context.commonFact.viewFilterBy(field);
                 } else if (field.isFilterView) {
-                    context.controller.filterView.data[field.id] = option.optionId;
+                    context.controller.filterView.data[field.id] = option && option.optionId || '';
                     context.commonFact['list']();
                 } else {
-                    context.controller.data[field.id] = option.optionId;
+                    context.controller.data[field.id] = option && option.optionId || '';
+                    context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field]);
                 }
                 field.autoCompleteOptions = null;
                 field.selectedOption = null;
+
                 return true;
             }
         };
     };
 };
 
-erpApp.factory('commonFact', ['$filter', '$location', '$window', '$http', erpConfig.moduleFiles.commonFact]);
+erpApp.factory('commonFact', ['$filter', '$location', '$window', '$http', '$timeout', erpConfig.moduleFiles.commonFact]);

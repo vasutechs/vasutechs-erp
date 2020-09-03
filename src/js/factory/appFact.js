@@ -22,7 +22,7 @@ erpConfig.moduleFiles.appFact = function(authFact, commonFact, serviceApi, $q) {
         var returnPageProm = $q.defer();
         return erpLoadProm.promise.then(function() {
             var parentModule;
-
+            module = context.commonFact.appModuleActionsAccess(module);
             context.controller = angular.extend(angular.copy(module), { methods: methods && methods(context) || {} });
             var isLogged = context.authFact.isLogged();
             context.erpLoaded = true;

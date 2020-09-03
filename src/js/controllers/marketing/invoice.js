@@ -6,41 +6,62 @@ erpConfig.moduleFiles.invoice = function(context) {
             context.commonFact.getPartStock();
             orgItemVal = null;
             delMapItemVal = [];
+            context.controller.orgItemVal = orgItemVal;
         },
         callBackSetAutoGenKey: function() {
             var year = context.erpAppConfig.calendarYear;
             context.controller.data[context.controller.form.autoGenKey] = context.controller.data[context.controller.form.autoGenKey] + '/' + year + '-' + ('' + parseInt(year + 1)).substring(2);
         },
-        callBackChangeMapping: function(data, key, field) {
-            context.controller.methods.getPartStockDetail(data, key, field);
-            orgItemVal.mapping = angular.copy(context.controller.data.mapping);
+        callBackChangeMapping: function(data) {
+            context.controller.methods.getPartStockDetail(data);
             context.controller.methods.updateTotalAmount();
         },
         callBackRemoveMapping: function(data, key) {
-            if (context.controller.page.name === 'edit') {
+            if (context.controller.page.name === 'edit' && orgItemVal.mapping[key]) {
                 delMapItemVal.push(orgItemVal.mapping[key]);
+                delete orgItemVal.mapping.splice(key, 1);
             }
-            delete orgItemVal.mapping.splice(key, 1);
+
+            context.controller.methods.updateTotalAmount();
         },
         callBackAdd: function() {
-            orgItemVal = angular.copy(context.controller.data);
             delMapItemVal = [];
         },
         callBackEdit: function() {
             orgItemVal = angular.copy(context.controller.data);
+            context.controller.orgItemVal = orgItemVal;
             delMapItemVal = [];
         },
-        getPartStockDetail: function() {
+        getPartStockDetail: function(data) {
             var newMapData = [];
-            newMapData = context.controller.data.mapping.filter(function(data) {
-                if (context.controller.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp]) {
+            var newOptions = {};
+            var partOptions = context.controller.form.mapping.fields['id'].options;
+            var prevMapping = angular.copy(context.controller.data.mapping);
+            if (data.mapping) {
+                newMapData = data.mapping.filter(function(item) {
+                    var isExistPart = (context.controller.partStock && context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp] && parseInt(context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp].partStockQty) > 0);
+                    item.isExistPart = isExistPart;
+                    return isExistPart;
+                });
+                if (newMapData.length > 0) {
+                    data.mapping = newMapData;
+                }
+                for (var item in partOptions) {
+                    if (partOptions.hasOwnProperty(item) && (context.controller.partStock && context.controller.partStock[item + '-' + context.erpAppConfig.finalStageOpp] && parseInt(context.controller.partStock[item + '-' + context.erpAppConfig.finalStageOpp].partStockQty) > 0)) {
+                        newOptions[item] = partOptions[item];
+                    }
+                }
+                context.controller.form.mapping.fields['id'].options = newOptions;
+            } else {
+                delete prevMapping.splice(prevMapping.length - 1, 1);
+                if (context.commonFact.findObjectByKey(prevMapping, 'id', data.id)) {
+                    context.controller.data.mapping[context.controller.data.mapping.length - 1] = angular.extend({}, context.controller.masterData.mapping[0]);
+                } else if (context.controller.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp]) {
                     data.operationFrom = context.controller.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].operationFrom;
                     data.operationTo = context.controller.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].operationTo;
                 }
+            }
 
-                return (context.controller.partStock && context.controller.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp] && parseInt(context.controller.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].partStockQty) > 0);
-            });
-            context.controller.data.mapping = newMapData;
         },
         updateTotal: function(data, updateValue, field, fieldKey) {
             var partDetail = context.controller.form.mapping.fields['id'].options[data.id],
@@ -49,7 +70,7 @@ erpConfig.moduleFiles.invoice = function(context) {
 
             if (context.controller.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp]) {
                 partStock = parseInt(context.controller.partStock[data.id + '-' + context.erpAppConfig.finalStageOpp].partStockQty);
-                if (context.controller.page.name === 'edit') {
+                if (context.controller.page.name === 'edit' && orgItemVal.mapping[fieldKey]) {
                     partStock += parseInt(orgItemVal.mapping[fieldKey].unit);
                 }
                 data.unit = partStock < data.unit ? null : data.unit;
@@ -82,7 +103,7 @@ erpConfig.moduleFiles.invoice = function(context) {
                 taxRateTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
 
                 total = subTotal + taxRateTotal;
-                context.controller.data.taxRate = context.controller.data.gst;
+                context.controller.data.gst = context.controller.data.gst;
                 context.controller.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
                 context.controller.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
                 context.controller.data.igstTotal = parseFloat(igstTotal).toFixed(2);
@@ -103,13 +124,13 @@ erpConfig.moduleFiles.invoice = function(context) {
             }
             context.controller.data.total = Math.round(total);
         },
-        updateInvoicePartStock: function() {
-            var mapStockUpdate = function(map, key, del) {
+        updateInvoicePartStock: function(del) {
+            var mapStockUpdate = function(map, key, delMap) {
                 var data = angular.copy(map);
                 var newContext = angular.copy(context);
                 data.partNo = data.id;
-                if (!del && orgItemVal && orgItemVal.mapping && orgItemVal.mapping[key]) {
-                    if (orgItemVal.id) {
+                if (!del && !delMap) {
+                    if (orgItemVal && orgItemVal.id && orgItemVal.mapping[key]) {
                         data.acceptedQty = parseInt(orgItemVal.mapping[key].unit) - parseInt(map.unit);
                     } else {
                         data.acceptedQty = 0 - parseInt(map.unit);
@@ -129,12 +150,74 @@ erpConfig.moduleFiles.invoice = function(context) {
             }
 
         },
+        updateCustomerDetail: function() {
+            var promiseRes = context.commonFact.getPromiseRes();
+            var customerMaster;
+            var customerMasterMap;
+            var update = function(inputData) {
+                return context.commonFact.updateData('marketing.customerMaster', inputData).then(function(res) {
+                    var data = res.data;
+                    return data;
+                });
+            };
+            if (context.controller.data.customerCode) {
+                context.commonFact.getData('marketing.customerMaster', context.controller.data.customerCode).then(function(res) {
+                    customerMaster = angular.copy(res.data);
+                    for (var i in context.controller.data.mapping) {
+                        customerMasterMap = angular.copy(context.controller.data.mapping[i]);
+                        if (!context.commonFact.findObjectByKey(customerMaster.mapping, 'id', context.controller.data.mapping[i].id)) {
+                            delete customerMasterMap.unit;
+                            delete customerMasterMap.amount;
+                            delete customerMasterMap.operationFrom;
+                            delete customerMasterMap.operationTo;
+                            customerMaster.mapping.push(customerMasterMap);
+                        }
+                    }
+                    update(customerMaster).then(function() {
+                        promiseRes.resolve();
+                    });
+                });
+            } else {
+                customerMaster = {
+                    customerName: context.controller.form.fields.customerCode.autoCompleteModel,
+                    address: context.controller.data.address,
+                    contactNo: 0,
+                    gstin: context.controller.data.gstin,
+                    mapping: angular.copy(context.controller.data.mapping),
+                    gst: context.controller.data.gst,
+                    cgst: context.controller.data.cgst,
+                    sgst: context.controller.data.sgst,
+                    igst: context.controller.data.igst
+                };
+                for (var i in customerMaster.mapping) {
+                    delete customerMaster.mapping[i].unit;
+                    delete customerMaster.mapping[i].amount;
+                    delete customerMaster.mapping[i].operationFrom;
+                    delete customerMaster.mapping[i].operationTo;
+                }
+                update(customerMaster).then(function(newCustomerMaster) {
+                    context.controller.data.customerCode = newCustomerMaster.id;
+                    newCustomerMaster.customerCode = context.controller.data.customerCode;
+                    update(newCustomerMaster);
+                    promiseRes.resolve();
+                });
+            }
+
+
+            return promiseRes.promise;
+        },
+        invoiceSubmit: function() {
+            context.controller.methods.updateCustomerDetail().then(function() {
+                context.commonFact.submit();
+            });
+
+        },
         callBackSubmit: function() {
             context.controller.methods.updateInvoicePartStock();
         },
         callBeforeDelete: function(id, item) {
             context.controller.data = item;
-            context.controller.methods.updateInvoicePartStock();
+            context.controller.methods.updateInvoicePartStock(true);
         }
     };
 };

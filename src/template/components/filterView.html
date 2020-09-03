@@ -11,7 +11,7 @@
         <thead>
             <tr>
                 <th ng-repeat="(key, field) in context.controller.filterView.fields">
-                    {{field.title}}: <select ng-if="field.type==='select'" id="{{field.id}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[field.id]" ng-change="context.commonFact.callActions(field.action, [field]) || context.commonFact['list']()"
+                    {{field.name}}: <select ng-if="field.type==='select'" id="{{field.id}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[field.id]" ng-change="context.commonFact.callActions(field.action, [field]) || context.commonFact['list']()"
                         ng-options="option.optionId as option.optionName for option in field.options">
                     <option value="">--Select--</option>
                 </select>
@@ -25,7 +25,7 @@
         <thead>
             <tr>
                 <th ng-repeat="(key, list) in context.controller.listView">
-                    <div>{{list.title}}</div>
+                    <div>{{list.name}}</div>
                 </th>
             </tr>
         </thead>

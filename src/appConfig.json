@@ -266,15 +266,15 @@
                         }
                     },
                     "listView": [{
-                            "title": "PartNo",
+                            "name": "PartNo",
                             "id": "id",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "autoComplete",
+                            "type": "select",
                             "isFilterBy": true
                         },
                         {
-                            "title": "Part Name",
+                            "name": "Part Name",
                             "id": "partName"
                         }
                     ],
@@ -395,17 +395,17 @@
                         }
                     },
                     "listView": [{
-                            "title": "Customer Code",
+                            "name": "Customer Code",
                             "id": "customerCode",
                             "valuePrefix": "VT-CUS-"
                         },
                         {
-                            "title": "Customer",
+                            "name": "Customer",
                             "id": "customerCode",
                             "dataFrom": "marketing.customerMaster",
                             "replaceName": "customerName",
                             "isFilterBy": true,
-                            "type": "select",
+                            "type": "autoComplete",
                             "options": {}
                         }
                     ],
@@ -567,11 +567,11 @@
                         }
                     },
                     "listView": [{
-                            "title": "Employee Name",
+                            "name": "Employee Name",
                             "id": "employeeName"
                         },
                         {
-                            "title": "Mail Id",
+                            "name": "Mail Id",
                             "id": "mailId"
                         }
                     ],
@@ -609,12 +609,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "UOM Code",
+                            "name": "UOM Code",
                             "id": "uomCode",
                             "valuePrefix": "VT-UOM-"
                         },
                         {
-                            "title": "UOM Name",
+                            "name": "UOM Name",
                             "id": "uomName"
                         }
                     ],
@@ -676,7 +676,7 @@
                             "customerCode": {
                                 "name": "To",
                                 "id": "customerCode",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "action": "changeMapping",
                                 "updateMapping": true,
@@ -684,7 +684,8 @@
                                 "dataFrom": "marketing.customerMaster",
                                 "replaceName": "customerName",
                                 "isEditDisable": true,
-                                "isSingle": true
+                                "isSingle": true,
+                                "required": true
                             },
                             "address": {
                                 "name": "Customer Address",
@@ -697,17 +698,19 @@
                                 "inputType": "text",
                                 "required": true
                             },
-                            "taxRate": {
+                            "gst": {
                                 "name": "Tax Rate",
-                                "id": "taxRate",
+                                "id": "gst",
                                 "type": "input",
                                 "inputType": "number",
-                                "required": true
+                                "required": true,
+                                "action": "updateTotal"
                             },
                             "cgst": {
                                 "name": "CGST",
                                 "id": "cgst",
-                                "type": "span"
+                                "type": "span",
+                                "action": "updateTotal"
                             },
                             "cgstTotal": {
                                 "name": "CGST Total",
@@ -717,7 +720,8 @@
                             "sgst": {
                                 "name": "SGST",
                                 "id": "sgst",
-                                "type": "span"
+                                "type": "span",
+                                "action": "updateTotal"
                             },
                             "sgstTotal": {
                                 "name": "SGST Total",
@@ -727,7 +731,8 @@
                             "igst": {
                                 "name": "IGST",
                                 "id": "igst",
-                                "type": "span"
+                                "type": "span",
+                                "action": "updateTotal"
                             },
                             "igstTotal": {
                                 "name": "IGST Total",
@@ -757,9 +762,9 @@
                                     "id": "id",
                                     "type": "select",
                                     "options": {},
+                                    "action": "changeMapping",
                                     "dataFrom": "marketing.partMaster",
-                                    "replaceName": "partNo",
-                                    "isDisable": true
+                                    "replaceName": "partNo"
                                 },
                                 "partName": {
                                     "name": "Part Name",
@@ -793,21 +798,21 @@
                         }
                     },
                     "listView": [{
-                            "title": "Invoice No",
+                            "name": "Invoice No",
                             "id": "invoiceNo",
                             "valuePrefix": "VT-"
                         },
                         {
-                            "title": "Customer",
+                            "name": "Customer",
                             "id": "customerCode",
                             "dataFrom": "marketing.customerMaster",
                             "replaceName": "customerName",
                             "isFilterBy": true,
-                            "type": "select",
+                            "type": "autoComplete",
                             "options": {}
                         },
                         {
-                            "title": "Date",
+                            "name": "Date",
                             "id": "date",
                             "type": "date"
                         }
@@ -851,7 +856,7 @@
                         }
                     },
                     "listView": [{
-                        "title": "Cash Bill No",
+                        "name": "Cash Bill No",
                         "id": "invoiceNo",
                         "valuePrefix": ""
                     }],
@@ -961,12 +966,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "RM Code",
+                            "name": "RM Code",
                             "id": "rmCode",
                             "valuePrefix": "RM-"
                         },
                         {
-                            "title": "Raw Material Name",
+                            "name": "Raw Material Name",
                             "id": "rmCode",
                             "dataFrom": "purchase.rmMaster",
                             "replaceName": "rmName",
@@ -1090,12 +1095,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "Supplier Code",
+                            "name": "Supplier Code",
                             "id": "supplierCode",
                             "valuePrefix": "VT-SP-"
                         },
                         {
-                            "title": "Supplier Name",
+                            "name": "Supplier Name",
                             "id": "supplierCode",
                             "dataFrom": "purchase.supplierMaster",
                             "replaceName": "supplierName",
@@ -1247,12 +1252,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "PO NO",
+                            "name": "PO NO",
                             "id": "poNo",
                             "valuePrefix": "VT-SP-PO-"
                         },
                         {
-                            "title": "Supplier Code",
+                            "name": "Supplier Code",
                             "id": "supplierCode",
                             "dataFrom": "purchase.supplierMaster",
                             "replaceName": "supplierName",
@@ -1260,7 +1265,7 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "Stutus",
+                            "name": "Stutus",
                             "id": "status"
                         }
                     ],
@@ -1388,12 +1393,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "General Supplier Code",
+                            "name": "General Supplier Code",
                             "id": "generalSupplierCode",
                             "valuePrefix": "VT-GSP-"
                         },
                         {
-                            "title": "General Supplier Name",
+                            "name": "General Supplier Name",
                             "id": "generalSupplierCode",
                             "dataFrom": "purchase.generalSupplierMaster",
                             "replaceName": "generalSupplierName",
@@ -1544,12 +1549,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "PO NO",
+                            "name": "PO NO",
                             "id": "poNo",
                             "valuePrefix": "VT-GSP-PO-"
                         },
                         {
-                            "title": "General Supplier Code",
+                            "name": "General Supplier Code",
                             "id": "generalSupplierCode",
                             "dataFrom": "purchase.generalSupplierMaster",
                             "replaceName": "generalSupplierName",
@@ -1557,7 +1562,7 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "Stutus",
+                            "name": "Stutus",
                             "id": "status"
                         }
                     ],
@@ -1693,12 +1698,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "Sub Contractor Code",
+                            "name": "Sub Contractor Code",
                             "id": "subContractorCode",
                             "valuePrefix": "VT-SC-"
                         },
                         {
-                            "title": "Sub Contractor Name",
+                            "name": "Sub Contractor Name",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
@@ -1847,12 +1852,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "PO NO",
+                            "name": "PO NO",
                             "id": "poNo",
                             "valuePrefix": "VT-SC-PO-"
                         },
                         {
-                            "title": "SubContractor Code",
+                            "name": "SubContractor Code",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
@@ -1860,7 +1865,7 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "Stutus",
+                            "name": "Stutus",
                             "id": "status"
                         }
                     ],
@@ -2059,12 +2064,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "GRN NO",
+                            "name": "GRN NO",
                             "id": "grnNo",
                             "valuePrefix": "VT-GRN-"
                         },
                         {
-                            "title": "Supplier",
+                            "name": "Supplier",
                             "id": "supplierCode",
                             "dataFrom": "purchase.supplierMaster",
                             "replaceName": "supplierName",
@@ -2261,12 +2266,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "GRN NO",
+                            "name": "GRN NO",
                             "id": "grnNo",
                             "valuePrefix": "VT-GRN-"
                         },
                         {
-                            "title": "General General Supplier",
+                            "name": "General General Supplier",
                             "id": "generalSupplierCode",
                             "dataFrom": "purchase.generalSupplierMaster",
                             "replaceName": "generalSupplierName",
@@ -2460,12 +2465,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "DC NO",
+                            "name": "DC NO",
                             "id": "dcNo",
                             "valuePrefix": "VT-DC-"
                         },
                         {
-                            "title": "Sub Contractor Code",
+                            "name": "Sub Contractor Code",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
@@ -2473,7 +2478,7 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "Stutus",
+                            "name": "Stutus",
                             "id": "status"
                         }
                     ],
@@ -2692,12 +2697,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "GRN NO",
+                            "name": "GRN NO",
                             "id": "grnNo",
                             "valuePrefix": "VT-SC-GRN-"
                         },
                         {
-                            "title": "Sub Contractor Code",
+                            "name": "Sub Contractor Code",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
@@ -2778,11 +2783,11 @@
                         }
                     },
                     "listView": [{
-                            "title": "Operation",
+                            "name": "Operation",
                             "id": "opCode"
                         },
                         {
-                            "title": "Operation Name",
+                            "name": "Operation Name",
                             "id": "id",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
@@ -2845,7 +2850,7 @@
                         }
                     },
                     "listView": [{
-                            "title": "Part No",
+                            "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
@@ -2853,7 +2858,7 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "RM Name",
+                            "name": "RM Name",
                             "id": "rmCode",
                             "dataFrom": "purchase.rmMaster",
                             "replaceName": "rmName",
@@ -2935,7 +2940,7 @@
                         }
                     },
                     "listView": [{
-                        "title": "Part No",
+                        "name": "Part No",
                         "id": "partNo",
                         "dataFrom": "marketing.partMaster",
                         "replaceName": "partNo",
@@ -3036,12 +3041,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "Machine No",
+                            "name": "Machine No",
                             "id": "machineNo",
                             "valuePrefix": "VT-M/C-"
                         },
                         {
-                            "title": "Machine Name",
+                            "name": "Machine Name",
                             "id": "machineNo",
                             "dataFrom": "production.machineMaster",
                             "replaceName": "machineName",
@@ -3168,7 +3173,7 @@
                         }
                     },
                     "listView": [{
-                        "title": "Part NO",
+                        "name": "Part NO",
                         "id": "partNo",
                         "dataFrom": "marketing.partMaster",
                         "replaceName": "partNo",
@@ -3249,12 +3254,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "Tool No",
+                            "name": "Tool No",
                             "id": "toolNo",
                             "valuePrefix": "VT-T-"
                         },
                         {
-                            "title": "Tool Name",
+                            "name": "Tool Name",
                             "id": "toolNo",
                             "dataFrom": "production.toolMaster",
                             "replaceName": "toolName",
@@ -3365,12 +3370,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "Job Card No",
+                            "name": "Job Card No",
                             "id": "jobCardNo",
                             "valuePrefix": "VT-"
                         },
                         {
-                            "title": "PartNo",
+                            "name": "PartNo",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
@@ -3378,16 +3383,16 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "Qty Can Make",
+                            "name": "Qty Can Make",
                             "id": "qtyCanMake"
                         },
                         {
-                            "title": "Date",
+                            "name": "Date",
                             "id": "date",
                             "type": "date"
                         },
                         {
-                            "title": "Status",
+                            "name": "Status",
                             "id": "status"
                         }
                     ],
@@ -3527,12 +3532,12 @@
                         }
                     },
                     "listView": [{
-                            "title": "Job Card No",
+                            "name": "Job Card No",
                             "id": "jobCardNo",
                             "valuePrefix": "VT-"
                         },
                         {
-                            "title": "PartNo",
+                            "name": "PartNo",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
@@ -3543,16 +3548,16 @@
                             }
                         },
                         {
-                            "title": "Qty Can Make",
+                            "name": "Qty Can Make",
                             "id": "qtyCanMake"
                         },
                         {
-                            "title": "Date",
+                            "name": "Date",
                             "id": "date",
                             "type": "date"
                         },
                         {
-                            "title": "Status",
+                            "name": "Status",
                             "id": "status"
                         }
                     ],
@@ -3739,7 +3744,7 @@
                         }
                     },
                     "listView": [{
-                            "title": "Job Card No",
+                            "name": "Job Card No",
                             "id": "jobCardNo",
                             "dataFrom": "production.materialIssueNote",
                             "isFilterBy": true,
@@ -3749,7 +3754,7 @@
                             "options": {}
                         },
                         {
-                            "title": "Part No",
+                            "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
@@ -3821,7 +3826,7 @@
                         }
                     },
                     "listView": [{
-                            "title": "Raw Material Name",
+                            "name": "Raw Material Name",
                             "id": "rmCode",
                             "dataFrom": "purchase.rmMaster",
                             "replaceName": "rmName",
@@ -3831,25 +3836,25 @@
                             "options": {}
                         },
                         {
-                            "title": "Rm Stock Qty",
+                            "name": "Rm Stock Qty",
                             "id": "rmStockQty"
                         },
                         {
-                            "title": "UOM",
+                            "name": "UOM",
                             "id": "uomCode",
                             "dataFrom": "marketing.uomMaster",
                             "replaceName": "uomName"
                         },
                         {
-                            "title": "Rate",
+                            "name": "Rate",
                             "id": "rate"
                         },
                         {
-                            "title": "Total Amount",
+                            "name": "Total Amount",
                             "id": "totalAmount"
                         },
                         {
-                            "title": "Updated",
+                            "name": "Updated",
                             "id": "updated",
                             "type": "input",
                             "inputType": "date"
@@ -3915,7 +3920,7 @@
                         }
                     },
                     "listView": [{
-                            "title": "Part No",
+                            "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
@@ -3923,33 +3928,33 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "Part Stock Qty",
+                            "name": "Part Stock Qty",
                             "id": "partStockQty"
                         },
                         {
-                            "title": "Operation From",
+                            "name": "Operation From",
                             "id": "operationFrom",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
                             "type": "select"
                         },
                         {
-                            "title": "Operation To",
+                            "name": "Operation To",
                             "id": "operationTo",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
                             "type": "select"
                         },
                         {
-                            "title": "Rate",
+                            "name": "Rate",
                             "id": "rate"
                         },
                         {
-                            "title": "Total Amount",
+                            "name": "Total Amount",
                             "id": "totalAmount"
                         },
                         {
-                            "title": "Updated",
+                            "name": "Updated",
                             "id": "updated",
                             "type": "input",
                             "inputType": "date"
@@ -4025,7 +4030,7 @@
                         }
                     },
                     "listView": [{
-                            "title": "SubContractor Code",
+                            "name": "SubContractor Code",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
@@ -4033,18 +4038,18 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "Part No",
+                            "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
                             "type": "select"
                         },
                         {
-                            "title": "Part Stock Qty",
+                            "name": "Part Stock Qty",
                             "id": "partStockQty"
                         },
                         {
-                            "title": "Operation From",
+                            "name": "Operation From",
                             "id": "operationFrom",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
@@ -4052,7 +4057,7 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "Operation To",
+                            "name": "Operation To",
                             "id": "operationTo",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
@@ -4060,15 +4065,15 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "Rate",
+                            "name": "Rate",
                             "id": "rate"
                         },
                         {
-                            "title": "Total Amount",
+                            "name": "Total Amount",
                             "id": "totalAmount"
                         },
                         {
-                            "title": "Updated",
+                            "name": "Updated",
                             "id": "updated",
                             "type": "input",
                             "inputType": "date"
@@ -4093,21 +4098,21 @@
                             "toDate": null
                         },
                         "fields": [{
-                                "title": "Customer",
+                                "name": "Customer",
                                 "id": "customerCode",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "dataFrom": "marketing.customerMaster",
                                 "replaceName": "customerName",
                                 "isFilterView": true
                             },
                             {
-                                "title": "From Date",
+                                "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
                                 "inputType": "date"
                             },
                             {
-                                "title": "To Date",
+                                "name": "To Date",
                                 "id": "toDate",
                                 "type": "input",
                                 "inputType": "date"
@@ -4115,37 +4120,37 @@
                         ]
                     },
                     "listView": [{
-                            "title": "Customer",
+                            "name": "Customer",
                             "id": "customerCode",
                             "type": "select",
                             "dataFrom": "marketing.customerMaster",
                             "replaceName": "customerName"
                         },
                         {
-                            "title": "Part No",
+                            "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
                             "type": "select"
                         },
                         {
-                            "title": "Part Qty",
+                            "name": "Part Qty",
                             "id": "unit"
                         },
                         {
-                            "title": "Part Price",
+                            "name": "Part Price",
                             "id": "rate"
                         },
                         {
-                            "title": "Sales Value",
+                            "name": "Sales Value",
                             "id": "amount"
                         },
                         {
-                            "title": "Dates",
+                            "name": "Dates",
                             "id": "dates"
                         },
                         {
-                            "title": "Invoice Nos",
+                            "name": "Invoice Nos",
                             "id": "invoiceNos"
                         }
                     ],
@@ -4189,7 +4194,7 @@
                     "id": "costAnalysis",
                     "title": "Cost Analysis",
                     "listView": [{
-                            "title": "PartNo",
+                            "name": "PartNo",
                             "id": "id",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
@@ -4197,67 +4202,67 @@
                             "isFilterBy": true
                         },
                         {
-                            "title": "Input Weight",
+                            "name": "Input Weight",
                             "id": "inputWeight"
                         },
                         {
-                            "title": "Finished Weight",
+                            "name": "Finished Weight",
                             "id": "finishedWeight"
                         },
                         {
-                            "title": "RM Rate",
+                            "name": "RM Rate",
                             "id": "rmRate"
                         },
                         {
-                            "title": "Scrap Rate",
+                            "name": "Scrap Rate",
                             "id": "scrapRate"
                         },
                         {
-                            "title": "Material Cost",
+                            "name": "Material Cost",
                             "id": "materialCost"
                         },
                         {
-                            "title": "Conversion Cost",
+                            "name": "Conversion Cost",
                             "id": "conversionCost"
                         },
                         {
-                            "title": "Sub Total",
+                            "name": "Sub Total",
                             "id": "subTotal"
                         },
                         {
-                            "title": "Rej Cost",
+                            "name": "Rej Cost",
                             "id": "rejCost"
                         },
                         {
-                            "title": "ICC cost",
+                            "name": "ICC cost",
                             "id": "iccCost"
                         },
                         {
-                            "title": "Tool Maint cost",
+                            "name": "Tool Maint cost",
                             "id": "toolMaintCost"
                         },
                         {
-                            "title": "Trans Cost",
+                            "name": "Trans Cost",
                             "id": "transCost"
                         },
                         {
-                            "title": "Profit Cost",
+                            "name": "Profit Cost",
                             "id": "profitCost"
                         },
                         {
-                            "title": "Total",
+                            "name": "Total",
                             "id": "total"
                         },
                         {
-                            "title": "Sales Rate",
+                            "name": "Sales Rate",
                             "id": "salesRate"
                         },
                         {
-                            "title": "Difference in cost",
+                            "name": "Difference in cost",
                             "id": "differenceInCost"
                         },
                         {
-                            "title": "% of Gain or Loss",
+                            "name": "% of Gain or Loss",
                             "id": "gainOrLoss"
                         }
                     ],
@@ -4283,13 +4288,13 @@
                             "toDate": null
                         },
                         "fields": [{
-                                "title": "From Date",
+                                "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
                                 "inputType": "date"
                             },
                             {
-                                "title": "To Date",
+                                "name": "To Date",
                                 "id": "toDate",
                                 "type": "input",
                                 "inputType": "date"
@@ -4297,32 +4302,32 @@
                         ]
                     },
                     "listView": [{
-                            "title": "Date",
+                            "name": "Date",
                             "id": "date",
                             "type": "input",
                             "inputType": "date"
                         },
                         {
-                            "title": "M/C No",
+                            "name": "M/C No",
                             "id": "machineNo",
                             "type": "select",
                             "dataFrom": "production.machineMaster",
                             "replaceName": "machineName"
                         },
                         {
-                            "title": "Job Card No",
+                            "name": "Job Card No",
                             "id": "jobCardNo",
                             "type": "input"
                         },
                         {
-                            "title": "Part No",
+                            "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
                             "type": "select"
                         },
                         {
-                            "title": "Operation",
+                            "name": "Operation",
                             "id": "operationTo",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
@@ -4330,34 +4335,34 @@
                             "type": "select"
                         },
                         {
-                            "title": "Operator",
+                            "name": "Operator",
                             "id": "operator",
                             "type": "select",
                             "dataFrom": "marketing.empMaster",
                             "replaceName": "employeeName"
                         },
                         {
-                            "title": "Start Time",
+                            "name": "Start Time",
                             "id": "startTime"
                         },
                         {
-                            "title": "End Time",
+                            "name": "End Time",
                             "id": "endTime"
                         },
                         {
-                            "title": "Plan Qty",
+                            "name": "Plan Qty",
                             "id": "planQty"
                         },
                         {
-                            "title": "Qty",
+                            "name": "Qty",
                             "id": "acceptedQty"
                         },
                         {
-                            "title": "Rejection Qty",
+                            "name": "Rejection Qty",
                             "id": "rejectionQty"
                         },
                         {
-                            "title": "RW Qty",
+                            "name": "RW Qty",
                             "id": "rwQty"
                         }
                     ],
@@ -4388,7 +4393,7 @@
                             "toDate": null
                         },
                         "fields": [{
-                                "title": "Tool Name",
+                                "name": "Tool Name",
                                 "id": "toolNo",
                                 "type": "select",
                                 "dataFrom": "production.toolMaster",
@@ -4396,7 +4401,7 @@
                                 "isFilterView": true
                             },
                             {
-                                "title": "Part No",
+                                "name": "Part No",
                                 "id": "partNo",
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
@@ -4404,13 +4409,13 @@
                                 "isFilterView": true
                             },
                             {
-                                "title": "From Date",
+                                "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
                                 "inputType": "date"
                             },
                             {
-                                "title": "To Date",
+                                "name": "To Date",
                                 "id": "toDate",
                                 "type": "input",
                                 "inputType": "date"
@@ -4418,35 +4423,35 @@
                         ]
                     },
                     "listView": [{
-                            "title": "Date",
+                            "name": "Date",
                             "id": "date",
                             "type": "input",
                             "inputType": "date"
                         },
                         {
-                            "title": "Tool Name",
+                            "name": "Tool Name",
                             "id": "toolNo",
                             "type": "select",
                             "dataFrom": "production.toolMaster",
                             "replaceName": "toolName"
                         },
                         {
-                            "title": "Part No",
+                            "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
                             "type": "select"
                         },
                         {
-                            "title": "Qty",
+                            "name": "Qty",
                             "id": "qty"
                         },
                         {
-                            "title": "Cummulative Qty",
+                            "name": "Cummulative Qty",
                             "id": "cummulativeQty"
                         },
                         {
-                            "title": "Activity",
+                            "name": "Activity",
                             "id": "activity",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
@@ -4479,7 +4484,7 @@
                             "toDate": null
                         },
                         "fields": [{
-                                "title": "Machine Name",
+                                "name": "Machine Name",
                                 "id": "machineNo",
                                 "type": "select",
                                 "dataFrom": "production.machineMaster",
@@ -4487,13 +4492,13 @@
                                 "isFilterView": true
                             },
                             {
-                                "title": "From Date",
+                                "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
                                 "inputType": "date"
                             },
                             {
-                                "title": "To Date",
+                                "name": "To Date",
                                 "id": "toDate",
                                 "type": "input",
                                 "inputType": "date"
@@ -4501,39 +4506,39 @@
                         ]
                     },
                     "listView": [{
-                            "title": "Date",
+                            "name": "Date",
                             "id": "date",
                             "type": "input",
                             "inputType": "date"
                         },
                         {
-                            "title": "Machine No",
+                            "name": "Machine No",
                             "id": "machineNo",
                             "type": "select",
                             "dataFrom": "production.machineMaster",
                             "replaceName": "machineName"
                         },
                         {
-                            "title": "Year",
+                            "name": "Year",
                             "id": "machineNo",
                             "type": "select",
                             "dataFrom": "production.machineMaster",
                             "replaceName": "yop"
                         },
                         {
-                            "title": "Time On",
+                            "name": "Time On",
                             "id": "startTime"
                         },
                         {
-                            "title": "Time Off",
+                            "name": "Time Off",
                             "id": "endTime"
                         },
                         {
-                            "title": "Running Time",
+                            "name": "Running Time",
                             "id": "runningTime"
                         },
                         {
-                            "title": "Cum Running Time",
+                            "name": "Cum Running Time",
                             "id": "cumRunningTime"
                         }
                     ],
@@ -4563,7 +4568,7 @@
                             "toDate": null
                         },
                         "fields": [{
-                                "title": "Part No",
+                                "name": "Part No",
                                 "id": "partNo",
                                 "type": "select",
                                 "dataFrom": "marketing.partMaster",
@@ -4571,7 +4576,7 @@
                                 "isFilterView": true
                             },
                             {
-                                "title": "Employee Name",
+                                "name": "Employee Name",
                                 "id": "operator",
                                 "type": "select",
                                 "dataFrom": "marketing.empMaster",
@@ -4579,13 +4584,13 @@
                                 "isFilterView": true
                             },
                             {
-                                "title": "From Date",
+                                "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
                                 "inputType": "date"
                             },
                             {
-                                "title": "To Date",
+                                "name": "To Date",
                                 "id": "toDate",
                                 "type": "input",
                                 "inputType": "date"
@@ -4593,27 +4598,27 @@
                         ]
                     },
                     "listView": [{
-                            "title": "Date",
+                            "name": "Date",
                             "id": "date",
                             "type": "input",
                             "inputType": "date"
                         },
                         {
-                            "title": "Employee Name",
+                            "name": "Employee Name",
                             "id": "operator",
                             "type": "select",
                             "dataFrom": "marketing.empMaster",
                             "replaceName": "employeeName"
                         },
                         {
-                            "title": "Part No",
+                            "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
                             "type": "select"
                         },
                         {
-                            "title": "Operation",
+                            "name": "Operation",
                             "id": "operationTo",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
@@ -4621,19 +4626,19 @@
                             "type": "select"
                         },
                         {
-                            "title": "Start Time",
+                            "name": "Start Time",
                             "id": "startTime"
                         },
                         {
-                            "title": "End Time",
+                            "name": "End Time",
                             "id": "endTime"
                         },
                         {
-                            "title": "Plan Qty",
+                            "name": "Plan Qty",
                             "id": "planQty"
                         },
                         {
-                            "title": "Qty",
+                            "name": "Qty",
                             "id": "acceptedQty"
                         }
                     ],
@@ -4656,44 +4661,44 @@
                     "id": "salesDetailsTax",
                     "title": "Sales Details - Tax",
                     "listView": [{
-                            "title": "Customer",
+                            "name": "Customer",
                             "id": "customerCode",
-                            "type": "select",
+                            "type": "autoComplete",
                             "dataFrom": "marketing.customerMaster",
                             "replaceName": "customerName",
                             "isFilterBy": true
                         }, {
-                            "title": "Invoice No",
+                            "name": "Invoice No",
                             "id": "invoiceNo",
                             "valuePrefix": "VT-"
                         },
                         {
-                            "title": "Date",
+                            "name": "Date",
                             "id": "date",
                             "type": "date"
                         },
                         {
-                            "title": "Basic Amount",
+                            "name": "Basic Amount",
                             "id": "subTotal"
                         },
                         {
-                            "title": "SGST @9%",
+                            "name": "SGST @9%",
                             "id": "sgstTotal"
                         },
                         {
-                            "title": "CGST @9%",
+                            "name": "CGST @9%",
                             "id": "cgstTotal"
                         },
                         {
-                            "title": "IGST @18%",
+                            "name": "IGST @18%",
                             "id": "igstTotal"
                         },
                         {
-                            "title": "Total Amount",
+                            "name": "Total Amount",
                             "id": "total"
                         },
                         {
-                            "title": "Customer GSTIN",
+                            "name": "Customer GSTIN",
                             "id": "gstin"
                         }
                     ],
@@ -4716,31 +4721,31 @@
                     "id": "purchaseDetailsTax",
                     "title": "Purchase Details - Tax",
                     "listView": [{
-                            "title": "Supplier/Sub-Contractor Name",
+                            "name": "Supplier/Sub-Contractor Name",
                             "id": "supplierCode"
                         }, {
-                            "title": "Supplier/Sub-Contractor Invoice No",
+                            "name": "Supplier/Sub-Contractor Invoice No",
                             "id": "supplierInvoiceNo"
                         },
                         {
-                            "title": "Date",
+                            "name": "Date",
                             "id": "date",
                             "type": "date"
                         },
                         {
-                            "title": "Basic Amount",
+                            "name": "Basic Amount",
                             "id": "subTotal"
                         },
                         {
-                            "title": "GST/IGST @18%",
+                            "name": "GST/IGST @18%",
                             "id": "gstTotal"
                         },
                         {
-                            "title": "Total Amount",
+                            "name": "Total Amount",
                             "id": "total"
                         },
                         {
-                            "title": "Supplier/Sub-Contractor GSTIN",
+                            "name": "Supplier/Sub-Contractor GSTIN",
                             "id": "gstin"
                         }
                     ],
@@ -4852,7 +4857,7 @@
                         }
                     },
                     "listView": [{
-                            "title": "Invoice No",
+                            "name": "Invoice No",
                             "id": "invoiceNo",
                             "dataFrom": "marketing.invoice",
                             "valuePrefix": "VT-",
@@ -4862,20 +4867,20 @@
                             "options": {}
                         },
                         {
-                            "title": "Customer",
+                            "name": "Customer",
                             "id": "customerCode",
                             "dataFrom": "marketing.customerMaster",
                             "replaceName": "customerName",
                             "isFilterBy": true,
-                            "type": "select",
+                            "type": "autoComplete",
                             "options": {}
                         },
                         {
-                            "title": "Total Amount",
+                            "name": "Total Amount",
                             "id": "total"
                         },
                         {
-                            "title": "Balance Amount",
+                            "name": "Balance Amount",
                             "id": "balanceAmount"
                         }
                     ],
@@ -4915,7 +4920,7 @@
                         }
                     },
                     "listView": [{
-                        "title": "Cash Bill No",
+                        "name": "Cash Bill No",
                         "id": "invoiceNo",
                         "valuePrefix": "",
                         "dataFrom": "marketing.cashBill",
@@ -5038,7 +5043,7 @@
                         }
                     },
                     "listView": [{
-                            "title": "GRN No",
+                            "name": "GRN No",
                             "id": "grnNo",
                             "dataFrom": "store.grnSupplier",
                             "replaceName": "grnNo",
@@ -5048,7 +5053,7 @@
                             "options": {}
                         },
                         {
-                            "title": "Supplier Name",
+                            "name": "Supplier Name",
                             "id": "supplierCode",
                             "dataFrom": "purchase.supplierMaster",
                             "replaceName": "supplierName",
@@ -5057,7 +5062,7 @@
                             "options": {}
                         },
                         {
-                            "title": "Supplier InvoiceNo No",
+                            "name": "Supplier InvoiceNo No",
                             "id": "supplierInvoiceNo",
                             "dataFrom": "store.grnSupplier",
                             "replaceName": "supplierInvoiceNo",
@@ -5066,11 +5071,11 @@
                             "options": {}
                         },
                         {
-                            "title": "Total Amount",
+                            "name": "Total Amount",
                             "id": "total"
                         },
                         {
-                            "title": "Balance Amount",
+                            "name": "Balance Amount",
                             "id": "balanceAmount"
                         }
                     ],
@@ -5187,7 +5192,7 @@
                         }
                     },
                     "listView": [{
-                            "title": "GRN No",
+                            "name": "GRN No",
                             "id": "grnNo",
                             "dataFrom": "store.grnSupplier",
                             "replaceName": "grnNo",
@@ -5197,7 +5202,7 @@
                             "options": {}
                         },
                         {
-                            "title": "Sub Contractor Name",
+                            "name": "Sub Contractor Name",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
@@ -5206,7 +5211,7 @@
                             "options": {}
                         },
                         {
-                            "title": "Sub Contractor InvoiceNo No",
+                            "name": "Sub Contractor InvoiceNo No",
                             "id": "subContractorDCCode",
                             "dataFrom": "store.grnSupplier",
                             "replaceName": "subContractorDCCode",
@@ -5215,11 +5220,11 @@
                             "options": {}
                         },
                         {
-                            "title": "Total Amount",
+                            "name": "Total Amount",
                             "id": "total"
                         },
                         {
-                            "title": "Balance Amount",
+                            "name": "Balance Amount",
                             "id": "balanceAmount"
                         }
                     ],
@@ -5367,7 +5372,7 @@
                         }
                     },
                     "listView": [{
-                            "title": "Employee Name",
+                            "name": "Employee Name",
                             "id": "employeeCode",
                             "dataFrom": "marketing.empMaster",
                             "replaceName": "employeeName",
@@ -5376,23 +5381,23 @@
                             "options": {}
                         },
                         {
-                            "title": "From Date",
+                            "name": "From Date",
                             "id": "frmDate",
                             "type": "input",
                             "inputType": "date"
                         },
                         {
-                            "title": "To Date",
+                            "name": "To Date",
                             "id": "toDate",
                             "type": "input",
                             "inputType": "date"
                         },
                         {
-                            "title": "Total Amount",
+                            "name": "Total Amount",
                             "id": "total"
                         },
                         {
-                            "title": "Balance Amount",
+                            "name": "Balance Amount",
                             "id": "balanceAmount"
                         }
                     ],
@@ -5447,7 +5452,7 @@
                         }
                     },
                     "listView": [{
-                        "title": "User Name",
+                        "name": "User Name",
                         "id": "userName"
                     }],
                     "page": {
@@ -5500,7 +5505,7 @@
                         }
                     },
                     "listView": [{
-                        "title": "Company Name",
+                        "name": "Company Name",
                         "id": "companyName"
                     }],
                     "page": {
@@ -5635,7 +5640,7 @@
                         }
                     },
                     "listView": [{
-                        "title": "Company Name",
+                        "name": "Company Name",
                         "id": "companyName"
                     }],
                     "page": {
@@ -5674,7 +5679,7 @@
                         }
                     },
                     "listView": [{
-                        "title": "User Name",
+                        "name": "User Name",
                         "id": "userType"
                     }],
                     "page": {
@@ -5720,7 +5725,7 @@
                         }
                     },
                     "listView": [{
-                        "title": "User Name",
+                        "name": "User Name",
                         "id": "userName"
                     }],
                     "page": {
