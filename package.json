@@ -9,7 +9,8 @@
         "app-clean": "rm -rf node_modules",
         "app-update": "npm install",
         "app-start": "npm run app-update && npm run app-server",
-        "app-server": "node build_tasks\\app.js --run"
+        "app-server": "node build_tasks\\app.js --run",
+        "app-server-mangoDb": "node build_tasks\\app.js --run --mangoDb"
     },
     "author": "",
     "license": "ISC",

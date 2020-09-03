@@ -2,7 +2,7 @@ module.exports = function(config) {
     config.dbApi = function() {
         var cryptr = new(require('cryptr'))(config.appName);
         var dbApi = (config.arg.mangoDb || config.arg.mangoDb) && config.clientDbApi() || config.localJsonDbApi();
-
+        config.task.deleteCustomer = dbApi.deleteCustomer;
         config.task.dbData = function(req, res, masterDb) {
             var data = {};
             var inputData = req.body || {};
