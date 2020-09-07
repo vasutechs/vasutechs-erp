@@ -58,7 +58,7 @@ module.exports = function(config) {
         },
         downloadAppCustomers: function(req, res) {
             var apiPromise = config.apiPromise();
-            if (checkSuperAdminUser(req) && req.query.appCustomer) {
+            if (checkSuperAdminUser(req) && req.query.id) {
                 var releaseProjectData = config.task.dbData({ params: { table: 'appCustomers' }, query: req.query }, {}, true);
                 var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
                 if (releaseProjectData) {
