@@ -21,7 +21,7 @@ erpConfig.moduleFiles.partStock = function(context) {
             });
         },
         updateOperationFrom: function() {
-            if (context.controller.data.partNo) {
+            if (context.controller.data.partNo && context.controller.form.fields['operationFrom']) {
                 var restriction = {
                     partNo: context.controller.data.partNo
                 };
@@ -29,7 +29,7 @@ erpConfig.moduleFiles.partStock = function(context) {
             }
         },
         updateOperationTo: function(data, key, field) {
-            if (context.controller.data.partNo) {
+            if (context.controller.data.partNo && context.controller.form.fields['operationTo']) {
                 var partNo = context.controller.data.partNo,
                     restriction = {
                         partNo: partNo
@@ -47,6 +47,9 @@ erpConfig.moduleFiles.partStock = function(context) {
         },
         submit: function() {
             var submitService;
+            if (!context.controller.data.operationFrom && !context.controller.data.operationTo) {
+                context.controller.data.operationTo = context.erpAppConfig.finalStageOpp;
+            }
             if (context.controller.data.id) {
                 submitService = context.commonFact.updateData(context.controller, context.controller.data)
             } else {

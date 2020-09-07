@@ -88,7 +88,7 @@ erpConfig.moduleFiles.appCustomers = function(context) {
             context.commonFact.getData(removeAppCustomer);
         },
         downloadAppCustomer: function(id) {
-            window.open('/api/auth/downloadAppCustomers/?appCustomer=' + id);
+            window.open('/api/auth/downloadAppCustomers/?id=' + id);
         },
         appCustomerlogin: function(id) {
             var appCustomerlogin = {

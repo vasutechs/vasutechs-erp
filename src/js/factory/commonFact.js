@@ -182,7 +182,9 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http, 
             makeOptionsFields: function(field, fields) {
                 var self = this,
                     list;
-
+                if (!field) {
+                    return false;
+                }
                 field.options = {};
                 field.allOptions = {};
                 if (field.dataFrom && (typeof(field.dataFrom) === 'object' || context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, field.dataFrom))) {
@@ -834,7 +836,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http, 
                 return e;
             },
             callActions: function(actionName, params) {
-                var actionMethod = actionName && (context.controller.methods[actionName] || context.authFact[actionName] || context.commonFact[actionName]);
+                var actionMethod = actionName && context.controller.methods[actionName] || context.authFact[actionName] || context.commonFact[actionName];
                 actionMethod && actionMethod.apply(this, params);
             },
             appModuleAccess: function() {

@@ -3823,6 +3823,9 @@
                                 "replaceName": "uomName",
                                 "isSingle": true
                             }
+                        },
+                        "actions": {
+                            "customSubmit": "submit"
                         }
                     },
                     "listView": [{
@@ -3917,6 +3920,9 @@
                                 "replaceName": "opName",
                                 "isSingle": true
                             }
+                        },
+                        "actions": {
+                            "customSubmit": "submit"
                         }
                     },
                     "listView": [{
@@ -4027,6 +4033,9 @@
                                 "replaceName": "opName",
                                 "isSingle": true
                             }
+                        },
+                        "actions": {
+                            "customSubmit": "submit"
                         }
                     },
                     "listView": [{

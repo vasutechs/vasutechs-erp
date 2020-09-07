@@ -92,7 +92,7 @@ module.exports = function(config) {
 
     config.task.releaseProject = function(req, res, releaseProjectData) {
         config.dist.path = config.release.dist;
-        if (releaseProjectData.appModules.includes('all')) {
+        if (releaseProjectData && releaseProjectData.appModules && releaseProjectData.appModules.includes('all')) {
             config.release.allModule = true;
         }
 
