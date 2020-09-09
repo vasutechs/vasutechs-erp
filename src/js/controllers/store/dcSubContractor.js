@@ -4,19 +4,27 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
         callBackList: function() {
             context.commonFact.getPartStock();
         },
+        callBackAdd: function() {
+            var mappingField = context.controller.form.mapping;
+        },
         callBackEdit: function() {
             context.controller.form.mapping.actions.delete = false;
             orgItemVal = angular.copy(context.controller.data);
             context.controller.methods.getDCQty();
         },
         getPOSubContractor: function(data, key, field) {
+            if (context.controller.page.name !== 'add') {
+                return;
+            }
             context.controller.form.fields['poNo'] = angular.extend(context.controller.form.fields['poNo'], {
                 filter: {
                     subContractorCode: key,
                     status: 0
                 }
             });
-            context.commonFact.makeOptionsFields(context.controller.form.fields['poNo']);
+            context.commonFact.makeOptionsFields(context.controller.form.fields['poNo']).then(function() {
+                context.controller.form.fields['poNo'].filter = undefined;
+            })
             context.commonFact.changeMapping(context.controller.data, context.controller.data['subContractorCode'], context.controller.form.fields['subContractorCode']);
         },
         callBackChangeMapping: function() {

@@ -2,6 +2,9 @@ erpConfig.moduleFiles.grnGeneralSupplier = function(context) {
     var orgItemVal = null;
     return {
         getPOGeneralSupplier: function(data, key, field) {
+            if (context.controller.page.name !== 'add') {
+                return;
+            }
             context.controller.form.fields['poNo'] = angular.extend(context.controller.form.fields['poNo'], {
                 dataFrom: 'purchase.poGeneralSupplier',
                 replaceName: 'poNo',
@@ -10,7 +13,9 @@ erpConfig.moduleFiles.grnGeneralSupplier = function(context) {
                     status: 0
                 }
             });
-            context.commonFact.makeOptionsFields(context.controller.form.fields['poNo']);
+            context.commonFact.makeOptionsFields(context.controller.form.fields['poNo']).then(function() {
+                context.controller.form.fields['poNo'].filter = undefined;
+            });
         },
         updatePTTotal: function(data, updateValue) {
             var total = 0;

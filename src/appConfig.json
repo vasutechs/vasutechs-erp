@@ -1944,6 +1944,7 @@
                                 "action": "getPOSupplier",
                                 "dataFrom": "purchase.supplierMaster",
                                 "replaceName": "supplierName",
+                                "isEditDisable": true,
                                 "isSingle": true
                             },
                             "poNo": {
@@ -1957,9 +1958,6 @@
                                 "dataFrom": "purchase.poSupplier",
                                 "replaceName": "poNo",
                                 "valuePrefix": "VT-SP-PO-",
-                                "filter": {
-                                    "status": 0
-                                },
                                 "isEditDisable": true,
                                 "isSingle": true
                             },
@@ -2160,9 +2158,6 @@
                                 "dataFrom": "purchase.poGeneralSupplier",
                                 "replaceName": "poNo",
                                 "valuePrefix": "VT-GSP-PO-",
-                                "filter": {
-                                    "status": 0
-                                },
                                 "isEditDisable": true,
                                 "isSingle": true
                             },
@@ -2371,9 +2366,6 @@
                                 "valuePrefix": "VT-SC-PO-",
                                 "updateMapping": true,
                                 "updateData": ["mapping", "subTotal", "extraAmount", "gst", "sgst", "cgst", "igst", "gstTotal", "total"],
-                                "filter": {
-                                    "status": 0
-                                },
                                 "isSingle": true,
                                 "isEditDisable": true
                             },
@@ -2408,6 +2400,7 @@
                                     "options": {},
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
+                                    "action": "updateOperationFrom",
                                     "isDisable": true
                                 },
                                 "operationFrom": {
@@ -2419,7 +2412,7 @@
                                     "dataFrom": "production.operationMaster",
                                     "replaceName": "opName",
                                     "valuePrefixData": "opCode",
-                                    "isDisable": true
+                                    "isEditDisable": true
                                 },
                                 "operationTo": {
                                     "name": "For the purpose",
@@ -2429,7 +2422,7 @@
                                     "dataFrom": "production.operationMaster",
                                     "replaceName": "opName",
                                     "valuePrefixData": "opCode",
-                                    "isDisable": true
+                                    "isEditDisable": true
                                 },
                                 "acceptedQty": {
                                     "name": "Qty",
@@ -2553,7 +2546,8 @@
                                 "action": "getPOSubContractor",
                                 "dataFrom": "purchase.subContractorMaster",
                                 "replaceName": "subContractorName",
-                                "isSingle": true
+                                "isSingle": true,
+                                "isEditDisable": true
                             },
                             "poNo": {
                                 "name": "PO No",
@@ -2564,9 +2558,6 @@
                                 "dataFrom": "purchase.poSubContractor",
                                 "replaceName": "poNo",
                                 "valuePrefix": "VT-SC-PO-",
-                                "filter": {
-                                    "status": 0
-                                },
                                 "isSingle": true,
                                 "isEditDisable": true
                             },
@@ -2581,9 +2572,6 @@
                                 "valuePrefix": "VT-DC-",
                                 "updateMapping": true,
                                 "updateData": ["mapping", "subTotal", "extraAmount", "gst", "sgst", "cgst", "igst", "gstTotal", "total"],
-                                "filter": {
-                                    "status": 0
-                                },
                                 "isSingle": true,
                                 "isEditDisable": true,
                                 "onLoadActions": true

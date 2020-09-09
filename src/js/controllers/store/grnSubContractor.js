@@ -13,13 +13,18 @@ erpConfig.moduleFiles.grnSubContractor = function(context) {
             context.controller.grnSC = true;
         },
         getDCSubContractor: function(data, key, field) {
+            if (context.controller.page.name !== 'add') {
+                return;
+            }
             context.controller.form.fields['dcNo'] = angular.extend(context.controller.form.fields['dcNo'], {
                 filter: {
                     poNo: key,
                     status: 0
                 }
             });
-            context.commonFact.makeOptionsFields(context.controller.form.fields['dcNo']);
+            context.commonFact.makeOptionsFields(context.controller.form.fields['dcNo']).then(function() {
+                context.controller.form.fields['dcNo'].filter = undefined;
+            });
         },
         getPOSubContractor: function(data, key, field) {
             context.controller.form.fields['poNo'] = angular.extend(context.controller.form.fields['poNo'], {
@@ -27,7 +32,9 @@ erpConfig.moduleFiles.grnSubContractor = function(context) {
                     subContractorCode: key
                 }
             });
-            context.commonFact.makeOptionsFields(context.controller.form.fields['poNo']);
+            context.commonFact.makeOptionsFields(context.controller.form.fields['poNo']).then(function() {
+                context.controller.form.fields['poNo'].filter = undefined;
+            });
         },
         updateDCSubContractor: function() {
             var dcSubContractor = context.controller.form.fields['dcNo'].options[context.controller.data.dcNo];
