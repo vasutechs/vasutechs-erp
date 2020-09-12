@@ -2412,7 +2412,9 @@
                                     "dataFrom": "production.operationMaster",
                                     "replaceName": "opName",
                                     "valuePrefixData": "opCode",
-                                    "isEditDisable": true
+                                    "isDisable": true,
+                                    "isEditDisable": true,
+                                    "action": "updateOperationTo"
                                 },
                                 "operationTo": {
                                     "name": "For the purpose",
@@ -2422,6 +2424,7 @@
                                     "dataFrom": "production.operationMaster",
                                     "replaceName": "opName",
                                     "valuePrefixData": "opCode",
+                                    "isDisable": true,
                                     "isEditDisable": true
                                 },
                                 "acceptedQty": {

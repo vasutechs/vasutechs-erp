@@ -1,16 +1,20 @@
 erpConfig.moduleFiles.dcSubContractor = function(context) {
     var orgItemVal = null;
+    var mappingField = null;
     return {
         callBackList: function() {
             context.commonFact.getPartStock();
-        },
-        callBackAdd: function() {
-            var mappingField = context.controller.form.mapping;
         },
         callBackEdit: function() {
             context.controller.form.mapping.actions.delete = false;
             orgItemVal = angular.copy(context.controller.data);
             context.controller.methods.getDCQty();
+        },
+        callBackAdd: function() {
+            mappingField = angular.copy(context.controller.form.mapping.fields);
+        },
+        callBackRemoveMapping: function() {
+            context.controller.methods.callBackChangeMapping();
         },
         getPOSubContractor: function(data, key, field) {
             if (context.controller.page.name !== 'add') {
@@ -24,14 +28,37 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
             });
             context.commonFact.makeOptionsFields(context.controller.form.fields['poNo']).then(function() {
                 context.controller.form.fields['poNo'].filter = undefined;
-            })
+            });
+
+
             context.commonFact.changeMapping(context.controller.data, context.controller.data['subContractorCode'], context.controller.form.fields['subContractorCode']);
         },
         callBackChangeMapping: function() {
-            context.controller.methods.checkAcceptedQty();
+            context.controller.methods.updateMappingPart();
             context.controller.methods.getDCQty();
         },
-        checkAcceptedQty: function() {
+        updateMappingPart: function() {
+            context.controller.form.mapping.fields = [];
+            for (var i in context.controller.data.mapping) {
+                context.controller.form.mapping.fields[i] = angular.copy(mappingField);
+                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields[i]['operationFrom'], {
+                    partNo: context.controller.data.mapping[i].id
+                });
+                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields[i]['operationTo'], {
+                    partNo: context.controller.data.mapping[i].id
+                });
+
+                context.controller.methods.checkAcceptedQty(context.controller.data.mapping[i]);
+            }
+        },
+        updateOperationTo: function(mappData, data, field, key) {
+            context.controller.form.mapping.fields[key]['operationTo'].options = {};
+            context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields[key]['operationTo'], {
+                partNo: mappData.id,
+                startWith: mappData.operationFrom
+            });
+        },
+        checkAcceptedQty: function(data) {
             var partNo,
                 operationFrom;
             context.commonFact.getData('production.flowMaster').then(function(res) {
@@ -39,29 +66,29 @@ erpConfig.moduleFiles.dcSubContractor = function(context) {
                     prevOpp,
                     qty;
                 var dcPartStockQty;
-                for (var i in context.controller.data.mapping) {
-                    partNo = context.controller.data.mapping[i].id;
-                    qty = context.controller.data.mapping[i].acceptedQty;
-                    for (var j in flowMasterData) {
-                        if (flowMasterData[j].partNo === partNo) {
-                            for (var k in flowMasterData[j].mapping) {
-                                prevOpp = flowMasterData[j].mapping[k - 1];
-                                if (prevOpp && flowMasterData[j].mapping[k].source === 'Sub-Contractor') {
-                                    operationFrom = prevOpp.id;
-                                }
+                //for (var i in context.controller.data.mapping) {
+                partNo = data.id;
+                qty = data.acceptedQty;
+                for (var j in flowMasterData) {
+                    if (flowMasterData[j].partNo === partNo) {
+                        for (var k in flowMasterData[j].mapping) {
+                            prevOpp = flowMasterData[j].mapping[k - 1];
+                            if (prevOpp && flowMasterData[j].mapping[k].source === 'Sub-Contractor') {
+                                operationFrom = prevOpp.id;
+                            }
 
-                                if (operationFrom) {
-                                    dcPartStockQty = context.controller.partStock[partNo + '-' + operationFrom];
+                            if (operationFrom) {
+                                dcPartStockQty = context.controller.partStock[partNo + '-' + operationFrom];
 
-                                    if (dcPartStockQty === undefined || dcPartStockQty.partStockQty < qty) {
-                                        context.controller.data.mapping[i].acceptedQty = qty = null;
-                                    }
+                                if (dcPartStockQty === undefined || dcPartStockQty.partStockQty < qty) {
+                                    data.acceptedQty = qty = null;
                                 }
                             }
                         }
                     }
-                    context.controller.data.mapping[i].operationFrom = operationFrom;
                 }
+                data.operationFrom = operationFrom;
+                //}
             });
         },
         callBackUpdatePartTotal: function(data) {
