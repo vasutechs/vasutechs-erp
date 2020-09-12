@@ -248,7 +248,7 @@ erpConfig.moduleFiles.commonFact = function($filter, $location, $window, $http, 
                                         for (var mapFieldKey in context.controller.form.mapping.fields) {
                                             var mapfield = context.controller.form.mapping.fields[mapFieldKey];
                                             if (mapfield.action) {
-                                                if (mapfield.type === 'select') {
+                                                if (mapfield.type === 'select' && (mapfield.autoAction === undefined || mapfield.autoAction)) {
                                                     context.commonFact.callActions(mapfield.action, [data[dataKey][mapKey], data[dataKey][mapKey][mapfield.id], mapfield, mapKey]);
                                                 }
                                             }

@@ -764,7 +764,8 @@
                                     "options": {},
                                     "action": "changeMapping",
                                     "dataFrom": "marketing.partMaster",
-                                    "replaceName": "partNo"
+                                    "replaceName": "partNo",
+                                    "autoAction": false
                                 },
                                 "partName": {
                                     "name": "Part Name",
