@@ -41,6 +41,10 @@ erpConfig.moduleFiles.invoice = function(context) {
                 newMapData = data.mapping.filter(function(item) {
                     var isExistPart = (context.controller.partStock && context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp] && parseInt(context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp].partStockQty) > 0);
                     item.isExistPart = isExistPart;
+                    if (context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp]) {
+                        item.operationFrom = context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp].operationFrom;
+                        item.operationTo = context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp].operationTo;
+                    }
                     return isExistPart;
                 });
                 if (newMapData.length > 0) {
