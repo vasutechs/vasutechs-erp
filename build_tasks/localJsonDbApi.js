@@ -70,7 +70,7 @@ module.exports = function(config) {
 
         var uploadDb = function(inputData, dbConfig) {
             var databaseDetails = inputData.tables && inputData.tables.databaseDetails[1];
-            if (databaseDetails && databaseDetails.appCustomer && databaseDetails.type && dbConfig.appCustomer === databaseDetails.appCustomer && dbConfig.type === databaseDetails.type) {
+            if (databaseDetails && databaseDetails.appCustomer && databaseDetails.type && dbConfig.appCustomer == databaseDetails.appCustomer && dbConfig.type == databaseDetails.type) {
                 dbConfig.currentDb.delete('/');
                 dbConfig.currentDb.push('/', inputData, true);
                 return getTableData(null, dbConfig);
