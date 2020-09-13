@@ -1412,6 +1412,61 @@ erpConfig.moduleFiles.login = function(context) {
         }
     };
 };
+erpConfig.moduleFiles.settings = function(context) {
+    return {
+        callBackList: function() {
+            var moduleField = context.controller.form.mapping.fields['module'];
+            moduleField.options = {};
+            moduleField.allOptions = {};
+            context.controller.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
+            var adminOption = {
+                userType: 'ADMIN',
+                desc: 'ADMIN',
+                optionName: 'ADMIN',
+                optionId: 'ADMIN'
+            };
+            context.controller.form.mapping.fields['restrictUser'].options['ADMIN'] = adminOption;
+            if (context.controller.lastData === undefined) {
+                context.commonFact.add();
+            } else {
+                context.commonFact.edit(context.controller.lastData.id);
+            }
+        },
+        makeModuleOptions: function(modules, field, parentModule) {
+            for (var i in modules) {
+                var module = angular.copy(modules[i]);
+                var optionIdVal = parentModule && parentModule.id + '.' + module.id || module.id;
+                var optionNameVal = parentModule && '-- ' + module.title || module.title;
+                if (i !== 'disable') {
+                    field.allOptions[optionIdVal] = module;
+                    field.allOptions[optionIdVal]['optionName'] = optionNameVal;
+                    field.allOptions[optionIdVal]['optionId'] = optionIdVal;
+                    field.options[optionIdVal] = field.allOptions[optionIdVal];
+
+                    if (!module.page) {
+                        context.controller.methods.makeModuleOptions(context.commonFact.showSubModule(modules[i]), field, modules[i]);
+                    }
+                }
+            }
+        }
+    };
+};
+erpConfig.moduleFiles.users = function(context) {
+    return {
+        callBackAdd: function() {
+            var adminOption = {
+                userType: 'ADMIN',
+                desc: 'ADMIN',
+                optionName: 'ADMIN',
+                optionId: 'ADMIN'
+            };
+            context.controller.form.fields['userType'].options['ADMIN'] = adminOption;
+        },
+        callBackEdit: function() {
+            context.controller.methods.callBackAdd();
+        }
+    };
+};
 erpConfig.moduleFiles.customerPaymentInvoice = function(context) {
     return {
         callBackList: function() {
@@ -1692,6 +1747,10 @@ erpConfig.moduleFiles.invoice = function(context) {
                 newMapData = data.mapping.filter(function(item) {
                     var isExistPart = (context.controller.partStock && context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp] && parseInt(context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp].partStockQty) > 0);
                     item.isExistPart = isExistPart;
+                    if (context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp]) {
+                        item.operationFrom = context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp].operationFrom;
+                        item.operationTo = context.controller.partStock[item.id + '-' + context.erpAppConfig.finalStageOpp].operationTo;
+                    }
                     return isExistPart;
                 });
                 if (newMapData.length > 0) {
@@ -1874,61 +1933,6 @@ erpConfig.moduleFiles.invoice = function(context) {
 };
 
 erpConfig.moduleFiles.cashBill = erpConfig.moduleFiles.invoice;
-erpConfig.moduleFiles.settings = function(context) {
-    return {
-        callBackList: function() {
-            var moduleField = context.controller.form.mapping.fields['module'];
-            moduleField.options = {};
-            moduleField.allOptions = {};
-            context.controller.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
-            var adminOption = {
-                userType: 'ADMIN',
-                desc: 'ADMIN',
-                optionName: 'ADMIN',
-                optionId: 'ADMIN'
-            };
-            context.controller.form.mapping.fields['restrictUser'].options['ADMIN'] = adminOption;
-            if (context.controller.lastData === undefined) {
-                context.commonFact.add();
-            } else {
-                context.commonFact.edit(context.controller.lastData.id);
-            }
-        },
-        makeModuleOptions: function(modules, field, parentModule) {
-            for (var i in modules) {
-                var module = angular.copy(modules[i]);
-                var optionIdVal = parentModule && parentModule.id + '.' + module.id || module.id;
-                var optionNameVal = parentModule && '-- ' + module.title || module.title;
-                if (i !== 'disable') {
-                    field.allOptions[optionIdVal] = module;
-                    field.allOptions[optionIdVal]['optionName'] = optionNameVal;
-                    field.allOptions[optionIdVal]['optionId'] = optionIdVal;
-                    field.options[optionIdVal] = field.allOptions[optionIdVal];
-
-                    if (!module.page) {
-                        context.controller.methods.makeModuleOptions(context.commonFact.showSubModule(modules[i]), field, modules[i]);
-                    }
-                }
-            }
-        }
-    };
-};
-erpConfig.moduleFiles.users = function(context) {
-    return {
-        callBackAdd: function() {
-            var adminOption = {
-                userType: 'ADMIN',
-                desc: 'ADMIN',
-                optionName: 'ADMIN',
-                optionId: 'ADMIN'
-            };
-            context.controller.form.fields['userType'].options['ADMIN'] = adminOption;
-        },
-        callBackEdit: function() {
-            context.controller.methods.callBackAdd();
-        }
-    };
-};
 erpConfig.moduleFiles.assembleMaterialIssueNote = function(context) {
     var orgItemVal = null;
     return {
