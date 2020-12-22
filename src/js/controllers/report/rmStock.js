@@ -29,7 +29,7 @@ erpConfig.moduleFiles.rmStock = function(context) {
                         context.controller.data.rmStockQty = parseInt(context.controller.data.rmStockQty) + parseInt(stockData[i].rmStockQty);
                     }
                 }
-                commonFact.submit();
+                context.commonFact.submit();
             });
 
         }
