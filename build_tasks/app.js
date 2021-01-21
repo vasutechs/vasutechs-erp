@@ -37,7 +37,7 @@ var app = function() {
     config.app.use(express.static(config.webServer.distPath));
 
     fs.readdirSync(config.buildTasks).forEach(file => {
-        if (file !== 'app.js' && file !== 'config.js') {
+        if (file !== 'app.js' && file !== 'config.js' && file!=='gDrive') {
             require('./' + file)(config);
         }
     });

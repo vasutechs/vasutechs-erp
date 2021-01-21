@@ -18,7 +18,9 @@ erpConfig.moduleFiles.salesAnalysisInvoice = function(context) {
                             partNo: listViewData[i].mapping[j].id,
                             amount: listViewData[i].mapping[j].amount,
                             rate: listViewData[i].mapping[j].rate,
-                            taxRate: listViewData[i].taxRate || listViewData[i].igst,
+                            cgst: listViewData[i].cgst,
+							sgst: listViewData[i].sgst,
+							igst: listViewData[i].igst,
                             unit: listViewData[i].mapping[j].unit,
                             customerCode: listViewData[i]['customerCode'],
                             dates: context.commonFact.dateFormatChange(date),
@@ -26,7 +28,11 @@ erpConfig.moduleFiles.salesAnalysisInvoice = function(context) {
                         };
 
                         if (!context.controller.cashBill) {
-                            partDetail.amount = parseFloat(partDetail.amount) + (parseFloat(partDetail.amount) * parseFloat(partDetail.taxRate / 100));
+							var cgstTotal = partDetail.cgst && (parseFloat(partDetail.amount) * parseFloat(partDetail.cgst / 100)) || 0;
+							var sgstTotal = partDetail.sgst && (parseFloat(partDetail.amount) * parseFloat(partDetail.sgst / 100)) || 0;
+							var igstTotal = partDetail.igst && (parseFloat(partDetail.amount) * parseFloat(partDetail.igst / 100)) || 0;
+							var taxRateTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
+							partDetail.amount = parseFloat(partDetail.amount) + parseFloat(taxRateTotal);
                         }
                         var isPartExist = context.commonFact.findObjectByKey(partDetailList, 'partNo', partDetail['partNo']);
                         if (isPartExist && isPartExist.customerCode === partDetail.customerCode) {

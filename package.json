@@ -36,5 +36,8 @@
         "node-json-db": "^0.7.5",
         "open": "^6.0.0",
         "mongodb": "^3.5.9"
+    },
+    "dependencies": {
+        "googleapis": "^66.0.0"
     }
 }

@@ -19,7 +19,7 @@
                     <td colspan="6">
                         <auto-complete ng-if="!context.controller.page.printView" field="context.controller.form.fields.customerCode" context="context"></auto-complete>
                         <input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.address.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.address.id]" />
-                        <span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.customerCode.id}}" ng-bind="context.commonFact.replaceFieldVal(context.controller.data[context.controller.form.fields.customerCode.id], context.controller.form.fields.customerCode)"></span>
+                        <span class="font-weight-bold" ng-if="context.controller.page.printView" id="{{context.controller.form.fields.customerCode.id}}" ng-bind="context.commonFact.replaceFieldVal(context.controller.data[context.controller.form.fields.customerCode.id], context.controller.form.fields.customerCode)"></span>
 
                         <span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.address.id}}">, {{context.controller.data[context.controller.form.fields.address.id]}}</span>
 

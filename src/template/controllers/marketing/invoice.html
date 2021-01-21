@@ -26,10 +26,18 @@
                     <entry-invoice></entry-invoice>
                 </div>
                 <div ng-if="context.controller.page.printView" class="row">
-                    <div class="col-8"></div>
                     <div class="col-4">
+					<p class="text-left font-italic"><b>Bank Details:</b></p>
+					<p class="text-left font-italic"><b>Bank Name:</b> {{context.erpAppConfig.bankName}}</p>
+					<p class="text-left font-italic"><b>Account Number:</b> {{context.erpAppConfig.accountNo}}</p>
+					<p class="text-left font-italic"><b>Bank IFSC Code:</b> {{context.erpAppConfig.bankIFSC}}</p>
+					</div>
+                    <div class="col-4"></div>
+                    <div class="col-4">
+					<br/>
                         <p class="text-center font-italic"><b>For {{context.erpAppConfig.companyName}}</b></p>
                         <br/>
+						<br/>
                         <p class="text-center font-italic"><b>Authorised Signatory</b></p>
                     </div>
                 </div>

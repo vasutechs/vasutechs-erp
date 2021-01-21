@@ -5541,6 +5541,9 @@
                         "companyMobile": null,
                         "companyEmail": null,
                         "companyGstin": null,
+						"bankName": null,
+						"accountNo": null,
+						"bankIFSC": null,
                         "finalStageOpp": null,
                         "mapping": [{
                             "module": null,
@@ -5588,6 +5591,24 @@
                             "companyGstin": {
                                 "name": "Company GSTIN",
                                 "id": "companyGstin",
+                                "type": "input",
+                                "inputType": "text"
+                            },
+                            "bankName": {
+                                "name": "Bank Name",
+                                "id": "bankName",
+                                "type": "input",
+                                "inputType": "text"
+                            },
+                            "accountNo": {
+                                "name": "Account Number",
+                                "id": "accountNo",
+                                "type": "input",
+                                "inputType": "text"
+                            },
+                            "bankIFSC": {
+                                "name": "Bank IFSC Code",
+                                "id": "bankIFSC",
                                 "type": "input",
                                 "inputType": "text"
                             },
