@@ -18,6 +18,10 @@ var app = function() {
         createServer();
         config.dbApi();
     };
+	var storeDataServer = function(){
+		config.dbApi();
+		config.storeDataServer();
+	}
 
     config.arg = arg;
     config.app = express();
@@ -37,12 +41,13 @@ var app = function() {
     config.app.use(express.static(config.webServer.distPath));
 
     fs.readdirSync(config.buildTasks).forEach(file => {
-        if (file !== 'app.js' && file !== 'config.js' && file!=='gDrive') {
+        if (file !== 'app.js' && file !== 'config.js') {
             require('./' + file)(config);
         }
     });
 
     config.arg.run && server();
+	config.arg.storeDataServer && storeDataServer();
 }
 
 module.exports = app();

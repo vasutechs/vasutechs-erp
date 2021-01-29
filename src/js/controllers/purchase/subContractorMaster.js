@@ -1,7 +1,7 @@
 erpConfig.moduleFiles.subContractorMaster = function(context) {
     return {
         callBackList: function() {
-            var partNos = [];
+             /*var partNos = [];
             context.commonFact.getData('production.flowMaster').then(function(res) {
                 var flowMasterData = res.data;
                 for (var i in flowMasterData) {
@@ -14,7 +14,12 @@ erpConfig.moduleFiles.subContractorMaster = function(context) {
                 context.controller.form.mapping.fields['id'].filter = {
                     id: partNos
                 };
-            });
+            }); */
         }
+		checkOperation: function(data, keyData, field){
+			if(data.id){
+				context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationTo'], restriction);
+			}
+		}
     };
 };

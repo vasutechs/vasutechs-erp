@@ -1807,14 +1807,22 @@
                                     "replaceName": "partNo",
                                     "isDisable": true
                                 },
+                                "operationFrom": {
+                                    "name": "Op From",
+                                    "id": "operationFrom",
+                                    "type": "select",
+									"action":"checkOperation",
+                                    "options": {},
+                                    "dataFrom": "production.operationMaster",
+                                    "replaceName": "opName"
+                                },
                                 "operationTo": {
-                                    "name": "Op Name",
+                                    "name": "Op To",
                                     "id": "operationTo",
                                     "type": "select",
                                     "options": {},
                                     "dataFrom": "production.operationMaster",
-                                    "replaceName": "opName",
-                                    "isDisable": true
+                                    "replaceName": "opName"
                                 },
                                 "acceptedQty": {
                                     "name": "Qty",
@@ -5544,6 +5552,7 @@
 						"bankName": null,
 						"accountNo": null,
 						"bankIFSC": null,
+						"bankBranch": null,
                         "finalStageOpp": null,
                         "mapping": [{
                             "module": null,
@@ -5609,6 +5618,12 @@
                             "bankIFSC": {
                                 "name": "Bank IFSC Code",
                                 "id": "bankIFSC",
+                                "type": "input",
+                                "inputType": "text"
+                            },
+                            "bankBranch": {
+                                "name": "Bank Branch",
+                                "id": "bankBranch",
                                 "type": "input",
                                 "inputType": "text"
                             },
