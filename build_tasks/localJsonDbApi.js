@@ -90,6 +90,22 @@ module.exports = function(config) {
             }
             return listDbYears;
         };
+		
+		var getListDb = function(newDir, newListDb) {
+            var dir = newDir || "data";
+            var files = fs.readdirSync(dir);
+            var listDb = newListDb || [];
+			for (var i in files) {
+                var name = dir + '/' + files[i];
+				if(fs.statSync(name).isDirectory()){
+				  getListDb(name, listDb);
+				}
+				else{
+                    listDb.push(name);
+                }
+            }
+            return listDb;
+        };
 
         var setCustomerCurrentDb = function(appCustomer, year, masterDb) {
             var dbConfig = {};
@@ -130,7 +146,8 @@ module.exports = function(config) {
             getYearListDb: getYearListDb,
             setCustomerCurrentDb: setCustomerCurrentDb,
             updateDatabaseDetails: updateDatabaseDetails,
-            downloadDb: downloadDb
+            downloadDb: downloadDb,
+			getListDb: getListDb
         };
     };
 };
