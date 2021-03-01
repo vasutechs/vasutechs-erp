@@ -15,7 +15,7 @@ erpConfig.moduleFiles.subContractorMaster = function(context) {
                     id: partNos
                 };
             }); */
-        }
+        },
 		checkOperation: function(data, keyData, field){
 			if(data.id){
 				context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationTo'], restriction);

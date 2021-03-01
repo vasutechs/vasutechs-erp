@@ -40,7 +40,7 @@ erpConfig.moduleFiles.productionEntry = function(context) {
                     qtyCanMake = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].qtyCanMake;
                 } else if (context.controller.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
 					prQty = context.controller.prQty[context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to']; 
-                    qtyCanMake = prQty && prQty.prAcpQty || 0;
+                    qtyCanMake = prQty && prQty.prAcpQty || context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].qtyCanMake || 0;
                 } else {
                     qtyCanMake = context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty || 0;
                 }
