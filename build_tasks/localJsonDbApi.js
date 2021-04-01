@@ -1,5 +1,5 @@
-module.exports = function(config) {
-    config.localJsonDbApi = function() {
+module.exports = function (config) {
+    config.localJsonDbApi = function () {
         var del = require('del');
         var fs = require('fs');
         var JsonDB = require('node-json-db');
@@ -14,23 +14,20 @@ module.exports = function(config) {
             return data || {};
         };
 
-        var downloadDb = function(dbConfig) {
+        var downloadDb = function (dbConfig) {
             return dbConfig.currentDb.getData('/');
         };
 
-
-        var setTableData = function(table, dbConfig, inputData, query) {
+        var setTableData = function (table, dbConfig, inputData, query) {
             var lastData,
-                newId,
-                id = '';
+            newId,
+            id = '';
             var data;
             table = updateDataId(table, query, inputData);
             if (!inputData.id && !inputData.delete) {
                 try {
                     lastData = getTableData(table, dbConfig);
-                } catch (error) {
-
-                };
+                } catch (error) {};
                 lastData = lastData && lastData[Object.keys(lastData)[Object.keys(lastData).length - 1]];
                 newId = lastData && lastData.id && parseInt(lastData.id) + 1 || 1;
                 inputData['id'] = newId;
@@ -56,7 +53,7 @@ module.exports = function(config) {
             return data;
         };
 
-        var updateDatabaseDetails = function(dbConfig, inputData) {
+        var updateDatabaseDetails = function (dbConfig, inputData) {
             var details = {
                 id: 1,
                 type: dbConfig.type || 'appMaster',
@@ -68,17 +65,22 @@ module.exports = function(config) {
             dbConfig.currentDb.push('/tables/databaseDetails/1', details, true);
         };
 
-        var uploadDb = function(inputData, dbConfig) {
-            var databaseDetails = inputData.tables && inputData.tables.databaseDetails[1];
+        var uploadDb = function (inputData, dbConfig) {
+            var databaseDetails = inputData.tables && inputData.tables.databaseDetails && inputData.tables.databaseDetails[1];
             if (databaseDetails && databaseDetails.appCustomer && databaseDetails.type && dbConfig.appCustomer == databaseDetails.appCustomer && dbConfig.type == databaseDetails.type) {
                 dbConfig.currentDb.delete('/');
                 dbConfig.currentDb.push('/', inputData, true);
+                return getTableData(null, dbConfig);
+            } else if (inputData.uploadType === 'tables') {
+                for (var i in inputData.tables) {
+                    dbConfig.currentDb.push('/tables/' + i, inputData.tables[i], true);
+                }
                 return getTableData(null, dbConfig);
             }
             return {};
         };
 
-        var getYearListDb = function(dbConfig) {
+        var getYearListDb = function (dbConfig) {
             var dir = "./data/appCustomer-" + dbConfig.appCustomer;
             var files = fs.readdirSync(dir);
             var listDbYears = [];
@@ -90,24 +92,23 @@ module.exports = function(config) {
             }
             return listDbYears;
         };
-		
-		var getListDb = function(newDir, newListDb) {
+
+        var getListDb = function (newDir, newListDb) {
             var dir = newDir || "data";
             var files = fs.readdirSync(dir);
             var listDb = newListDb || [];
-			for (var i in files) {
+            for (var i in files) {
                 var name = dir + '/' + files[i];
-				if(fs.statSync(name).isDirectory()){
-				  getListDb(name, listDb);
-				}
-				else{
+                if (fs.statSync(name).isDirectory()) {
+                    getListDb(name, listDb);
+                } else {
                     listDb.push(name);
                 }
             }
             return listDb;
         };
 
-        var setCustomerCurrentDb = function(appCustomer, year, masterDb) {
+        var setCustomerCurrentDb = function (appCustomer, year, masterDb) {
             var dbConfig = {};
             if (appCustomer && !masterDb) {
                 if (year) {
@@ -127,14 +128,13 @@ module.exports = function(config) {
             return false;
         };
 
-
-        var updateDataId = function(table, query, inputData) {
+        var updateDataId = function (table, query, inputData) {
             var id = inputData && inputData.id || query && query.id;
             table += id ? ('/' + id) : '';
             return table;
         };
 
-        var deleteCustomer = function(appCustomer) {
+        var deleteCustomer = function (appCustomer) {
             del(["./data/appCustomer-" + appCustomer]);
         };
 
@@ -147,7 +147,7 @@ module.exports = function(config) {
             setCustomerCurrentDb: setCustomerCurrentDb,
             updateDatabaseDetails: updateDatabaseDetails,
             downloadDb: downloadDb,
-			getListDb: getListDb
+            getListDb: getListDb
         };
     };
 };
