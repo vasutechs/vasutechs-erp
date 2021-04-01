@@ -1676,18 +1676,6 @@
                                     "replaceName": "partNo",
                                     "required": true
                                 },
-                                "operationTo": {
-                                    "name": "Op Name",
-                                    "id": "operationTo",
-                                    "type": "select",
-                                    "options": {},
-                                    "dataFrom": "production.operationMaster",
-                                    "replaceName": "opName",
-                                    "filter": {
-                                        "source": ["Sub-Contractor"]
-                                    },
-                                    "required": true
-                                },
                                 "rate": {
                                     "name": "Rate",
                                     "id": "rate",

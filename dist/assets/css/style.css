@@ -616,3 +616,8 @@ select.form-control[multiple] {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
 }
+.small-bank-details{
+	font-size: 12px;
+	padding-left: 20px;
+	margin: 0px !important;
+}

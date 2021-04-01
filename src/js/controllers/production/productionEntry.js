@@ -1,10 +1,10 @@
-erpConfig.moduleFiles.productionEntry = function(context) {
+erpConfig.moduleFiles.productionEntry = function (context) {
     return {
-        callBackAdd: function() {
+        callBackAdd: function () {
             context.controller.page.printViewMapping = false;
             context.controller.finalMapping = 0;
         },
-        callBackEdit: function() {
+        callBackEdit: function () {
             if (!context.controller.page.printView) {
                 context.controller.page.printViewMapping = true;
                 context.commonFact.addMapping(context.controller.data.mapping);
@@ -12,24 +12,24 @@ erpConfig.moduleFiles.productionEntry = function(context) {
                 context.controller.methods.callBackChangeMapping();
             }
         },
-        callBackList: function() {
+        callBackList: function () {
             context.commonFact.getPartStock();
             context.controller.methods.getPRQty();
             context.commonFact.getFlowMaster();
             context.commonFact.getOperations();
         },
-        checkAcceptedQty: function(mappingData, value, field, fieldMapkey) {
+        checkAcceptedQty: function (mappingData, value, field, fieldMapkey) {
             var qtyCanMake = 0,
-                rejectionQty = mappingData.rejectionQty || 0,
-                rwQty = mappingData.rwQty || 0,
-                acceptedQty = mappingData.acceptedQty || 0,
-                qty = acceptedQty + rejectionQty + rwQty;
+            rejectionQty = mappingData.rejectionQty || 0,
+            rwQty = mappingData.rwQty || 0,
+            acceptedQty = mappingData.acceptedQty || 0,
+            qty = acceptedQty + rejectionQty + rwQty;
             var fullQty;
             var prFrmQtyMap;
             var prFrmToQtyMap;
             var prToQtyMap;
             var stockQty;
-			var prQty;
+            var prQty;
 
             prFrmQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-frm';
             prToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationTo + '-to';
@@ -39,7 +39,7 @@ erpConfig.moduleFiles.productionEntry = function(context) {
                 if (context.controller.operationsData[mappingData.operationFrom].source === 'Supplier' || context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].isAssemblePart === 1) {
                     qtyCanMake = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].qtyCanMake;
                 } else if (context.controller.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
-					prQty = context.controller.prQty[context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to']; 
+                    prQty = context.controller.prQty[context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to'];
                     qtyCanMake = prQty && prQty.prAcpQty || context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].qtyCanMake || 0;
                 } else {
                     qtyCanMake = context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty || 0;
@@ -52,11 +52,11 @@ erpConfig.moduleFiles.productionEntry = function(context) {
                 mappingData[field.id] = null
             }
         },
-        callBackChangeMapping: function(data, key, field) {
+        callBackChangeMapping: function (data, key, field) {
             context.controller.methods.updateOperationFrom(data, key, field);
             context.controller.methods.updateOperationTo(data, key, field);
         },
-        updateOperationFrom: function(data, key, field) {
+        updateOperationFrom: function (data, key, field) {
             var prQtyFrmMap;
             var prQtyPrevMap;
             var prQtyToMap;
@@ -66,9 +66,9 @@ erpConfig.moduleFiles.productionEntry = function(context) {
 
             if (context.controller.data.jobCardNo) {
                 var restriction = {
-                        partNo: context.controller.data.partNo
-                    },
-                    operation = [];
+                    partNo: context.controller.data.partNo
+                },
+                operation = [];
                 for (var i in context.controller.partStock) {
                     if (context.controller.partStock[i].partStockQty > 0 && context.controller.data.partNo === context.controller.partStock[i].partNo) {
                         prQtyPrevMap = context.controller.data.jobCardNo + '-' + context.controller.partStock[i].partNo + '-' + context.controller.partStock[i].operationFrom + '-frm';
@@ -94,13 +94,13 @@ erpConfig.moduleFiles.productionEntry = function(context) {
                 context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationFrom'], restriction);
             }
         },
-        updateOperationTo: function(mappingData) {
+        updateOperationTo: function (mappingData) {
             context.controller.form.mapping.fields['operationTo'].options = {};
             if (context.controller.data.jobCardNo) {
                 var partNo = context.controller.data.partNo,
-                    restriction = {
-                        partNo: partNo
-                    };
+                restriction = {
+                    partNo: partNo
+                };
                 if (mappingData && mappingData.operationFrom) {
                     restriction = angular.extend(restriction, {
                         limit: 1,
@@ -108,7 +108,7 @@ erpConfig.moduleFiles.productionEntry = function(context) {
                     });
                 }
 
-                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationTo'], restriction).then(function() {
+                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationTo'], restriction).then(function () {
                     var options = context.controller.form.mapping.fields['operationTo'].options;
                     var firstOption = options[Object.keys(options)[0]];
                     if (firstOption && firstOption.source === 'Sub-Contractor') {
@@ -117,25 +117,25 @@ erpConfig.moduleFiles.productionEntry = function(context) {
                 });
             }
         },
-        updateToolNo: function(mappingData) {
+        updateToolNo: function (mappingData) {
             mappingData.toolNo = context.controller.data.partNo && mappingData.operationTo && context.controller.flowMasterByPartOpr[context.controller.data.partNo + '-' + mappingData.operationTo].toolNo || null;
         },
-        calculatePlanQty: function(mappingData) {
+        calculatePlanQty: function (mappingData) {
             var startDate = mappingData.startTime;
             var endDate = mappingData.endTime;
             var timeDiff = endDate - startDate;
             var palnQtyPerHr = context.controller.data.partNo && mappingData.operationTo && context.controller.flowMasterByPartOpr[context.controller.data.partNo + '-' + mappingData.operationTo].palnQtyPerHr || 1;
             mappingData.planQty = timeDiff * palnQtyPerHr;
         },
-        updateMaterialIssue: function() {
+        updateMaterialIssue: function () {
             var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
             var jobCardQty = jobCard && jobCard.qtyCanMake;
             jobCard.status = 1;
             context.commonFact.updateData('production.materialIssueNote', jobCard);
         },
-        getPRQty: function() {
+        getPRQty: function () {
             context.controller.prQty = {};
-            return context.commonFact.getData('production.productionEntry').then(function(res) {
+            return context.commonFact.getData('production.productionEntry').then(function (res) {
                 var listViewData = res.data;
                 for (var i in listViewData) {
                     for (var j in listViewData[i].mapping) {
@@ -165,7 +165,7 @@ erpConfig.moduleFiles.productionEntry = function(context) {
                 return context.controller.prQty;
             });
         },
-        callBackSubmit: function() {
+        callBackSubmit: function () {
             var newQty;
             var data = angular.copy(context.controller.data.mapping[context.controller.finalMapping]);
             var newContext = angular.copy(context);
@@ -174,24 +174,34 @@ erpConfig.moduleFiles.productionEntry = function(context) {
             context.commonFact.updatePartStock(newContext);
             context.controller.methods.updateMaterialIssue();
         },
-        prodEntryDownload: function() {
+        prodEntryDownload: function () {
             if (!context.selectedTableData) {
                 return;
             }
             var prodData = context.selectedTableData[context.controller.id];
-            context.commonFact.getData('production.materialIssueNote').then(function(res) {
+            var prodDataNew = {
+                tables: {
+                    materialIssueNote: {},
+                    productionEntry: {}
+                },
+                uploadType: 'tables'
+            };
+
+            context.commonFact.getData('production.materialIssueNote').then(function (res) {
                 var materData = res.data;
                 var jobCardNo = 1;
-                context.selectedTableData['materialIssueNote'] = {};
                 for (var i in prodData) {
-                    context.selectedTableData['materialIssueNote'][jobCardNo] = materData[prodData[i].jobCardNo];
-                    context.selectedTableData['materialIssueNote'][jobCardNo].id = jobCardNo;
-                    context.selectedTableData['materialIssueNote'][jobCardNo].jobCardNo = jobCardNo;
-                    prodData[i].jobCardNo = jobCardNo;
+                    prodDataNew['tables']['materialIssueNote'][jobCardNo] = materData[prodData[i].jobCardNo];
+                    prodDataNew['tables']['materialIssueNote'][jobCardNo].id = jobCardNo;
+                    prodDataNew['tables']['materialIssueNote'][jobCardNo].jobCardNo = jobCardNo;
+                    prodDataNew['tables']['productionEntry'][jobCardNo] = prodData[i];
+                    prodDataNew['tables']['productionEntry'][jobCardNo].id = jobCardNo;
+                    prodDataNew['tables']['productionEntry'][jobCardNo].jobCardNo = jobCardNo;
                     jobCardNo++;
                 }
-                context.commonFact.downloadFile(context.selectedTableData, context.controller.id + '.json');
+                context.commonFact.downloadFile(prodDataNew, context.controller.id + '.json');
             });
+
         }
     };
 };
