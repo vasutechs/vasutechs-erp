@@ -1,25 +1,31 @@
-erpConfig.moduleFiles.subContractorMaster = function(context) {
+erpConfig.moduleFiles.poSubContractor = function (context) {
+    var mappingField = null;
     return {
-        callBackList: function() {
-             /*var partNos = [];
-            context.commonFact.getData('production.flowMaster').then(function(res) {
-                var flowMasterData = res.data;
-                for (var i in flowMasterData) {
-                    for (var j in flowMasterData[i].mapping) {
-                        if (flowMasterData[i].mapping[j].source === 'Sub-Contractor') {
-                            partNos.push(flowMasterData[i].partNo);
-                        }
-                    }
-                }
-                context.controller.form.mapping.fields['id'].filter = {
-                    id: partNos
-                };
-            }); */
+        callBackAdd: function () {
+            mappingField = angular.copy(context.controller.form.mapping.fields);
+            context.controller.form.mapping.fields = [];
         },
-		checkOperation: function(data, keyData, field){
-			if(data.id){
-				context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields['operationTo'], restriction);
-			}
-		}
+        callBackChangeMapping: function () {
+            context.controller.methods.updateMappingPart();
+        },
+        updateMappingPart: function () {
+            for (var i in context.controller.data.mapping) {
+                context.controller.form.mapping.fields[i] = angular.copy(mappingField);
+                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields[i]['operationFrom'], {
+                    partNo: context.controller.data.mapping[i].id
+                });
+
+                context.controller.data.mapping[i].uomCode = context.controller.form.mapping.fields[i].id.options[context.controller.data.mapping[i].id].uomCode;
+            }
+        },
+        checkOperation: function (data, keyData, field, fieldKey) {
+            if (data.id) {
+                var restriction = {
+                    partNo: data.id,
+                    startWith: data.operationFrom
+                };
+                context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields[fieldKey]['operationTo'], restriction);
+            }
+        }
     };
 };

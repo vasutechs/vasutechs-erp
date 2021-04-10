@@ -3,7 +3,8 @@ erpConfig.moduleFiles.costAnalysis = function(context) {
         callBackList: function() {
             context.commonFact.getFlowMaster().then(function() {
                 context.commonFact.getData('purchase.rmMaster').then(function(res) {
-
+				var frmDate = context.controller.filterView.data['frmDate'];
+                var toDate = context.controller.filterView.data['toDate'];
                     for (var i in context.controller.listViewData) {
                         var partDetails = context.controller.listViewData[i];
                         var rmCode = context.controller.listViewData[i].rmCode;
@@ -11,8 +12,10 @@ erpConfig.moduleFiles.costAnalysis = function(context) {
                         var flowMasterDetails = context.controller.flowMasterByPart[partDetails.id];
                         if (rmDetails) {
                             partDetails.rmRate = rmDetails.rate;
+							partDetails.amendmentRMRate = context.commonFact.getRate(rmDetails, frmDate, toDate, true);
+							partDetails.amendmentRMDate = context.commonFact.getRate(rmDetails, frmDate, toDate, true, true);
                             partDetails.scrapRate = rmDetails.scrapRate;
-                            partDetails.materialCost = rmDetails && ((parseFloat(partDetails.inputWeight) * parseFloat(rmDetails.rate)) - (((parseFloat(partDetails.inputWeight) - parseFloat(partDetails.finishedWeight)) * parseFloat(rmDetails.scrapRate))));
+                            partDetails.materialCost = rmDetails && ((parseFloat(partDetails.inputWeight) * parseFloat(context.commonFact.getRate(rmDetails, frmDate, toDate))) - (((parseFloat(partDetails.inputWeight) - parseFloat(partDetails.finishedWeight)) * parseFloat(rmDetails.scrapRate))));
                             partDetails.conversionCost = flowMasterDetails && flowMasterDetails.totalCost;
                             partDetails.subTotal = parseFloat(partDetails.materialCost) + parseFloat(partDetails.conversionCost);
                             partDetails.rejCost = partDetails.subTotal * (partDetails.rejection / 100);
@@ -22,7 +25,9 @@ erpConfig.moduleFiles.costAnalysis = function(context) {
                             partDetails.profitCost = partDetails.subTotal * (partDetails.profit / 100);
                             partDetails.total = partDetails.subTotal + partDetails.rejCost + partDetails.iccCost + partDetails.toolMaintCost + partDetails.transCost + partDetails.profitCost;
                             partDetails.salesRate = partDetails.rate;
-                            partDetails.differenceInCost = partDetails.salesRate - partDetails.total;
+                            partDetails.amendmentSalesRate = context.commonFact.getRate(partDetails, frmDate, toDate, true);
+							partDetails.amendmentSalesDate = context.commonFact.getRate(partDetails, frmDate, toDate, true, true);
+							partDetails.differenceInCost = context.commonFact.getRate(partDetails, frmDate, toDate) - partDetails.total;
                             partDetails.gainOrLoss = (partDetails.differenceInCost / partDetails.salesRate) * 100;
                         }
                     }

@@ -44,7 +44,9 @@
                             "id": "appCustomer",
                             "type": "select",
                             "options": {},
-                            "dataFrom": { "dataUri": "getAppCustomer" },
+                            "dataFrom": {
+                                "dataUri": "getAppCustomer"
+                            },
                             "replaceName": "companyName"
                         }
                     },
@@ -143,7 +145,12 @@
                         "icc": null,
                         "toolMaintenance": null,
                         "profit": null,
-                        "transportCostKg": null
+                        "transportCostKg": null,
+                        "mapping": [{
+                                "date": "",
+                                "rate": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "partMaster",
@@ -262,6 +269,31 @@
                                 "id": "isAssemblePart",
                                 "type": "input",
                                 "inputType": "checkbox"
+                            },
+                            "isAssemblePart": {
+                                "name": "Is Assemble Part",
+                                "id": "isAssemblePart",
+                                "type": "input",
+                                "inputType": "checkbox"
+                            }
+                        },
+                        "mapping": {
+                            "name": "Part Amendment Rate",
+                            "fields": {
+                                "date": {
+                                    "name": "Date",
+                                    "id": "date",
+                                    "type": "input",
+                                    "inputType": "date",
+                                    "required": true
+                                },
+                                "rate": {
+                                    "name": "Rate",
+                                    "id": "rate",
+                                    "type": "input",
+                                    "inputType": "text",
+                                    "required": true
+                                }
                             }
                         }
                     },
@@ -272,8 +304,7 @@
                             "replaceName": "partNo",
                             "type": "select",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Part Name",
                             "id": "partName"
                         }
@@ -297,11 +328,12 @@
                         "sgst": null,
                         "igst": null,
                         "mapping": [{
-                            "id": null,
-                            "partName": null,
-                            "hsnCode": null,
-                            "rate": null
-                        }]
+                                "id": null,
+                                "partName": null,
+                                "hsnCode": null,
+                                "rate": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "customerMaster",
@@ -398,8 +430,7 @@
                             "name": "Customer Code",
                             "id": "customerCode",
                             "valuePrefix": "VT-CUS-"
-                        },
-                        {
+                        }, {
                             "name": "Customer",
                             "id": "customerCode",
                             "dataFrom": "marketing.customerMaster",
@@ -432,11 +463,12 @@
                         "ot": null,
                         "totalSalary": null,
                         "mapping": [{
-                            "id": null,
-                            "partName": null,
-                            "operationTo": null,
-                            "laborCost": null
-                        }]
+                                "id": null,
+                                "partName": null,
+                                "operationTo": null,
+                                "laborCost": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "empMaster",
@@ -569,8 +601,7 @@
                     "listView": [{
                             "name": "Employee Name",
                             "id": "employeeName"
-                        },
-                        {
+                        }, {
                             "name": "Mail Id",
                             "id": "mailId"
                         }
@@ -612,8 +643,7 @@
                             "name": "UOM Code",
                             "id": "uomCode",
                             "valuePrefix": "VT-UOM-"
-                        },
-                        {
+                        }, {
                             "name": "UOM Name",
                             "id": "uomName"
                         }
@@ -645,13 +675,14 @@
                         "totalBeforTax": null,
                         "total": null,
                         "mapping": [{
-                            "id": null,
-                            "partName": null,
-                            "hsnCode": null,
-                            "unit": null,
-                            "rate": null,
-                            "amount": null
-                        }]
+                                "id": null,
+                                "partName": null,
+                                "hsnCode": null,
+                                "unit": null,
+                                "rate": null,
+                                "amount": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "Invoice",
@@ -802,8 +833,7 @@
                             "name": "Invoice No",
                             "id": "invoiceNo",
                             "valuePrefix": "VT-"
-                        },
-                        {
+                        }, {
                             "name": "Customer",
                             "id": "customerCode",
                             "dataFrom": "marketing.customerMaster",
@@ -811,8 +841,7 @@
                             "isFilterBy": true,
                             "type": "autoComplete",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Date",
                             "id": "date",
                             "type": "date"
@@ -857,10 +886,11 @@
                         }
                     },
                     "listView": [{
-                        "name": "Cash Bill No",
-                        "id": "invoiceNo",
-                        "valuePrefix": ""
-                    }],
+                            "name": "Cash Bill No",
+                            "id": "invoiceNo",
+                            "valuePrefix": ""
+                        }
+                    ],
                     "page": {
                         "link": "marketing/cashBill",
                         "name": "list",
@@ -892,7 +922,12 @@
                         "uomCode": null,
                         "rate": null,
                         "transportCostKg": null,
-                        "scrapRate": null
+                        "scrapRate": null,
+                        "mapping": [{
+                                "date": "",
+                                "rate": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "rmMaster",
@@ -964,21 +999,39 @@
                                 "inputType": "number",
                                 "required": true
                             }
+                        },
+                        "mapping": {
+                            "name": "Part Amendment Rate",
+                            "fields": {
+                                "date": {
+                                    "name": "Date",
+                                    "id": "date",
+                                    "type": "input",
+                                    "inputType": "date",
+                                    "required": true
+                                },
+                                "rate": {
+                                    "name": "Rate",
+                                    "id": "rate",
+                                    "type": "input",
+                                    "inputType": "text",
+                                    "required": true
+                                }
+                            }
                         }
                     },
                     "listView": [{
                             "name": "RM Code",
                             "id": "rmCode",
                             "valuePrefix": "RM-"
-                        },
-                        {
+                        }, {
                             "name": "Raw Material Name",
                             "id": "rmCode",
                             "dataFrom": "purchase.rmMaster",
                             "replaceName": "rmName",
                             "valuePrefixData": "grade",
                             "isFilterBy": true,
-                            "type": "select",
+                            "type": "autoComplete",
                             "options": {}
                         }
                     ],
@@ -1002,10 +1055,11 @@
                         "cgst": null,
                         "igst": null,
                         "mapping": [{
-                            "id": null,
-                            "rmCode": null,
-                            "rate": null
-                        }]
+                                "id": null,
+                                "rmCode": null,
+                                "rate": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "supplierMaster",
@@ -1099,8 +1153,7 @@
                             "name": "Supplier Code",
                             "id": "supplierCode",
                             "valuePrefix": "VT-SP-"
-                        },
-                        {
+                        }, {
                             "name": "Supplier Name",
                             "id": "supplierCode",
                             "dataFrom": "purchase.supplierMaster",
@@ -1132,12 +1185,13 @@
                         "cgst": null,
                         "igst": null,
                         "mapping": [{
-                            "id": null,
-                            "qty": null,
-                            "uomCode": null,
-                            "rate": null,
-                            "amount": null
-                        }]
+                                "id": null,
+                                "qty": null,
+                                "uomCode": null,
+                                "rate": null,
+                                "amount": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "poSupplier",
@@ -1256,16 +1310,14 @@
                             "name": "PO NO",
                             "id": "poNo",
                             "valuePrefix": "VT-SP-PO-"
-                        },
-                        {
+                        }, {
                             "name": "Supplier Code",
                             "id": "supplierCode",
                             "dataFrom": "purchase.supplierMaster",
                             "replaceName": "supplierName",
                             "type": "select",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Stutus",
                             "id": "status"
                         }
@@ -1296,10 +1348,11 @@
                         "cgst": null,
                         "igst": null,
                         "mapping": [{
-                            "id": null,
-                            "partName": null,
-                            "rate": null
-                        }]
+                                "id": null,
+                                "partName": null,
+                                "rate": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "General Supplier Master",
@@ -1397,8 +1450,7 @@
                             "name": "General Supplier Code",
                             "id": "generalSupplierCode",
                             "valuePrefix": "VT-GSP-"
-                        },
-                        {
+                        }, {
                             "name": "General Supplier Name",
                             "id": "generalSupplierCode",
                             "dataFrom": "purchase.generalSupplierMaster",
@@ -1430,12 +1482,13 @@
                         "gstTotal": null,
                         "total": null,
                         "mapping": [{
-                            "id": null,
-                            "qty": null,
-                            "uomCode": null,
-                            "rate": null,
-                            "amount": null
-                        }]
+                                "id": null,
+                                "qty": null,
+                                "uomCode": null,
+                                "rate": null,
+                                "amount": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "poGeneralSupplier",
@@ -1553,16 +1606,14 @@
                             "name": "PO NO",
                             "id": "poNo",
                             "valuePrefix": "VT-GSP-PO-"
-                        },
-                        {
+                        }, {
                             "name": "General Supplier Code",
                             "id": "generalSupplierCode",
                             "dataFrom": "purchase.generalSupplierMaster",
                             "replaceName": "generalSupplierName",
                             "type": "select",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Stutus",
                             "id": "status"
                         }
@@ -1593,10 +1644,11 @@
                         "cgst": null,
                         "igst": null,
                         "mapping": [{
-                            "id": null,
-                            "operationTo": null,
-                            "rate": null
-                        }]
+                                "id": null,
+                                "operationTo": null,
+                                "rate": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "subContractorMaster",
@@ -1690,8 +1742,7 @@
                             "name": "Sub Contractor Code",
                             "id": "subContractorCode",
                             "valuePrefix": "VT-SC-"
-                        },
-                        {
+                        }, {
                             "name": "Sub Contractor Name",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
@@ -1721,13 +1772,14 @@
                         "gstTotal": null,
                         "total": null,
                         "mapping": [{
-                            "id": null,
-                            "operationTo": null,
-                            "qty": null,
-                            "uomCode": null,
-                            "rate": null,
-                            "total": null
-                        }]
+                                "id": null,
+                                "operationTo": null,
+                                "qty": null,
+                                "uomCode": null,
+                                "rate": null,
+                                "total": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "poSubContractor",
@@ -1757,8 +1809,7 @@
                                 "updateData": ["gstin", "gst", "sgst", "cgst", "igst", "mapping"],
                                 "dataFrom": "purchase.subContractorMaster",
                                 "replaceName": "subContractorName",
-                                "isSingle": true,
-                                "callBack": false
+                                "isSingle": true
                             },
                             "extraAmount": {
                                 "name": "Extra Amount",
@@ -1789,8 +1840,6 @@
                                     "id": "id",
                                     "type": "select",
                                     "options": {},
-                                    "action": "changeMapping",
-                                    "updateData": ["uomCode"],
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
                                     "isDisable": true
@@ -1799,7 +1848,7 @@
                                     "name": "Op From",
                                     "id": "operationFrom",
                                     "type": "select",
-									"action":"checkOperation",
+                                    "action": "checkOperation",
                                     "options": {},
                                     "dataFrom": "production.operationMaster",
                                     "replaceName": "opName"
@@ -1852,16 +1901,14 @@
                             "name": "PO NO",
                             "id": "poNo",
                             "valuePrefix": "VT-SC-PO-"
-                        },
-                        {
+                        }, {
                             "name": "SubContractor Code",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
                             "type": "select",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Stutus",
                             "id": "status"
                         }
@@ -1904,15 +1951,16 @@
                         "gstTotal": null,
                         "total": null,
                         "mapping": [{
-                            "id": null,
-                            "qty": null,
-                            "uomCode": null,
-                            "receivedQty": null,
-                            "acceptedQty": null,
-                            "rate": null,
-                            "cost": null,
-                            "total": null
-                        }]
+                                "id": null,
+                                "qty": null,
+                                "uomCode": null,
+                                "receivedQty": null,
+                                "acceptedQty": null,
+                                "rate": null,
+                                "cost": null,
+                                "total": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "grnSupplier",
@@ -2062,8 +2110,7 @@
                             "name": "GRN NO",
                             "id": "grnNo",
                             "valuePrefix": "VT-GRN-"
-                        },
-                        {
+                        }, {
                             "name": "Supplier",
                             "id": "supplierCode",
                             "dataFrom": "purchase.supplierMaster",
@@ -2104,15 +2151,16 @@
                         "gstTotal": null,
                         "total": null,
                         "mapping": [{
-                            "id": null,
-                            "qty": null,
-                            "uomCode": null,
-                            "receivedQty": null,
-                            "acceptedQty": null,
-                            "rate": null,
-                            "cost": null,
-                            "total": null
-                        }]
+                                "id": null,
+                                "qty": null,
+                                "uomCode": null,
+                                "receivedQty": null,
+                                "acceptedQty": null,
+                                "rate": null,
+                                "cost": null,
+                                "total": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "grnSupplier",
@@ -2261,8 +2309,7 @@
                             "name": "GRN NO",
                             "id": "grnNo",
                             "valuePrefix": "VT-GRN-"
-                        },
-                        {
+                        }, {
                             "name": "General General Supplier",
                             "id": "generalSupplierCode",
                             "dataFrom": "purchase.generalSupplierMaster",
@@ -2302,14 +2349,15 @@
                         "gstTotal": null,
                         "total": null,
                         "mapping": [{
-                            "id": null,
-                            "operationFrom": null,
-                            "operationTo": null,
-                            "acceptedQty": null,
-                            "uomCode": null,
-                            "rate": null,
-                            "total": null
-                        }]
+                                "id": null,
+                                "operationFrom": null,
+                                "operationTo": null,
+                                "acceptedQty": null,
+                                "uomCode": null,
+                                "rate": null,
+                                "total": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "dcSubContractor",
@@ -2461,16 +2509,14 @@
                             "name": "DC NO",
                             "id": "dcNo",
                             "valuePrefix": "VT-DC-"
-                        },
-                        {
+                        }, {
                             "name": "Sub Contractor Code",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
                             "type": "select",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Stutus",
                             "id": "status"
                         }
@@ -2507,17 +2553,18 @@
                         "gstTotal": null,
                         "total": null,
                         "mapping": [{
-                            "id": null,
-                            "operationFrom": null,
-                            "operationTo": null,
-                            "uomCode": null,
-                            "receivedQty": null,
-                            "acceptedQty": null,
-                            "rate": null,
-                            "gst": null,
-                            "cost": null,
-                            "total": null
-                        }]
+                                "id": null,
+                                "operationFrom": null,
+                                "operationTo": null,
+                                "uomCode": null,
+                                "receivedQty": null,
+                                "acceptedQty": null,
+                                "rate": null,
+                                "gst": null,
+                                "cost": null,
+                                "total": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "grnSubContractor",
@@ -2688,8 +2735,7 @@
                             "name": "GRN NO",
                             "id": "grnNo",
                             "valuePrefix": "VT-SC-GRN-"
-                        },
-                        {
+                        }, {
                             "name": "Sub Contractor Code",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
@@ -2773,8 +2819,7 @@
                     "listView": [{
                             "name": "Operation",
                             "id": "opCode"
-                        },
-                        {
+                        }, {
                             "name": "Operation Name",
                             "id": "id",
                             "dataFrom": "production.operationMaster",
@@ -2842,16 +2887,15 @@
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "RM Name",
                             "id": "rmCode",
                             "dataFrom": "purchase.rmMaster",
                             "replaceName": "rmName",
                             "valuePrefixData": "grade",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true
                         }
                     ],
@@ -2867,10 +2911,11 @@
                         "partNo": null,
                         "partName": null,
                         "mapping": [{
-                            "id": null,
-                            "partName": null,
-                            "partNorms": null
-                        }]
+                                "id": null,
+                                "partName": null,
+                                "partNorms": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "bomAssemblePart",
@@ -2928,16 +2973,17 @@
                         }
                     },
                     "listView": [{
-                        "name": "Part No",
-                        "id": "partNo",
-                        "dataFrom": "marketing.partMaster",
-                        "replaceName": "partNo",
-                        "type": "select",
-                        "isFilterBy": true,
-                        "filter": {
-                            "isAssemblePart": 1
+                            "name": "Part No",
+                            "id": "partNo",
+                            "dataFrom": "marketing.partMaster",
+                            "replaceName": "partNo",
+                            "type": "autoComplete",
+                            "isFilterBy": true,
+                            "filter": {
+                                "isAssemblePart": 1
+                            }
                         }
-                    }],
+                    ],
                     "page": {
                         "link": "production/bomAssemblePart",
                         "name": "list"
@@ -3032,8 +3078,7 @@
                             "name": "Machine No",
                             "id": "machineNo",
                             "valuePrefix": "VT-M/C-"
-                        },
-                        {
+                        }, {
                             "name": "Machine Name",
                             "id": "machineNo",
                             "dataFrom": "production.machineMaster",
@@ -3054,15 +3099,16 @@
                         "partNo": null,
                         "partName": null,
                         "mapping": [{
-                            "id": null,
-                            "opName": null,
-                            "source": null,
-                            "toolNo": null,
-                            "machineNo": null,
-                            "palnQtyPerHr": null,
-                            "costAnalysis": null,
-                            "otherCost": null
-                        }],
+                                "id": null,
+                                "opName": null,
+                                "source": null,
+                                "toolNo": null,
+                                "machineNo": null,
+                                "palnQtyPerHr": null,
+                                "costAnalysis": null,
+                                "otherCost": null
+                            }
+                        ],
                         "totalCost": null
                     },
                     "form": {
@@ -3161,13 +3207,14 @@
                         }
                     },
                     "listView": [{
-                        "name": "Part NO",
-                        "id": "partNo",
-                        "dataFrom": "marketing.partMaster",
-                        "replaceName": "partNo",
-                        "type": "select",
-                        "isFilterBy": true
-                    }],
+                            "name": "Part NO",
+                            "id": "partNo",
+                            "dataFrom": "marketing.partMaster",
+                            "replaceName": "partNo",
+                            "type": "autoComplete",
+                            "isFilterBy": true
+                        }
+                    ],
                     "page": {
                         "link": "store/flowMaster",
                         "name": "list"
@@ -3245,8 +3292,7 @@
                             "name": "Tool No",
                             "id": "toolNo",
                             "valuePrefix": "VT-T-"
-                        },
-                        {
+                        }, {
                             "name": "Tool Name",
                             "id": "toolNo",
                             "dataFrom": "production.toolMaster",
@@ -3361,25 +3407,21 @@
                             "name": "Job Card No",
                             "id": "jobCardNo",
                             "valuePrefix": "VT-"
-                        },
-                        {
+                        }, {
                             "name": "PartNo",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Qty Can Make",
                             "id": "qtyCanMake"
-                        },
-                        {
+                        }, {
                             "name": "Date",
                             "id": "date",
                             "type": "date"
-                        },
-                        {
+                        }, {
                             "name": "Status",
                             "id": "status"
                         }
@@ -3408,13 +3450,14 @@
                         "qtyCanMake": null,
                         "isAssemblePart": 1,
                         "mapping": [{
-                            "id": null,
-                            "partName": null,
-                            "partNorms": null,
-                            "issueQty": null,
-                            "qtyCanMake": null,
-                            "operationTo": null
-                        }]
+                                "id": null,
+                                "partName": null,
+                                "partNorms": null,
+                                "issueQty": null,
+                                "qtyCanMake": null,
+                                "operationTo": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "assembleMaterialIssueNote",
@@ -3523,28 +3566,24 @@
                             "name": "Job Card No",
                             "id": "jobCardNo",
                             "valuePrefix": "VT-"
-                        },
-                        {
+                        }, {
                             "name": "PartNo",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true,
                             "filter": {
                                 "isAssemblePart": 1
                             }
-                        },
-                        {
+                        }, {
                             "name": "Qty Can Make",
                             "id": "qtyCanMake"
-                        },
-                        {
+                        }, {
                             "name": "Date",
                             "id": "date",
                             "type": "date"
-                        },
-                        {
+                        }, {
                             "name": "Status",
                             "id": "status"
                         }
@@ -3572,19 +3611,20 @@
                         "jobCardNo": null,
                         "partNo": null,
                         "mapping": [{
-                            "date": null,
-                            "machineNo": null,
-                            "operationFrom": null,
-                            "operationTo": null,
-                            "toolNo": null,
-                            "operator": null,
-                            "startTime": null,
-                            "endTime": null,
-                            "planQty": null,
-                            "acceptedQty": null,
-                            "rejectionQty": null,
-                            "rwQty": null
-                        }]
+                                "date": null,
+                                "machineNo": null,
+                                "operationFrom": null,
+                                "operationTo": null,
+                                "toolNo": null,
+                                "operator": null,
+                                "startTime": null,
+                                "endTime": null,
+                                "planQty": null,
+                                "acceptedQty": null,
+                                "rejectionQty": null,
+                                "rwQty": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "productionEntry",
@@ -3740,13 +3780,12 @@
                             "valuePrefix": "VT-",
                             "type": "select",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true,
                             "options": {}
                         }
@@ -3823,28 +3862,23 @@
                             "replaceName": "rmName",
                             "valuePrefixData": "grade",
                             "isFilterBy": true,
-                            "type": "select",
+                            "type": "autoComplete",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Rm Stock Qty",
                             "id": "rmStockQty"
-                        },
-                        {
+                        }, {
                             "name": "UOM",
                             "id": "uomCode",
                             "dataFrom": "marketing.uomMaster",
                             "replaceName": "uomName"
-                        },
-                        {
+                        }, {
                             "name": "Rate",
                             "id": "rate"
-                        },
-                        {
+                        }, {
                             "name": "Total Amount",
                             "id": "totalAmount"
-                        },
-                        {
+                        }, {
                             "name": "Updated",
                             "id": "updated",
                             "type": "input",
@@ -3918,36 +3952,30 @@
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Part Stock Qty",
                             "id": "partStockQty"
-                        },
-                        {
+                        }, {
                             "name": "Operation From",
                             "id": "operationFrom",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
                             "type": "select"
-                        },
-                        {
+                        }, {
                             "name": "Operation To",
                             "id": "operationTo",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
                             "type": "select"
-                        },
-                        {
+                        }, {
                             "name": "Rate",
                             "id": "rate"
-                        },
-                        {
+                        }, {
                             "name": "Total Amount",
                             "id": "totalAmount"
-                        },
-                        {
+                        }, {
                             "name": "Updated",
                             "id": "updated",
                             "type": "input",
@@ -4033,43 +4061,36 @@
                             "replaceName": "subContractorName",
                             "type": "select",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select"
-                        },
-                        {
+                            "type": "autoComplete"
+                        }, {
                             "name": "Part Stock Qty",
                             "id": "partStockQty"
-                        },
-                        {
+                        }, {
                             "name": "Operation From",
                             "id": "operationFrom",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
                             "type": "select",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Operation To",
                             "id": "operationTo",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
                             "type": "select",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Rate",
                             "id": "rate"
-                        },
-                        {
+                        }, {
                             "name": "Total Amount",
                             "id": "totalAmount"
-                        },
-                        {
+                        }, {
                             "name": "Updated",
                             "id": "updated",
                             "type": "input",
@@ -4101,14 +4122,12 @@
                                 "dataFrom": "marketing.customerMaster",
                                 "replaceName": "customerName",
                                 "isFilterView": true
-                            },
-                            {
+                            }, {
                                 "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
                                 "inputType": "date"
-                            },
-                            {
+                            }, {
                                 "name": "To Date",
                                 "id": "toDate",
                                 "type": "input",
@@ -4122,31 +4141,25 @@
                             "type": "select",
                             "dataFrom": "marketing.customerMaster",
                             "replaceName": "customerName"
-                        },
-                        {
+                        }, {
                             "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select"
-                        },
-                        {
+                            "type": "autoComplete"
+                        }, {
                             "name": "Part Qty",
                             "id": "unit"
-                        },
-                        {
+                        }, {
                             "name": "Part Price",
                             "id": "rate"
-                        },
-                        {
+                        }, {
                             "name": "Sales Value",
                             "id": "amount"
-                        },
-                        {
+                        }, {
                             "name": "Dates",
                             "id": "dates"
-                        },
-                        {
+                        }, {
                             "name": "Invoice Nos",
                             "id": "invoiceNos"
                         }
@@ -4190,75 +4203,90 @@
                 "costAnalysis": {
                     "id": "costAnalysis",
                     "title": "Cost Analysis",
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {
+                            "frmDate": null,
+                            "toDate": null
+                        },
+                        "fields": [{
+                                "name": "From Date",
+                                "id": "frmDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }, {
+                                "name": "To Date",
+                                "id": "toDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }
+                        ]
+                    },
                     "listView": [{
                             "name": "PartNo",
                             "id": "id",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true
-                        },
-                        {
+                        }, {
                             "name": "Input Weight",
                             "id": "inputWeight"
-                        },
-                        {
+                        }, {
                             "name": "Finished Weight",
                             "id": "finishedWeight"
-                        },
-                        {
+                        }, {
                             "name": "RM Rate",
                             "id": "rmRate"
-                        },
-                        {
+                        }, {
+                            "name": "Amendment RM Rate",
+                            "id": "amendmentRMRate"
+                        }, {
+                            "name": "Amendment RM Date",
+                            "id": "amendmentRMDate"
+                        }, {
                             "name": "Scrap Rate",
                             "id": "scrapRate"
-                        },
-                        {
+                        }, {
                             "name": "Material Cost",
                             "id": "materialCost"
-                        },
-                        {
+                        }, {
                             "name": "Conversion Cost",
                             "id": "conversionCost"
-                        },
-                        {
+                        }, {
                             "name": "Sub Total",
                             "id": "subTotal"
-                        },
-                        {
+                        }, {
                             "name": "Rej Cost",
                             "id": "rejCost"
-                        },
-                        {
+                        }, {
                             "name": "ICC cost",
                             "id": "iccCost"
-                        },
-                        {
+                        }, {
                             "name": "Tool Maint cost",
                             "id": "toolMaintCost"
-                        },
-                        {
+                        }, {
                             "name": "Trans Cost",
                             "id": "transCost"
-                        },
-                        {
+                        }, {
                             "name": "Profit Cost",
                             "id": "profitCost"
-                        },
-                        {
+                        }, {
                             "name": "Total",
                             "id": "total"
-                        },
-                        {
-                            "name": "Sales Rate",
+                        }, {
+                            "name": "Default Sales Rate",
                             "id": "salesRate"
-                        },
-                        {
+                        }, {
+                            "name": "Amendment Sales Rate",
+                            "id": "amendmentSalesRate"
+                        }, {
+                            "name": "Amendment Sales Date",
+                            "id": "amendmentSalesDate"
+                        }, {
                             "name": "Difference in cost",
                             "id": "differenceInCost"
-                        },
-                        {
+                        }, {
                             "name": "% of Gain or Loss",
                             "id": "gainOrLoss"
                         }
@@ -4289,8 +4317,7 @@
                                 "id": "frmDate",
                                 "type": "input",
                                 "inputType": "date"
-                            },
-                            {
+                            }, {
                                 "name": "To Date",
                                 "id": "toDate",
                                 "type": "input",
@@ -4303,62 +4330,51 @@
                             "id": "date",
                             "type": "input",
                             "inputType": "date"
-                        },
-                        {
+                        }, {
                             "name": "M/C No",
                             "id": "machineNo",
                             "type": "select",
                             "dataFrom": "production.machineMaster",
                             "replaceName": "machineName"
-                        },
-                        {
+                        }, {
                             "name": "Job Card No",
                             "id": "jobCardNo",
                             "type": "input"
-                        },
-                        {
+                        }, {
                             "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select"
-                        },
-                        {
+                            "type": "autoComplete"
+                        }, {
                             "name": "Operation",
                             "id": "operationTo",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
                             "valuePrefixData": "opCode",
                             "type": "select"
-                        },
-                        {
+                        }, {
                             "name": "Operator",
                             "id": "operator",
                             "type": "select",
                             "dataFrom": "marketing.empMaster",
                             "replaceName": "employeeName"
-                        },
-                        {
+                        }, {
                             "name": "Start Time",
                             "id": "startTime"
-                        },
-                        {
+                        }, {
                             "name": "End Time",
                             "id": "endTime"
-                        },
-                        {
+                        }, {
                             "name": "Plan Qty",
                             "id": "planQty"
-                        },
-                        {
+                        }, {
                             "name": "Qty",
                             "id": "acceptedQty"
-                        },
-                        {
+                        }, {
                             "name": "Rejection Qty",
                             "id": "rejectionQty"
-                        },
-                        {
+                        }, {
                             "name": "RW Qty",
                             "id": "rwQty"
                         }
@@ -4396,22 +4412,19 @@
                                 "dataFrom": "production.toolMaster",
                                 "replaceName": "toolName",
                                 "isFilterView": true
-                            },
-                            {
+                            }, {
                                 "name": "Part No",
                                 "id": "partNo",
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
                                 "type": "select",
                                 "isFilterView": true
-                            },
-                            {
+                            }, {
                                 "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
                                 "inputType": "date"
-                            },
-                            {
+                            }, {
                                 "name": "To Date",
                                 "id": "toDate",
                                 "type": "input",
@@ -4424,30 +4437,25 @@
                             "id": "date",
                             "type": "input",
                             "inputType": "date"
-                        },
-                        {
+                        }, {
                             "name": "Tool Name",
                             "id": "toolNo",
                             "type": "select",
                             "dataFrom": "production.toolMaster",
                             "replaceName": "toolName"
-                        },
-                        {
+                        }, {
                             "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select"
-                        },
-                        {
+                            "type": "autoComplete"
+                        }, {
                             "name": "Qty",
                             "id": "qty"
-                        },
-                        {
+                        }, {
                             "name": "Cummulative Qty",
                             "id": "cummulativeQty"
-                        },
-                        {
+                        }, {
                             "name": "Activity",
                             "id": "activity",
                             "dataFrom": "production.operationMaster",
@@ -4487,14 +4495,12 @@
                                 "dataFrom": "production.machineMaster",
                                 "replaceName": "machineName",
                                 "isFilterView": true
-                            },
-                            {
+                            }, {
                                 "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
                                 "inputType": "date"
-                            },
-                            {
+                            }, {
                                 "name": "To Date",
                                 "id": "toDate",
                                 "type": "input",
@@ -4507,34 +4513,28 @@
                             "id": "date",
                             "type": "input",
                             "inputType": "date"
-                        },
-                        {
+                        }, {
                             "name": "Machine No",
                             "id": "machineNo",
                             "type": "select",
                             "dataFrom": "production.machineMaster",
                             "replaceName": "machineName"
-                        },
-                        {
+                        }, {
                             "name": "Year",
                             "id": "machineNo",
                             "type": "select",
                             "dataFrom": "production.machineMaster",
                             "replaceName": "yop"
-                        },
-                        {
+                        }, {
                             "name": "Time On",
                             "id": "startTime"
-                        },
-                        {
+                        }, {
                             "name": "Time Off",
                             "id": "endTime"
-                        },
-                        {
+                        }, {
                             "name": "Running Time",
                             "id": "runningTime"
-                        },
-                        {
+                        }, {
                             "name": "Cum Running Time",
                             "id": "cumRunningTime"
                         }
@@ -4571,22 +4571,19 @@
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
                                 "isFilterView": true
-                            },
-                            {
+                            }, {
                                 "name": "Employee Name",
                                 "id": "operator",
                                 "type": "select",
                                 "dataFrom": "marketing.empMaster",
                                 "replaceName": "employeeName",
                                 "isFilterView": true
-                            },
-                            {
+                            }, {
                                 "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
                                 "inputType": "date"
-                            },
-                            {
+                            }, {
                                 "name": "To Date",
                                 "id": "toDate",
                                 "type": "input",
@@ -4599,42 +4596,35 @@
                             "id": "date",
                             "type": "input",
                             "inputType": "date"
-                        },
-                        {
+                        }, {
                             "name": "Employee Name",
                             "id": "operator",
                             "type": "select",
                             "dataFrom": "marketing.empMaster",
                             "replaceName": "employeeName"
-                        },
-                        {
+                        }, {
                             "name": "Part No",
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select"
-                        },
-                        {
+                            "type": "autoComplete"
+                        }, {
                             "name": "Operation",
                             "id": "operationTo",
                             "dataFrom": "production.operationMaster",
                             "replaceName": "opName",
                             "valuePrefixData": "opCode",
                             "type": "select"
-                        },
-                        {
+                        }, {
                             "name": "Start Time",
                             "id": "startTime"
-                        },
-                        {
+                        }, {
                             "name": "End Time",
                             "id": "endTime"
-                        },
-                        {
+                        }, {
                             "name": "Plan Qty",
                             "id": "planQty"
-                        },
-                        {
+                        }, {
                             "name": "Qty",
                             "id": "acceptedQty"
                         }
@@ -4668,33 +4658,26 @@
                             "name": "Invoice No",
                             "id": "invoiceNo",
                             "valuePrefix": "VT-"
-                        },
-                        {
+                        }, {
                             "name": "Date",
                             "id": "date",
                             "type": "date"
-                        },
-                        {
+                        }, {
                             "name": "Basic Amount",
                             "id": "subTotal"
-                        },
-                        {
+                        }, {
                             "name": "SGST @9%",
                             "id": "sgstTotal"
-                        },
-                        {
+                        }, {
                             "name": "CGST @9%",
                             "id": "cgstTotal"
-                        },
-                        {
+                        }, {
                             "name": "IGST @18%",
                             "id": "igstTotal"
-                        },
-                        {
+                        }, {
                             "name": "Total Amount",
                             "id": "total"
-                        },
-                        {
+                        }, {
                             "name": "Customer GSTIN",
                             "id": "gstin"
                         }
@@ -4723,25 +4706,20 @@
                         }, {
                             "name": "Supplier/Sub-Contractor Invoice No",
                             "id": "supplierInvoiceNo"
-                        },
-                        {
+                        }, {
                             "name": "Date",
                             "id": "date",
                             "type": "date"
-                        },
-                        {
+                        }, {
                             "name": "Basic Amount",
                             "id": "subTotal"
-                        },
-                        {
+                        }, {
                             "name": "GST/IGST @18%",
                             "id": "gstTotal"
-                        },
-                        {
+                        }, {
                             "name": "Total Amount",
                             "id": "total"
-                        },
-                        {
+                        }, {
                             "name": "Supplier/Sub-Contractor GSTIN",
                             "id": "gstin"
                         }
@@ -4777,10 +4755,11 @@
                         "total": null,
                         "balanceAmount": 0,
                         "mapping": [{
-                            "amount": null,
-                            "date": null,
-                            "remark": null
-                        }]
+                                "amount": null,
+                                "date": null,
+                                "remark": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "Customer Payment",
@@ -4862,8 +4841,7 @@
                             "isFilterBy": true,
                             "type": "select",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Customer",
                             "id": "customerCode",
                             "dataFrom": "marketing.customerMaster",
@@ -4871,12 +4849,10 @@
                             "isFilterBy": true,
                             "type": "autoComplete",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Total Amount",
                             "id": "total"
-                        },
-                        {
+                        }, {
                             "name": "Balance Amount",
                             "id": "balanceAmount"
                         }
@@ -4917,15 +4893,16 @@
                         }
                     },
                     "listView": [{
-                        "name": "Cash Bill No",
-                        "id": "invoiceNo",
-                        "valuePrefix": "",
-                        "dataFrom": "marketing.cashBill",
-                        "replaceName": "invoiceNo",
-                        "isFilterBy": true,
-                        "type": "select",
-                        "options": {}
-                    }],
+                            "name": "Cash Bill No",
+                            "id": "invoiceNo",
+                            "valuePrefix": "",
+                            "dataFrom": "marketing.cashBill",
+                            "replaceName": "invoiceNo",
+                            "isFilterBy": true,
+                            "type": "select",
+                            "options": {}
+                        }
+                    ],
                     "page": {
                         "link": "accounts/customerPaymentCashBill",
                         "name": "list",
@@ -4952,10 +4929,11 @@
                         "total": null,
                         "balanceAmount": 0,
                         "mapping": [{
-                            "amount": null,
-                            "date": null,
-                            "remark": null
-                        }]
+                                "amount": null,
+                                "date": null,
+                                "remark": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "Suppiler Payment",
@@ -5048,8 +5026,7 @@
                             "isFilterBy": true,
                             "type": "select",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Supplier Name",
                             "id": "supplierCode",
                             "dataFrom": "purchase.supplierMaster",
@@ -5057,8 +5034,7 @@
                             "isFilterBy": true,
                             "type": "select",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Supplier InvoiceNo No",
                             "id": "supplierInvoiceNo",
                             "dataFrom": "store.grnSupplier",
@@ -5066,12 +5042,10 @@
                             "isFilterBy": true,
                             "type": "select",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Total Amount",
                             "id": "total"
-                        },
-                        {
+                        }, {
                             "name": "Balance Amount",
                             "id": "balanceAmount"
                         }
@@ -5101,10 +5075,11 @@
                         "total": null,
                         "balanceAmount": 0,
                         "mapping": [{
-                            "amount": null,
-                            "date": null,
-                            "remark": null
-                        }]
+                                "amount": null,
+                                "date": null,
+                                "remark": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "Sub Contractor Payment",
@@ -5197,8 +5172,7 @@
                             "isFilterBy": true,
                             "type": "select",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Sub Contractor Name",
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
@@ -5206,8 +5180,7 @@
                             "isFilterBy": true,
                             "type": "select",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Sub Contractor InvoiceNo No",
                             "id": "subContractorDCCode",
                             "dataFrom": "store.grnSupplier",
@@ -5215,12 +5188,10 @@
                             "isFilterBy": true,
                             "type": "select",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "Total Amount",
                             "id": "total"
-                        },
-                        {
+                        }, {
                             "name": "Balance Amount",
                             "id": "balanceAmount"
                         }
@@ -5248,16 +5219,17 @@
                         "total": 0,
                         "balanceAmount": 0,
                         "mapping": [{
-                            "id": null,
-                            "operationTo": null,
-                            "qty": null,
-                            "laborCost": null,
-                            "totalCost": null,
-                            "date": null,
-                            "paidStatus": false,
-                            "productionEntryKey": null,
-                            "productionEntryDate": null
-                        }]
+                                "id": null,
+                                "operationTo": null,
+                                "qty": null,
+                                "laborCost": null,
+                                "totalCost": null,
+                                "date": null,
+                                "paidStatus": false,
+                                "productionEntryKey": null,
+                                "productionEntryDate": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "Employee Payment",
@@ -5376,24 +5348,20 @@
                             "isFilterBy": true,
                             "type": "select",
                             "options": {}
-                        },
-                        {
+                        }, {
                             "name": "From Date",
                             "id": "frmDate",
                             "type": "input",
                             "inputType": "date"
-                        },
-                        {
+                        }, {
                             "name": "To Date",
                             "id": "toDate",
                             "type": "input",
                             "inputType": "date"
-                        },
-                        {
+                        }, {
                             "name": "Total Amount",
                             "id": "total"
-                        },
-                        {
+                        }, {
                             "name": "Balance Amount",
                             "id": "balanceAmount"
                         }
@@ -5449,9 +5417,10 @@
                         }
                     },
                     "listView": [{
-                        "name": "User Name",
-                        "id": "userName"
-                    }],
+                            "name": "User Name",
+                            "id": "userName"
+                        }
+                    ],
                     "page": {
                         "link": "superAdmin/users",
                         "name": "list"
@@ -5502,9 +5471,10 @@
                         }
                     },
                     "listView": [{
-                        "name": "Company Name",
-                        "id": "companyName"
-                    }],
+                            "name": "Company Name",
+                            "id": "companyName"
+                        }
+                    ],
                     "page": {
                         "link": "appCustomers",
                         "name": "list",
@@ -5537,18 +5507,19 @@
                         "companyMobile": null,
                         "companyEmail": null,
                         "companyGstin": null,
-						"bankName": null,
-						"accountNo": null,
-						"bankIFSC": null,
-						"bankBranch": null,
+                        "bankName": null,
+                        "accountNo": null,
+                        "bankIFSC": null,
+                        "bankBranch": null,
                         "finalStageOpp": null,
                         "mapping": [{
-                            "module": null,
-                            "restrictUser": null,
-                            "add": null,
-                            "edit": null,
-                            "delete": null
-                        }]
+                                "module": null,
+                                "restrictUser": null,
+                                "add": null,
+                                "edit": null,
+                                "delete": null
+                            }
+                        ]
                     },
                     "form": {
                         "name": "Settings",
@@ -5665,9 +5636,10 @@
                         }
                     },
                     "listView": [{
-                        "name": "Company Name",
-                        "id": "companyName"
-                    }],
+                            "name": "Company Name",
+                            "id": "companyName"
+                        }
+                    ],
                     "page": {
                         "link": "admin/settings",
                         "name": "list",
@@ -5704,9 +5676,10 @@
                         }
                     },
                     "listView": [{
-                        "name": "User Name",
-                        "id": "userType"
-                    }],
+                            "name": "User Name",
+                            "id": "userType"
+                        }
+                    ],
                     "page": {
                         "link": "admin/userTypes",
                         "name": "list"
@@ -5750,9 +5723,10 @@
                         }
                     },
                     "listView": [{
-                        "name": "User Name",
-                        "id": "userName"
-                    }],
+                            "name": "User Name",
+                            "id": "userName"
+                        }
+                    ],
                     "page": {
                         "link": "admin/users",
                         "name": "list"
