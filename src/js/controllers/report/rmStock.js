@@ -14,7 +14,7 @@ erpConfig.moduleFiles.rmStock = function(context) {
                     var stockData = context.controller.listViewData[i];
                     var rmCode = stockData.rmCode;
                     var rmDetails = rmCode && res.data[rmCode];
-                    stockData.rate = rmDetails && rmDetails.rate;
+                    stockData.rate = rmDetails && context.commonFact.getRate(rmDetails);
                     stockData.totalAmount = stockData.rate && (stockData.rate * stockData.rmStockQty);
                 }
             });

@@ -222,6 +222,10 @@ erpConfig.moduleFiles.invoice = function(context) {
         callBeforeDelete: function(id, item) {
             context.controller.data = item;
             context.controller.methods.updateInvoicePartStock(true);
+        },
+        invoicePartUpdate: function(data, key, field, fieldMapKey) {
+            context.commonFact.changeMapping(data, key, field, fieldMapKey);
+            data['rate'] = context.commonFact.getRate(field.options[key]);
         }
     };
 };

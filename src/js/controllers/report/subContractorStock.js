@@ -14,7 +14,7 @@ erpConfig.moduleFiles.subContractorStock = function(context) {
                     var stockData = context.controller.listViewData[i];
                     var partNo = stockData.partNo;
                     var partDetails = partNo && res.data[partNo];
-                    stockData.rate = partDetails && partDetails.rate;
+                    stockData.rate = partDetails && context.commonFact.getRate(partDetails);
                     stockData.totalAmount = stockData.rate && (stockData.rate * stockData.partStockQty);
                 }
             });

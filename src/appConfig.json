@@ -793,7 +793,7 @@
                                     "id": "id",
                                     "type": "select",
                                     "options": {},
-                                    "action": "changeMapping",
+                                    "action": "invoicePartUpdate",
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
                                     "autoAction": false

@@ -1,7 +1,7 @@
-erpConfig.moduleFiles.poGeneralSupplier = function(context) {
+erpConfig.moduleFiles.poGeneralSupplier = function (context) {
     return {
-        updatePartDetails: function(mapping) {
-            context.commonFact.getData('marketing.partMaster', mapping.id).then(function(res) {
+        updatePartDetails: function (mapping) {
+            context.commonFact.getData('marketing.partMaster', mapping.id).then(function (res) {
                 var partData = res.data;
                 for (var mapKey in partData) {
                     if (mapping[mapKey] === null || mapping[mapKey] === '') {
@@ -10,7 +10,7 @@ erpConfig.moduleFiles.poGeneralSupplier = function(context) {
                 }
             });
         },
-        callBackChangeMapping: function(data, key, field) {
+        callBackChangeMapping: function (data, key, field) {
             for (var key in data.mapping) {
                 this.updatePartDetails(data.mapping[key]);
             }
