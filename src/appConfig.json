@@ -4647,13 +4647,39 @@
                 "salesDetailsTax": {
                     "id": "salesDetailsTax",
                     "title": "Sales Details - Tax",
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {
+							"customerCode":  null,
+                            "frmDate": null,
+                            "toDate": null
+                        },
+                        "fields": [{
+                                "name": "Customer",
+                                "id": "customerCode",
+                                "type": "autoComplete",
+                                "dataFrom": "marketing.customerMaster",
+                                "replaceName": "customerName",
+                                "isFilterView": true
+                            },{
+                                "name": "From Date",
+                                "id": "frmDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }, {
+                                "name": "To Date",
+                                "id": "toDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }
+                        ]
+                    },
                     "listView": [{
                             "name": "Customer",
                             "id": "customerCode",
                             "type": "autoComplete",
                             "dataFrom": "marketing.customerMaster",
-                            "replaceName": "customerName",
-                            "isFilterBy": true
+                            "replaceName": "customerName"
                         }, {
                             "name": "Invoice No",
                             "id": "invoiceNo",
@@ -4700,6 +4726,26 @@
                 "purchaseDetailsTax": {
                     "id": "purchaseDetailsTax",
                     "title": "Purchase Details - Tax",
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {
+							"customerCode":  null,
+                            "frmDate": null,
+                            "toDate": null
+                        },
+                        "fields": [{
+                                "name": "From Date",
+                                "id": "frmDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }, {
+                                "name": "To Date",
+                                "id": "toDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }
+                        ]
+                    },
                     "listView": [{
                             "name": "Supplier/Sub-Contractor Name",
                             "id": "supplierCode"

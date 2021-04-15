@@ -15,7 +15,7 @@ erpConfig.moduleFiles.poSubContractor = function (context) {
                     partNo: context.controller.data.mapping[i].id
                 });
 
-                context.controller.data.mapping[i].uomCode = context.controller.form.mapping.fields[i].id.options[context.controller.data.mapping[i].id].uomCode;
+                context.controller.data.mapping[i].uomCode = context.controller.form.mapping.fields[i].id.options[context.controller.data.mapping[i].id] && context.controller.form.mapping.fields[i].id.options[context.controller.data.mapping[i].id].uomCode;
             }
         },
         checkOperation: function (data, keyData, field, fieldKey) {

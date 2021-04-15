@@ -299,21 +299,21 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                             field.options = {};
                             for (var i in flowMasterData) {
                                 if (flowMasterData[i].partNo === partNo) {
-                                    //context.commonFact.mergeOprFlowMap(flowMasterData[i].mapping).then(function(flowMasterMap) {
-                                    var flowMasterMap = flowMasterData[i].mapping;
-                                    var startWith = context.commonFact.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
-                                    //flowMasterMap = context.commonFact.objectSort(flowMasterMap, 'opCode');
-                                    for (var j in flowMasterMap) {
-                                        flowMasterVal = flowMasterMap[j];
-                                        if ((!restriction.limit || limit < restriction.limit) &&
-                                            (!restriction.startWith || (startWith.index < j)) &&
-                                            (restriction.filter === undefined || context.commonFact.matchFilter(restriction, flowMasterVal) === true)) {
-                                            limit++;
-                                            field.options[flowMasterVal.id] = localOptions[flowMasterVal.id];
+                                    context.commonFact.mergeOprFlowMap(flowMasterData[i].mapping).then(function (flowMasterMap) {
+                                        //var flowMasterMap = flowMasterData[i].mapping;
+                                        var startWith = context.commonFact.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
+                                        flowMasterMap = context.commonFact.objectSort(flowMasterMap, 'opCode');
+                                        for (var j in flowMasterMap) {
+                                            flowMasterVal = flowMasterMap[j];
+                                            if ((!restriction.limit || limit < restriction.limit) &&
+                                                (!restriction.startWith || (startWith.index < j)) &&
+                                                (restriction.filter === undefined || context.commonFact.matchFilter(restriction, flowMasterVal) === true)) {
+                                                limit++;
+                                                field.options[flowMasterVal.opCode] = localOptions[flowMasterVal.id];
+                                            }
                                         }
-                                    }
-                                    promiseRes.resolve(field);
-                                    //});
+                                        promiseRes.resolve(field);
+                                    });
                                     isPartFlow = true;
                                 }
                             }
@@ -1071,33 +1071,31 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 }
                 return data;
             },
-			getRate: function(data, startDate, endDate, isMust, dateOnly){
-				var returnValue;
-				var rateMapping = [];
-				if(data){
-					if(startDate || endDate){
-						startDate = new Date(startDate);
-						endDate = endDate && new Date(endDate) || new Date();
-						for(var i in data.mapping){
-							if(startDate <= new Date(data.mapping[i].date) && new Date(data.mapping[i].date) <= endDate){
-								rateMapping.push(data.mapping[i]);
-							}
-						}
-						
-					}
-					else{
-						rateMapping = data.mapping;
-					}
-					if(!dateOnly){
-						returnValue = rateMapping && rateMapping.length && rateMapping[rateMapping.length - 1].rate || !isMust && data.rate || '';
-					}else{
-						returnValue = rateMapping && rateMapping.length && context.commonFact.dateFormatChange(rateMapping[rateMapping.length - 1].date) || '';
-					}
-					
-					
-				}
-				return returnValue;
-			}
+            getRate: function (data, startDate, endDate, isMust, dateOnly) {
+                var returnValue;
+                var rateMapping = [];
+                if (data) {
+                    if (startDate || endDate) {
+                        startDate = new Date(startDate);
+                        endDate = endDate && new Date(endDate) || new Date();
+                        for (var i in data.mapping) {
+                            if (startDate <= new Date(data.mapping[i].date) && new Date(data.mapping[i].date) <= endDate) {
+                                rateMapping.push(data.mapping[i]);
+                            }
+                        }
+
+                    } else {
+                        rateMapping = data.mapping;
+                    }
+                    if (!dateOnly) {
+                        returnValue = rateMapping && rateMapping.length && rateMapping[rateMapping.length - 1].rate || !isMust && data.rate || '';
+                    } else {
+                        returnValue = rateMapping && rateMapping.length && context.commonFact.dateFormatChange(rateMapping[rateMapping.length - 1].date) || '';
+                    }
+
+                }
+                return returnValue;
+            }
         };
     };
 };
