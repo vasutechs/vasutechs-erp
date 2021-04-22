@@ -182,7 +182,7 @@
                             "rmCode": {
                                 "name": "Raw material",
                                 "id": "rmCode",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "dataFrom": "purchase.rmMaster",
                                 "replaceName": "rmName",
@@ -302,7 +302,7 @@
                             "id": "id",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true
                         }, {
                             "name": "Part Name",
@@ -405,9 +405,9 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
-                                    "action": "changeMapping",
+                                    "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo"
                                 },
@@ -566,7 +566,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "action": "changeMapping",
                                     "dataFrom": "marketing.partMaster",
@@ -791,7 +791,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "action": "invoicePartUpdate",
                                     "dataFrom": "marketing.partMaster",
@@ -1132,9 +1132,9 @@
                                 "id": {
                                     "name": "RM Name",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
-                                    "action": "changeMapping",
+                                    "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "purchase.rmMaster",
                                     "replaceName": "rmName",
                                     "valuePrefixData": "grade"
@@ -1261,7 +1261,7 @@
                                 "id": {
                                     "name": "RM Name",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "action": "changeMapping",
                                     "updateData": ["uomCode"],
@@ -1425,9 +1425,9 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
-                                    "action": "changeMapping",
+                                    "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo"
                                 },
@@ -1558,7 +1558,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "action": "changeMapping",
                                     "updateData": ["uomCode"],
@@ -1721,9 +1721,9 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
-                                    "action": "changeMapping",
+                                    "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
                                     "required": true
@@ -1838,7 +1838,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
@@ -2053,7 +2053,7 @@
                                 "id": {
                                     "name": "RM Name",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "dataFrom": "purchase.rmMaster",
                                     "replaceName": "rmName",
@@ -2253,7 +2253,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
@@ -2441,7 +2441,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
@@ -2664,7 +2664,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
@@ -2849,7 +2849,7 @@
                             "partNo": {
                                 "name": "Part No",
                                 "id": "partNo",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
@@ -2866,7 +2866,7 @@
                             "rmCode": {
                                 "name": "RM Code",
                                 "id": "rmCode",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "dataFrom": "purchase.rmMaster",
                                 "replaceName": "rmName",
@@ -2924,7 +2924,7 @@
                             "partNo": {
                                 "name": "Part No",
                                 "id": "partNo",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
@@ -2949,7 +2949,7 @@
                                 "id": {
                                     "name": "Sub Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
@@ -3118,7 +3118,7 @@
                             "partNo": {
                                 "name": "Part No",
                                 "id": "partNo",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "required": true,
                                 "action": "changeMapping",
@@ -3342,7 +3342,7 @@
                             "rmCode": {
                                 "name": "RM Code",
                                 "id": "rmCode",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "dataFrom": "purchase.rmMaster",
                                 "replaceName": "rmName",
@@ -3354,7 +3354,7 @@
                             "partNo": {
                                 "name": "Part No",
                                 "id": "partNo",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
@@ -3481,7 +3481,7 @@
                             "partNo": {
                                 "name": "Part No",
                                 "id": "partNo",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
@@ -3523,7 +3523,7 @@
                                 "id": {
                                     "name": "Sub Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
@@ -3650,7 +3650,7 @@
                             "partNo": {
                                 "name": "Part No",
                                 "id": "partNo",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "required": true,
                                 "dataFrom": "marketing.partMaster",
@@ -3825,7 +3825,7 @@
                             "rmName": {
                                 "name": "RM Name",
                                 "id": "rmCode",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "action": "changeMapping",
                                 "updateData": ["uomCode"],
@@ -3909,7 +3909,7 @@
                             "partNo": {
                                 "name": "Part No",
                                 "id": "partNo",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
@@ -4016,7 +4016,7 @@
                             "partNo": {
                                 "name": "Part No",
                                 "id": "partNo",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "options": {},
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
@@ -4138,7 +4138,7 @@
                     "listView": [{
                             "name": "Customer",
                             "id": "customerCode",
-                            "type": "select",
+                            "type": "autoComplete",
                             "dataFrom": "marketing.customerMaster",
                             "replaceName": "customerName"
                         }, {
@@ -4417,7 +4417,7 @@
                                 "id": "partNo",
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "isFilterView": true
                             }, {
                                 "name": "From Date",
@@ -4567,7 +4567,7 @@
                         "fields": [{
                                 "name": "Part No",
                                 "id": "partNo",
-                                "type": "select",
+                                "type": "autoComplete",
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
                                 "isFilterView": true
@@ -4810,30 +4810,33 @@
                     "form": {
                         "name": "Customer Payment",
                         "id": "customerPayment",
+						"disableByField": "id",
                         "fields": {
+							"customerCode": {
+                                "name": "Customer Code",
+                                "id": "customerCode",
+                                "type": "autoComplete",
+                                "options": {},
+								"action": "getInvoice",
+                                "dataFrom": "marketing.customerMaster",
+                                "replaceName": "customerName",
+								 "isEditDisable": true,
+                                "isSingle": true
+                            },
                             "invoiceNo": {
                                 "name": "Invoice No",
                                 "id": "invoiceNo",
                                 "type": "select",
                                 "options": {},
                                 "action": "changeMapping",
-                                "updateData": ["customerCode", "total", "date"],
+                                "updateData": ["total", "date"],
                                 "dataFrom": "marketing.invoice",
                                 "replaceName": "invoiceNo",
                                 "valuePrefix": "VT-",
                                 "required": true,
                                 "existingCheck": true,
+								"isEditDisable": true,
                                 "isSingle": true
-                            },
-                            "customerCode": {
-                                "name": "Customer Code",
-                                "id": "customerCode",
-                                "type": "select",
-                                "options": {},
-                                "dataFrom": "marketing.customerMaster",
-                                "replaceName": "customerName",
-                                "isSingle": true,
-                                "isDisable": true
                             },
                             "date": {
                                 "name": "Invoice Date",
@@ -4879,6 +4882,14 @@
                         }
                     },
                     "listView": [{
+                            "name": "Customer",
+                            "id": "customerCode",
+                            "dataFrom": "marketing.customerMaster",
+                            "replaceName": "customerName",
+                            "isFilterBy": true,
+                            "type": "autoComplete",
+                            "options": {}
+                        }, {
                             "name": "Invoice No",
                             "id": "invoiceNo",
                             "dataFrom": "marketing.invoice",
@@ -4888,16 +4899,26 @@
                             "type": "select",
                             "options": {}
                         }, {
-                            "name": "Customer",
-                            "id": "customerCode",
-                            "dataFrom": "marketing.customerMaster",
-                            "replaceName": "customerName",
-                            "isFilterBy": true,
-                            "type": "autoComplete",
-                            "options": {}
+                            "name": "Date",
+                            "id": "date"
                         }, {
-                            "name": "Total Amount",
+                            "name": "Amount",
                             "id": "total"
+                        }, {
+                            "name": "Balance Amount",
+                            "id": "balanceAmount"
+                        }, {
+                            "name": "Consolidated Amount",
+                            "id": "consolidatedAmount"
+                        }, {
+                            "name": "Payment Received Date",
+                            "id": "paymentReceivedDate"
+                        }, {
+                            "name": "PaymentReceived Amount",
+                            "id": "paymentReceivedAmount"
+                        }, {
+                            "name": "Consolidated Paid Amount",
+                            "id": "consolidatedPaidAmount"
                         }, {
                             "name": "Balance Amount",
                             "id": "balanceAmount"
@@ -5328,7 +5349,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",

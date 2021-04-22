@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th ng-if="context.controller.page.downloadTableData"></th>
-                <th ng-repeat="(key, field) in context.controller.listView">
+                <th ng-repeat="(key1, field) in context.controller.listView">
                     <div ng-if="!field.action && field.isFilterBy===undefined">{{field.name}}</div>
                     <div ng-if="field.isFilterBy">
                         <select ng-if="field.type==='select'" id="{{field.id}}" class="form-control font-weight-bold" ng-model="field.selectedFilterBy" ng-change="context.commonFact.viewFilterBy(field)" ng-options="option.optionId as option.optionName for option in field.options">

@@ -864,9 +864,16 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
 
                 return e;
             },
-            callActions: function (actionName, params) {
-                var actionMethod = actionName && context.controller.methods[actionName] || context.authFact[actionName] || context.commonFact[actionName];
-                actionMethod && actionMethod.apply(this, params);
+            callActions: function (actionNames, params) {
+                var actionMethod;
+				if(typeof(actionNames) !== 'object'){
+					actionNames = [actionNames];
+				}
+				for(var i in actionNames){
+					actionMethod = actionNames[i] && context.controller.methods[actionNames[i]] || context.authFact[actionNames[i]] || context.commonFact[actionNames[i]];
+					actionMethod && actionMethod.apply(this, params);
+				}
+				
             },
             appModuleAccess: function () {
                 var promiseRes = context.commonFact.getPromiseRes();
@@ -966,16 +973,32 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     });
                 });
             },
-            startAutoComplete: function (element, attrs, field) {
-                field.autoCompleteModel = '';
+            startAutoComplete: function (element, attrs, field, map, key) {
+                var fieldData;
+                var autoCompleteModel;
+                if (map!==undefined && key!==undefined) {
+					field.autoCompleteModel = field.autoCompleteModel || [];
+					field.autoCompleteOptions = field.autoCompleteOptions || [];
+					field.selectedOption = field.selectedOption || [];
+					autoCompleteModel = field.autoCompleteModel[key] = '';
+                } else {
+                    autoCompleteModel = field.autoCompleteModel = '';
+                }
+
                 element.find('input').bind('blur', function () {
                     $timeout(
                         function () {
-                        if (field.autoCompleteModel === '' || !field.autoCompleteModel) {
+                        if (autoCompleteModel === '' || !autoCompleteModel) {
                             element.find('li') && element.find('li')[0] && element.find('li')[0].click();
                         }
-                        field.autoCompleteOptions = null;
-                        field.selectedOption = null;
+						if (map!==undefined && key!==undefined) {
+							field.autoCompleteOptions[key] = null;
+							field.selectedOption[key] = null;
+						}
+						else{
+							field.autoCompleteOptions = null;
+							field.selectedOption = null;
+						}
 
                     }, 200)
                 });
@@ -983,72 +1006,106 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     element.find('input').focus();
                     $timeout(
                         function () {
-                        context.commonFact.showAutoComplete(field, e, true);
+                        context.commonFact.showAutoComplete(field, e, true, map, key);
                     }, 300);
                 });
-                $timeout(
+                /* $timeout(
                     function () {
-                    if (context.controller.page.name === 'edit' && context.controller.data && context.controller.data[field.id]) {
-                        field.autoCompleteModel = context.commonFact.replaceFieldVal(context.controller.data[field.id], field);
+                    fieldData = map && map || context.controller.data;
+                    if (context.controller.page.name === 'edit' && fieldData && fieldData[field.id]) {
+                        if (map!==undefined && key!==undefined) {
+                            field.autoCompleteModel[key] = context.commonFact.replaceFieldVal(fieldData[field.id], field);
+                        } else {
+                            field.autoCompleteModel = context.commonFact.replaceFieldVal(fieldData[field.id], field);
+                        }
+
                     }
-                }, 500)
+                }, 500); */
 
             },
-            showAutoComplete: function (field, event, icon) {
+            showAutoComplete: function (field, event, icon, map, key) {
+                var fieldData = map || context.controller.data;
                 var output = [{
                         optionId: '',
                         optionName: field.name
                     }
                 ] || [];
-                field.selectedOption = field.selectedOption || 0;
+				var autoCompleteModel;
+				var autoCompleteOptions;
+				var selectedOption;
+                if (map!==undefined && key!==undefined) {
+					autoCompleteModel = field.autoCompleteModel[key];
+					autoCompleteOptions = field.autoCompleteOptions[key];
+					selectedOption = field.selectedOption[key] || 0;
+                } else {
+                    autoCompleteModel = field.autoCompleteModel;
+					autoCompleteOptions = field.autoCompleteOptions;
+					selectedOption = field.selectedOption || 0;
+                }
 
-                if (event.keyCode === 40 && field.autoCompleteOptions) { //down key, increment selectedIndex
+                if (event.keyCode === 40 && autoCompleteOptions) { //down key, increment selectedIndex
                     event.preventDefault();
-                    if (field.selectedOption + 1 === field.autoCompleteOptions.length) {
-                        field.selectedOption = 0;
+                    if (selectedOption + 1 === autoCompleteOptions.length) {
+                        selectedOption = 0;
                     } else {
-                        field.selectedOption++;
+                        selectedOption++;
                     }
-                    field.autoCompleteModel = field.name !== field.autoCompleteOptions[field.selectedOption].optionName ? field.autoCompleteOptions[field.selectedOption].optionName : '';
+                    autoCompleteModel = field.name !== autoCompleteOptions[selectedOption].optionName ? autoCompleteOptions[selectedOption].optionName : '';
                 } else if (event.keyCode === 38 && field.autoCompleteOptions) { //up key, decrement selectedIndex
                     event.preventDefault();
 
-                    if (field.selectedOption === 0) {
-                        field.selectedOption = field.autoCompleteOptions.length - 1;
+                    if (selectedOption === 0) {
+                        selectedOption = autoCompleteOptions.length - 1;
                     } else {
-                        field.selectedOption--;
+                        selectedOption--;
                     }
-                    field.autoCompleteModel = field.name !== field.autoCompleteOptions[field.selectedOption].optionName ? field.autoCompleteOptions[field.selectedOption].optionName : '';
+                    autoCompleteModel = field.name !== autoCompleteOptions[selectedOption].optionName ? autoCompleteOptions[selectedOption].optionName : '';
 
-                } else if ((event.keyCode === 13 || event.keyCode === 9) && field.autoCompleteOptions) { //enter pressed or tab
+                } else if ((event.keyCode === 13 || event.keyCode === 9) && autoCompleteOptions) { //enter pressed or tab
 
-                    context.commonFact.fillAutoComplete(field.autoCompleteOptions[field.selectedOption], field);
+                    context.commonFact.fillAutoComplete(autoCompleteOptions[selectedOption], field, map, key);
 
                 } else if (event.keyCode === 27) {
-                    field.autoCompleteOptions = null;
-                    field.selectedOption = null;
+                    autoCompleteOptions = null;
+                    selectedOption = null;
                 } else {
-                    field.selectedOption = null;
-                    field.autoCompleteModel = field.autoCompleteModel || '';
+                    selectedOption = null;
+                    autoCompleteModel = autoCompleteModel || '';
                     for (var i in field.options) {
-                        if (field.options[i].optionName.toLowerCase().indexOf(field.autoCompleteModel.toLowerCase()) >= 0 || field.autoCompleteModel === '' || icon) {
+                        if (field.options[i].optionName.toLowerCase().indexOf(autoCompleteModel.toLowerCase()) >= 0 || autoCompleteModel === '' || icon) {
                             output.push(field.options[i]);
                         }
                     }
-                    field.autoCompleteOptions = output;
+                    autoCompleteOptions = output;
 
-                    if (field.autoCompleteOptions && field.autoCompleteOptions.length === 2) {
-                        field.selectedOption = 1;
+                    if (autoCompleteOptions && autoCompleteOptions.length === 2) {
+                        selectedOption = 1;
                     }
-                    if ((field.autoCompleteModel === '' || !field.autoCompleteModel) && !field.isFilterBy && !field.isFilterView) {
-                        context.controller.data[field.id] = '';
-                        context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field]);
+                    if ((autoCompleteModel === '' || !autoCompleteModel) && !field.isFilterBy && !field.isFilterView) {
+                        fieldData[field.id] = '';
+                        context.commonFact.callActions(field.action, [fieldData, fieldData[field.id], field, map, key]);
                     }
+                }
+				if (map!==undefined && key!==undefined) {
+                    field.autoCompleteModel[key] = autoCompleteModel;
+					field.autoCompleteOptions[key] = autoCompleteOptions;
+					field.selectedOption[key] = selectedOption;
+                } else {
+                    field.autoCompleteModel = autoCompleteModel;
+					field.autoCompleteOptions = autoCompleteOptions;
+					field.selectedOption = selectedOption;
                 }
                 return true;
             },
-            fillAutoComplete: function (option, field) {
-                field.autoCompleteModel = (option && field.name !== option.optionName) ? option.optionName : '';
+            fillAutoComplete: function (option, field, map, key) {
+                var fieldData = map || context.controller.data;
+				var autoCompleteModel;
+                if (map!==undefined && key!==undefined) {
+					autoCompleteModel = field.autoCompleteModel[key];
+                } else {
+                    autoCompleteModel = field.autoCompleteModel;
+                }
+                autoCompleteModel = (option && field.name !== option.optionName) ? option.optionName : '';
                 if (field.isFilterBy) {
                     field.selectedFilterBy = option && option.optionId || '';
                     context.commonFact.viewFilterBy(field);
@@ -1056,12 +1113,18 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     context.controller.filterView.data[field.id] = option && option.optionId || '';
                     context.commonFact['list']();
                 } else {
-                    context.controller.data[field.id] = option && option.optionId || '';
-                    context.commonFact.callActions(field.action, [context.controller.data, context.controller.data[field.id], field]);
+                    fieldData[field.id] = option && option.optionId || '';
+                    context.commonFact.callActions(field.action, [fieldData, fieldData[field.id], field, map, key]);
                 }
-                field.autoCompleteOptions = null;
-                field.selectedOption = null;
-
+                if (map!==undefined && key!==undefined) {
+                    field.autoCompleteModel[key] = autoCompleteModel;
+					field.autoCompleteOptions[key] = null;
+					field.selectedOption[key] = null;
+                } else {
+                    field.autoCompleteModel = autoCompleteModel;
+					field.autoCompleteOptions = null;
+					field.selectedOption = null;
+                }
                 return true;
             },
             fieldDataFormat: function (field, data) {
@@ -1095,7 +1158,10 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
 
                 }
                 return returnValue;
-            }
+            },
+			amendmentRateUpdate: function(data, key, field, fieldMapKey){
+				data.rate = context.commonFact.getRate(field.options[key]);
+			}
         };
     };
 };

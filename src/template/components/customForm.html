@@ -24,6 +24,9 @@
                     <option value="">--Select--</option>
                 </select>
             </div>
+			<div ng-switch-when="autoComplete" class="col-6">
+				<auto-complete value="context.controller.data[field.id]"></auto-complete>
+			</div>
             <div class="col-2">
                 <span style="color:red" ng-show="customForm[field.id].$invalid">*Invalid input!</span>
             </div>

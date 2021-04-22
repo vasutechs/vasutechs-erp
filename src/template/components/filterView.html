@@ -10,7 +10,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th ng-repeat="(key, field) in context.controller.filterView.fields">
+                <th ng-repeat="(key1, field) in context.controller.filterView.fields">
                     {{field.name}}: <select ng-if="field.type==='select'" id="{{field.id}}" class="form-control font-weight-bold" ng-model="context.controller.filterView.data[field.id]" ng-change="context.commonFact.callActions(field.action, [field]) || context.commonFact['list']()"
                         ng-options="option.optionId as option.optionName for option in field.options">
                     <option value="">--Select--</option>

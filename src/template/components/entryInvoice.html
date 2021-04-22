@@ -49,6 +49,9 @@
                             ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}">
                             <option value="">--Select--</option>
                         </select>
+						<span ng-if="map.isExistPart || context.controller.orgItemVal.mapping[key]" ng-switch-when="autoComplete" id="{{field.id}}-{{key}}" ng-bind="context.commonFact.replaceFieldVal(map[field.id], field)"></span>
+						<auto-complete ng-switch-when="autoComplete" ng-if="!map.isExistPart && (!context.controller.orgItemVal || (context.controller.orgItemVal && !context.controller.orgItemVal.mapping[key]))" id="autoComplete-{{field.id}}-{{key}}" value="map[field.id]"></auto-complete>
+
                     </td>
                     <td>
                         <a ng-if="context.controller.form.mapping.actions.delete || context.controller.form.mapping.actions.delete===undefined" class="fa fa-fw fa-times" href="javascript: void(0);" ng-click="context.commonFact.removeMapping(context.controller.data.mapping, key)">

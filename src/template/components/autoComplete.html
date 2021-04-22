@@ -1,8 +1,18 @@
 <div class="autoComplete">
-    <input type="input" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="field.autoCompleteModel" ng-required="{{field.required}}" placeholder="{{field.name}}" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])"
+
+    <input ng-if="key===undefined" type="input" id="{{field.id}}" name="{{field.id}}" class="form-control" ng-model="field.autoCompleteModel" ng-required="{{field.required}}" placeholder="{{field.name}}" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])"
         ng-click="context.commonFact.showAutoComplete(field, $event)" ng-keyup="context.commonFact.showAutoComplete(field, $event)" autocomplete="off" />
-    <i class="down-arrow"></i>
-    <ul ng-if="field.autoCompleteOptions && field.autoCompleteOptions.length>0" class="list-group autoComplete-items">
-        <li ng-show="field.isFilterBy || field.isFilterBy || key!==0" ng-repeat="(key, option) in field.autoCompleteOptions" ng-class="{'list-group-item': true, 'list-group-item-active': field.selectedOption==key}" ng-click="context.commonFact.fillAutoComplete(option, field, $event)">{{option.optionName}}</li>
+    <i ng-if="key===undefined" class="down-arrow"></i>
+    <ul ng-if="key===undefined && field.autoCompleteOptions && field.autoCompleteOptions.length>0" class="list-group autoComplete-items">
+        <li ng-show="field.isFilterBy || field.isFilterBy || key1!==0" ng-repeat="(key1, option) in field.autoCompleteOptions" ng-class="{'list-group-item': true, 'list-group-item-active': field.selectedOption==key1}" ng-click="context.commonFact.fillAutoComplete(option, field)">{{option.optionName}}</li>
     </ul>
+	
+	
+	<input ng-if="key!==undefined" type="input" id="{{field.id}}-{{key}}" name="{{field.id}}-{{key}}" class="form-control" ng-model="field.autoCompleteModel[key]" ng-required="{{field.required}}" placeholder="{{field.name}}" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])"
+        ng-click="context.commonFact.showAutoComplete(field, $event, false, map, key)" ng-keyup="context.commonFact.showAutoComplete(field, $event, false, map, key)" autocomplete="off" />
+    <i ng-if="key!==undefined" class="down-arrow"></i>
+    <ul ng-if="key!==undefined && field.autoCompleteOptions[key] && field.autoCompleteOptions[key].length>0" class="list-group autoComplete-items">
+        <li ng-show="field.isFilterBy || field.isFilterBy || key1!==0" ng-repeat="(key1, option) in field.autoCompleteOptions[key]" ng-class="{'list-group-item': true, 'list-group-item-active': field.selectedOption[key]==key1}" ng-click="context.commonFact.fillAutoComplete(option, field, map, key)">{{option.optionName}}</li>
+    </ul>
+	
 </div>
