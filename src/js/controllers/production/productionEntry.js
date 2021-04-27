@@ -30,17 +30,19 @@ erpConfig.moduleFiles.productionEntry = function (context) {
             var prToQtyMap;
             var stockQty;
             var prQty;
+			var jobCard = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo];
+            var jobCardQty = jobCard && jobCard.qtyCanMake;
 
             prFrmQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-frm';
             prToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationTo + '-to';
             prFrmToQtyMap = context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + mappingData.operationFrom + '-to';
 
             if (context.controller.data.partNo && mappingData.operationFrom) {
-                if (context.controller.operationsData[mappingData.operationFrom].source === 'Supplier' || context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].isAssemblePart === 1) {
-                    qtyCanMake = context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].qtyCanMake;
+                if (context.controller.operationsData[mappingData.operationFrom].source === 'Supplier' || context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].isAssemblePart === 1 || (jobCard.operationToSC && context.controller.partStock[context.controller.data.partNo + '-' + jobCard.operationToSC ])) {
+                    qtyCanMake = jobCardQty;
                 } else if (context.controller.operationsData[mappingData.operationFrom].source === 'Sub-Contractor') {
                     prQty = context.controller.prQty[context.controller.data.jobCardNo + '-' + context.controller.data.partNo + '-' + context.controller.partStock[context.controller.data.partNo + '-' + mappingData.operationFrom].operationFrom + '-to'];
-                    qtyCanMake = prQty && prQty.prAcpQty || context.controller.form.fields['jobCardNo'].options[context.controller.data.jobCardNo].qtyCanMake || 0;
+                    qtyCanMake = prQty && prQty.prAcpQty || jobCardQty || 0;
                 } else {
                     qtyCanMake = context.controller.prQty[prFrmToQtyMap] && context.controller.prQty[prFrmToQtyMap].prAcpQty || 0;
                 }
@@ -83,7 +85,9 @@ erpConfig.moduleFiles.productionEntry = function (context) {
                             (context.controller.prQty[prQtyFrmMap] &&
                                 context.controller.prQty[prQtyFrmMap].prQty < jobCardQty) ||
                             (context.controller.flowMasterByPartOpr[flwMap] &&
-                                context.controller.flowMasterByPartOpr[flwMap].source === "Sub-Contractor")) {
+                                context.controller.flowMasterByPartOpr[flwMap].source === "Sub-Contractor") ||
+								(context.controller.flowMasterByPartOpr[flwMap] && jobCard.operationToSC && 
+                                jobCard.operationToSC === context.controller.partStock[i].operationTo)) {
                             operation.push(context.controller.partStock[i].operationTo);
                         }
                     }

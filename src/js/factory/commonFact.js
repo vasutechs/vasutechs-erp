@@ -301,8 +301,9 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                                 if (flowMasterData[i].partNo === partNo) {
                                     context.commonFact.mergeOprFlowMap(flowMasterData[i].mapping).then(function (flowMasterMap) {
                                         //var flowMasterMap = flowMasterData[i].mapping;
+										flowMasterMap = context.commonFact.objectSort(flowMasterMap, 'opCode');
                                         var startWith = context.commonFact.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
-                                        flowMasterMap = context.commonFact.objectSort(flowMasterMap, 'opCode');
+                                        
                                         for (var j in flowMasterMap) {
                                             flowMasterVal = flowMasterMap[j];
                                             if ((!restriction.limit || limit < restriction.limit) &&
@@ -866,14 +867,14 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
             },
             callActions: function (actionNames, params) {
                 var actionMethod;
-				if(typeof(actionNames) !== 'object'){
-					actionNames = [actionNames];
-				}
-				for(var i in actionNames){
-					actionMethod = actionNames[i] && context.controller.methods[actionNames[i]] || context.authFact[actionNames[i]] || context.commonFact[actionNames[i]];
-					actionMethod && actionMethod.apply(this, params);
-				}
-				
+                if (typeof(actionNames) !== 'object') {
+                    actionNames = [actionNames];
+                }
+                for (var i in actionNames) {
+                    actionMethod = actionNames[i] && context.controller.methods[actionNames[i]] || context.authFact[actionNames[i]] || context.commonFact[actionNames[i]];
+                    actionMethod && actionMethod.apply(this, params);
+                }
+
             },
             appModuleAccess: function () {
                 var promiseRes = context.commonFact.getPromiseRes();
@@ -973,14 +974,14 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     });
                 });
             },
-            startAutoComplete: function (element, attrs, field, map, key) {
+            startAutoComplete: function (scopeVal, element, attrs, field, map, key) {
                 var fieldData;
                 var autoCompleteModel;
-                if (map!==undefined && key!==undefined) {
-					field.autoCompleteModel = field.autoCompleteModel || [];
-					field.autoCompleteOptions = field.autoCompleteOptions || [];
-					field.selectedOption = field.selectedOption || [];
-					autoCompleteModel = field.autoCompleteModel[key] = '';
+                if (map !== undefined && key !== undefined) {
+                    field.autoCompleteModel = field.autoCompleteModel || [];
+                    field.autoCompleteOptions = field.autoCompleteOptions || [];
+                    field.selectedOption = field.selectedOption || [];
+                    autoCompleteModel = field.autoCompleteModel[key] = '';
                 } else {
                     autoCompleteModel = field.autoCompleteModel = '';
                 }
@@ -991,14 +992,13 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                         if (autoCompleteModel === '' || !autoCompleteModel) {
                             element.find('li') && element.find('li')[0] && element.find('li')[0].click();
                         }
-						if (map!==undefined && key!==undefined) {
-							field.autoCompleteOptions[key] = null;
-							field.selectedOption[key] = null;
-						}
-						else{
-							field.autoCompleteOptions = null;
-							field.selectedOption = null;
-						}
+                        if (map !== undefined && key !== undefined) {
+                            field.autoCompleteOptions[key] = null;
+                            field.selectedOption[key] = null;
+                        } else {
+                            field.autoCompleteOptions = null;
+                            field.selectedOption = null;
+                        }
 
                     }, 200)
                 });
@@ -1009,18 +1009,15 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                         context.commonFact.showAutoComplete(field, e, true, map, key);
                     }, 300);
                 });
-                /* $timeout(
-                    function () {
-                    fieldData = map && map || context.controller.data;
-                    if (context.controller.page.name === 'edit' && fieldData && fieldData[field.id]) {
-                        if (map!==undefined && key!==undefined) {
-                            field.autoCompleteModel[key] = context.commonFact.replaceFieldVal(fieldData[field.id], field);
-                        } else {
-                            field.autoCompleteModel = context.commonFact.replaceFieldVal(fieldData[field.id], field);
+                if (attrs.value) {
+                    scopeVal.$watch(attrs.value, function (value) {
+                        if (map !== undefined && key !== undefined) {
+                            field.autoCompleteModel[key] = context.commonFact.replaceFieldVal(map[field.id], field);
+                        } else if (context.controller.data) {
+                            field.autoCompleteModel = context.commonFact.replaceFieldVal(context.controller.data[field.id], field);
                         }
-
-                    }
-                }, 500); */
+                    });
+                }
 
             },
             showAutoComplete: function (field, event, icon, map, key) {
@@ -1030,17 +1027,17 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                         optionName: field.name
                     }
                 ] || [];
-				var autoCompleteModel;
-				var autoCompleteOptions;
-				var selectedOption;
-                if (map!==undefined && key!==undefined) {
-					autoCompleteModel = field.autoCompleteModel[key];
-					autoCompleteOptions = field.autoCompleteOptions[key];
-					selectedOption = field.selectedOption[key] || 0;
+                var autoCompleteModel;
+                var autoCompleteOptions;
+                var selectedOption;
+                if (map !== undefined && key !== undefined) {
+                    autoCompleteModel = field.autoCompleteModel[key];
+                    autoCompleteOptions = field.autoCompleteOptions[key];
+                    selectedOption = field.selectedOption[key] || 0;
                 } else {
                     autoCompleteModel = field.autoCompleteModel;
-					autoCompleteOptions = field.autoCompleteOptions;
-					selectedOption = field.selectedOption || 0;
+                    autoCompleteOptions = field.autoCompleteOptions;
+                    selectedOption = field.selectedOption || 0;
                 }
 
                 if (event.keyCode === 40 && autoCompleteOptions) { //down key, increment selectedIndex
@@ -1086,22 +1083,22 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                         context.commonFact.callActions(field.action, [fieldData, fieldData[field.id], field, map, key]);
                     }
                 }
-				if (map!==undefined && key!==undefined) {
+                if (map !== undefined && key !== undefined) {
                     field.autoCompleteModel[key] = autoCompleteModel;
-					field.autoCompleteOptions[key] = autoCompleteOptions;
-					field.selectedOption[key] = selectedOption;
+                    field.autoCompleteOptions[key] = autoCompleteOptions;
+                    field.selectedOption[key] = selectedOption;
                 } else {
                     field.autoCompleteModel = autoCompleteModel;
-					field.autoCompleteOptions = autoCompleteOptions;
-					field.selectedOption = selectedOption;
+                    field.autoCompleteOptions = autoCompleteOptions;
+                    field.selectedOption = selectedOption;
                 }
                 return true;
             },
             fillAutoComplete: function (option, field, map, key) {
                 var fieldData = map || context.controller.data;
-				var autoCompleteModel;
-                if (map!==undefined && key!==undefined) {
-					autoCompleteModel = field.autoCompleteModel[key];
+                var autoCompleteModel;
+                if (map !== undefined && key !== undefined) {
+                    autoCompleteModel = field.autoCompleteModel[key];
                 } else {
                     autoCompleteModel = field.autoCompleteModel;
                 }
@@ -1116,14 +1113,14 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     fieldData[field.id] = option && option.optionId || '';
                     context.commonFact.callActions(field.action, [fieldData, fieldData[field.id], field, map, key]);
                 }
-                if (map!==undefined && key!==undefined) {
+                if (map !== undefined && key !== undefined) {
                     field.autoCompleteModel[key] = autoCompleteModel;
-					field.autoCompleteOptions[key] = null;
-					field.selectedOption[key] = null;
+                    field.autoCompleteOptions[key] = null;
+                    field.selectedOption[key] = null;
                 } else {
                     field.autoCompleteModel = autoCompleteModel;
-					field.autoCompleteOptions = null;
-					field.selectedOption = null;
+                    field.autoCompleteOptions = null;
+                    field.selectedOption = null;
                 }
                 return true;
             },
@@ -1159,9 +1156,9 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 }
                 return returnValue;
             },
-			amendmentRateUpdate: function(data, key, field, fieldMapKey){
-				data.rate = context.commonFact.getRate(field.options[key]);
-			}
+            amendmentRateUpdate: function (data, key, field, fieldMapKey) {
+                data.rate = context.commonFact.getRate(field.options[key]);
+            }
         };
     };
 };

@@ -5,11 +5,14 @@ erpConfig.moduleFiles.poSubContractor = function (context) {
             mappingField = angular.copy(context.controller.form.mapping.fields);
             context.controller.form.mapping.fields = [];
         },
+		callbackList(){
+			context.controller.form.mapping.fields = mappingField;
+		},
         callBackChangeMapping: function () {
             context.controller.methods.updateMappingPart();
         },
         updateMappingPart: function () {
-            for (var i in context.controller.data.mapping) {
+           for (var i in context.controller.data.mapping) {
                 context.controller.form.mapping.fields[i] = angular.copy(mappingField);
                 context.commonFact.getOperationFromFlow(context.controller.form.mapping.fields[i]['operationFrom'], {
                     partNo: context.controller.data.mapping[i].id

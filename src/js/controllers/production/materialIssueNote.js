@@ -1,10 +1,10 @@
-erpConfig.moduleFiles.materialIssueNote = function(context) {
+erpConfig.moduleFiles.materialIssueNote = function (context) {
     var orgItemVal = null;
     return {
-        callBackEdit: function() {
+        callBackEdit: function () {
             orgItemVal = angular.copy(context.controller.data);
         },
-        callBackAdd: function() {
+        callBackAdd: function () {
             var rmStock = [];
             orgItemVal = null;
 
@@ -21,8 +21,9 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
             });
             context.commonFact.makeOptionsFields(context.controller.form.fields['rmCode']);
 
+            
         },
-        callBackList: function() {
+        callBackList: function () {
             context.commonFact.getRMStock();
             context.controller.listView[1].filter = {
                 isAssemblePart: undefined
@@ -39,7 +40,7 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
             }
             context.controller.listViewData = partDetailList;
         },
-        getPartNo: function() {
+        getPartNo: function () {
             if (context.controller.data.rmCode) {
                 context.controller.form.fields['partNo'].filter = {
                     rmCode: context.controller.data.rmCode
@@ -47,12 +48,12 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
                 context.commonFact.makeOptionsFields(context.controller.form.fields['partNo']);
             }
         },
-        getNorms: function() {
+        getNorms: function () {
             if (context.controller.data.rmCode && context.controller.data.partNo) {
                 context.controller.data.partNorms = null;
                 context.controller.data.qtyCanMake = null;
                 context.controller.data.issueQty = null;
-                context.commonFact.getData('production.bom').then(function(res) {
+                context.commonFact.getData('production.bom').then(function (res) {
                     var bomData = res.data;
                     for (var i in bomData) {
                         if (bomData[i].partNo === context.controller.data.partNo && bomData[i].rmCode === context.controller.data.rmCode) {
@@ -60,9 +61,12 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
                         }
                     }
                 });
+				context.commonFact.getOperationFromFlow(context.controller.form.fields['operationToSC'], {
+                partNo: context.controller.data.partNo
+            });
             }
         },
-        updateQtyMake: function() {
+        updateQtyMake: function () {
             if (context.controller.data.rmCode) {
 
                 if (orgItemVal && orgItemVal.issueQty) {
@@ -79,10 +83,10 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
 
             }
         },
-        removeRMStockQty: function(del) {
+        removeRMStockQty: function (del) {
             var rmCode = context.controller.data.rmCode,
-                existingStock = null,
-                removeQty = context.controller.data.issueQty;
+            existingStock = null,
+            removeQty = context.controller.data.issueQty;
 
             existingStock = context.controller.rmStock[rmCode];
             if (existingStock) {
@@ -104,7 +108,7 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
                 context.commonFact.updateData('report.rmStock', data);
             }
         },
-        callBackSubmit: function() {
+        callBackSubmit: function () {
             var qtyCanMake;
             context.controller.methods.removeRMStockQty();
 
@@ -116,7 +120,7 @@ erpConfig.moduleFiles.materialIssueNote = function(context) {
             }
             context.commonFact.updatePartStock();
         },
-        callBeforeDelete: function(id, item) {
+        callBeforeDelete: function (id, item) {
             var qtyCanMake;
             context.controller.data = item;
             context.controller.methods.removeRMStockQty(true);
