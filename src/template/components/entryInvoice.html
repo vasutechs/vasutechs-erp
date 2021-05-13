@@ -17,7 +17,7 @@
                 <tr>
                     <td><b>{{context.controller.form.fields.customerCode.name}}</b></td>
                     <td colspan="6">
-                        <auto-complete ng-if="!context.controller.page.printView" field="context.controller.form.fields.customerCode" context="context"></auto-complete>
+                        <auto-complete ng-if="!context.controller.page.printView" field="context.controller.form.fields.customerCode"></auto-complete>
                         <input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.address.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.address.id]" />
                         <span class="font-weight-bold" ng-if="context.controller.page.printView" id="{{context.controller.form.fields.customerCode.id}}" ng-bind="context.commonFact.replaceFieldVal(context.controller.data[context.controller.form.fields.customerCode.id], context.controller.form.fields.customerCode)"></span>
 
@@ -49,8 +49,7 @@
                             ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}">
                             <option value="">--Select--</option>
                         </select>
-						<span ng-if="map.isExistPart || context.controller.orgItemVal.mapping[key]" ng-switch-when="autoComplete" id="{{field.id}}-{{key}}" ng-bind="context.commonFact.replaceFieldVal(map[field.id], field)"></span>
-						<auto-complete ng-switch-when="autoComplete" ng-if="!map.isExistPart && (!context.controller.orgItemVal || (context.controller.orgItemVal && !context.controller.orgItemVal.mapping[key]))" id="autoComplete-{{field.id}}-{{key}}" value="map[field.id]"></auto-complete>
+						
 
                     </td>
                     <td>

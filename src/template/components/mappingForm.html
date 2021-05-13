@@ -26,13 +26,7 @@
                             ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])">
                             <option value="">--Select--</option>
                         </select>
-						
-						 <select class="form-control" ng-switch-when="autoComplete" id="{{field.id}}-{{key}}" ng-focus="context.commonFact.callActions(field.focusAction, [map, map[field.id], field, key])" ng-change="context.commonFact.callActions(field.action, [map, map[field.id], field, key])"
-                            ng-model="map[field.id]" ng-options="option.optionId as option.optionName for option in field.options" ng-required="{{field.required}}" ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])">
-                            <option value="">--Select--</option>
-                        </select>
-						
-						<!-- <auto-complete ng-switch-when="autoComplete" id="autoComplete-{{field.id}}-{{key}}" value="map[field.id]"></auto-complete> -->
+						<auto-complete ng-switch-when="autoComplete" field="field" context="context"></auto-complete>
 						
                     </td>
                     <td ng-if="context.controller.form.mapping.actions.delete || context.controller.form.mapping.actions.delete===undefined">

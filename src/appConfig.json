@@ -4816,6 +4816,29 @@
                             }
                         ]
                     },
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {
+							
+                        },
+                        "fields": [{
+                                "name": "Customer",
+                                "id": "customerCode",
+                                "type": "autoComplete",
+                                "dataFrom": "marketing.customerMaster",
+                                "replaceName": "customerName",
+                                "isFilterView": true
+                            },{
+                                "name": "Invoice",
+                                "id": "invoiceNo",
+                                "type": "select",
+                                "dataFrom": "marketing.invoice",
+                                "replaceName": "invoiceNo",
+								"valuePrefix": "VT-",
+                                "isFilterView": true
+                            }
+                        ]
+                    },
                     "form": {
                         "name": "Customer Payment",
                         "id": "customerPayment",
@@ -4895,8 +4918,6 @@
                             "id": "customerCode",
                             "dataFrom": "marketing.customerMaster",
                             "replaceName": "customerName",
-                            "isFilterBy": true,
-                            "type": "autoComplete",
                             "options": {}
                         }, {
                             "name": "Invoice No",
@@ -4904,8 +4925,6 @@
                             "dataFrom": "marketing.invoice",
                             "valuePrefix": "VT-",
                             "replaceName": "invoiceNo",
-                            "isFilterBy": true,
-                            "type": "select",
                             "options": {}
                         }, {
                             "name": "Date",
@@ -4913,9 +4932,6 @@
                         }, {
                             "name": "Amount",
                             "id": "total"
-                        }, {
-                            "name": "Balance Amount",
-                            "id": "balanceAmount"
                         }, {
                             "name": "Consolidated Amount",
                             "id": "consolidatedAmount"
@@ -4930,7 +4946,7 @@
                             "id": "consolidatedPaidAmount"
                         }, {
                             "name": "Balance Amount",
-                            "id": "balanceAmount"
+                            "id": "balanceAmountTotal"
                         }
                     ],
                     "page": {

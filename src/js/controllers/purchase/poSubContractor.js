@@ -8,6 +8,9 @@ erpConfig.moduleFiles.poSubContractor = function (context) {
 		callbackList(){
 			context.controller.form.mapping.fields = mappingField;
 		},
+		callBackRemoveMapping: function(){
+			context.controller.methods.updateMappingPart();
+		},
         callBackChangeMapping: function () {
             context.controller.methods.updateMappingPart();
         },
