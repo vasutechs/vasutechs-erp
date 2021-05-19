@@ -1,5 +1,8 @@
 erpConfig.moduleFiles.empPayment = function(context) {
     return {
+		callBackList: function () {
+            context.commonFact.accountsPayment();
+        },
         callBackAdd: function() {
             context.controller.data['toDate'] = new Date();
         },
@@ -97,11 +100,15 @@ erpConfig.moduleFiles.empPayment = function(context) {
         updateBalanceAmount: function(data) {
             var amount = context.controller.data.balanceAmount;
             if (data.paidStatus) {
+				data.amount = data.totalLaborCost;
+				data.date = new Date();
                 amount -= parseInt(data.totalLaborCost);
             } else {
+				data.amount = null;
+				data.date = null;
                 amount += parseInt(data.totalLaborCost);
             }
-            data.date = new Date();
+            
             context.controller.data.balanceAmount = amount;
         }
     };

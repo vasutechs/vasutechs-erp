@@ -2,9 +2,11 @@ erpConfig.moduleFiles.suppilerPayment = function(context) {
     return {
         callBackList: function() {
             context.controller.form.mapping.actions = {};
+			context.commonFact.accountsPayment();
         },
         callBackAdd: function() {
             context.commonFact.makeOptionsFields(context.controller.form.fields['grnNo']);
+			context.controller.data['date'] = null;
         },
         callBackEdit: function() {
             for (var i in context.controller.data.mapping) {
@@ -20,6 +22,7 @@ erpConfig.moduleFiles.suppilerPayment = function(context) {
             context.controller.data.total = grnMap.total;
             context.controller.data.supplierInvoiceDate = context.commonFact.dateFormatChange(context.controller.data.supplierInvoiceDate);
             context.controller.data.balanceAmount = context.controller.data.total;
+			context.controller.data.date = context.commonFact.dateFormatChange(context.controller.data.date);
         },
         updateBalanceAmount: function() {
             var amount = 0;

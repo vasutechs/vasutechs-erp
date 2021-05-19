@@ -1781,7 +1781,7 @@
                         "name": "poSubContractor",
                         "id": "poSubContractor",
                         "autoGenKey": "poNo",
-						"disableByField": "id",
+                        "disableByField": "id",
                         "fields": {
                             "poNo": {
                                 "name": "PO Code",
@@ -1806,7 +1806,7 @@
                                 "updateData": ["gstin", "gst", "sgst", "cgst", "igst", "mapping"],
                                 "dataFrom": "purchase.subContractorMaster",
                                 "replaceName": "subContractorName",
-								"isEditDisable": true,
+                                "isEditDisable": true,
                                 "isSingle": true
                             },
                             "extraAmount": {
@@ -4659,7 +4659,7 @@
                     "filterView": {
                         "title": "Filter",
                         "data": {
-							"customerCode":  null,
+                            "customerCode": null,
                             "frmDate": null,
                             "toDate": null
                         },
@@ -4670,7 +4670,7 @@
                                 "dataFrom": "marketing.customerMaster",
                                 "replaceName": "customerName",
                                 "isFilterView": true
-                            },{
+                            }, {
                                 "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
@@ -4738,7 +4738,7 @@
                     "filterView": {
                         "title": "Filter",
                         "data": {
-							"customerCode":  null,
+                            "customerCode": null,
                             "frmDate": null,
                             "toDate": null
                         },
@@ -4818,41 +4818,40 @@
                     },
                     "filterView": {
                         "title": "Filter",
-                        "data": {
-							
-                        },
+                        "data": {},
                         "fields": [{
                                 "name": "Customer",
                                 "id": "customerCode",
                                 "type": "autoComplete",
                                 "dataFrom": "marketing.customerMaster",
                                 "replaceName": "customerName",
-                                "isFilterView": true
-                            },{
+                                "isFilterBy": true
+                            }, {
                                 "name": "Invoice",
                                 "id": "invoiceNo",
                                 "type": "select",
-                                "dataFrom": "marketing.invoice",
+                                "dataFrom": "accounts.customerPaymentInvoice",
                                 "replaceName": "invoiceNo",
-								"valuePrefix": "VT-",
-                                "isFilterView": true
+                                "optionId": "invoiceNo",
+                                "valuePrefix": "VT-",
+                                "isFilterBy": true
                             }
                         ]
                     },
                     "form": {
                         "name": "Customer Payment",
                         "id": "customerPayment",
-						"disableByField": "id",
+                        "disableByField": "id",
                         "fields": {
-							"customerCode": {
+                            "customerCode": {
                                 "name": "Customer Code",
                                 "id": "customerCode",
                                 "type": "autoComplete",
                                 "options": {},
-								"action": "getInvoice",
+                                "action": "getInvoice",
                                 "dataFrom": "marketing.customerMaster",
                                 "replaceName": "customerName",
-								 "isEditDisable": true,
+                                "isEditDisable": true,
                                 "isSingle": true
                             },
                             "invoiceNo": {
@@ -4867,7 +4866,7 @@
                                 "valuePrefix": "VT-",
                                 "required": true,
                                 "existingCheck": true,
-								"isEditDisable": true,
+                                "isEditDisable": true,
                                 "isSingle": true
                             },
                             "date": {
@@ -4939,7 +4938,7 @@
                             "name": "Payment Received Date",
                             "id": "paymentReceivedDate"
                         }, {
-                            "name": "PaymentReceived Amount",
+                            "name": "Payment Received Amount",
                             "id": "paymentReceivedAmount"
                         }, {
                             "name": "Consolidated Paid Amount",
@@ -4984,13 +4983,34 @@
                             }
                         }
                     },
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {},
+                        "fields": [{
+                                "name": "Customer",
+                                "id": "customerCode",
+                                "type": "autoComplete",
+                                "dataFrom": "marketing.customerMaster",
+                                "replaceName": "customerName",
+                                "isFilterBy": true
+                            }, {
+                                "name": "Invoice",
+                                "id": "invoiceNo",
+                                "type": "select",
+                                "dataFrom": "accounts.customerPaymentCashBill",
+                                "replaceName": "invoiceNo",
+                                "optionId": "invoiceNo",
+                                "valuePrefix": "VT-",
+                                "isFilterBy": true
+                            }
+                        ]
+                    },
                     "listView": [{
                             "name": "Cash Bill No",
                             "id": "invoiceNo",
                             "valuePrefix": "",
                             "dataFrom": "marketing.cashBill",
                             "replaceName": "invoiceNo",
-                            "isFilterBy": true,
                             "type": "select",
                             "options": {}
                         }
@@ -5024,6 +5044,38 @@
                                 "amount": null,
                                 "date": null,
                                 "remark": null
+                            }
+                        ]
+                    },
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {},
+                        "fields": [{
+                                "name": "GRN No",
+                                "id": "grnNo",
+                                "dataFrom": "accounts.suppilerPayment",
+                                "replaceName": "grnNo",
+                                "valuePrefix": "VT-GRN-",
+                                "isFilterBy": true,
+                                "type": "select",
+                                "options": {}
+                            }, {
+                                "name": "Supplier Name",
+                                "id": "supplierCode",
+                                "dataFrom": "purchase.supplierMaster",
+                                "replaceName": "supplierName",
+                                "isFilterBy": true,
+                                "type": "select",
+                                "options": {}
+                            }, {
+                                "name": "Supplier InvoiceNo No",
+                                "id": "supplierInvoiceNo",
+                                "dataFrom": "accounts.suppilerPayment",
+                                "replaceName": "supplierInvoiceNo",
+								"optionId": "supplierInvoiceNo",
+                                "isFilterBy": true,
+                                "type": "select",
+                                "options": {}
                             }
                         ]
                     },
@@ -5115,7 +5167,6 @@
                             "dataFrom": "store.grnSupplier",
                             "replaceName": "grnNo",
                             "valuePrefix": "VT-GRN-",
-                            "isFilterBy": true,
                             "type": "select",
                             "options": {}
                         }, {
@@ -5123,7 +5174,6 @@
                             "id": "supplierCode",
                             "dataFrom": "purchase.supplierMaster",
                             "replaceName": "supplierName",
-                            "isFilterBy": true,
                             "type": "select",
                             "options": {}
                         }, {
@@ -5131,15 +5181,29 @@
                             "id": "supplierInvoiceNo",
                             "dataFrom": "store.grnSupplier",
                             "replaceName": "supplierInvoiceNo",
-                            "isFilterBy": true,
                             "type": "select",
                             "options": {}
                         }, {
-                            "name": "Total Amount",
+                            "name": "Date",
+                            "id": "date"
+                        }, {
+                            "name": "Amount",
                             "id": "total"
                         }, {
+                            "name": "Consolidated Amount",
+                            "id": "consolidatedAmount"
+                        }, {
+                            "name": "Payment Received Date",
+                            "id": "paymentReceivedDate"
+                        }, {
+                            "name": "Payment Received Amount",
+                            "id": "paymentReceivedAmount"
+                        }, {
+                            "name": "Consolidated Paid Amount",
+                            "id": "consolidatedPaidAmount"
+                        }, {
                             "name": "Balance Amount",
-                            "id": "balanceAmount"
+                            "id": "balanceAmountTotal"
                         }
                     ],
                     "page": {
@@ -5170,6 +5234,38 @@
                                 "amount": null,
                                 "date": null,
                                 "remark": null
+                            }
+                        ]
+                    },
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {},
+                        "fields": [{
+                                "name": "GRN No",
+                                "id": "grnNo",
+                                "dataFrom": "accounts.subContractorPayment",
+                                "replaceName": "grnNo",
+                                "valuePrefix": "VT-GRN-",
+                                "isFilterBy": true,
+                                "type": "select",
+                                "options": {}
+                            }, {
+                                "name": "Sub Contractor Name",
+                                "id": "subContractorCode",
+                                "dataFrom": "purchase.subContractorMaster",
+                                "replaceName": "subContractorName",
+                                "isFilterBy": true,
+                                "type": "select",
+                                "options": {}
+                            }, {
+                                "name": "Sub Contractor InvoiceNo No",
+                                "id": "subContractorDCCode",
+                                "dataFrom": "accounts.subContractorPayment",
+                                "replaceName": "subContractorDCCode",
+								"optionId": "subContractorDCCode",
+                                "isFilterBy": true,
+                                "type": "select",
+                                "options": {}
                             }
                         ]
                     },
@@ -5261,7 +5357,6 @@
                             "dataFrom": "store.grnSupplier",
                             "replaceName": "grnNo",
                             "valuePrefix": "VT-GRN-",
-                            "isFilterBy": true,
                             "type": "select",
                             "options": {}
                         }, {
@@ -5269,7 +5364,6 @@
                             "id": "subContractorCode",
                             "dataFrom": "purchase.subContractorMaster",
                             "replaceName": "subContractorName",
-                            "isFilterBy": true,
                             "type": "select",
                             "options": {}
                         }, {
@@ -5277,15 +5371,29 @@
                             "id": "subContractorDCCode",
                             "dataFrom": "store.grnSupplier",
                             "replaceName": "subContractorDCCode",
-                            "isFilterBy": true,
                             "type": "select",
                             "options": {}
                         }, {
-                            "name": "Total Amount",
+                            "name": "Date",
+                            "id": "date"
+                        }, {
+                            "name": "Amount",
                             "id": "total"
                         }, {
+                            "name": "Consolidated Amount",
+                            "id": "consolidatedAmount"
+                        }, {
+                            "name": "Payment Received Date",
+                            "id": "paymentReceivedDate"
+                        }, {
+                            "name": "Payment Received Amount",
+                            "id": "paymentReceivedAmount"
+                        }, {
+                            "name": "Consolidated Paid Amount",
+                            "id": "consolidatedPaidAmount"
+                        }, {
                             "name": "Balance Amount",
-                            "id": "balanceAmount"
+                            "id": "balanceAmountTotal"
                         }
                     ],
                     "page": {
@@ -5320,6 +5428,21 @@
                                 "paidStatus": false,
                                 "productionEntryKey": null,
                                 "productionEntryDate": null
+                            }
+                        ]
+                    },
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {},
+                        "fields": [{
+                                "name": "Employee Name",
+                                "id": "employeeCode",
+                                "dataFrom": "accounts.empPayment",
+                                "replaceName": "employeeName",
+								"optionId": "employeeCode",
+                                "isFilterBy": true,
+                                "type": "select",
+                                "options": {}
                             }
                         ]
                     },
@@ -5437,7 +5560,6 @@
                             "id": "employeeCode",
                             "dataFrom": "marketing.empMaster",
                             "replaceName": "employeeName",
-                            "isFilterBy": true,
                             "type": "select",
                             "options": {}
                         }, {
@@ -5451,11 +5573,26 @@
                             "type": "input",
                             "inputType": "date"
                         }, {
-                            "name": "Total Amount",
+                            "name": "Date",
+                            "id": "date"
+                        }, {
+                            "name": "Amount",
                             "id": "total"
                         }, {
+                            "name": "Consolidated Amount",
+                            "id": "consolidatedAmount"
+                        }, {
+                            "name": "Payment Date",
+                            "id": "paymentReceivedDate"
+                        }, {
+                            "name": "Payment Amount",
+                            "id": "paymentReceivedAmount"
+                        }, {
+                            "name": "Consolidated Paid Amount",
+                            "id": "consolidatedPaidAmount"
+                        }, {
                             "name": "Balance Amount",
-                            "id": "balanceAmount"
+                            "id": "balanceAmountTotal"
                         }
                     ],
                     "page": {
