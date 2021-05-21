@@ -78,7 +78,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 context.controller.filterBy = context.controller.page.filter || {};
                 context.controller.listViewData = [];
                 context.controller.orderByProperty = 'updated';
-				context.controller.orderByAsc = true;
+                context.controller.orderByAsc = true;
                 context.commonFact.pageActionsAccess();
                 pageProm.push(context.commonFact.updateFields(context.controller.listView));
                 context.controller.filterView && pageProm.push(context.commonFact.updateFields(context.controller.filterView.fields));
@@ -453,12 +453,12 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 }
                 serviceConfig.params = angular.extend(serviceConfig.params || {}, {
                     appCustomer: serviceConfig.params && serviceConfig.params.appCustomer || context.commonFact.isAppCustomer() || ''
-                })
+                });
 
-                    if (serviceConfig.params.year && typeof(serviceConfig.params.year) !== 'string') {
-                        serviceConfig.params.year = context.erpAppConfig.calendarYear || currentYear;
-                    }
-                    serviceConfig.url = genUrl(serviceConfig);
+                if (serviceConfig.params.year && typeof(serviceConfig.params.year) !== 'string') {
+                    serviceConfig.params.year = context.erpAppConfig.calendarYear || currentYear;
+                }
+                serviceConfig.url = genUrl(serviceConfig);
                 serviceConfig.method = replaceMethod ? replaceMethod : serviceConfig.method;
                 serviceConfig.cache = serviceConfig.cache === undefined ? context.erpAppConfig.httpCache : serviceConfig.cache;
                 return serviceConfig;
@@ -573,13 +573,12 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                         }
                         return true;
                     });
-					if(isAll){
-						isExist = isExist;
-					}
-					else{
-						isExist = isExist && isExist[isExist.length - 1];
-					}
-                    
+                    if (isAll) {
+                        isExist = isExist;
+                    } else {
+                        isExist = isExist && isExist[isExist.length - 1];
+                    }
+
                 } else {
                     for (var i = 0; i < data.length; i++) {
                         if (data[i][filter] === value) {
@@ -1004,7 +1003,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 });
                 $timeout(function () {
                     if (context.controller.page.name !== 'list') {
-						fieldData = map || context.controller.data;
+                        fieldData = map || context.controller.data;
                         field.autoCompleteModel = context.commonFact.replaceFieldVal(fieldData[field.id], field);
                     }
                 }, 500);
@@ -1017,7 +1016,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                         optionName: field.name
                     }
                 ] || [];
-                
+
                 field.selectedOption = field.selectedOption || 0;
 
                 if (event.keyCode === 40 && field.autoCompleteOptions) { //down key, increment selectedIndex
@@ -1117,63 +1116,62 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
             amendmentRateUpdate: function (data, key, field, fieldMapKey) {
                 data.rate = context.commonFact.getRate(field.options[key]);
             },
-			accountsPayment: function(){
-				var paymentList = angular.copy(context.controller.listViewData);
-				var paymentDetails = {};
-				var paymentByCus = [];
-				var paymentByCusMap = [];
-				context.controller.listViewData = [];
-				context.controller.form.mapping.actions = {};
-				context.controller.orderByProperty = 'idVal';
-				context.controller.orderByAsc = false;
-				var idVal = 0;
-				paymentList = Object.keys(context.controller.filterView.data).length > 0 && context.commonFact.findObjectByKey(paymentList, context.controller.filterView.data, null, true) || paymentList;
-				
-				for (var i in paymentList) {
-					paymentList[i].idVal = idVal;
-					paymentList[i].consolidatedAmount = paymentList[i].total;
-					paymentList[i].balanceAmountTotal = paymentList[i].total;
-					if (paymentByCusMap && paymentByCusMap[paymentByCusMap.length - 1]) {
-						paymentList[i].consolidatedAmount += paymentByCusMap[paymentByCusMap.length - 1].consolidatedAmount;
-						paymentList[i].balanceAmountTotal += paymentByCusMap[paymentByCusMap.length - 1].balanceAmountTotal;
-						paymentList[i].consolidatedPaidAmount = paymentByCusMap[paymentByCusMap.length - 1].consolidatedPaidAmount;
-					} else if (paymentByCus && paymentByCus[paymentByCus.length - 1]) {
-						paymentList[i].balanceAmountTotal += paymentByCus[paymentByCus.length - 1].balanceAmountTotal;
-						paymentList[i].consolidatedAmount += paymentByCus[paymentByCus.length - 1].consolidatedAmount;
-						paymentList[i].consolidatedPaidAmount = paymentByCus[paymentByCus.length - 1].consolidatedPaidAmount;
-					}
-					idVal++;
+            accountsPayment: function () {
+                var paymentList = angular.copy(context.controller.listViewData);
+                var paymentDetails = {};
+                var paymentByCus = [];
+                var paymentByCusMap = [];
+                context.controller.listViewData = [];
+                context.controller.form.mapping.actions = {};
+                context.controller.orderByProperty = 'idVal';
+                context.controller.orderByAsc = false;
+                var idVal = 0;
+                paymentList = Object.keys(context.controller.filterView.data).length > 0 && context.commonFact.findObjectByKey(paymentList, context.controller.filterView.data, null, true) || paymentList;
 
-					for (var j in paymentList[i].mapping) {
+                for (var i in paymentList) {
+                    paymentList[i].idVal = idVal;
+                    paymentList[i].consolidatedAmount = paymentList[i].total;
+                    paymentList[i].balanceAmountTotal = paymentList[i].total;
+                    if (paymentByCusMap && paymentByCusMap[paymentByCusMap.length - 1]) {
+                        paymentList[i].consolidatedAmount += paymentByCusMap[paymentByCusMap.length - 1].consolidatedAmount;
+                        paymentList[i].balanceAmountTotal += paymentByCusMap[paymentByCusMap.length - 1].balanceAmountTotal;
+                        paymentList[i].consolidatedPaidAmount = paymentByCusMap[paymentByCusMap.length - 1].consolidatedPaidAmount;
+                    } else if (paymentByCus && paymentByCus[paymentByCus.length - 1]) {
+                        paymentList[i].balanceAmountTotal += paymentByCus[paymentByCus.length - 1].balanceAmountTotal;
+                        paymentList[i].consolidatedAmount += paymentByCus[paymentByCus.length - 1].consolidatedAmount;
+                        paymentList[i].consolidatedPaidAmount = paymentByCus[paymentByCus.length - 1].consolidatedPaidAmount;
+                    }
+                    idVal++;
 
-						paymentDetails.id = paymentList[i].id;
-						
-						paymentDetails.idVal = idVal;
-						paymentDetails.paymentReceivedDate = context.commonFact.dateFormatChange(paymentList[i].mapping[j].date);
-						paymentDetails.paymentReceivedAmount = paymentList[i].mapping[j].amount;
-						paymentDetails.consolidatedPaidAmount = paymentDetails.paymentReceivedAmount;
-						paymentDetails.consolidatedAmount = paymentList[i].consolidatedAmount;
+                    for (var j in paymentList[i].mapping) {
 
-						if (paymentByCusMap && paymentByCusMap[paymentByCusMap.length - 1]) {
-							paymentDetails.consolidatedPaidAmount += paymentByCusMap[paymentByCusMap.length - 1].consolidatedPaidAmount;
-							paymentDetails.balanceAmountTotal = paymentDetails.consolidatedAmount - paymentDetails.consolidatedPaidAmount;
+                        paymentDetails.id = paymentList[i].id;
 
-						} else {
-							paymentDetails.balanceAmountTotal = paymentList[i].consolidatedAmount - paymentDetails.consolidatedPaidAmount;
-						}
-						if(paymentDetails.paymentReceivedAmount){
-							context.controller.listViewData.splice(0, 0, angular.copy(paymentDetails));
-							paymentByCusMap.push(angular.copy(paymentDetails));
-							idVal++;
-						}
-						
-						
-					}
-					context.controller.listViewData.push(angular.copy(paymentList[i]));
-					paymentByCus.push(angular.copy(paymentList[i]));
-			
-				}
-			}
+                        paymentDetails.idVal = idVal;
+                        paymentDetails.paymentReceivedDate = context.commonFact.dateFormatChange(paymentList[i].mapping[j].date);
+                        paymentDetails.paymentReceivedAmount = paymentList[i].mapping[j].amount;
+                        paymentDetails.consolidatedPaidAmount = paymentDetails.paymentReceivedAmount;
+                        paymentDetails.consolidatedAmount = paymentList[i].consolidatedAmount;
+
+                        if (paymentByCusMap && paymentByCusMap[paymentByCusMap.length - 1]) {
+                            paymentDetails.consolidatedPaidAmount += paymentByCusMap[paymentByCusMap.length - 1].consolidatedPaidAmount;
+                            paymentDetails.balanceAmountTotal = paymentDetails.consolidatedAmount - paymentDetails.consolidatedPaidAmount;
+
+                        } else {
+                            paymentDetails.balanceAmountTotal = paymentList[i].consolidatedAmount - paymentDetails.consolidatedPaidAmount;
+                        }
+                        if (paymentDetails.paymentReceivedAmount) {
+                            context.controller.listViewData.splice(0, 0, angular.copy(paymentDetails));
+                            paymentByCusMap.push(angular.copy(paymentDetails));
+                            idVal++;
+                        }
+
+                    }
+                    context.controller.listViewData.push(angular.copy(paymentList[i]));
+                    paymentByCus.push(angular.copy(paymentList[i]));
+
+                }
+            }
         };
     };
 };

@@ -4130,7 +4130,7 @@
                                 "type": "autoComplete",
                                 "dataFrom": "marketing.customerMaster",
                                 "replaceName": "customerName",
-                                "isFilterView": true
+                                "isFilterBy": true
                             }, {
                                 "name": "From Date",
                                 "id": "frmDate",
@@ -4209,6 +4209,68 @@
                         }
                     }
                 },
+                "salesAnalysisPart": {
+                    "id": "salesAnalysisPart",
+                    "title": "Sales Analysis - Part",
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {
+                            "partNo": null,
+                            "frmDate": null,
+                            "toDate": null
+                        },
+                        "fields": [{
+                                "name": "Part No",
+								"id": "partNo",
+								"dataFrom": "marketing.partMaster",
+								"replaceName": "partNo",
+								 "type": "autoComplete",
+                                "isFilterBy": true
+                            }, {
+                                "name": "From Date",
+                                "id": "frmDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }, {
+                                "name": "To Date",
+                                "id": "toDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }
+                        ]
+                    },
+                    "listView": [{
+                            "name": "Part No",
+                            "id": "partNo",
+                            "dataFrom": "marketing.partMaster",
+                            "replaceName": "partNo",
+                            "type": "select"
+                        }, {
+                            "name": "Part Qty",
+                            "id": "unit"
+                        }, {
+                            "name": "Part Price",
+                            "id": "rate"
+                        }, {
+                            "name": "Sales Value",
+                            "id": "amount"
+                        }
+                    ],
+                    "page": {
+                        "link": "report/salesAnalysisPart",
+                        "name": "list",
+                        "downloadExcel": true,
+                        "actions": false
+                    },
+                    "services": {
+                        "list": {
+                            "id": "invoice",
+                            "params": {
+                                "year": true
+                            }
+                        }
+                    }
+                },
                 "costAnalysis": {
                     "id": "costAnalysis",
                     "title": "Cost Analysis",
@@ -4219,6 +4281,13 @@
                             "toDate": null
                         },
                         "fields": [{
+                            "name": "PartNo",
+                            "id": "partNo",
+                            "dataFrom": "marketing.partMaster",
+                            "replaceName": "partNo",
+                            "type": "select",
+                            "isFilterBy": true
+                        },{
                                 "name": "From Date",
                                 "id": "frmDate",
                                 "type": "input",
@@ -4235,9 +4304,7 @@
                             "name": "PartNo",
                             "id": "id",
                             "dataFrom": "marketing.partMaster",
-                            "replaceName": "partNo",
-                            "type": "select",
-                            "isFilterBy": true
+                            "replaceName": "partNo"
                         }, {
                             "name": "Input Weight",
                             "id": "inputWeight"
@@ -5437,9 +5504,8 @@
                         "fields": [{
                                 "name": "Employee Name",
                                 "id": "employeeCode",
-                                "dataFrom": "accounts.empPayment",
+                                "dataFrom": "marketing.empMaster",
                                 "replaceName": "employeeName",
-								"optionId": "employeeCode",
                                 "isFilterBy": true,
                                 "type": "select",
                                 "options": {}
