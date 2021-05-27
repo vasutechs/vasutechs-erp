@@ -1,8 +1,8 @@
-release
-node_modules
-src
+/release
+/node_modules/
+/src
 gulpfile.js
 build_tasks/build.js
 debug.log
 package-lock.json
-data
+/data
