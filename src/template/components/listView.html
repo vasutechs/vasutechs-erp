@@ -25,7 +25,7 @@
                     <div ng-if="!list.actions" ng-bind="context.commonFact.replaceFieldVal(dataList[list.id], list)"></div>
                 </td>
                 <td>
-                    <div class="row">
+                    <div class="row" ng-if="dataList.id">
                         <div ng-if="context.controller.page.actions.print" class="col">
                             <a href="javascript: void(0);" ng-click="context.commonFact.printView(dataList.id, true)" title="Print View" class="fa fa-fw fa-print">
                             </a>

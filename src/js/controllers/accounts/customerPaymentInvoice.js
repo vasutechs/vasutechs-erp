@@ -3,6 +3,9 @@ erpConfig.moduleFiles.customerPaymentInvoice = function (context) {
         callBackList: function () {
             context.commonFact.accountsPayment();
         },
+		callBackViewFilterBy: function(){
+			context.commonFact.accountsPayment();
+		},
         getInvoice: function () {
             context.controller.form.fields['invoiceNo']['filter'] = {
                 customerCode: context.controller.data['customerCode']

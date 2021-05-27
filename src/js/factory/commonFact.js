@@ -302,7 +302,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                                 if (flowMasterData[i].partNo === partNo) {
                                     context.commonFact.mergeOprFlowMap(flowMasterData[i].mapping).then(function (flowMasterMap) {
                                         //var flowMasterMap = flowMasterData[i].mapping;
-                                        flowMasterMap = context.commonFact.objectSort(flowMasterMap, 'opCode');
+                                        flowMasterMap = context.commonFact.objectArraySort(flowMasterMap, 'opCode');
                                         var startWith = context.commonFact.findObjectByKey(flowMasterMap, 'id', restriction.startWith);
 
                                         for (var j in flowMasterMap) {
@@ -494,7 +494,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     context.controller.rmStock = rmStock;
                 });
             },
-            objectSort: function (obj, sortBy) {
+            objectArraySort: function (obj, sortBy) {
                 function compare(a, b) {
                     if (a[sortBy] < b[sortBy])
                         return -1;
@@ -516,6 +516,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                         context.controller.filterBy[list.id] = list.selectedFilterBy;
                     }
                 }
+				
             },
             getFlowMaster: function () {
                 context.controller.flowMasterData = {};
@@ -1124,28 +1125,19 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 context.controller.listViewData = [];
                 context.controller.form.mapping.actions = {};
                 context.controller.orderByProperty = 'idVal';
-                context.controller.orderByAsc = false;
+                context.controller.orderByAsc = true;
                 var idVal = 0;
                 paymentList = Object.keys(context.controller.filterView.data).length > 0 && context.commonFact.findObjectByKey(paymentList, context.controller.filterView.data, null, true) || paymentList;
-
                 for (var i in paymentList) {
-                    paymentList[i].idVal = idVal;
+                    
                     paymentList[i].consolidatedAmount = paymentList[i].total;
                     paymentList[i].balanceAmountTotal = paymentList[i].total;
-                    if (paymentByCusMap && paymentByCusMap[paymentByCusMap.length - 1]) {
-                        paymentList[i].consolidatedAmount += paymentByCusMap[paymentByCusMap.length - 1].consolidatedAmount;
-                        paymentList[i].balanceAmountTotal += paymentByCusMap[paymentByCusMap.length - 1].balanceAmountTotal;
-                        paymentList[i].consolidatedPaidAmount = paymentByCusMap[paymentByCusMap.length - 1].consolidatedPaidAmount;
-                    } else if (paymentByCus && paymentByCus[paymentByCus.length - 1]) {
+                    if (paymentByCus && paymentByCus[paymentByCus.length - 1]) {
                         paymentList[i].balanceAmountTotal += paymentByCus[paymentByCus.length - 1].balanceAmountTotal;
                         paymentList[i].consolidatedAmount += paymentByCus[paymentByCus.length - 1].consolidatedAmount;
                         paymentList[i].consolidatedPaidAmount = paymentByCus[paymentByCus.length - 1].consolidatedPaidAmount;
                     }
-                    idVal++;
-
                     for (var j in paymentList[i].mapping) {
-
-                        paymentDetails.id = paymentList[i].id;
 
                         paymentDetails.idVal = idVal;
                         paymentDetails.paymentReceivedDate = context.commonFact.dateFormatChange(paymentList[i].mapping[j].date);
@@ -1167,9 +1159,15 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                         }
 
                     }
+					paymentList[i].idVal = idVal;
+					if (paymentByCusMap && paymentByCusMap[paymentByCusMap.length - 1]) {
+                        paymentList[i].consolidatedAmount = paymentByCusMap[paymentByCusMap.length - 1].consolidatedAmount;
+                        paymentList[i].balanceAmountTotal = paymentByCusMap[paymentByCusMap.length - 1].balanceAmountTotal;
+                        paymentList[i].consolidatedPaidAmount = paymentByCusMap[paymentByCusMap.length - 1].consolidatedPaidAmount;
+                    } 
                     context.controller.listViewData.push(angular.copy(paymentList[i]));
                     paymentByCus.push(angular.copy(paymentList[i]));
-
+                    idVal++;
                 }
             }
         };

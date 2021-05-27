@@ -4892,7 +4892,7 @@
                                 "type": "autoComplete",
                                 "dataFrom": "marketing.customerMaster",
                                 "replaceName": "customerName",
-                                "isFilterBy": true
+                                "isFilterView": true
                             }, {
                                 "name": "Invoice",
                                 "id": "invoiceNo",
@@ -4901,7 +4901,7 @@
                                 "replaceName": "invoiceNo",
                                 "optionId": "invoiceNo",
                                 "valuePrefix": "VT-",
-                                "isFilterBy": true
+                                "isFilterView": true
                             }
                         ]
                     },
@@ -5059,7 +5059,7 @@
                                 "type": "autoComplete",
                                 "dataFrom": "marketing.customerMaster",
                                 "replaceName": "customerName",
-                                "isFilterBy": true
+                                "isFilterView": true
                             }, {
                                 "name": "Invoice",
                                 "id": "invoiceNo",
@@ -5068,7 +5068,7 @@
                                 "replaceName": "invoiceNo",
                                 "optionId": "invoiceNo",
                                 "valuePrefix": "VT-",
-                                "isFilterBy": true
+                                "isFilterView": true
                             }
                         ]
                     },
@@ -5123,7 +5123,7 @@
                                 "dataFrom": "accounts.suppilerPayment",
                                 "replaceName": "grnNo",
                                 "valuePrefix": "VT-GRN-",
-                                "isFilterBy": true,
+                                "isFilterView": true,
                                 "type": "select",
                                 "options": {}
                             }, {
@@ -5131,7 +5131,7 @@
                                 "id": "supplierCode",
                                 "dataFrom": "purchase.supplierMaster",
                                 "replaceName": "supplierName",
-                                "isFilterBy": true,
+                                "isFilterView": true,
                                 "type": "select",
                                 "options": {}
                             }, {
@@ -5140,7 +5140,7 @@
                                 "dataFrom": "accounts.suppilerPayment",
                                 "replaceName": "supplierInvoiceNo",
 								"optionId": "supplierInvoiceNo",
-                                "isFilterBy": true,
+                                "isFilterView": true,
                                 "type": "select",
                                 "options": {}
                             }
@@ -5313,7 +5313,7 @@
                                 "dataFrom": "accounts.subContractorPayment",
                                 "replaceName": "grnNo",
                                 "valuePrefix": "VT-GRN-",
-                                "isFilterBy": true,
+                                "isFilterView": true,
                                 "type": "select",
                                 "options": {}
                             }, {
@@ -5321,7 +5321,7 @@
                                 "id": "subContractorCode",
                                 "dataFrom": "purchase.subContractorMaster",
                                 "replaceName": "subContractorName",
-                                "isFilterBy": true,
+                                "isFilterView": true,
                                 "type": "select",
                                 "options": {}
                             }, {
@@ -5330,7 +5330,7 @@
                                 "dataFrom": "accounts.subContractorPayment",
                                 "replaceName": "subContractorDCCode",
 								"optionId": "subContractorDCCode",
-                                "isFilterBy": true,
+                                "isFilterView": true,
                                 "type": "select",
                                 "options": {}
                             }
@@ -5506,7 +5506,7 @@
                                 "id": "employeeCode",
                                 "dataFrom": "marketing.empMaster",
                                 "replaceName": "employeeName",
-                                "isFilterBy": true,
+                                "isFilterView": true,
                                 "type": "select",
                                 "options": {}
                             }

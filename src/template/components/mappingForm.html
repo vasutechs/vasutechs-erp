@@ -35,7 +35,8 @@
                 </tr>
             </tbody>
         </table>
-        <div class="row" ng-if="!context.controller.page.printView && (context.controller.form.mapping.actions.add || context.controller.form.mapping.actions.add==undefined)">
+		{{context.controller.form.mapping}}
+        <div class="row" ng-if="!context.controller.page.printView && (context.controller.form.mapping.actions.add || context.controller.form.mapping.actions === undefined || context.controller.form.mapping.actions.add==undefined)">
             <div class="col">
                 <a class="fa fa-fw fa-plus-square-o" href="javascript: void(0);" ng-click="context.commonFact.addMapping(context.controller.data.mapping)"> </a>
             </div>
