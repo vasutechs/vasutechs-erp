@@ -1169,7 +1169,12 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     paymentByCus.push(angular.copy(paymentList[i]));
                     idVal++;
                 }
-            }
+            },
+			syncServer: function(){
+				context.commonFact.getData('syncServer').then(function(res){
+					console.log(res);
+				});
+			}
         };
     };
 };

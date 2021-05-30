@@ -89,6 +89,17 @@
                 "disableMenu": true,
                 "defaultRelease": true
             },
+            "syncServer": {
+                "id": "syncServer",
+                "name": "Sync Server",
+                "title": "Sync Server",
+                "disableMenu": true,
+                "defaultRelease": true,
+				"page": {
+					"link": "syncServer",
+					"name": "list"
+				}
+            },
             "calendarYear": {
                 "id": "calendarYear",
                 "name": "Calendar Year",

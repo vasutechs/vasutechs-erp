@@ -32,6 +32,11 @@
                         <option value="">--Select--</option>
                     </select>
                 </li>
+				<!-- <li ng-if="!context.erpAppConfig.modules.controllers['syncServer'].disable" class="nav-item">
+				<a class="nav-link" title="Sync to Server" ng-click="context.commonFact.syncServer()">
+					<i class="fa fa-fw fa-refresh"></i>
+				</a>
+				</li> -->
                 <li ng-if="!context.erpAppConfig.modules.controllers['databaseUpload'].disable" class="nav-item">
                     <a class="nav-link" title="Import data" href="#!{{context.erpAppConfig.modules.controllers['databaseUpload'].page.link}}">
                         <i class="fa fa-fw fa-upload"></i>
