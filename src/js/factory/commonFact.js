@@ -516,7 +516,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                         context.controller.filterBy[list.id] = list.selectedFilterBy;
                     }
                 }
-				
+
             },
             getFlowMaster: function () {
                 context.controller.flowMasterData = {};
@@ -1122,6 +1122,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 var paymentDetails = {};
                 var paymentByCus = [];
                 var paymentByCusMap = [];
+				var isSinglePaymentReceivedAmount;
                 context.controller.listViewData = [];
                 context.controller.form.mapping.actions = {};
                 context.controller.orderByProperty = 'idVal';
@@ -1129,9 +1130,12 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 var idVal = 0;
                 paymentList = Object.keys(context.controller.filterView.data).length > 0 && context.commonFact.findObjectByKey(paymentList, context.controller.filterView.data, null, true) || paymentList;
                 for (var i in paymentList) {
-                    
+					isSinglePaymentReceivedAmount = false;
                     paymentList[i].consolidatedAmount = paymentList[i].total;
                     paymentList[i].balanceAmountTotal = paymentList[i].total;
+                    if (paymentList[i].date) {
+                        paymentList[i].date = context.commonFact.dateFormatChange(paymentList[i].date);
+                    }
                     if (paymentByCus && paymentByCus[paymentByCus.length - 1]) {
                         paymentList[i].balanceAmountTotal += paymentByCus[paymentByCus.length - 1].balanceAmountTotal;
                         paymentList[i].consolidatedAmount += paymentByCus[paymentByCus.length - 1].consolidatedAmount;
@@ -1153,28 +1157,29 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                             paymentDetails.balanceAmountTotal = paymentList[i].consolidatedAmount - paymentDetails.consolidatedPaidAmount;
                         }
                         if (paymentDetails.paymentReceivedAmount) {
+							isSinglePaymentReceivedAmount = true;
                             context.controller.listViewData.splice(0, 0, angular.copy(paymentDetails));
                             paymentByCusMap.push(angular.copy(paymentDetails));
                             idVal++;
                         }
 
                     }
-					paymentList[i].idVal = idVal;
-					if (paymentByCusMap && paymentByCusMap[paymentByCusMap.length - 1]) {
+                    paymentList[i].idVal = idVal;
+                    if (paymentByCusMap && paymentByCusMap[paymentByCusMap.length - 1] && isSinglePaymentReceivedAmount) {
                         paymentList[i].consolidatedAmount = paymentByCusMap[paymentByCusMap.length - 1].consolidatedAmount;
                         paymentList[i].balanceAmountTotal = paymentByCusMap[paymentByCusMap.length - 1].balanceAmountTotal;
                         paymentList[i].consolidatedPaidAmount = paymentByCusMap[paymentByCusMap.length - 1].consolidatedPaidAmount;
-                    } 
+                    }
                     context.controller.listViewData.push(angular.copy(paymentList[i]));
                     paymentByCus.push(angular.copy(paymentList[i]));
                     idVal++;
                 }
             },
-			syncServer: function(){
-				context.commonFact.getData('syncServer').then(function(res){
-					console.log(res);
-				});
-			}
+            syncServer: function () {
+                context.commonFact.getData('syncServer').then(function (res) {
+                    console.log(res);
+                });
+            }
         };
     };
 };

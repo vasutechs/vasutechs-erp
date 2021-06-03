@@ -20,7 +20,7 @@ module.exports = function(config) {
                     data = dbApi.uploadDb(inputData, dbConfig);
                 }
 				else if(table === 'syncServer'){
-					data = config.task.storeDataServer(dbConfig);
+					data = config.task.storeDataServer(dbConfig, inputData, query);
 				}
 				else if (req.method === 'POST') {
                     if (inputData.password) {

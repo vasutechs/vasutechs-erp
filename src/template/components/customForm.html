@@ -20,7 +20,7 @@
             </div>
             <div ng-switch-when="multiSelect" class="col-6">
                 <select id="{{field.id}}" class="form-control" ng-model="context.controller.data[field.id]" ng-required="{{field.required}}" ng-change="context.commonFact.callActions(field.action,[context.controller.data, context.controller.data[field.id], field])" ng-options="option.optionId as option.optionName for option in field.options"
-                    ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])">
+                    ng-disabled="field.isDisable || (field.isEditDisable && context.controller.data[context.controller.form.disableByField])" multiple>
                     <option value="">--Select--</option>
                 </select>
             </div>

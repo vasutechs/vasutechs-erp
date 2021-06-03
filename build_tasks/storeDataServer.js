@@ -1,5 +1,5 @@
 module.exports = function (config) {
-    config.task.storeDataServer = function () {
+    config.task.storeDataServer = function (dbConfig, inputData, query) {
         const fs = require('fs');
         const readline = require('readline');
         const {
@@ -17,11 +17,11 @@ module.exports = function (config) {
             }
         };
         const token = {
-            "access_token": "ya29.a0AfH6SMBo_QKIcDt1GnfshcXXatyc7cqUNHBT6KY3LFa_a5vtgupidQjYs3yzk0OTRHYWJo3b3JfTuvZiuRZyHLL_TsvfcxDw6MRstntWBQ04AyG9p3ls5jOTvAivKYpUTVYC6UpgSL8VSmilItajBgFOyZsQifcaptlT5QIxT1M",
-            "refresh_token": "1//0gjLJO78aoEGPCgYIARAAGBASNwF-L9IrEHpj_kDFqFUd5NjEIcuXFk3EcYMghaiSEZzkbGk4V5AoqYZvRHtm4An4GN2-W3BrMQ8",
+            "access_token": "ya29.a0AfH6SMDKB3actljmtBXNXsWXBXWBd19hkQ4aOMzIESx-jvdEPXuLRXnTI-X-PnVS6PpjFM2oCi4m-tGsycYUONrg1Boc58UNWiYd0gAyUQE39XSVf-bzt-M2E7MiUHcSrq58sbEF126DiDq9_udNk64-wy7m",
+            "refresh_token": "1//0fSVkbFnMLOxtCgYIARAAGA8SNwF-L9IrRKn3ywho5-xfxQqgrutRHzc5apD01uHAYNe9UtNj2RqXVW5A9GOEPCCJLHJWIFJhHTw",
             "scope": "https://www.googleapis.com/auth/drive.file",
             "token_type": "Bearer",
-            "expiry_date": 1609941416860
+            "expiry_date": 1622565110757
         };
         // If modifying these scopes, delete token.json.
         const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
@@ -29,6 +29,8 @@ module.exports = function (config) {
             name: 'Vasutechs-erp-data',
             id: '1JYYtuQM5FkWCUP41DRUx7IB-3V3EdbZr'
         };
+        var appCustomer = inputData && inputData.appCustomer || query && query.appCustomer;
+        appCustomer = appCustomer ? 'appCustomer-' + appCustomer : '';
 
         /**
          * Create an OAuth2 client with the given credentials, and then execute the
@@ -90,46 +92,55 @@ module.exports = function (config) {
                 version: 'v3',
                 auth,
             });
+            var query = `'${erpFolderDetails.id}' in parents`;
+            query = appCustomer ? query + ` and name contains '${appCustomer}'` : query;
+            console.log(query);
             drive.files.list({
-                q:  `'${erpFolderDetails.id}' in parents`,
+                q: query,
                 fields: 'nextPageToken, files(id, name)',
             }, (err, res) => {
-                if (err){
-					createFolder(auth);
+                if (err) {
                     return console.log('The API returned an error: ' + err);
-				}
+                }
                 const files = res.data.files;
-                
-				syncFiles(auth, files);
+
+                syncFiles(auth, files);
             });
         }
-		function syncFiles(auth, files){
-			var listOfDbs = config.task.getListDb();
-			console.log('List of dbs', listOfDbs);
-			if (files.length) {
-                    console.log('Files:');
-                    files.map((file) => {
-                        console.log(`${file.name} (${file.id})`);
-                        if (file.name === erpFolderDetails.name) {
-                            foundErpFolder = true;
-							uploadFile(auth);
-                        }
-                    });
-					
-                } else {
-                    for(var db in listOfDbs){
-						
-					}
+        function syncFiles(auth, files) {
+            var listOfDbs = config.task.getListDb(appCustomer);
+			var found;
+            console.log('List of dbs', appCustomer, listOfDbs);
+            if (files.length) {
+                console.log('Files:', files);
+                for (var db in listOfDbs) {
+                    found = Object.keys(files).filter(function (key) {
+						return files[key].name === listOfDbs[db].name;
+                    }) || false;
+					console.log(found);
+					if (!found || found.length ===0) {
+                        //uploadFile(auth, listOfDbs[db].name);
+                    }
                 }
-			config.apiProRes(files);
-		}
-        function createFolder(auth) {
+
+            } else {
+                console.log('Upload List of dbs', listOfDbs);
+                for (var db in listOfDbs) {
+                    uploadFile(auth, listOfDbs[db].name);
+                }
+            }
+            config.apiProRes(files);
+        }
+        function createFolder(auth, folderId, parentId) {
             const drive = google.drive({
                 version: 'v3',
                 auth
             });
+            var folder = folderId || erpFolderDetails.name;
+            var parents = parentId ? [parentId] : [erpFolderDetails.id];
             var fileMetadata = {
-                'name': erpFolderDetails.name,
+                'name': folder,
+                parents,
                 'mimeType': 'application/vnd.google-apps.folder'
             };
             drive.files.create({
@@ -143,7 +154,7 @@ module.exports = function (config) {
                     console.log('Folder Id: ', file.data.id);
                     erpFolderDetails.id = file.data.id;
                 }
-				listFiles(auth);
+                listFiles(auth);
             });
 
         }
@@ -153,14 +164,14 @@ module.exports = function (config) {
                 version: 'v3',
                 auth
             });
+
             var fileMetadata = {
-                'mimeType': 'application/vnd.google-apps.file',
-				 parents: [erpFolderDetails.id]
+                'name': fileName,
+                parents: [erpFolderDetails.id]
             };
             var media = {
-                mimeType: 'text/plain',
-                body: fs.createReadStream(fileName)
-
+                mimeType: 'application/json',
+                body: fs.createReadStream('data/' + fileName)
             };
             drive.files.create({
                 resource: fileMetadata,

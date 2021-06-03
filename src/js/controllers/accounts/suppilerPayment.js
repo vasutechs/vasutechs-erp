@@ -22,7 +22,7 @@ erpConfig.moduleFiles.suppilerPayment = function(context) {
             context.controller.data.total = grnMap.total;
             context.controller.data.supplierInvoiceDate = context.commonFact.dateFormatChange(context.controller.data.supplierInvoiceDate);
             context.controller.data.balanceAmount = context.controller.data.total;
-			context.controller.data.date = context.commonFact.dateFormatChange(context.controller.data.date);
+			context.controller.data.date = new Date(context.controller.data.date);
         },
         updateBalanceAmount: function() {
             var amount = 0;

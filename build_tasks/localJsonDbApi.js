@@ -94,15 +94,16 @@ module.exports = function (config) {
         };
 
         var getListDb = function (newDir, newListDb) {
-            var dir = newDir || "data";
-            var files = fs.readdirSync(dir);
+			var dataDir = 'data/';
+            var dir = newDir ? newDir + '/' :'';
+            var files = fs.readdirSync(dataDir + dir);
             var listDb = newListDb || [];
             for (var i in files) {
-                var name = dir + '/' + files[i];
-                if (fs.statSync(name).isDirectory()) {
+                var name = dir + files[i];
+                if (fs.statSync(dataDir + name).isDirectory()) {
                     getListDb(name, listDb);
                 } else {
-                    listDb.push(name);
+                    listDb.push({'name': name});
                 }
             }
             return listDb;

@@ -311,7 +311,7 @@
                             "id": "id",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true
                         }, {
                             "name": "Part Name",
@@ -4950,7 +4950,9 @@
                             "date": {
                                 "name": "Invoice Date",
                                 "id": "date",
-                                "type": "span"
+								"type": "input",
+                                "inputType": "date",
+                                "isEditDisable": true
                             },
                             "total": {
                                 "name": "Total",
@@ -5461,10 +5463,10 @@
                             "name": "Consolidated Amount",
                             "id": "consolidatedAmount"
                         }, {
-                            "name": "Payment Received Date",
+                            "name": "Payment Paid Date",
                             "id": "paymentReceivedDate"
                         }, {
-                            "name": "Payment Received Amount",
+                            "name": "Payment Paid Amount",
                             "id": "paymentReceivedAmount"
                         }, {
                             "name": "Consolidated Paid Amount",

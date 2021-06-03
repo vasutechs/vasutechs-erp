@@ -22,11 +22,12 @@ erpConfig.moduleFiles.customerPaymentInvoice = function (context) {
             if (context.controller.data.balanceAmount <= 0) {
                 context.controller.form.mapping.actions.add = false;
             }
-            context.controller.data.date = context.commonFact.dateFormatChange(context.controller.data.date);
+			context.controller.data['date'] = new Date(context.controller.form.fields['invoiceNo'].options[context.controller.data['invoiceNo']].date);
+			console.log(context.controller.data);
         },
         callBackChangeMapping: function () {
             context.controller.data.balanceAmount = context.controller.data.total;
-            context.controller.data['date'] = context.commonFact.dateFormatChange(context.controller.data['date']);
+            context.controller.data['date'] = new Date(context.controller.data['date']);
         },
         updateBalanceAmount: function (data) {
             var amount = 0;
