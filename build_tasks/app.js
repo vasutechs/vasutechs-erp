@@ -20,7 +20,7 @@ var app = function() {
     };
 	var storeDataServer = function(){
 		config.dbApi();
-		config.storeDataServer();
+		config.task.storeDataServer();
 	}
 
     config.arg = arg;

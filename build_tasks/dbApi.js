@@ -18,7 +18,11 @@ module.exports = function(config) {
                     data = dbApi.getYearListDb(dbConfig);
                 } else if (table === 'databaseUpload') {
                     data = dbApi.uploadDb(inputData, dbConfig);
-                } else if (req.method === 'POST') {
+                }
+				else if(table === 'syncServer'){
+					data = config.task.storeDataServer(dbConfig, inputData, query);
+				}
+				else if (req.method === 'POST') {
                     if (inputData.password) {
                         inputData.password = cryptr.encrypt(inputData.password);
                     }
