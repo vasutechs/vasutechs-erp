@@ -4658,8 +4658,12 @@ module.run(['$templateCache', function($templateCache) {
     '						</div>\n' +
     '					</div>\n' +
     '                </div>\n' +
+    '				<br>\n' +
     '                <div class="modal-footer">\n' +
     '                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="context.commonFact.syncServer(\'both\')">Sync Both</button>\n' +
+    '					\n' +
+    '					<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="context.commonFact.syncServer(\'both\')">Sync from local to server</button>\n' +
+    '					<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="context.commonFact.syncServer(\'download\')">Sync from server to local</button>\n' +
     '					<button type="button" class="btn btn-primary" ng-click="context.commonFact.localBackUpDb()">Take local Backup</button>\n' +
     '                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>\n' +
     '                </div>\n' +

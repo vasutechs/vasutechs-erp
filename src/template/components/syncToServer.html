@@ -42,8 +42,12 @@
 						</div>
 					</div>
                 </div>
+				<br>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="context.commonFact.syncServer('both')">Sync Both</button>
+					
+					<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="context.commonFact.syncServer('both')">Sync from local to server</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="context.commonFact.syncServer('download')">Sync from server to local</button>
 					<button type="button" class="btn btn-primary" ng-click="context.commonFact.localBackUpDb()">Take local Backup</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
