@@ -18,10 +18,6 @@ var app = function() {
         createServer();
         config.dbApi();
     };
-	var storeDataServer = function(){
-		config.dbApi();
-		config.task.storeDataServer();
-	}
 
     config.arg = arg;
     config.app = express();
@@ -47,7 +43,6 @@ var app = function() {
     });
 
     config.arg.run && server();
-	config.arg.storeDataServer && storeDataServer();
 }
 
 module.exports = app();
