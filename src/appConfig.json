@@ -6071,6 +6071,9 @@
             },
             "autoComplete": {
                 "id": "autoComplete"
+            },
+            "syncToServer": {
+                "id": "syncToServer"
             }
         },
         "filters": {

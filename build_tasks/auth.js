@@ -1,26 +1,27 @@
-module.exports = function(config) {
+module.exports = function (config) {
     var authApis = {
         '/api/auth/logout': 'authLogout',
         '/api/auth/login': 'authLogin',
         '/api/auth/appCustomerlogin': 'appCustomerlogin',
         '/api/auth/checkLoggedIn': 'checkLoggedIn',
         '/api/auth/removeAppCustomer': 'removeAppCustomer',
-        '/api/auth/getAppCustomer': 'getAppCustomer'
+        '/api/auth/getAppCustomer': 'getAppCustomer',
+        '/api/auth/downloadAppCustomers': 'downloadAppCustomers'
     };
 
     var apiMethods = {
-        authLogout: function(req, res, next) {
+        authLogout: function (req, res, next) {
             req.session.destroy();
             return {};
         },
-        authLogin: function(req, res) {
+        authLogin: function (req, res) {
             var data = config.task.login(req, true) || config.task.login(req) || null;
 
-            return data && data.then && data.then(function(resData) {
+            return data && data.then && data.then(function (resData) {
                 return resData.userName && setAuthSession(req, resData) || data;
             }) || data.userName && setAuthSession(req, data) || data;
         },
-        appCustomerlogin: function(req, res) {
+        appCustomerlogin: function (req, res) {
             var user = req.session.auth || {};
             var inputData = req.body;
             var query = req.query;
@@ -33,16 +34,16 @@ module.exports = function(config) {
             }
             return data;
         },
-        restrictedDbData: function(req, res) {
+        restrictedDbData: function (req, res) {
             var data;
             if (checkSuperAdminUser(req)) {
-                data = config.task.dbData(req, res, true);
+				data = config.task.dbData(req, res, true);
             }
-            data && data.then && data.then(function(resData) {
+            data && data.then && data.then(function (resData) {
                 returnRes(res, resData);
             }) || returnRes(res, data);
         },
-        removeAppCustomer: function(req, res) {
+        removeAppCustomer: function (req, res) {
             var query = req.query;
             var data;
             if (query.appCustomer) {
@@ -51,59 +52,70 @@ module.exports = function(config) {
             }
             return data;
         },
-        getAppCustomer: function(req, res) {
+        getAppCustomer: function (req, res) {
             var data;
-            data = config.task.dbData({ params: { table: 'appCustomers' } }, {}, true);
+            data = config.task.dbData({
+                params: {
+                    table: 'appCustomers'
+                }
+            }, {}, true);
             return data;
         },
-        downloadAppCustomers: function(req, res) {
+        downloadAppCustomers: function (req, res) {
             var apiPromise = config.apiPromise();
-            if (checkSuperAdminUser(req) && req.query.id) {
-                var releaseProjectData = config.task.dbData({ params: { table: 'appCustomers' }, query: req.query }, {}, true);
-                var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
-                if (releaseProjectData) {
-                    config.task.releaseProject(req, res, releaseProjectData);
-                    apiPromise.then(function(resData) {
+            return new Promise(function(resolve, reject) {
+                if (checkSuperAdminUser(req) && req.query.id) {
+                    var releaseProjectData = config.task.dbData({
+                        params: {
+                            table: 'appCustomers'
+                        },
+                        query: req.query
+                    }, {}, true);
+                    var projectName = config.release.namePefix + releaseProjectData.companyName + '.zip';
+                    if (releaseProjectData) {
+                        config.task.releaseProject(req, res, releaseProjectData);
+                        apiPromise.then(function (resData) {
 
-                        res.writeHead(200, {
-                            'Content-Type': 'application/octet-stream',
-                            'Content-Disposition': 'attachment; filename=' + projectName,
-                            'Content-Length': resData.length
+                            res.set({
+                                'Content-Type': 'application/octet-stream',
+                                'Content-Disposition': 'attachment; filename=' + projectName,
+                                'Content-Length': resData.length
+                            });
+
+                            resolve(resData);
                         });
-
-                        res.end(resData);
-                    });
+                    } else {
+                        resolve({});
+                    }
                 } else {
-                    res.status(401).send({});
+                    resolve({});
                 }
-            } else {
-                res.status(401).send({});
-            }
+            });
         },
-        checkLoggedIn: function(req, res) {
+        checkLoggedIn: function (req, res) {
             var data;
             if (req.session.auth && req.session.auth.loggedIn) {
                 data = req.session.auth;
             }
             return data;
         },
-        getTableData: function(req, res) {
+        getTableData: function (req, res) {
             var data;
             if (checkUser(req)) {
-                data = config.task.dbData(req);
+                data = config.task.dbData(req, res);
             }
-            data && data.then && data.then(function(resData) {
+            data && data.then && data.then(function (resData) {
                 returnRes(res, resData);
             }) || returnRes(res, data);
         }
     }
 
-    var setAuthSession = function(req, data) {
+    var setAuthSession = function (req, data) {
         req.session.auth = data;
         return data;
     };
 
-    var checkSuperAdminUser = function(req) {
+    var checkSuperAdminUser = function (req) {
         var user = req.session.auth;
         if (user && user.loggedIn && user.userType === 'SUPERADMIN') {
             return true;
@@ -112,20 +124,20 @@ module.exports = function(config) {
         }
     };
 
-    var checkUser = function(req) {
-        var user = req.session.auth || {};
-        var inputData = req.body;
-        var query = req.query;
-        var appCustomer = inputData.appCustomer || query.appCustomer;
+    var checkUser = function (req) {
+        var user = req && req.session.auth || {};
+        var inputData = req && req.body;
+        var query = req && req.query;
+        var appCustomer = inputData && inputData.appCustomer || query && query.appCustomer;
         var userAppCustomer = user.appCustomer;
         if (user && user.loggedIn && (appCustomer === userAppCustomer.toString() || user.userType === 'SUPERADMIN')) {
-            return true;
+            return user;
         } else {
             return false;
         }
     };
 
-    var returnRes = function(res, data) {
+    var returnRes = function (res, data) {
         if (data) {
             res.status(200).send(data);
         } else {
@@ -133,20 +145,20 @@ module.exports = function(config) {
         }
     };
 
-    var callAuthApis = function(req, res) {
+    var callAuthApis = function (req, res) {
         var api = req.baseUrl;
         var data = authApis[api] && apiMethods[authApis[api]] && apiMethods[authApis[api]](req, res);
-        data && data.then && data.then(function(resData) {
+        data && data.then && data.then(function (resData) {
             returnRes(res, resData);
         }) || returnRes(res, data);
 
     };
 
+    config.task.checkUser = checkUser;
     for (var apiUrl in authApis) {
         config.app.use(apiUrl, callAuthApis);
     }
 
-    config.app.use("/api/auth/downloadAppCustomers", apiMethods.downloadAppCustomers);
     config.app.use("/api/auth/restrict/:table", apiMethods.restrictedDbData);
     config.app.use("/api/auth/data/:table", apiMethods.getTableData);
 

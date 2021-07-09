@@ -1,5 +1,6 @@
 <div class="container-fluid">
     <alert-rol></alert-rol>
+	<sync-to-server></sync-to-server>
     <div class="mb-3">
         <h3>{{context.controller.title}}</h3>
         <ul class="navbar-nav" ng-if="context.authFact.isLogged() && context.erpLoaded">
@@ -19,5 +20,10 @@
                 </ul>
             </li>
         </ul>
+    </div>
+	<div ng-if="context.showLoading" id="overlay-loader" class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
     </div>
 </div>

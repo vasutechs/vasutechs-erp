@@ -1,0 +1,53 @@
+<div>
+    <div class="modal fade" id="syncToServer" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Sync To Server</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+				 <div class="modal-body modal-Scroll">
+					<div class="row">
+						<div class="col-6">
+							<h5><u>List of Local DB:</u></h5>
+							<div ng-repeat="(key, localDb) in context.syncToServerData.listOfLocalDbs | orderBy:'name'">
+								<b>{{key+1}}) DB Name:</b> {{localDb.name}}
+							</div>
+						</div>
+						<div class="col-6">
+							<h5><u>List of Server DB:</u></h5>
+							<div ng-repeat="(key, serverDb) in context.syncToServerData.listOfServerDbs | orderBy:'name'">
+								<b>{{key+1}}) DB Name:</b> {{serverDb.name}}
+							</div>
+						</div>
+					</div>
+					<br>
+					<br>
+					<div class="row">
+						<div class="col-6">
+							<h5><u>List of local DB going to upload/replace to server:</u></h5>
+							<div ng-repeat="(key, dbListUpload) in context.syncToServerData.dbListUpload | orderBy:'name'">
+								<b>{{key + 1}}) DB Name:</b> {{dbListUpload.name}}
+								<b> Updated:</b> {{context.commonFact.dateFormatChange(dbListUpload.updated)}} :  {{context.commonFact.timeFormatChange(dbListUpload.updated)}}
+								<br>
+							</div>
+						</div>
+						<div class="col-6">
+							<h5><u>List of server DB going to dowwnload/replace to local:</u></h5>
+							<div ng-repeat="(key, dbListDownload) in context.syncToServerData.dbListDownload | orderBy:'name'">
+								<b>{{key + 1}}) DB Name:</b> {{dbListDownload.name}}
+								<b>Updated:</b> {{context.commonFact.dateFormatChange(dbListDownload.updated)}} :  {{context.commonFact.timeFormatChange(dbListDownload.updated)}}
+								<br>
+							</div>
+						</div>
+					</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="context.commonFact.syncServer('both')">Sync Both</button>
+					<button type="button" class="btn btn-primary" ng-click="context.commonFact.localBackUpDb()">Take local Backup</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

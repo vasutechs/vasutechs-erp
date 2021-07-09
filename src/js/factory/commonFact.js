@@ -1122,7 +1122,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 var paymentDetails = {};
                 var paymentByCus = [];
                 var paymentByCusMap = [];
-				var isSinglePaymentReceivedAmount;
+                var isSinglePaymentReceivedAmount;
                 context.controller.listViewData = [];
                 context.controller.form.mapping.actions = {};
                 context.controller.orderByProperty = 'idVal';
@@ -1130,7 +1130,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 var idVal = 0;
                 paymentList = Object.keys(context.controller.filterView.data).length > 0 && context.commonFact.findObjectByKey(paymentList, context.controller.filterView.data, null, true) || paymentList;
                 for (var i in paymentList) {
-					isSinglePaymentReceivedAmount = false;
+                    isSinglePaymentReceivedAmount = false;
                     paymentList[i].consolidatedAmount = paymentList[i].total;
                     paymentList[i].balanceAmountTotal = paymentList[i].total;
                     if (paymentList[i].date) {
@@ -1157,7 +1157,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                             paymentDetails.balanceAmountTotal = paymentList[i].consolidatedAmount - paymentDetails.consolidatedPaidAmount;
                         }
                         if (paymentDetails.paymentReceivedAmount) {
-							isSinglePaymentReceivedAmount = true;
+                            isSinglePaymentReceivedAmount = true;
                             context.controller.listViewData.splice(0, 0, angular.copy(paymentDetails));
                             paymentByCusMap.push(angular.copy(paymentDetails));
                             idVal++;
@@ -1175,11 +1175,30 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     idVal++;
                 }
             },
-            syncServer: function () {
-                context.commonFact.getData('syncServer').then(function (res) {
-                    console.log(res);
+            getSyncServerData: function () {
+                context.commonFact.getData({
+                    dataUri: context.commonFact.isSuperAdmin() ? 'restrict/syncServer' : 'data/syncServer',
+                    cache: false
+                }).then(function (res) {
+                    context.syncToServerData = res.data;
+                    angular.element('#syncToServer').modal('show');
                 });
-            }
+            },
+            syncServer: function (syncType) {
+               context.commonFact.updateData({
+                        dataUri: context.commonFact.isSuperAdmin() ? 'restrict/syncServer' : 'data/syncServer',
+                        cache: false,
+                        params: {
+                            syncType: syncType
+                        }
+                    }, context.syncToServerData).then(function (res) {
+                        console.log(res);
+                    });
+ 
+            },
+			localBackUpDb: function(){
+				window.open('/api/localBackUpDb');
+			}
         };
     };
 };

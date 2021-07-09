@@ -151,7 +151,6 @@ module.exports = function (config) {
         var packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
         delete packageJson.scripts['app-build'];
         delete packageJson.scripts['app-qa'];
-        delete packageJson.devDependencies['adm-zip'];
         delete packageJson.devDependencies['gulp'];
         delete packageJson.devDependencies['gulp-concat'];
         delete packageJson.devDependencies['gulp-ng-html2js'];

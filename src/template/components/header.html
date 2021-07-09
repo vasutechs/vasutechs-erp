@@ -32,11 +32,7 @@
                         <option value="">--Select--</option>
                     </select>
                 </li>
-				<!-- <li ng-if="!context.erpAppConfig.modules.controllers['syncServer'].disable" class="nav-item">
-				<a class="nav-link" title="Sync to Server" ng-click="context.commonFact.syncServer()">
-					<i class="fa fa-fw fa-refresh"></i>
-				</a>
-				</li> -->
+				
                 <li ng-if="!context.erpAppConfig.modules.controllers['databaseUpload'].disable" class="nav-item">
                     <a class="nav-link" title="Import data" href="#!{{context.erpAppConfig.modules.controllers['databaseUpload'].page.link}}">
                         <i class="fa fa-fw fa-upload"></i>
@@ -50,6 +46,11 @@
                 </li>
             </ul>
             <ul ng-if="context.erpAppConfig.modules.controllers" class="navbar-nav">
+			<li ng-if="!context.erpAppConfig.modules.controllers['syncServer'].disable" class="nav-item">
+				<a class="nav-link" title="Sync to Server" ng-click="context.commonFact.getSyncServerData()">
+					<i class="fa fa-fw fa-refresh"></i>
+				</a>
+				</li>
                 <li class="nav-item">
                     <a title="Logout" class="nav-link" href="#!{{context.erpAppConfig.modules.controllers['login'].page.link}}?type=logout">
                         <i class="fa fa-fw fa-sign-out"></i>
@@ -72,7 +73,8 @@
                     </div>
                     <div class="modal-body modal-Scroll">
                         <a href="" ng-click="context.commonFact.downloadDatabase()"> Master database</a> ||
-                        <a href="" ng-click="context.commonFact.downloadDatabase(true)"> Current Year database</a>
+                        <a href="" ng-click="context.commonFact.downloadDatabase(true)"> Current Year database</a> ||
+						<a href="" ng-click="context.commonFact.localBackUpDb()"> Get all databases</a>
                     </div>
                 </div>
             </div>
