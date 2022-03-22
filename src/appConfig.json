@@ -280,12 +280,6 @@
                                 "id": "isAssemblePart",
                                 "type": "input",
                                 "inputType": "checkbox"
-                            },
-                            "isAssemblePart": {
-                                "name": "Is Assemble Part",
-                                "id": "isAssemblePart",
-                                "type": "input",
-                                "inputType": "checkbox"
                             }
                         },
                         "mapping": {
@@ -414,7 +408,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "marketing.partMaster",
@@ -575,7 +569,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "action": "changeMapping",
                                     "dataFrom": "marketing.partMaster",
@@ -1038,7 +1032,7 @@
                             "replaceName": "rmName",
                             "valuePrefixData": "grade",
                             "isFilterBy": true,
-                            "type": "select",
+                            "type": "autoComplete",
                             "options": {}
                         }
                     ],
@@ -1139,7 +1133,7 @@
                                 "id": {
                                     "name": "RM Name",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "purchase.rmMaster",
@@ -1432,7 +1426,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "marketing.partMaster",
@@ -1728,7 +1722,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "select",
+                                    "type": "autoComplete",
                                     "options": {},
                                     "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "marketing.partMaster",
