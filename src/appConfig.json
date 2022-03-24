@@ -569,7 +569,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "autoComplete",
+                                    "type": "select",
                                     "options": {},
                                     "action": "changeMapping",
                                     "dataFrom": "marketing.partMaster",
@@ -822,7 +822,10 @@
                                 "rate": {
                                     "name": "Rate",
                                     "id": "rate",
-                                    "type": "span"
+                                    "type": "input",
+                                    "inputType": "text",
+                                    "action": "updateTotal",
+                                    "required": true
                                 },
                                 "amount": {
                                     "name": "Amount",
@@ -1133,7 +1136,7 @@
                                 "id": {
                                     "name": "RM Name",
                                     "id": "id",
-                                    "type": "autoComplete",
+                                    "type": "select",
                                     "options": {},
                                     "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "purchase.rmMaster",
@@ -1426,7 +1429,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "autoComplete",
+                                    "type": "select",
                                     "options": {},
                                     "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "marketing.partMaster",
@@ -1722,7 +1725,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "autoComplete",
+                                    "type": "select",
                                     "options": {},
                                     "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "marketing.partMaster",
