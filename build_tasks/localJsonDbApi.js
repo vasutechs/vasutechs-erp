@@ -1,4 +1,5 @@
 module.exports = function (config) {
+	var AdmZip = require('adm-zip');
     config.localJsonDbApi = function () {
         var del = require('del');
         var fs = require('fs');
@@ -18,7 +19,7 @@ module.exports = function (config) {
             return dbConfig.currentDb.getData('/');
         };
 
-        var setTableData = function (table, dbConfig, inputData, query) {
+        var setTableData = function (table, dbConfig, inputData, query, notUpdateDate) {
             var lastData,
             newId,
             id = '';
@@ -43,7 +44,7 @@ module.exports = function (config) {
                     inputData['updated'] = new Date();
                     dbConfig.currentDb.push('/tables/' + table, inputData, true);
                     data = getTableData(table, dbConfig);
-                    updateDatabaseDetails(dbConfig, inputData);
+                    !notUpdateDate && updateDatabaseDetails(dbConfig, inputData);
                 }
 
             } catch (error) {
@@ -57,11 +58,16 @@ module.exports = function (config) {
             var details = {
                 id: 1,
                 type: dbConfig.type || 'appMaster',
-                year: dbConfig.year,
-                appCustomer: dbConfig.appCustomer,
-                updated: new Date(),
+				updated: new Date(),
                 updatedUserId: inputData.updatedUserId
             };
+
+			if(dbConfig.type){
+				details = Object.assign(details, { type: dbConfig.type});
+			}
+			if(dbConfig.appCustomer){
+				details = Object.assign(details, { appCustomer: dbConfig.appCustomer});
+			}
             dbConfig.currentDb.push('/tables/databaseDetails/1', details, true);
         };
 
@@ -94,21 +100,22 @@ module.exports = function (config) {
         };
 
         var getListDb = function (newDir, newListDb) {
-            var dir = newDir || "data";
-            var files = fs.readdirSync(dir);
+			var dataDir = 'data/';
+            var dir = newDir ? newDir + '/' :'';
+            var files = fs.readdirSync(dataDir + dir);
             var listDb = newListDb || [];
             for (var i in files) {
-                var name = dir + '/' + files[i];
-                if (fs.statSync(name).isDirectory()) {
+                var name = dir + files[i];
+                if (fs.statSync(dataDir + name).isDirectory()) {
                     getListDb(name, listDb);
                 } else {
-                    listDb.push(name);
+                    listDb.push({'name': name});
                 }
             }
             return listDb;
         };
 
-        var setCustomerCurrentDb = function (appCustomer, year, masterDb) {
+        var setCustomerCurrentDb = function (appCustomer, year, masterDb, dbPath) {
             var dbConfig = {};
             if (appCustomer && !masterDb) {
                 if (year) {
@@ -125,6 +132,10 @@ module.exports = function (config) {
                 dbConfig.currentDb = new JsonDB("./data/database", true, true);
                 return dbConfig;
             }
+			else if(dbPath){
+				dbConfig.currentDb = new JsonDB(dbPath, true, true);
+                return dbConfig;
+			}
             return false;
         };
 
@@ -137,6 +148,17 @@ module.exports = function (config) {
         var deleteCustomer = function (appCustomer) {
             del(["./data/appCustomer-" + appCustomer]);
         };
+		
+		var localBackUpDb = function(res) {
+            const zip = new AdmZip();
+            zip.addLocalFolder('./data');
+            const resData = zip.toBuffer();
+            res.set({
+                'Content-Type': 'application/octet-stream',
+                'Content-Disposition': 'attachment; filename=database.zip',
+                'Content-Length': resData.length
+            });
+        }
 
         return {
             getTableData: getTableData,
@@ -147,7 +169,8 @@ module.exports = function (config) {
             setCustomerCurrentDb: setCustomerCurrentDb,
             updateDatabaseDetails: updateDatabaseDetails,
             downloadDb: downloadDb,
-            getListDb: getListDb
+            getListDb: getListDb,
+			localBackUpDb: localBackUpDb
         };
     };
 };
