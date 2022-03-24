@@ -408,7 +408,7 @@
                                 "id": {
                                     "name": "Part No",
                                     "id": "id",
-                                    "type": "autoComplete",
+                                    "type": "select",
                                     "options": {},
                                     "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "marketing.partMaster",
