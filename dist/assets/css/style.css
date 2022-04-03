@@ -621,3 +621,7 @@ select.form-control[multiple] {
 	padding-left: 20px;
 	margin: 0px !important;
 }
+.dropdown-item{
+    font-size: 14px;
+    padding: 0rem 1.5rem;
+}
