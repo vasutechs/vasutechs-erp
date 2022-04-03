@@ -4868,6 +4868,170 @@
                             }
                         }
                     }
+                },
+                "purchaseSupplier": {
+                    "id": "purchaseSupplier",
+                    "title": "Purchase Report - Supplier",
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {
+                            "supplierCode": null,
+                            "frmDate": null,
+                            "toDate": null
+                        },
+                        "fields": [{
+                                "name": "Supplier Name",
+                                "id": "supplierCode",
+                                "dataFrom": "purchase.supplierMaster",
+                                "replaceName": "supplierName",
+                                "isFilterView": true,
+                                "type": "select",
+                                "options": {}
+                            },{
+                                "name": "From Date",
+                                "id": "frmDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }, {
+                                "name": "To Date",
+                                "id": "toDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }
+                        ]
+                    },
+                    "listView": [{
+                            "name": "Supplier Name",
+                            "id": "supplierCode",
+                            "dataFrom": "purchase.supplierMaster",
+                            "replaceName": "supplierName"
+                        }, {
+                            "name": "GRN No",
+                            "id": "grnNo"
+                        }, {
+                            "name": "Date",
+                            "id": "date",
+                            "type": "date"
+                        }, {
+                            "name": "Supplier Invoice No",
+                            "id": "supplierInvoiceNo"
+                        }, {
+                            "name": "Date",
+                            "id": "supplierInvoiceDate",
+                            "type": "date"
+                        }, {
+                            "name": "RM Name",
+                            "id": "rmCode",
+                            "dataFrom": "purchase.rmMaster",
+                            "replaceName": "rmName",
+                            "valuePrefixData": "grade"
+                        }, {
+                            "name": "Accepted Qty",
+                            "id": "acceptedQty"
+                        }, {
+                            "name": "Rate",
+                            "id": "rate"
+                        }, {
+                            "name": "Final Rate",
+                            "id": "total"
+                        }
+                    ],
+                    "page": {
+                        "link": "report/purchaseSupplier",
+                        "name": "list",
+                        "downloadExcel": true,
+                        "actions": false
+                    },
+                    "services": {
+                        "list": {
+                            "id": "grnSupplier",
+                            "params": {
+                                "year": true
+                            }
+                        }
+                    }
+                },
+                "purchaseGeneralSupplier": {
+                    "id": "purchaseGeneralSupplier",
+                    "title": "Purchase Report - General Supplier",
+                    "filterView": {
+                        "title": "Filter",
+                        "data": {
+                            "supplierCode": null,
+                            "frmDate": null,
+                            "toDate": null
+                        },
+                        "fields": [{
+                                "name": "General Supplier Name",
+                                "id": "generalSupplierCode",
+                                "dataFrom": "purchase.generalSupplierMaster",
+                                "replaceName": "generalSupplierName",
+                                "isFilterView": true,
+                                "type": "select",
+                                "options": {}
+                            },{
+                                "name": "From Date",
+                                "id": "frmDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }, {
+                                "name": "To Date",
+                                "id": "toDate",
+                                "type": "input",
+                                "inputType": "date"
+                            }
+                        ]
+                    },
+                    "listView": [{
+                            "name": "General Supplier Name",
+                            "id": "generalSupplierCode",
+                            "dataFrom": "purchase.generalSupplierMaster",
+                            "replaceName": "generalSupplierName"
+                        }, {
+                            "name": "GRN No",
+                            "id": "grnNo"
+                        }, {
+                            "name": "Date",
+                            "id": "date",
+                            "type": "date"
+                        }, {
+                            "name": "Supplier Invoice No",
+                            "id": "generalSupplierInvoiceNo"
+                        }, {
+                            "name": "Date",
+                            "id": "generalSupplierInvoiceDate",
+                            "type": "date"
+                        }, {
+                            "name": "RM Name",
+                            "id": "rmCode",
+                            "dataFrom": "purchase.rmMaster",
+                            "replaceName": "rmName",
+                            "valuePrefixData": "grade"
+                        }, {
+                            "name": "Accepted Qty",
+                            "id": "acceptedQty"
+                        }, {
+                            "name": "Rate",
+                            "id": "rate"
+                        }, {
+                            "name": "Final Rate",
+                            "id": "total"
+                        }
+                    ],
+                    "page": {
+                        "link": "report/purchaseGeneralSupplier",
+                        "name": "list",
+                        "downloadExcel": true,
+                        "actions": false
+                    },
+                    "services": {
+                        "list": {
+                            "id": "grnGeneralSupplier",
+                            "params": {
+                                "year": true
+                            }
+                        }
+                    }
                 }
             },
             "accounts": {
