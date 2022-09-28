@@ -5247,6 +5247,12 @@
                         ]
                     },
                     "listView": [{
+                        "name": "Customer",
+                        "id": "customerCode",
+                        "dataFrom": "marketing.customerMaster",
+                        "replaceName": "customerName",
+                        "options": {}
+                    },{
                             "name": "Cash Bill No",
                             "id": "invoiceNo",
                             "valuePrefix": "",

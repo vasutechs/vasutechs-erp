@@ -18,7 +18,7 @@
     "license": "ISC",
     "devDependencies": {
         "adm-zip": "^0.4.13",
-        "angular": "^1.7.9",
+        "angular": "^1.6.10",
         "angular-route": "^1.7.9",
         "bootstrap": "^4.3.1",
         "cookie-parser": "^1.4.4",
@@ -27,15 +27,15 @@
         "express": "^4.16.1",
         "express-session": "^1.16.2",
         "font-awesome": "^4.7.0",
-        "gulp": "^4.0.0",
+        "gulp": "^4.0.2",
         "gulp-concat": "^2.6.1",
         "gulp-ng-html2js": "^0.2.3",
         "gulp-replace": "^1.0.0",
         "gulp-uglify": "^3.0.0",
         "jquery": "^3.4.0",
+        "mongodb": "^3.5.9",
         "node-json-db": "^0.7.5",
-        "open": "^6.0.0",
-        "mongodb": "^3.5.9"
+        "open": "^6.0.0"
     },
     "dependencies": {
         "googleapis": "^66.0.0",

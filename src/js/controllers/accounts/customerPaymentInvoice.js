@@ -1,7 +1,11 @@
 erpConfig.moduleFiles.customerPaymentInvoice = function (context) {
+    var orgField = null;
     return {
         callBackList: function () {
             context.commonFact.accountsPayment();
+            if(orgField){
+                context.controller.form.fields = orgField;
+            }
         },
 		callBackViewFilterBy: function(){
 			context.commonFact.accountsPayment();
@@ -13,6 +17,7 @@ erpConfig.moduleFiles.customerPaymentInvoice = function (context) {
             context.commonFact.makeOptionsFields(context.controller.form.fields['invoiceNo']);
         },
         callBackAdd: function () {
+            orgField = angular.copy(context.controller.form.fields);
             context.controller.data['date'] = null;
         },
         callBackEdit: function () {
@@ -23,7 +28,6 @@ erpConfig.moduleFiles.customerPaymentInvoice = function (context) {
                 context.controller.form.mapping.actions.add = false;
             }
 			context.controller.data['date'] = new Date(context.controller.form.fields['invoiceNo'].options[context.controller.data['invoiceNo']].date);
-			console.log(context.controller.data);
         },
         callBackChangeMapping: function () {
             context.controller.data.balanceAmount = context.controller.data.total;
