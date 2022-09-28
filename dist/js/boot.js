@@ -923,7 +923,6 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     worksheet: name || 'Worksheet',
                     table: table.innerHTML
                 }
-                console.log(format(template, ctx));
                 var downloadLink = document.createElement("a");
                 downloadLink.href = uri + base64(format(template, ctx));
                 downloadLink.download = context.controller.id + "Report.xls";
