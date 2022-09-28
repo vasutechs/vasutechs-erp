@@ -26,9 +26,9 @@
         "express-session": "^1.16.2",
         "font-awesome": "^4.7.0",
         "jquery": "^3.4.0",
+        "mongodb": "^3.5.9",
         "node-json-db": "^0.7.5",
-        "open": "^6.0.0",
-        "mongodb": "^3.5.9"
+        "open": "^6.0.0"
     },
     "dependencies": {
         "googleapis": "^66.0.0",
