@@ -417,6 +417,8 @@
                                 "partName": {
                                     "name": "Part Name",
                                     "id": "partName",
+                                    "referenceField": "id",
+                                    "replaceName": "partName",
                                     "type": "span"
                                 },
                                 "rate": {
@@ -573,7 +575,8 @@
                                     "options": {},
                                     "action": "changeMapping",
                                     "dataFrom": "marketing.partMaster",
-                                    "replaceName": "partNo"
+                                    "replaceName": "partNo",
+                                    "autoAction": true
                                 },
                                 "partName": {
                                     "name": "Part Name",
@@ -804,6 +807,8 @@
                                 "partName": {
                                     "name": "Part Name",
                                     "id": "partName",
+                                    "referenceField": "id",
+                                    "replaceName": "partName",
                                     "type": "span"
                                 },
                                 "hsnCode": {
@@ -5425,11 +5430,7 @@
                             "options": {}
                         }, {
                             "name": "Supplier InvoiceNo No",
-                            "id": "supplierInvoiceNo",
-                            "dataFrom": "store.grnSupplier",
-                            "replaceName": "supplierInvoiceNo",
-                            "type": "select",
-                            "options": {}
+                            "id": "supplierInvoiceNo"
                         }, {
                             "name": "Date",
                             "id": "date"

@@ -144,7 +144,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 //Get Part master data
                 return context.serviceApi.callServiceApi(serviceConf, data);
             },
-            replaceFieldVal: function (viewData, field) {
+            replaceFieldVal: function (viewData, field, fields, viewAllData) {
                 var list,
                 serviceConf,
                 self = this,
@@ -165,7 +165,11 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     viewData = viewData && context.commonFact.dateFormatChange(viewData) || '';
                 } else if (field.inputType === 'password') {
                     viewData = 'XXX';
-                } else {
+                } else if (field.referenceField && fields && viewAllData) {
+                    var referenceFieldOptions = fields[field.referenceField].options;
+                    var referenceFieldVal = viewAllData[field.referenceField] && referenceFieldOptions[viewAllData[field.referenceField]];
+                    viewData = (referenceFieldVal!== null && referenceFieldVal) && (field.replaceName && referenceFieldVal[field.replaceName] || referenceFieldVal.optionName) || viewData;
+                }else {
                     viewData = updateField(field, viewData);
                 }
                 return viewData;
@@ -1005,7 +1009,9 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 $timeout(function () {
                     if (context.controller.page.name !== 'list') {
                         fieldData = map || context.controller.data;
-                        field.autoCompleteModel = context.commonFact.replaceFieldVal(fieldData[field.id], field);
+                        if(fieldData){
+                            field.autoCompleteModel = context.commonFact.replaceFieldVal(fieldData[field.id], field);
+                        }
                     }
                 }, 500);
 
