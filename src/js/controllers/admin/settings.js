@@ -5,25 +5,26 @@ erpConfig.moduleFiles.settings = function(context) {
             moduleField.options = {};
             moduleField.allOptions = {};
             context.controller.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
-            var adminOption = {
-                userType: 'ADMIN',
-                desc: 'ADMIN',
-                optionName: 'ADMIN',
-                optionId: 'ADMIN'
-            };
-            context.controller.form.mapping.fields['restrictUser'].options['ADMIN'] = adminOption;
             if (context.controller.lastData === undefined) {
                 context.commonFact.add();
             } else {
                 context.commonFact.edit(context.controller.lastData.id);
             }
         },
+        callBackEdit: function(){
+            var custumOption = {
+                userType: 'all',
+                optionName: 'All',
+                optionId: 'all'
+            };
+            context.controller.form.mapping.fields['restrictUser'].options['all'] = custumOption;
+        },
         makeModuleOptions: function(modules, field, parentModule) {
             for (var i in modules) {
                 var module = angular.copy(modules[i]);
                 var optionIdVal = parentModule && parentModule.id + '.' + module.id || module.id;
                 var optionNameVal = parentModule && '-- ' + module.title || module.title;
-                if (i !== 'disable') {
+                if (!module.disable) {
                     field.allOptions[optionIdVal] = module;
                     field.allOptions[optionIdVal]['optionName'] = optionNameVal;
                     field.allOptions[optionIdVal]['optionId'] = optionIdVal;

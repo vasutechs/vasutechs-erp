@@ -153,6 +153,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     fieldData = (fieldData && list && list[orgViewDataFieldId] && field.replaceName) ? list[orgViewDataFieldId][field.replaceName] : fieldData;
                     fieldData = field.valuePrefix ? field.valuePrefix + fieldData : fieldData;
                     fieldData = field.valuePrefixData ? list[orgViewDataFieldId][field.valuePrefixData] + ' - ' + fieldData : fieldData;
+                    fieldData = field.valueSufixData ? fieldData + ' - ' + list[orgViewDataFieldId][field.valueSufixData] : fieldData;
                     if (context.commonFact.isFloat(fieldData)) {
                         fieldData = parseFloat(fieldData).toFixed(2);
                     }
@@ -208,6 +209,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                             var editOption = context.controller.existEditData && optionIdVal === context.controller.existEditData[field.id] || false;
                             optionNameVal += field.valuePrefixData && list[i][field.valuePrefixData] + ' - ' || '';
                             optionNameVal += list[i][field.replaceName] || '';
+                            optionNameVal += field.valueSufixData ? ' - ' + list[i][field.valueSufixData] : '';
                             var isCheckExistVal = field.existingCheck && (context.controller.listViewDataMaster || field.existingCheckList) && context.commonFact.findObjectByKey(field.existingCheckList || context.controller.listViewDataMaster, field.id, optionIdVal) || false;
                             field.allOptions[optionVal] = list[i];
                             if (optionVal && field.allOptions[optionVal]) {
@@ -864,9 +866,10 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
             },
             isShowMenu: function (menu) {
                 var disabled = menu.disableMenu || menu.disable || (context.commonFact.isAppCustomer() ? context.erpAppConfig.appModules ? (!context.erpAppConfig.appModules.includes('all') && !menu.show) : true : false);
-                var superAdmin = context.commonFact.isSuperAdmin() && menu.superAdmin || false;
-                var isAppCustomer = !menu.superAdmin && context.commonFact.isAppCustomer();
-                return !disabled && (superAdmin || isAppCustomer || menu.allUser);
+                var superAdminMenu = context.commonFact.isSuperAdmin() && (menu.superAdmin || menu.admin) || false;
+                var adminMenu = context.commonFact.isAppAdmin() && menu.admin || false;
+                var isAppCustomer = !menu.superAdmin && !menu.admin && context.commonFact.isAppCustomer();
+                return !disabled && (superAdminMenu || adminMenu || isAppCustomer);
             },
             errorHandler: function (e) {
                 if (!context.controller || context.controller.id !== 'login') {
@@ -932,16 +935,17 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     for (var i in context.erpAppConfig.mapping) {
                         var map = context.erpAppConfig.mapping[i];
                         var module = context.commonFact.getDeepProp(context.erpAppConfig.modules.controllers, map.module) || {};
-                        if (!userDetail.userType || (userDetail.userType && map.restrictUser !== userDetail.userType)) {
-                            module.disable = map.restrictUser && true;
+                        var isRstrictedUserType = (map.restrictUser === userDetail.userType || map.restrictUser==='all');
+                        if(map.disable && (map.restrictUser === context.commonFact.isAppUser() || map.restrictUser==='all')){
+                            module.disable = true;
                         }
                         if (module.page && (module.page.actions || module.page.actions === undefined)) {
                             module.page.actions = {
                                 print: true
                             };
-                            module.page.actions.add = map.restrictUser === userDetail.userType && map['add'] || false;
-                            module.page.actions.edit = map.restrictUser === userDetail.userType && map['edit'] || false;
-                            module.page.actions.delete = map.restrictUser === userDetail.userType && map['delete'] || false;
+                            module.page.actions.add = (isRstrictedUserType && map['add']) ?  false : true;
+                            module.page.actions.edit = (isRstrictedUserType  && map['edit']) ? false : true;
+                            module.page.actions.delete = (isRstrictedUserType && map['delete']) ? false : true;
                         }
                         if (ctrl && ctrl.id === module.id) {
                             return module;
@@ -1090,8 +1094,13 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
             },
             fieldDataFormat: function (field, data) {
                 if (data) {
-
-                    data = field.inputType === 'date' ? new Date(data) : data;
+                    if(field.inputType==='date'){
+                        data = new Date(data);
+                    }
+                    else if(field.inputType==='number'){
+                        data = Number(data);
+                    }
+                    
                 }
                 return data;
             },
@@ -1204,7 +1213,11 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
             },
 			localBackUpDb: function(){
 				window.open('/api/localBackUpDb');
-			}
+			},
+            isNumberCheck: function(data, value){
+                //return type === 'number'?Number(data):data;
+                return Number(value)?true:false;
+            }
         };
     };
 };

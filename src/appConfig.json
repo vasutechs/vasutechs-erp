@@ -197,7 +197,7 @@
                                 "options": {},
                                 "dataFrom": "purchase.rmMaster",
                                 "replaceName": "rmName",
-                                "valuePrefixData": "grade",
+                                "valueSufixData": "grade",
                                 "isSingle": true
                             },
                             "inputWeight": {
@@ -425,7 +425,7 @@
                                     "name": "Rate",
                                     "id": "rate",
                                     "type": "input",
-                                    "inputType": "text",
+                                    "inputType": "number",
                                     "required": true
                                 }
                             }
@@ -874,7 +874,7 @@
                 "cashBill": {
                     "id": "cashBill",
                     "name": "cashBill",
-                    "title": "Cash Bill",
+                    "title": "Estimate",
                     "cashBill": true,
                     "parentModule": "marketing.invoice",
                     "form": {
@@ -1038,7 +1038,7 @@
                             "id": "rmCode",
                             "dataFrom": "purchase.rmMaster",
                             "replaceName": "rmName",
-                            "valuePrefixData": "grade",
+                            "valueSufixData": "grade",
                             "isFilterBy": true,
                             "type": "autoComplete",
                             "options": {}
@@ -2881,7 +2881,7 @@
                                 "options": {},
                                 "dataFrom": "purchase.rmMaster",
                                 "replaceName": "rmName",
-                                "valuePrefixData": "grade",
+                                "valueSufixData": "grade",
                                 "isSingle": true
                             },
                             "partNorms": {
@@ -2905,7 +2905,7 @@
                             "id": "rmCode",
                             "dataFrom": "purchase.rmMaster",
                             "replaceName": "rmName",
-                            "valuePrefixData": "grade",
+                            "valueSufixData": "grade",
                             "type": "select",
                             "isFilterBy": true
                         }
@@ -3357,7 +3357,7 @@
                                 "options": {},
                                 "dataFrom": "purchase.rmMaster",
                                 "replaceName": "rmName",
-                                "valuePrefixData": "grade",
+                                "valueSufixData": "grade",
                                 "action": "getPartNo",
                                 "isEditDisable": true,
                                 "isSingle": true
@@ -3853,7 +3853,7 @@
                                 "updateData": ["uomCode"],
                                 "dataFrom": "purchase.rmMaster",
                                 "replaceName": "rmName",
-                                "valuePrefixData": "grade",
+                                "valueSufixData": "grade",
                                 "isSingle": true
                             },
                             "rmStockQty": {
@@ -3882,7 +3882,7 @@
                             "id": "rmCode",
                             "dataFrom": "purchase.rmMaster",
                             "replaceName": "rmName",
-                            "valuePrefixData": "grade",
+                            "valueSufixData": "grade",
                             "isFilterBy": true,
                             "type": "select",
                             "options": {}
@@ -4929,7 +4929,7 @@
                             "id": "rmCode",
                             "dataFrom": "purchase.rmMaster",
                             "replaceName": "rmName",
-                            "valuePrefixData": "grade"
+                            "valueSufixData": "grade"
                         }, {
                             "name": "Accepted Qty",
                             "id": "acceptedQty"
@@ -5011,7 +5011,7 @@
                             "id": "rmCode",
                             "dataFrom": "purchase.rmMaster",
                             "replaceName": "rmName",
-                            "valuePrefixData": "grade"
+                            "valueSufixData": "grade"
                         }, {
                             "name": "Accepted Qty",
                             "id": "acceptedQty"
@@ -5862,7 +5862,7 @@
                 "title": "Admin",
                 "icon": "cog",
                 "defaultRelease": true,
-                "allUser": true,
+                "admin": true,
                 "superUsers": {
                     "id": "superUsers",
                     "title": "Super Users",
@@ -6083,27 +6083,33 @@
                                     "makeFieldOptions": false
                                 },
                                 "restrictUser": {
-                                    "name": "Restrict Type",
+                                    "name": "Restrict User Type",
                                     "id": "restrictUser",
                                     "type": "select",
                                     "options": {},
                                     "dataFrom": "admin.userTypes",
                                     "replaceName": "userType"
                                 },
+                                "disable":{
+                                    "name": "Disable",
+                                    "id": "disable",
+                                    "type": "input",
+                                    "inputType": "checkbox"
+                                },
                                 "add": {
-                                    "name": "Show Add action",
+                                    "name": "Hide Add action",
                                     "id": "add",
                                     "type": "input",
                                     "inputType": "checkbox"
                                 },
                                 "edit": {
-                                    "name": "Show Edit action",
+                                    "name": "Hide Edit action",
                                     "id": "edit",
                                     "type": "input",
                                     "inputType": "checkbox"
                                 },
                                 "delete": {
-                                    "name": "Show Delete action",
+                                    "name": "Hide Delete action",
                                     "id": "delete",
                                     "type": "input",
                                     "inputType": "checkbox"

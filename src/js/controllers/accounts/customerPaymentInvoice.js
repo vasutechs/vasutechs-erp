@@ -35,16 +35,21 @@ erpConfig.moduleFiles.customerPaymentInvoice = function (context) {
         },
         updateBalanceAmount: function (data) {
             var amount = 0;
+            context.controller.methods.validateAmount(data);
             for (var i in context.controller.data.mapping) {
                 amount += parseFloat(context.controller.data.mapping[i].amount);
             }
-            context.controller.data.balanceAmount = parseFloat(context.controller.data.total) - parseFloat(amount);
-            if (context.controller.data.balanceAmount <= 0) {
-                context.controller.form.mapping.actions.add = false;
+            if(!isNaN(amount)){
+                context.controller.data.balanceAmount = parseFloat(context.controller.data.total) - parseFloat(amount);
+            }  
+        },
+        validateAmount: function(data){
+            var amount = 0;
+            for (var i in context.controller.data.mapping) {
+                amount += parseFloat(context.controller.data.mapping[i].amount);
             }
-            if (context.controller.data.balanceAmount < 0) {
-                context.controller.data.balanceAmount = 0;
-                //data.amount = null;
+            if(amount > context.controller.data.total){
+                data.amount = 0;
             }
         }
     };
