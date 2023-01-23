@@ -8,7 +8,7 @@ module.exports = function() {
             serverPort: 9000,
             serverPath: 'http://localhost'
         },
-        buildTasks: './build_tasks',
+        buildTasks: __dirname,
         task: {},
         mangoDb: false,
         mangoDbUrl: 'mongodb://localhost:27017',
