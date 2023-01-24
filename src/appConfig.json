@@ -295,7 +295,7 @@
                                     "name": "Rate",
                                     "id": "rate",
                                     "type": "input",
-                                    "inputType": "text"
+                                    "inputType": "number"
                                 }
                             }
                         }
@@ -828,7 +828,7 @@
                                     "name": "Rate",
                                     "id": "rate",
                                     "type": "input",
-                                    "inputType": "text",
+                                    "inputType": "number",
                                     "action": "updateTotal",
                                     "required": true
                                 },
@@ -1024,7 +1024,7 @@
                                     "name": "Rate",
                                     "id": "rate",
                                     "type": "input",
-                                    "inputType": "text"
+                                    "inputType": "number"
                                 }
                             }
                         }
@@ -1152,7 +1152,7 @@
                                     "name": "Rate",
                                     "id": "rate",
                                     "type": "input",
-                                    "inputType": "text",
+                                    "inputType": "number",
                                     "required": true
                                 }
                             }
@@ -1300,7 +1300,7 @@
                                     "name": "Rate",
                                     "id": "rate",
                                     "type": "input",
-                                    "inputType": "text",
+                                    "inputType": "number",
                                     "action": "updatePORmTotal",
                                     "required": true
                                 },
@@ -1449,7 +1449,7 @@
                                     "name": "Rate",
                                     "id": "rate",
                                     "type": "input",
-                                    "inputType": "text",
+                                    "inputType": "number",
                                     "required": true
                                 }
                             }
@@ -1596,7 +1596,7 @@
                                     "name": "Rate",
                                     "id": "rate",
                                     "type": "input",
-                                    "inputType": "text",
+                                    "inputType": "number",
                                     "action": "updatePORmTotal",
                                     "required": true
                                 },
@@ -1741,7 +1741,7 @@
                                     "name": "Rate",
                                     "id": "rate",
                                     "type": "input",
-                                    "inputType": "text",
+                                    "inputType": "number",
                                     "required": true
                                 }
                             }
@@ -1893,7 +1893,7 @@
                                     "name": "Rate",
                                     "id": "rate",
                                     "type": "input",
-                                    "inputType": "text",
+                                    "inputType": "number",
                                     "action": "updatePORmTotal",
                                     "required": true
                                 },
@@ -3073,7 +3073,7 @@
                                 "name": "Machine Shift Rate",
                                 "id": "machineShiftRate",
                                 "type": "input",
-                                "inputType": "text",
+                                "inputType": "number",
                                 "required": true
                             },
                             "shiftHrs": {
