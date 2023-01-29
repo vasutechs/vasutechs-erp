@@ -7,10 +7,10 @@
     },
     "scripts": {
         "app-clean": "rm -rf node_modules",
-        "app-update": "npm install && npm update",
+        "app-update": "npm install",
         "app-start": "npm run app-update && npm run app-server",
-        "app-server": "node node_modules\\vasutechs-erp-base\\build_tasks\\app.js --run",
-        "app-server-mangoDb": "node node_modules\\vasutechs-erp-base\\build_tasks\\app.js --run --mangoDb"
+        "app-server": "node build_tasks\\app.js --run",
+        "app-server-mangoDb": "node build_tasks\\app.js --run --mangoDb"
     },
     "author": "",
     "license": "ISC",
@@ -32,7 +32,6 @@
     },
     "dependencies": {
         "googleapis": "^66.0.0",
-        "request": "^2.88.2",
-        "vasutechs-erp-base": "github:vinodevanv84/vasutechs-erp#release"
+        "request": "^2.88.2"
     }
 }
