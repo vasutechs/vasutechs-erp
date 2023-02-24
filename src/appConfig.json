@@ -881,7 +881,7 @@
                         "autoGenValStart": null,
                         "fields": {
                             "invoiceNo": {
-                                "name": "CashBill No",
+                                "name": "Estimate No",
                                 "id": "invoiceNo",
                                 "type": "span",
                                 "valuePrefix": "",
@@ -897,7 +897,7 @@
                         }
                     },
                     "listView": [{
-                            "name": "Cash Bill No",
+                            "name": "Estimate No",
                             "id": "invoiceNo",
                             "valuePrefix": ""
                         }
@@ -1146,7 +1146,7 @@
                                     "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "purchase.rmMaster",
                                     "replaceName": "rmName",
-                                    "valuePrefixData": "grade"
+                                    "valueSufixData": "grade"
                                 },
                                 "rate": {
                                     "name": "Rate",
@@ -4204,7 +4204,7 @@
                 "salesAnalysisCashBill": {
                     "id": "salesAnalysisCashBill",
                     "name": "salesAnalysisCashBill",
-                    "title": "Sales Analysis - Cash Bill",
+                    "title": "Sales Analysis - Estimate",
                     "parentModule": "report.salesAnalysisInvoice",
                     "cashBill": true,
                     "page": {
@@ -5210,12 +5210,12 @@
                 "customerPaymentCashBill": {
                     "id": "customerPaymentCashBill",
                     "name": "customerPaymentCashBill",
-                    "title": "Customer Payment - Cash Bill",
+                    "title": "Customer Payment - Estimate",
                     "parentModule": "accounts.customerPaymentInvoice",
                     "form": {
                         "fields": {
                             "invoiceNo": {
-                                "name": "CashBill No",
+                                "name": "Estimate No",
                                 "id": "invoiceNo",
                                 "options": {},
                                 "action": "changeMapping",
@@ -5258,7 +5258,7 @@
                         "replaceName": "customerName",
                         "options": {}
                     },{
-                            "name": "Cash Bill No",
+                            "name": "Estimate No",
                             "id": "invoiceNo",
                             "valuePrefix": "",
                             "dataFrom": "marketing.cashBill",

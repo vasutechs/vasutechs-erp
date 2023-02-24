@@ -40,7 +40,7 @@
                     </td>
                 </tr>
                 <tr ng-repeat="(key, map) in context.controller.data.mapping" ng-if="!context.controller.page.printView">
-                    <td ng-switch="field.type" ng-repeat="field in context.controller.form.mapping.fields">
+                    <td ng-switch="field.type" ng-repeat="field in context.controller.form.mapping.fields" ng-init="map[field.id] = context.commonFact.fieldDataFormat(field, map[field.id])">
                         <span ng-switch-when="span" id="{{field.id}}-{{key}}" ng-bind="field.referenceField && context.commonFact.replaceFieldVal(map[field.id], field, context.controller.form.mapping.fields, map) || map[field.id]"></span>
                         <input ng-switch-when="input" type="{{field.inputType}}" id="{{field.id}}-{{key}}" class="form-control" ng-model="map[field.id]" ng-change="context.commonFact.callActions(field.action, [map, map[field.id], field, key])" ng-required="{{field.required}}"
                         />
