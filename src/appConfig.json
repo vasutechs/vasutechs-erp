@@ -802,7 +802,9 @@
                                     "action": "invoicePartUpdate",
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
-                                    "autoAction": false
+                                    "autoAction": false,
+                                    "onLoadAction": ["updatePartMapData"],
+                                    "updateData": ["partName", "hsnCode"]
                                 },
                                 "partName": {
                                     "name": "Part Name",
@@ -1146,7 +1148,8 @@
                                     "action": ["changeMapping", "amendmentRateUpdate"],
                                     "dataFrom": "purchase.rmMaster",
                                     "replaceName": "rmName",
-                                    "valueSufixData": "grade"
+                                    "valueSufixData": "grade",
+                                    "onLoadAction": ["changeMapping"]
                                 },
                                 "rate": {
                                     "name": "Rate",
@@ -2631,8 +2634,7 @@
                                 "updateMapping": true,
                                 "updateData": ["mapping", "subTotal", "extraAmount", "gst", "sgst", "cgst", "igst", "gstTotal", "total"],
                                 "isSingle": true,
-                                "isEditDisable": true,
-                                "onLoadActions": true
+                                "isEditDisable": true
                             },
                             "subContractorDCCode": {
                                 "name": "Sub Contractor DC Code",
@@ -3666,8 +3668,7 @@
                                 "updateData": ["partNo"],
                                 "existingCheck": true,
                                 "isEditDisable": true,
-                                "isSingle": true,
-                                "onLoadActions": true
+                                "isSingle": true
                             },
                             "partNo": {
                                 "name": "Part No",
@@ -3974,7 +3975,7 @@
                             "id": "partNo",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
-                            "type": "select",
+                            "type": "autoComplete",
                             "isFilterBy": true
                         }, {
                             "name": "Part Stock Qty",

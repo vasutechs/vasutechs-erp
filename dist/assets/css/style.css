@@ -543,7 +543,10 @@ input::-webkit-inner-spin-button {
 
 .modal-Scroll {
     overflow: scroll;
-    max-height: 400px;
+    max-height: 550px;
+}
+.modal-lg{
+    max-width: 1500px;
 }
 
 #overlay-loader {

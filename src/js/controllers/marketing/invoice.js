@@ -226,6 +226,19 @@ erpConfig.moduleFiles.invoice = function(context) {
         invoicePartUpdate: function(data, key, field, fieldMapKey) {
             context.commonFact.changeMapping(data, key, field, fieldMapKey);
             data['rate'] = context.commonFact.getRate(field.options[key]);
+        },
+        updatePartMapData: function(data, key, field, fieldMapKey) {
+            for (var dataKey in data) {
+                if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {
+                    if (key === null || key === '') {
+                        data[dataKey] = angular.copy(context.controller.masterData[dataKey]);
+                    } else if (key !== undefined && field.options[key] && field.options[key][dataKey]) {
+                        if (typeof(field.options[key][dataKey]) !== 'object') {
+                            data[dataKey] = field.options[key][dataKey];
+                        }
+                    }
+                }
+            }
         }
     };
 };

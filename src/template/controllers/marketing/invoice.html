@@ -15,6 +15,10 @@
                         <img ng-if="context.erpAppConfig.companyLogoUrl" class="logo" title="{{context.erpAppConfig.companyName}}" ng-src="{{context.erpAppConfig.companyLogoUrl}}" />
                         <h1 ng-if="!context.erpAppConfig.companyLogoUrl" class="logo">{{context.erpAppConfig.companyName}}</h1>
                     </div>
+                    <div class="col-4" ng-if="context.controller.cashBill">
+
+                        <p class="font-italic"><b>Mobile:</b> {{context.erpAppConfig.companyMobile}}</p>
+                    </div>
                     <div class="col-4" ng-if="!context.controller.cashBill">
 
                         <p class="font-italic"><b>{{context.erpAppConfig.companyAddress}}</b></p>
