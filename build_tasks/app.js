@@ -42,6 +42,41 @@ var app = function() {
         }
     });
 
+    // (()=>{
+    //     var JsonDB = require('node-json-db');
+    //     config.localJsonDbApi().getListDb().map((db)=>{
+            
+    //         try{
+    //             let currentDb = new JsonDB('./data/'+db.name).getData('/tables');
+    //             for(let i in currentDb){
+    //                 for(let j in currentDb[i]){
+    //                     for(let k in currentDb[i][j]){
+    //                         if(k === 'mapping'){
+    //                             currentDb[i][j][k].map((val, id)=>{
+    //                                 for(let l in val){
+    //                                     if(l === 'rate' && typeof val[l] == 'string'){
+    //                                         val[l] = parseFloat(val[l]);
+    //                                         return val;
+    //                                     }
+    //                                 }
+                                    
+    //                             });
+    //                         }
+                            
+    //                     }
+                        
+    //                 }
+    //                 //console.log(currentDb, i, currentDb[i]);
+    //                 new JsonDB('./data/'+db.name).push('/tables/' + i, currentDb[i], true)
+    //             }
+    //         }
+    //         catch(e){
+    //             console.log(e);
+    //         }
+            
+    //     })
+    // })();
+
     config.arg.run && server();
 }
 
