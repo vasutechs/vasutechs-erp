@@ -77,8 +77,8 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 context.controller.pageSize = 10;
                 context.controller.filterBy = context.controller.page.filter || {};
                 context.controller.listViewData = [];
-                context.controller.orderByProperty = 'updated';
-                context.controller.orderByAsc = true;
+                context.controller.orderByProperty = context.controller.page.orderByProperty || 'updated';
+                context.controller.orderByAsc = context.controller.page.orderByAsc ? false : true;
                 context.commonFact.pageActionsAccess();
                 pageProm.push(context.commonFact.updateFields(context.controller.listView));
                 context.controller.filterView && pageProm.push(context.commonFact.updateFields(context.controller.filterView.fields));

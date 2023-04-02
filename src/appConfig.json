@@ -4384,6 +4384,8 @@
                     "page": {
                         "link": "report/costAnalysis",
                         "name": "list",
+                        "orderByProperty": "added",
+                        "orderByAsc": "false",
                         "downloadExcel": true,
                         "actions": false
                     },
