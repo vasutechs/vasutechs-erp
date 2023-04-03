@@ -144,6 +144,7 @@
                         "partNo": null,
                         "partName": null,
                         "rmCode": null,
+                        "category": null,
                         "inputWeight": null,
                         "finishedWeight": null,
                         "hsnCode": null,
@@ -199,6 +200,31 @@
                                 "replaceName": "rmName",
                                 "valueSufixData": "grade",
                                 "isSingle": true
+                            },
+                            "category":{
+                                "name":"Category",
+                                "id": "category",
+                                "type":"select",
+                                "makeFieldOptions": false,
+                                "options":[{
+                                    "optionId":"plumping",
+                                    "optionName": "Plumping"
+                                },{
+                                    "optionId":"electrical",
+                                    "optionName": "Electrical"
+                                },{
+                                    "optionId":"general",
+                                    "optionName": "General"
+                                },{
+                                    "optionId":"plumping",
+                                    "optionName": "Plumping"
+                                },{
+                                    "optionId":"agiculture",
+                                    "optionName": "Agiculture"
+                                },{
+                                    "optionId":"hardware",
+                                    "optionName": "Hardware"
+                                }]
                             },
                             "inputWeight": {
                                 "name": "Input weight",
