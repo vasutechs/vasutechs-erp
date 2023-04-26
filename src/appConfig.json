@@ -1175,7 +1175,7 @@
                                     "dataFrom": "purchase.rmMaster",
                                     "replaceName": "rmName",
                                     "valueSufixData": "grade",
-                                    "onLoadAction": ["changeMapping"]
+                                    "onLoadAction": ["changeMapping", "amendmentRateUpdate"]
                                 },
                                 "rate": {
                                     "name": "Rate",
