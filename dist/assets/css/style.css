@@ -645,3 +645,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     top: 0;
     width: auto;
 }
+
+.tbl-alert{
+    font-size: 10px;
+}
+
+.tbl-alert td, .tbl-alert th{
+    padding: 0.25rem;
+}
