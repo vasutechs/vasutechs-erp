@@ -12,26 +12,117 @@
 
                         <div class="col-6">
                             <p><b>Red alert:</b></p>
-                            <div ng-repeat="rolRed in context.alertRolContext.partRolRed | orderBy:'partStockQty'">
-                                <div class="alert alert-danger" role="alert">
-                                    <b>Part No:</b> {{rolRed.partNo}} - <b>Qty:</b> {{rolRed.partStockQty}}
+                            <div class="row alert alert-danger">
+                                <div class="col-4">
+                                    <table class="table table-bordered tbl-alert">
+                                        <thead>
+                                            <tr>
+                                                <th>Part No</th>
+                                                <th>Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rolRed in context.alertRolContext.partRolRed1 | orderBy:'partStockQty'">
+                                                <td>{{rolRed.partNo}}</td>
+                                                <td>{{rolRed.partStockQty}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-4">
+                                    <table class="table table-bordered tbl-alert">
+                                        <thead>
+                                            <tr>
+                                                <th>Part No</th>
+                                                <th>Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rolRed in context.alertRolContext.partRolRed2 | orderBy:'partStockQty'">
+                                                <td>{{rolRed.partNo}}</td>
+                                                <td>{{rolRed.partStockQty}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-4">
+                                    <table class="table table-bordered tbl-alert">
+                                        <thead>
+                                            <tr>
+                                                <th>Part No</th>
+                                                <th>Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rolRed in context.alertRolContext.partRolRed3 | orderBy:'partStockQty'">
+                                                <td>{{rolRed.partNo}}</td>
+                                                <td>{{rolRed.partStockQty}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+                            
                         </div>
                         <div class="col-6">
                             <p><b>Yellow alert:</b></p>
-                            <div ng-repeat="rolYellow in context.alertRolContext.partRolYellow | orderBy:'partStockQty'">
-                                <div class="alert alert-warning" role="alert">
-                                    <b>Part No:</b> {{rolYellow.partNo}} - <b>Qty:</b> {{rolYellow.partStockQty}}
+                            <div class="row  alert alert-warning">
+                                <div class="col-4">
+                                    <table class="table table-bordered tbl-alert">
+                                        <thead>
+                                            <tr>
+                                                <th>Part No</th>
+                                                <th>Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rolYellow in context.alertRolContext.partRolYellow1 | orderBy:'partStockQty'">
+                                                <td>{{rolYellow.partNo}}</td>
+                                                <td>{{rolYellow.partStockQty}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
+                                <div class="col-4">
+                                    <table class="table table-bordered tbl-alert">
+                                        <thead>
+                                            <tr>
+                                                <th>Part No</th>
+                                                <th>Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rolYellow in context.alertRolContext.partRolYellow2 | orderBy:'partStockQty'">
+                                                <td>{{rolYellow.partNo}}</td>
+                                                <td>{{rolYellow.partStockQty}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-4">
+                                    <table class="table table-bordered tbl-alert">
+                                        <thead>
+                                            <tr>
+                                                <th>Part No</th>
+                                                <th>Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rolYellow in context.alertRolContext.partRolYellow3 | orderBy:'partStockQty'">
+                                                <td>{{rolYellow.partNo}}</td>
+                                                <td>{{rolYellow.partStockQty}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" ng-click="context.alertRolHideROL=true" data-dismiss="modal">OK</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="context.alertRolHideROL=true" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -205,26 +205,10 @@
                                 "name":"Category",
                                 "id": "category",
                                 "type":"select",
-                                "makeFieldOptions": false,
-                                "options":[{
-                                    "optionId":"plumping",
-                                    "optionName": "Plumping"
-                                },{
-                                    "optionId":"electrical",
-                                    "optionName": "Electrical"
-                                },{
-                                    "optionId":"general",
-                                    "optionName": "General"
-                                },{
-                                    "optionId":"plumping",
-                                    "optionName": "Plumping"
-                                },{
-                                    "optionId":"agiculture",
-                                    "optionName": "Agiculture"
-                                },{
-                                    "optionId":"hardware",
-                                    "optionName": "Hardware"
-                                }]
+                                "options": {},
+                                "dataFrom": "marketing.categoryMaster",
+                                "replaceName": "categoryName",
+                                "isSingle": true
                             },
                             "inputWeight": {
                                 "name": "Input weight",
@@ -682,6 +666,48 @@
                     ],
                     "page": {
                         "link": "marketing/uomMaster",
+                        "name": "list"
+                    }
+                },
+                "categoryMaster": {
+                    "id": "categoryMaster",
+                    "title": "Category Master",
+                    "masterData": {
+                        "categoryCode": null,
+                        "categoryName": null
+                    },
+                    "form": {
+                        "name": "categoryMaster",
+                        "id": "categoryMaster",
+                        "autoGenKey": "categoryCode",
+                        "fields": {
+                            "categoryCode": {
+                                "name": "Category Code",
+                                "id": "categoryCode",
+                                "type": "span",
+                                "valuePrefix": "VT-CAT-"
+                            },
+                            "categoryName": {
+                                "name": "Category Name",
+                                "id": "categoryName",
+                                "type": "input",
+                                "inputType": "text",
+                                "action": "isCheckExistField",
+                                "required": true
+                            }
+                        }
+                    },
+                    "listView": [{
+                            "name": "Category Code",
+                            "id": "categoryCode",
+                            "valuePrefix": "VT-CAT-"
+                        }, {
+                            "name": "Category Name",
+                            "id": "categoryName"
+                        }
+                    ],
+                    "page": {
+                        "link": "marketing/categoryMaster",
                         "name": "list"
                     }
                 },
@@ -4910,6 +4936,7 @@
                         "title": "Filter",
                         "data": {
                             "supplierCode": null,
+                            "rmCode":null,
                             "frmDate": null,
                             "toDate": null
                         },
@@ -4918,6 +4945,15 @@
                                 "id": "supplierCode",
                                 "dataFrom": "purchase.supplierMaster",
                                 "replaceName": "supplierName",
+                                "isFilterView": true,
+                                "type": "select",
+                                "options": {}
+                            },{
+                                "name": "RM Name",
+                                "id": "rmCode",
+                                "dataFrom": "purchase.rmMaster",
+                                "replaceName": "rmName",
+                                "valueSufixData": "grade",
                                 "isFilterView": true,
                                 "type": "select",
                                 "options": {}
@@ -5462,7 +5498,7 @@
                             "id": "supplierInvoiceNo"
                         }, {
                             "name": "Date",
-                            "id": "date"
+                            "id": "supplierInvoiceDate"
                         }, {
                             "name": "Amount",
                             "id": "total"

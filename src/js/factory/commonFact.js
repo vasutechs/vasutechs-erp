@@ -809,9 +809,14 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
             },
             showAlertRol: function () {
                 var userDetail = context.authFact.getUserDetail();
+                var showCountLimit = 15;
                 context.alertRolContext = {
-                    partRolYellow: [],
-                    partRolRed: []
+                    partRolYellow1: [],
+                    partRolRed1: [],
+                    partRolYellow2: [],
+                    partRolRed2: [],
+                    partRolYellow3: [],
+                    partRolRed3: []
                 };
                 if (userDetail && userDetail.userType) {
                     context.commonFact.getData('marketing.partMaster').then(function (res) {
@@ -831,14 +836,18 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                                     checkPartStock.partName = partMaster[j].partName;
                                     checkPartStock.partNo = partMaster[j].partNo;
                                     if (redAlert >= checkPartStock.partStockQty) {
-                                        context.alertRolContext.partRolRed.push(checkPartStock);
+                                        context.alertRolContext.partRolRed1.length<=showCountLimit && context.alertRolContext.partRolRed1.push(checkPartStock);
+                                        context.alertRolContext.partRolRed2.length<=showCountLimit && context.alertRolContext.partRolRed1.length>showCountLimit && context.alertRolContext.partRolRed2.push(checkPartStock);
+                                        context.alertRolContext.partRolRed2.length>showCountLimit && context.alertRolContext.partRolRed1.length>showCountLimit && context.alertRolContext.partRolRed3.push(checkPartStock);
                                     } else if (yellowAlert >= checkPartStock.partStockQty) {
-                                        context.alertRolContext.partRolYellow.push(checkPartStock);
+                                        context.alertRolContext.partRolYellow1.length<=showCountLimit && context.alertRolContext.partRolYellow1.push(checkPartStock);
+                                        context.alertRolContext.partRolYellow2.length<=showCountLimit && context.alertRolContext.partRolYellow1.length>showCountLimit && context.alertRolContext.partRolYellow2.push(checkPartStock);
+                                        context.alertRolContext.partRolYellow2.length>showCountLimit && context.alertRolContext.partRolYellow1.length>showCountLimit && context.alertRolContext.partRolYellow3.push(checkPartStock);
                                     }
                                 }
 
                             }
-                            if ((context.alertRolContext.partRolRed.length > 0 || context.alertRolContext.partRolYellow.length > 0) && !context.alertRolHideROL) {
+                            if ((context.alertRolContext.partRolRed1.length > 0 || context.alertRolContext.partRolYellow1.length > 0) && !context.alertRolHideROL) {
                                 angular.element('#RolModal').modal('show');
                             }
                         });
