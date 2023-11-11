@@ -246,6 +246,9 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 context.controller.methods.callBackRemoveMapping && context.controller.methods.callBackRemoveMapping(data, key);
 
             },
+            removeAllMapping: function(){
+                context.controller.data.mapping = context.controller.masterData.mapping;
+            },
             changeMapping: function (data, key, field, fieldMapKey) {
                 for (var dataKey in data) {
                     if ((field.updateData && field.updateData.indexOf(dataKey) >= 0) || field.updateData === undefined) {

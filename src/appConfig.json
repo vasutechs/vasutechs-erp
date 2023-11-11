@@ -968,6 +968,120 @@
                             }
                         }
                     }
+                },
+                "salesReturn": {
+                    "id": "salesReturn",
+                    "title": "Sales Return",
+                    "masterData": {
+                        "customerCode": null,
+                        "subTotal": null,
+                        "gstTotal": null,
+                        "total": null,
+                        "mapping": [{
+                            "id": null,
+                            "partName": null,
+                            "qty": null,
+                            "rate": null,
+                            "amount": null
+                        }
+                    ]
+                    },
+                    "form": {
+                        "name": "salesReturn",
+                        "id": "salesReturn",
+                        "fields": {
+                            "customerCode": {
+                                "name": "Customer Code",
+                                "id": "customerCode",
+                                "type": "autoComplete",
+                                "options": {},
+                                "action": "getCustomerPart",
+                                "dataFrom": "marketing.customerMaster",
+                                "replaceName": "customerName",
+                                "isEditDisable": true
+                            },
+                            "subTotal": {
+                                "name": "Sub Total",
+                                "id": "subTotal",
+                                "afterMapping": true,
+                                "type": "span"
+                            },
+                            "gstTotal": {
+                                "name": "Tax Total",
+                                "id": "gstTotal",
+                                "type": "span",
+                                "afterMapping": true
+                            },
+                            "total": {
+                                "name": "Total",
+                                "id": "total",
+                                "type": "span",
+                                "afterMapping": true
+                            }
+                        },
+                        "mapping": {
+                            "name": "Part Mapping",
+                            "fields": {
+                                "id": {
+                                    "name": "Part No",
+                                    "id": "id",
+                                    "type": "select",
+                                    "action": "getCustomerPartRate",
+                                    "options": {},
+                                    "dataFrom": "marketing.partMaster",
+                                    "replaceName": "partNo"
+                                },
+                                "partName": {
+                                    "name": "Part Name",
+                                    "id": "partName",
+                                    "referenceField": "id",
+                                    "replaceName": "partName",
+                                    "type": "span"
+                                },
+                                "rate": {
+                                    "name": "Rate",
+                                    "id": "rate",
+                                    "type": "span"
+                                },
+                                "qty": {
+                                    "name": "Qty",
+                                    "id": "qty",
+                                    "type": "input",
+                                    "inputType": "number",
+                                    "action": "updateSalesReturnTotal",
+                                    "required": true
+                                },
+                                "amount": {
+                                    "name": "Total Amount",
+                                    "id": "amount",
+                                    "type": "span"
+                                }
+                            }
+                        }
+                    },
+                    "listView": [{
+                            "name": "Customer Code",
+                            "id": "customerCode",
+                            "dataFrom": "marketing.customerMaster",
+                            "replaceName": "customerName",
+                            "type": "autoComplete",
+                            "isFilterBy": true
+                        },{
+                            "name": "Total Amount",
+                            "id": "total"
+                        }
+                    ],
+                    "page": {
+                        "link": "marketing/salesReturn",
+                        "name": "list"
+                    },
+                    "services": {
+                        "list": {
+                            "params": {
+                                "year": true
+                            }
+                        }
+                    }
                 }
             },
             "purchase": {
@@ -1981,6 +2095,113 @@
                     ],
                     "page": {
                         "link": "purchase/poSubContractor",
+                        "name": "list"
+                    },
+                    "services": {
+                        "list": {
+                            "params": {
+                                "year": true
+                            }
+                        }
+                    }
+                },
+                "purchaseReturn": {
+                    "id": "purchaseReturn",
+                    "title": "Purchase Return",
+                    "masterData": {
+                        "supplierCode": null,
+                        "subTotal": null,
+                        "gstTotal": null,
+                        "total": null,
+                        "mapping": [{
+                            "id": null,
+                            "acceptedQty": null,
+                            "rate": null,
+                            "amount": null
+                        }
+                    ]
+                    },
+                    "form": {
+                        "name": "purchaseReturn",
+                        "id": "purchaseReturn",
+                        "fields": {
+                            "supplierCode": {
+                                "name": "Supplier Name",
+                                "id": "supplierCode",
+                                "type": "autoComplete",
+                                "options": {},
+                                "action": "getSupplierRm",
+                                "dataFrom": "purchase.supplierMaster",
+                                "replaceName": "supplierName",
+                                "isEditDisable": true
+                            },
+                            "subTotal": {
+                                "name": "Sub Total",
+                                "id": "subTotal",
+                                "afterMapping": true,
+                                "type": "span"
+                            },
+                            "gstTotal": {
+                                "name": "Tax Total",
+                                "id": "gstTotal",
+                                "type": "span",
+                                "afterMapping": true
+                            },
+                            "total": {
+                                "name": "Total",
+                                "id": "total",
+                                "type": "span",
+                                "afterMapping": true
+                            }
+                        },
+                        "mapping": {
+                            "name": "RM Mapping",
+                            "fields": {
+                                "id": {
+                                    "name": "RM Code",
+                                    "id": "id",
+                                    "type": "select",
+                                    "action": "getSupplierRmRate",
+                                    "options": {},
+                                    "dataFrom": "purchase.rmMaster",
+                                    "replaceName": "rmName",
+                                    "valuePrefixData": "grade"
+                                },
+                                "rate": {
+                                    "name": "Rate",
+                                    "id": "rate",
+                                    "type": "span"
+                                },
+                                "qty": {
+                                    "name": "Qty",
+                                    "id": "qty",
+                                    "type": "input",
+                                    "inputType": "number",
+                                    "action": "updatePurchaseReturnTotal",
+                                    "required": true
+                                },
+                                "amount": {
+                                    "name": "Total Amount",
+                                    "id": "amount",
+                                    "type": "span"
+                                }
+                            }
+                        }
+                    },
+                    "listView": [{
+                            "name": "Supplier",
+                            "id": "supplierCode",
+                            "dataFrom": "purchase.supplierMaster",
+                            "replaceName": "supplierName",
+                            "type": "autoComplete",
+                            "isFilterBy": true
+                        },{
+                            "name": "Total Amount",
+                            "id": "total"
+                        }
+                    ],
+                    "page": {
+                        "link": "marketing/purchaseReturn",
                         "name": "list"
                     },
                     "services": {
@@ -4187,6 +4408,7 @@
                         "title": "Filter",
                         "data": {
                             "customerCode": null,
+                            "partNo": null,
                             "frmDate": null,
                             "toDate": null
                         },
@@ -4196,6 +4418,13 @@
                                 "type": "autoComplete",
                                 "dataFrom": "marketing.customerMaster",
                                 "replaceName": "customerName",
+                                "isFilterBy": true
+                            }, {
+                                "name": "Part No",
+                                "id": "partNo",
+                                "dataFrom": "marketing.partMaster",
+                                "replaceName": "partNo",
+                                "type": "autoComplete",
                                 "isFilterBy": true
                             }, {
                                 "name": "From Date",
