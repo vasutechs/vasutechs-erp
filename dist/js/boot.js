@@ -3414,7 +3414,6 @@ erpConfig.moduleFiles.salesAnalysisInvoice = function(context) {
                 var customerCode = listViewData[i]['customerCode'];
                 var filterPartNo = context.controller.filterView.data['partNo'];
                 var date = new Date(listViewData[i]['date']);
-                console.log(filterPartNo);
                 frmDate = frmDate && new Date(frmDate) || false;
                 toDate = toDate && new Date(toDate) || false;
                 toDate = toDate && new Date(toDate.setDate(toDate.getDate() + 1)) || false;
