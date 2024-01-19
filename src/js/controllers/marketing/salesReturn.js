@@ -64,7 +64,6 @@ erpConfig.moduleFiles.salesReturn = function(context) {
                 newContext.controller.data = context.controller.data.mapping[i];
                 newContext.controller.data.partNo = newContext.controller.data.id;
                 newContext.controller.data.acceptedQty = parseInt(newContext.controller.data.qty);
-                console.log(newContext.controller.data);
                 context.commonFact.updatePartStock(newContext);
             }
             

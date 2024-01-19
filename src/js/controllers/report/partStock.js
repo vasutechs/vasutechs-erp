@@ -1,6 +1,7 @@
 erpConfig.moduleFiles.partStock = function(context) {
     return {
         callBackList: function() {
+            context.commonFact.getPartStock();
             var newList = angular.copy(context.controller.listViewData);
             if (context.commonFact.location.search() && context.commonFact.location.search()['showall'] === 'no') {
                 newList = context.controller.listViewData.filter(function(data) {
@@ -20,29 +21,25 @@ erpConfig.moduleFiles.partStock = function(context) {
                 }
             });
         },
-        updateOperationFrom: function() {
+        callBackEdit: function() {
+            context.controller.methods.updateOperationFrom(context.controller.data);
+            context.controller.methods.updateOperationTo(context.controller.data);
+            context.controller.methods.checkExistingPart(context.controller.data);
+        },
+        updateOperationFrom: function(data) {
             if (context.controller.data.partNo && context.controller.form.fields['operationFrom']) {
-                var restriction = {
-                    partNo: context.controller.data.partNo
-                };
-                context.commonFact.getOperationFromFlow(context.controller.form.fields['operationFrom'], restriction);
+                context.commonFact.getCommonOperationFromFlow(context.controller.form.fields['operationFrom'], data.partNo);
             }
         },
-        updateOperationTo: function(data, key, field) {
+        updateOperationTo: function(data) {
             if (context.controller.data.partNo && context.controller.form.fields['operationTo']) {
-                var partNo = context.controller.data.partNo,
-                    restriction = {
-                        partNo: partNo
-                    };
-
-                if (data.operationFrom) {
-                    restriction = angular.extend(restriction, {
-                        limit: 1,
-                        startWith: data.operationFrom
-                    });
-                }
-
-                context.commonFact.getOperationFromFlow(context.controller.form.fields['operationTo'], restriction);
+                context.commonFact.getCommonOperationFromFlow(context.controller.form.fields['operationTo'], data.partNo);
+            }
+            context.controller.methods.checkExistingPart(data);
+        },
+        checkExistingPart: function(data){
+            if(data.partNo && data.operationFrom){
+                data.existingPartStockQty = context.controller.partStock[data.partNo + '-' + data.operationFrom] && context.controller.partStock[data.partNo + '-' + data.operationFrom].partStockQty || 0;
             }
         },
         submit: function() {

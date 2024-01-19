@@ -715,6 +715,7 @@
                     "id": "invoice",
                     "title": "Invoice",
                     "cashBill": false,
+                    "quote": false,
                     "masterData": {
                         "invoiceNo": null,
                         "date": null,
@@ -958,6 +959,43 @@
                     ],
                     "page": {
                         "link": "marketing/cashBill",
+                        "name": "list",
+                        "templateUrl": "template/controllers/marketing/invoice.html"
+                    },
+                    "services": {
+                        "list": {
+                            "params": {
+                                "year": true
+                            }
+                        }
+                    }
+                },
+                "quote": {
+                    "id": "quote",
+                    "name": "quote",
+                    "title": "Quote",
+                    "parentModule": "marketing.invoice",
+                    "quote": true,
+                    "form": {
+                        "autoGenValStart": null,
+                        "fields": {
+                            "invoiceNo": {
+                                "name": "Quote No",
+                                "id": "invoiceNo",
+                                "type": "span",
+                                "valuePrefix": "",
+                                "required": true
+                            }
+                        }
+                    },
+                    "listView": [{
+                            "name": "Quote No",
+                            "id": "invoiceNo",
+                            "valuePrefix": ""
+                        }
+                    ],
+                    "page": {
+                        "link": "marketing/quote",
                         "name": "list",
                         "templateUrl": "template/controllers/marketing/invoice.html"
                     },
@@ -2115,6 +2153,7 @@
                         "total": null,
                         "mapping": [{
                             "id": null,
+                            "partNo": null,
                             "acceptedQty": null,
                             "rate": null,
                             "amount": null
@@ -3040,6 +3079,73 @@
                                 "year": true
                             }
                         }
+                    }
+                },
+                "partScrap": {
+                    "id": "partScrap",
+                    "title": "Part Scrap",
+                    "masterData": {
+                        "partNo": null,
+                        "partStockQty": null,
+                        "operationFrom": null
+                    },
+                    "form": {
+                        "name": "partScrap",
+                        "id": "partScrap",
+                        "fields": {
+                            "partNo": {
+                                "name": "Part No",
+                                "id": "partNo",
+                                "type": "autoComplete",
+                                "options": {},
+                                "dataFrom": "marketing.partMaster",
+                                "replaceName": "partNo",
+                                "action": "updateOperationFrom",
+                                "isSingle": true
+                            },
+                            "partStockQty": {
+                                "name": "Part Qty",
+                                "id": "partStockQty",
+                                "type": "input",
+                                "inputType": "number",
+                                "required": true,
+                                "isEditDisable": true
+                            },
+                            "operationFrom": {
+                                "name": "Operation From",
+                                "id": "operationFrom",
+                                "type": "select",
+                                "options": {},
+                                "dataFrom": "production.operationMaster",
+                                "replaceName": "opName",
+                                "isSingle": true
+                            }
+                        },
+                        "actions": {
+                            "customSubmit": "submit"
+                        }
+                    },
+                    "listView": [{
+                            "name": "Part No",
+                            "id": "partNo",
+                            "dataFrom": "marketing.partMaster",
+                            "replaceName": "partNo",
+                            "type": "autoComplete",
+                            "isFilterBy": true
+                        }, {
+                            "name": "Operation From",
+                            "id": "operationFrom",
+                            "dataFrom": "production.operationMaster",
+                            "replaceName": "opName",
+                            "type": "select"
+                        }, {
+                            "name": "Part Stock Qty",
+                            "id": "partStockQty"
+                        }
+                    ],
+                    "page": {
+                        "link": "store/partScrap",
+                        "name": "list"
                     }
                 }
             },
@@ -4117,6 +4223,7 @@
                     "form": {
                         "name": "RMStock",
                         "id": "RMStock",
+                        "disableByField": "id",
                         "fields": {
                             "rmName": {
                                 "name": "RM Name",
@@ -4128,14 +4235,8 @@
                                 "dataFrom": "purchase.rmMaster",
                                 "replaceName": "rmName",
                                 "valueSufixData": "grade",
+                                "isEditDisable": true,
                                 "isSingle": true
-                            },
-                            "rmStockQty": {
-                                "name": "Stock Qty",
-                                "id": "rmStockQty",
-                                "type": "input",
-                                "inputType": "number",
-                                "required": true
                             },
                             "uomCode": {
                                 "name": "UOM",
@@ -4144,7 +4245,15 @@
                                 "options": {},
                                 "dataFrom": "marketing.uomMaster",
                                 "replaceName": "uomName",
+                                "isEditDisable": true,
                                 "isSingle": true
+                            },
+                            "rmStockQty": {
+                                "name": "Stock Qty",
+                                "id": "rmStockQty",
+                                "type": "input",
+                                "inputType": "number",
+                                "required": true
                             }
                         },
                         "actions": {
@@ -4201,6 +4310,7 @@
                     "form": {
                         "name": "PartStock",
                         "id": "PartStock",
+                        "disableByField": "id",
                         "fields": {
                             "partNo": {
                                 "name": "Part No",
@@ -4210,14 +4320,8 @@
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
                                 "action": "updateOperationFrom",
+                                "isEditDisable": true,
                                 "isSingle": true
-                            },
-                            "partStockQty": {
-                                "name": "Part Qty",
-                                "id": "partStockQty",
-                                "type": "input",
-                                "inputType": "number",
-                                "required": true
                             },
                             "operationFrom": {
                                 "name": "Operation From",
@@ -4227,6 +4331,7 @@
                                 "dataFrom": "production.operationMaster",
                                 "action": "updateOperationTo",
                                 "replaceName": "opName",
+                                "isEditDisable": true,
                                 "isSingle": true
                             },
                             "operationTo": {
@@ -4236,7 +4341,21 @@
                                 "options": {},
                                 "dataFrom": "production.operationMaster",
                                 "replaceName": "opName",
+                                "isEditDisable": true,
                                 "isSingle": true
+                            },
+                            "existingPartStockQty": {
+                                "name": "Existing Part Qty",
+                                "id": "existingPartStockQty",
+                                "isShowOnlyEdit": true,
+                                "type": "span"
+                            },
+                            "partStockQty": {
+                                "name": "Part Qty",
+                                "id": "partStockQty",
+                                "type": "input",
+                                "inputType": "number",
+                                "required": true
                             }
                         },
                         "actions": {
@@ -4298,6 +4417,7 @@
                     "form": {
                         "name": "subContractorStock",
                         "id": "subContractorStock",
+                        "disableByField": "id",
                         "fields": {
                             "subContractorCode": {
                                 "name": "SubContractor Code",
@@ -4307,6 +4427,7 @@
                                 "dataFrom": "purchase.subContractorMaster",
                                 "replaceName": "subContractorName",
                                 "action": "getPartNos",
+                                "isEditDisable": true,
                                 "isSingle": true
                             },
                             "partNo": {
@@ -4317,14 +4438,8 @@
                                 "dataFrom": "marketing.partMaster",
                                 "replaceName": "partNo",
                                 "action": "updateOperationFrom",
+                                "isEditDisable": true,
                                 "isSingle": true
-                            },
-                            "partStockQty": {
-                                "name": "SubContractor Qty",
-                                "id": "partStockQty",
-                                "type": "input",
-                                "inputType": "number",
-                                "required": true
                             },
                             "operationFrom": {
                                 "name": "Operation From",
@@ -4334,6 +4449,7 @@
                                 "dataFrom": "production.operationMaster",
                                 "action": "updateOperationTo",
                                 "replaceName": "opName",
+                                "isEditDisable": true,
                                 "isSingle": true
                             },
                             "operationTo": {
@@ -4343,7 +4459,15 @@
                                 "options": {},
                                 "dataFrom": "production.operationMaster",
                                 "replaceName": "opName",
+                                "isEditDisable": true,
                                 "isSingle": true
+                            },
+                            "partStockQty": {
+                                "name": "SubContractor Qty",
+                                "id": "partStockQty",
+                                "type": "input",
+                                "inputType": "number",
+                                "required": true
                             }
                         },
                         "actions": {

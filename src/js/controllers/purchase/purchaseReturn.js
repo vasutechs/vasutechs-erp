@@ -2,6 +2,7 @@ erpConfig.moduleFiles.purchaseReturn = function(context) {
     var orgItemVal = null;
     return {
         callBackList: function() {
+            context.commonFact.getPartStock();
             orgItemVal = null;
             context.controller.orgItemVal = orgItemVal;
         },
@@ -15,13 +16,23 @@ erpConfig.moduleFiles.purchaseReturn = function(context) {
                     id: rmCodes
                 }
                 context.commonFact.makeOptionsFields(context.controller.form.mapping.fields['id']);
-
             }
-            
         },
         getSupplierRmRate: function(data){
             var selectedRM = context.commonFact.findObjectByKey(context.controller.form.fields['supplierCode'].options[context.controller.data.supplierCode].mapping, 'id', data.id);
+            var partNo;
             data.rate = selectedRM.rate;
+            context.commonFact.getData('marketing.partMaster').then(function (res) {
+                for(var i in res.data){
+                    if(res.data[i].rmCode === data.id){
+                        data.partNo = res.data[i].id;
+                        if (context.controller.partStock[data.partNo + '-' + context.erpAppConfig.finalStageOpp]) {
+                            data.operationFrom = context.controller.partStock[data.partNo + '-' + context.erpAppConfig.finalStageOpp].operationFrom;
+                            data.operationTo = context.controller.partStock[data.partNo + '-' + context.erpAppConfig.finalStageOpp].operationTo;
+                        }
+                    }
+                }
+            });
             context.controller.methods.updatePurchaseReturnTotal(data);
         },
         updatePurchaseReturnTotal: function(data){
@@ -52,44 +63,24 @@ erpConfig.moduleFiles.purchaseReturn = function(context) {
             context.controller.data.gstTotal = parseFloat(taxRateTotal, 2);
             context.controller.data.total = parseFloat(total, 2);
         },
-        updateRMStockQty: function(isDel) {
-            context.commonFact.getData('report.rmStock').then(function(res) {
-                var rmStockData = res.data,
-                    rmStock = {};
-                var existingStock;
-                var qty;
-                var oldQty;
-                var rmStockQty;
-                var data;
-                for (var i in rmStockData) {
-                    rmStock[rmStockData[i].rmCode] = rmStockData[i] && rmStockData[i] || undefined;
-                }
-
-                for (var i in context.controller.data.mapping) {
-                    existingStock = rmStock[context.controller.data.mapping[i].id];
-                    qty = context.controller.data.mapping[i].qty;
-                    if(isDel){
-                        rmStockQty = existingStock && parseInt(existingStock.rmStockQty) - parseInt(qty) || 0 - parseInt(qty);
-                    }
-                    else{
-                        rmStockQty = existingStock && parseInt(existingStock.rmStockQty) + parseInt(qty) || parseInt(qty);
-                    }
-                    
-                    data = {
-                        id: existingStock && existingStock.id || undefined,
-                        rmCode: context.controller.data.mapping[i].id,
-                        rmStockQty: rmStockQty,
-                        uomCode: existingStock.uomCode
-                    }
-                    context.commonFact.updateData('report.rmStock', data);
-                }
-            });
-        },
         callBackSubmit: function() {
-            context.controller.methods.updateRMStockQty();
+            for(var i in context.controller.data.mapping){
+                var newContext = angular.copy(context);
+                newContext.controller.updatePrevStock = false;
+                newContext.controller.data = context.controller.data.mapping[i];
+                newContext.controller.data.acceptedQty = 0 - parseInt(newContext.controller.data.qty);
+                context.commonFact.updatePartStock(newContext);
+            }
+            
         },
         callBeforeDelete: function(id, item) {
-            context.controller.methods.updateRMStockQty(true);
+            for(var i in item.mapping){
+                var newContext = angular.copy(context);
+                newContext.controller.updatePrevStock = false;
+                newContext.controller.data = item.mapping[i];
+                newContext.controller.data.acceptedQty = parseInt(newContext.controller.data.qty);
+                context.commonFact.updatePartStock(newContext);
+            }
         }
     };
 };

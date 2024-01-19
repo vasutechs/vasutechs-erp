@@ -165,22 +165,27 @@ erpConfig.moduleFiles.invoice = function(context) {
                 });
             };
             if (context.controller.data.customerCode) {
-                context.commonFact.getData('marketing.customerMaster', context.controller.data.customerCode).then(function(res) {
-                    customerMaster = angular.copy(res.data);
-                    for (var i in context.controller.data.mapping) {
-                        customerMasterMap = angular.copy(context.controller.data.mapping[i]);
-                        if (!context.commonFact.findObjectByKey(customerMaster.mapping, 'id', context.controller.data.mapping[i].id)) {
-                            delete customerMasterMap.unit;
-                            delete customerMasterMap.amount;
-                            delete customerMasterMap.operationFrom;
-                            delete customerMasterMap.operationTo;
-                            customerMaster.mapping.push(customerMasterMap);
+                if (!context.controller.quote) {
+                    context.commonFact.getData('marketing.customerMaster', context.controller.data.customerCode).then(function(res) {
+                        customerMaster = angular.copy(res.data);
+                        for (var i in context.controller.data.mapping) {
+                            customerMasterMap = angular.copy(context.controller.data.mapping[i]);
+                            if (!context.commonFact.findObjectByKey(customerMaster.mapping, 'id', context.controller.data.mapping[i].id)) {
+                                delete customerMasterMap.unit;
+                                delete customerMasterMap.amount;
+                                delete customerMasterMap.operationFrom;
+                                delete customerMasterMap.operationTo;
+                                customerMaster.mapping.push(customerMasterMap);
+                            }
                         }
-                    }
-                    update(customerMaster).then(function() {
-                        promiseRes.resolve();
+                        update(customerMaster).then(function() {
+                            promiseRes.resolve();
+                        });
                     });
-                });
+                }
+                else{
+                    promiseRes.resolve();
+                }
             } else {
                 customerMaster = {
                     customerName: context.controller.form.fields.customerCode.autoCompleteModel,
@@ -214,14 +219,17 @@ erpConfig.moduleFiles.invoice = function(context) {
             context.controller.methods.updateCustomerDetail().then(function() {
                 context.commonFact.submit();
             });
-
         },
         callBackSubmit: function() {
-            context.controller.methods.updateInvoicePartStock();
+            if (!context.controller.quote) {
+                context.controller.methods.updateInvoicePartStock();
+            }
         },
         callBeforeDelete: function(id, item) {
-            context.controller.data = item;
-            context.controller.methods.updateInvoicePartStock(true);
+            if (!context.controller.quote) {
+                context.controller.data = item;
+                context.controller.methods.updateInvoicePartStock(true);
+            }
         },
         invoicePartUpdate: function(data, key, field, fieldMapKey) {
             context.commonFact.changeMapping(data, key, field, fieldMapKey);
@@ -244,3 +252,5 @@ erpConfig.moduleFiles.invoice = function(context) {
 };
 
 erpConfig.moduleFiles.cashBill = erpConfig.moduleFiles.invoice;
+
+erpConfig.moduleFiles.quote = erpConfig.moduleFiles.invoice; 

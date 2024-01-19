@@ -1229,6 +1229,24 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
             isNumberCheck: function(data, value){
                 //return type === 'number'?Number(data):data;
                 return Number(value)?true:false;
+            },
+            getCommonOperationFromFlow: function(field, partNo){
+                context.commonFact.getData('production.flowMaster').then(function (res) {
+                    var flowMasterData = res.data;
+                    var flows = [];
+
+                    for (var i in flowMasterData) {
+                        if (flowMasterData[i].partNo === partNo) {
+                            for(var j in flowMasterData[i].mapping){
+                                flows.push(flowMasterData[i].mapping[j]['id']);
+                            }
+                            field.filter = {
+                                id: flows
+                            };
+                            context.commonFact.makeOptionsFields(field);
+                        }
+                    }
+                });
             }
         };
     };
