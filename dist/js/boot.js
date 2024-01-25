@@ -4817,22 +4817,22 @@ module.run(['$templateCache', function($templateCache) {
     '                    <td rowspan="3" align="right"><b>{{context.controller.form.fields.gst.name}} %</b></td>\n' +
     '                    <td rowspan="3">\n' +
     '                        <input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.gst.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.gst.id]" ng-change="context.commonFact.callActions(context.controller.form.fields.gst.action, [context.controller.data, context.controller.data[context.controller.form.fields.gst.id], context.controller.form.fields.gst])"\n' +
-    '                            /><span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.gst.id}}" ng-bind="context.controller.data[context.controller.form.fields.gst.id]"></span></td>\n' +
+    '                            ng-required="true" /><span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.gst.id}}" ng-bind="context.controller.data[context.controller.form.fields.gst.id]"></span></td>\n' +
     '                    <td align="right"><b>{{context.controller.form.fields.cgst.name}} %</b></td>\n' +
     '                    <td><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.cgst.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.cgst.id]" ng-change="context.commonFact.callActions(context.controller.form.fields.cgst.action, [context.controller.data, context.controller.data[context.controller.form.fields.cgst.id], context.controller.form.fields.cgst])"\n' +
-    '                            /><span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.cgst.id}}" ng-bind="context.controller.data[context.controller.form.fields.cgst.id]"></span></td>\n' +
+    '                            ng-required="true" /><span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.cgst.id}}" ng-bind="context.controller.data[context.controller.form.fields.cgst.id]"></span></td>\n' +
     '                    <td colspan="3"><span id="{{context.controller.form.fields.cgstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.cgstTotal.id]"></span></td>\n' +
     '                </tr>\n' +
     '                <tr ng-if="!context.controller.cashBill">\n' +
     '                    <td align="right"><b>{{context.controller.form.fields.sgst.name}} %</b></td>\n' +
     '                    <td><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.sgst.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.sgst.id]" ng-change="context.commonFact.callActions(context.controller.form.fields.sgst.action, [context.controller.data, context.controller.data[context.controller.form.fields.sgst.id], context.controller.form.fields.sgst])"\n' +
-    '                           /><span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.sgst.id}}" ng-bind="context.controller.data[context.controller.form.fields.sgst.id]"></span></td>\n' +
+    '                            ng-required="true" /><span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.sgst.id}}" ng-bind="context.controller.data[context.controller.form.fields.sgst.id]"></span></td>\n' +
     '                    <td colspan="3"><span id="{{context.controller.form.fields.sgstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.sgstTotal.id]"></span></td>\n' +
     '                </tr>\n' +
     '                <tr ng-if="!context.controller.cashBill">\n' +
     '                    <td align="right"><b>{{context.controller.form.fields.igst.name}} %</b></td>\n' +
     '                    <td><input ng-if="!context.controller.page.printView" type="text" id="{{context.controller.form.fields.igst.id}}" class="form-control" ng-model="context.controller.data[context.controller.form.fields.igst.id]" ng-change="context.commonFact.callActions(context.controller.form.fields.igst.action, [context.controller.data, context.controller.data[context.controller.form.fields.igst.id], context.controller.form.fields.igst])"\n' +
-    '                             /><span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.igst.id}}" ng-bind="context.controller.data[context.controller.form.fields.igst.id]"></span></td>\n' +
+    '                            ng-required="true" /><span ng-if="context.controller.page.printView" id="{{context.controller.form.fields.igst.id}}" ng-bind="context.controller.data[context.controller.form.fields.igst.id]"></span></td>\n' +
     '                    <td colspan="3"><span id="{{context.controller.form.fields.igstTotal.id}}" ng-bind="context.controller.data[context.controller.form.fields.igstTotal.id]"></span></td>\n' +
     '                </tr>\n' +
     '                <tr>\n' +
