@@ -1,7 +1,8 @@
 SETLOCAL ENABLEDELAYEDEXPANSION
+for %%I in (.) do SET CurrDirName=%%~nxI
 SET LinkName=Vasutechs-ERP
 SET CurrentPath=%cd%
-SET Esc_LinkDest=%%HOMEDRIVE%%%%HOMEPATH%%\Desktop\!LinkName!.lnk
+SET Esc_LinkDest=%%HOMEDRIVE%%%%HOMEPATH%%\Desktop\!LinkName!-!CurrDirName!.lnk
 SET Esc_LinkTarget=%CurrentPath%\start.bat
 SET Icon_Location=%CurrentPath%\dist\assets\img\vasu-techs-logo.ico
 SET cSctVBS=CreateShortcut.vbs
@@ -21,4 +22,5 @@ if exist "%HOMEDRIVE%%HOMEPATH%\Desktop\!LinkName!.lnk" ( echo "file exist..." )
     DEL !cSctVBS! /f
  )
 )
+
 npm run app-start
