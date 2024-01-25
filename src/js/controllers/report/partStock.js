@@ -1,6 +1,9 @@
 erpConfig.moduleFiles.partStock = function(context) {
     return {
         callBackList: function() {
+            if(context.erpAppConfig.isSale){
+                context.controller.listView.length===7 && context.controller.listView.splice(2,2);
+            }
             context.commonFact.getPartStock();
             var newList = angular.copy(context.controller.listViewData);
             if (context.commonFact.location.search() && context.commonFact.location.search()['showall'] === 'no') {
@@ -46,6 +49,10 @@ erpConfig.moduleFiles.partStock = function(context) {
             var submitService;
             if (!context.controller.data.operationFrom && !context.controller.data.operationTo) {
                 context.controller.data.operationTo = context.erpAppConfig.finalStageOpp;
+            }
+            if(context.erpAppConfig.isSale){
+                delete context.controller.data.operationFrom;
+                delete context.controller.data.operationTo;
             }
             if (context.controller.data.id) {
                 submitService = context.commonFact.updateData(context.controller, context.controller.data)

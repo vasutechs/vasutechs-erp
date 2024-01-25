@@ -1,10 +1,12 @@
 erpConfig.moduleFiles.settings = function(context) {
     return {
         callBackList: function() {
-            var moduleField = context.controller.form.mapping.fields['module'];
-            moduleField.options = {};
-            moduleField.allOptions = {};
-            context.controller.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
+            if(context.controller.form.mapping){
+                var moduleField = context.controller.form.mapping.fields['module'];
+                moduleField.options = {};
+                moduleField.allOptions = {};
+                context.controller.methods.makeModuleOptions(context.erpAppConfig.modules.controllers, moduleField);
+            }
             if (context.controller.lastData === undefined) {
                 context.commonFact.add();
             } else {
@@ -17,7 +19,9 @@ erpConfig.moduleFiles.settings = function(context) {
                 optionName: 'All',
                 optionId: 'all'
             };
-            context.controller.form.mapping.fields['restrictUser'].options['all'] = custumOption;
+            if(context.controller.form.mapping) { 
+                context.controller.form.mapping.fields['restrictUser'].options['all'] = custumOption;
+            }
         },
         makeModuleOptions: function(modules, field, parentModule) {
             for (var i in modules) {

@@ -30,14 +30,16 @@
                             "id": "userName",
                             "type": "input",
                             "inputType": "text",
-                            "required": true
+                            "required": true,
+                            "defaultRelease": true
                         },
                         "password": {
                             "name": "Password",
                             "id": "password",
                             "type": "input",
                             "inputType": "password",
-                            "required": true
+                            "required": true,
+                            "defaultRelease": true
                         },
                         "appCustomer": {
                             "name": "App Customers",
@@ -94,7 +96,6 @@
                 "name": "Sync Server",
                 "title": "Sync Server",
                 "disableMenu": true,
-                "defaultRelease": true,
 				"page": {
 					"link": "syncServer",
 					"name": "list"
@@ -140,6 +141,7 @@
                 "partMaster": {
                     "id": "partMaster",
                     "title": "Part Master",
+                    "defaultRelease": true,
                     "masterData": {
                         "partNo": null,
                         "partName": null,
@@ -167,6 +169,7 @@
                     "form": {
                         "name": "partMaster",
                         "id": "partMaster",
+                        "useSameVal": {"partNo":"partName"},
                         "fields": {
                             "partNo": {
                                 "name": "Part No",
@@ -174,7 +177,8 @@
                                 "type": "input",
                                 "inputType": "text",
                                 "action": "isCheckExistField",
-                                "required": true
+                                "required": true,
+                                "defaultRelease": true
                             },
                             "partName": {
                                 "name": "Part Name",
@@ -184,12 +188,20 @@
                                 "action": "isCheckExistField",
                                 "required": true
                             },
+                            "purchaseRate": {
+                                "name": "Purchase Rate",
+                                "id": "purchaseRate",
+                                "type": "input",
+                                "inputType": "number",
+                                "defaultRelease": true
+                            },
                             "rate": {
                                 "name": "Rate",
                                 "id": "rate",
                                 "type": "input",
                                 "inputType": "number",
-                                "required": true
+                                "required": true,
+                                "defaultRelease": true
                             },
                             "rmCode": {
                                 "name": "Raw material",
@@ -208,7 +220,8 @@
                                 "options": {},
                                 "dataFrom": "marketing.categoryMaster",
                                 "replaceName": "categoryName",
-                                "isSingle": true
+                                "isSingle": true,
+                                "defaultRelease": true
                             },
                             "inputWeight": {
                                 "name": "Input weight",
@@ -226,7 +239,8 @@
                                 "name": "HSN Code",
                                 "id": "hsnCode",
                                 "type": "input",
-                                "inputType": "text"
+                                "inputType": "text",
+                                "defaultRelease": true
                             },
                             "uomCode": {
                                 "name": "UOM",
@@ -235,7 +249,8 @@
                                 "options": {},
                                 "dataFrom": "marketing.uomMaster",
                                 "replaceName": "uomName",
-                                "isSingle": true
+                                "isSingle": true,
+                                "defaultRelease": true
                             },
                             "prodRateHr": {
                                 "name": "Prod Rate/ hr",
@@ -247,13 +262,15 @@
                                 "name": "ROL Qty Yellow Rage",
                                 "id": "rolQtyYellowRage",
                                 "type": "input",
-                                "inputType": "number"
+                                "inputType": "number",
+                                "defaultRelease": true
                             },
                             "rolQtyRedRage": {
                                 "name": "ROL Qty Red Rage",
                                 "id": "rolQtyRedRage",
                                 "type": "input",
-                                "inputType": "number"
+                                "inputType": "number",
+                                "defaultRelease": true
                             },
                             "rejection": {
                                 "name": "Rejection %",
@@ -277,13 +294,15 @@
                                 "name": "Profit %",
                                 "id": "profit",
                                 "type": "input",
-                                "inputType": "number"
+                                "inputType": "number",
+                                "defaultRelease": true
                             },
                             "transportCostKg": {
                                 "name": "Transport cost per kg",
                                 "id": "transportCostKg",
                                 "type": "input",
-                                "inputType": "number"
+                                "inputType": "number",
+                                "defaultRelease": true
                             },
                             "isAssemblePart": {
                                 "name": "Is Assemble Part",
@@ -330,6 +349,7 @@
                 "customerMaster": {
                     "id": "customerMaster",
                     "title": "Customer Master",
+                    "defaultRelease": true,
                     "masterData": {
                         "customerCode": null,
                         "customerName": null,
@@ -352,6 +372,7 @@
                         "name": "customerMaster",
                         "id": "customerMaster",
                         "autoGenKey": "customerCode",
+                        "defaultRelease": true,
                         "fields": {
                             "customerCode": {
                                 "name": "Customer Code",
@@ -630,6 +651,7 @@
                 "uomMaster": {
                     "id": "uomMaster",
                     "title": "UOM Master",
+                    "defaultRelease": true,
                     "masterData": {
                         "uomCode": null,
                         "uomName": null
@@ -638,6 +660,7 @@
                         "name": "uomMaster",
                         "id": "uomMaster",
                         "autoGenKey": "uomCode",
+                        "defaultRelease": true,
                         "fields": {
                             "uomCode": {
                                 "name": "UOM Code",
@@ -672,6 +695,7 @@
                 "categoryMaster": {
                     "id": "categoryMaster",
                     "title": "Category Master",
+                    "defaultRelease": true,
                     "masterData": {
                         "categoryCode": null,
                         "categoryName": null
@@ -680,6 +704,7 @@
                         "name": "categoryMaster",
                         "id": "categoryMaster",
                         "autoGenKey": "categoryCode",
+                        "defaultRelease": true,
                         "fields": {
                             "categoryCode": {
                                 "name": "Category Code",
@@ -714,6 +739,7 @@
                 "invoice": {
                     "id": "invoice",
                     "title": "Invoice",
+                    "defaultRelease": true,
                     "cashBill": false,
                     "quote": false,
                     "masterData": {
@@ -748,6 +774,7 @@
                         "id": "invoice",
                         "autoGenKey": "invoiceNo",
                         "disableByField": "id",
+                        "defaultRelease": true,
                         "fields": {
                             "invoiceNo": {
                                 "name": "Invoice No",
@@ -793,7 +820,6 @@
                                 "id": "gst",
                                 "type": "input",
                                 "inputType": "number",
-                                "required": true,
                                 "action": "updateTotal"
                             },
                             "cgst": {
@@ -932,8 +958,10 @@
                     "title": "Estimate",
                     "cashBill": true,
                     "parentModule": "marketing.invoice",
+                    "defaultRelease": true,
                     "form": {
                         "autoGenValStart": null,
+                        "defaultRelease": true,
                         "fields": {
                             "invoiceNo": {
                                 "name": "Estimate No",
@@ -1553,6 +1581,7 @@
                 "generalSupplierMaster": {
                     "id": "generalSupplierMaster",
                     "title": "General Supplier Master",
+                    "defaultRelease": true,
                     "masterData": {
                         "generalSupplierCode": null,
                         "generalSupplierName": null,
@@ -1574,6 +1603,7 @@
                         "name": "General Supplier Master",
                         "id": "generalSupplierMaster",
                         "autoGenKey": "generalSupplierCode",
+                        "defaultRelease": true,
                         "fields": {
                             "generalSupplierCode": {
                                 "name": "General Supplier Code",
@@ -1643,7 +1673,7 @@
                                     "id": "id",
                                     "type": "select",
                                     "options": {},
-                                    "action": ["changeMapping", "amendmentRateUpdate"],
+                                    "action": ["changeMapping", "amendmentRateUpdate", "purchaseRateUpdate"],
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo"
                                 },
@@ -2460,6 +2490,7 @@
                 "grnGeneralSupplier": {
                     "id": "grnGeneralSupplier",
                     "title": "Good Receipt Note - General Supplier",
+                    "defaultRelease": true,
                     "masterData": {
                         "grnNo": null,
                         "date": null,
@@ -2498,25 +2529,29 @@
                                 "name": "GRN No",
                                 "id": "grnNo",
                                 "type": "span",
-                                "valuePrefix": "VT-GRN-"
+                                "valuePrefix": "VT-GRN-",
+                                "defaultRelease": true
                             },
                             "date": {
                                 "name": "Date",
                                 "id": "date",
                                 "type": "input",
                                 "inputType": "date",
-                                "required": true
+                                "required": true,
+                                "defaultRelease": true
                             },
                             "supplierCode": {
                                 "name": "General Supplier Code",
                                 "id": "generalSupplierCode",
                                 "type": "select",
                                 "options": {},
+                                "updateData": ["mapping", "gst", "sgst", "cgst", "igst"],
                                 "action": "getPOGeneralSupplier",
                                 "dataFrom": "purchase.generalSupplierMaster",
                                 "replaceName": "generalSupplierName",
                                 "isSingle": true,
-                                "isEditDisable": true
+                                "isEditDisable": true,
+                                "defaultRelease": true
                             },
                             "poNo": {
                                 "name": "PO No",
@@ -2550,7 +2585,8 @@
                                 "name": "Sub Total",
                                 "id": "subTotal",
                                 "afterMapping": true,
-                                "type": "span"
+                                "type": "span",
+                                "defaultRelease": true
                             },
                             "extraAmount": {
                                 "name": "Extra Amount",
@@ -2558,19 +2594,22 @@
                                 "type": "input",
                                 "inputType": "number",
                                 "action": "updatePOTotalAmount",
-                                "afterMapping": true
+                                "afterMapping": true,
+                                "defaultRelease": true
                             },
                             "gstTotal": {
                                 "name": "Tax Total",
                                 "id": "gstTotal",
                                 "type": "span",
-                                "afterMapping": true
+                                "afterMapping": true,
+                                "defaultRelease": true
                             },
                             "total": {
                                 "name": "Total",
                                 "id": "total",
                                 "type": "span",
-                                "afterMapping": true
+                                "afterMapping": true,
+                                "defaultRelease": true
                             }
                         },
                         "mapping": {
@@ -2583,7 +2622,8 @@
                                     "options": {},
                                     "dataFrom": "marketing.partMaster",
                                     "replaceName": "partNo",
-                                    "isDisable": true
+                                    "isDisable": true,
+                                    "defaultRelease": true
                                 },
                                 "qty": {
                                     "name": "PO Qty",
@@ -2613,17 +2653,20 @@
                                     "type": "input",
                                     "inputType": "text",
                                     "action": "updatePTTotal",
-                                    "required": true
+                                    "required": true,
+                                    "defaultRelease": true
                                 },
                                 "rate": {
                                     "name": "Rate",
                                     "id": "rate",
-                                    "type": "span"
+                                    "type": "span",
+                                    "defaultRelease": true
                                 },
                                 "total": {
                                     "name": "Total",
                                     "id": "total",
-                                    "type": "span"
+                                    "type": "span",
+                                    "defaultRelease": true
                                 }
                             },
                             "actions": {
@@ -4300,6 +4343,7 @@
                 "partStock": {
                     "id": "partStock",
                     "title": "Part Stock",
+                    "defaultRelease": true,
                     "masterData": {
                         "partNo": null,
                         "partStockQty": null,
@@ -4321,7 +4365,8 @@
                                 "replaceName": "partNo",
                                 "action": "updateOperationFrom",
                                 "isEditDisable": true,
-                                "isSingle": true
+                                "isSingle": true,
+                                "defaultRelease": true
                             },
                             "operationFrom": {
                                 "name": "Operation From",
@@ -4355,7 +4400,8 @@
                                 "id": "partStockQty",
                                 "type": "input",
                                 "inputType": "number",
-                                "required": true
+                                "required": true,
+                                "defaultRelease": true
                             }
                         },
                         "actions": {
@@ -4527,6 +4573,7 @@
                 "salesAnalysisInvoice": {
                     "id": "salesAnalysisInvoice",
                     "title": "Sales Analysis - Invoice",
+                    "defaultRelease": true,
                     "cashBill": false,
                     "filterView": {
                         "title": "Filter",
@@ -4613,6 +4660,7 @@
                     "title": "Sales Analysis - Estimate",
                     "parentModule": "report.salesAnalysisInvoice",
                     "cashBill": true,
+                    "defaultRelease": true,
                     "page": {
                         "link": "report/salesAnalysisCashBill",
                         "name": "list",
@@ -4631,6 +4679,7 @@
                 "salesAnalysisPart": {
                     "id": "salesAnalysisPart",
                     "title": "Sales Analysis - Part",
+                    "defaultRelease": true,
                     "filterView": {
                         "title": "Filter",
                         "data": {
@@ -4693,6 +4742,7 @@
                 "costAnalysis": {
                     "id": "costAnalysis",
                     "title": "Cost Analysis",
+                    "defaultRelease": true,
                     "filterView": {
                         "title": "Filter",
                         "data": {
@@ -5144,6 +5194,7 @@
                 "salesDetailsTax": {
                     "id": "salesDetailsTax",
                     "title": "Sales Details - Tax",
+                    "defaultRelease": true,
                     "filterView": {
                         "title": "Filter",
                         "data": {
@@ -5223,6 +5274,7 @@
                 "purchaseDetailsTax": {
                     "id": "purchaseDetailsTax",
                     "title": "Purchase Details - Tax",
+                    "defaultRelease": true,
                     "filterView": {
                         "title": "Filter",
                         "data": {
@@ -5377,6 +5429,7 @@
                 "purchaseGeneralSupplier": {
                     "id": "purchaseGeneralSupplier",
                     "title": "Purchase Report - General Supplier",
+                    "defaultRelease": true,
                     "filterView": {
                         "title": "Filter",
                         "data": {
@@ -5465,6 +5518,7 @@
                 "customerPaymentInvoice": {
                     "id": "customerPaymentInvoice",
                     "title": "Customer Payment - Invoice",
+                    "defaultRelease": true,
                     "masterData": {
                         "invoiceNo": null,
                         "customerCode": null,
@@ -5630,6 +5684,7 @@
                     "name": "customerPaymentCashBill",
                     "title": "Customer Payment - Estimate",
                     "parentModule": "accounts.customerPaymentInvoice",
+                    "defaultRelease": true,
                     "form": {
                         "fields": {
                             "invoiceNo": {
@@ -5701,6 +5756,7 @@
                 "suppilerPayment": {
                     "id": "suppilerPayment",
                     "title": "Suppiler Payment",
+                    "defaultRelease": true,
                     "masterData": {
                         "grnNo": null,
                         "supplierCode": null,
@@ -6279,7 +6335,6 @@
                 "name": "Admin",
                 "title": "Admin",
                 "icon": "cog",
-                "defaultRelease": true,
                 "admin": true,
                 "superUsers": {
                     "id": "superUsers",
@@ -6355,10 +6410,9 @@
                                 "required": true
                             },
                             "appModules": {
-                                "name": "App Modules",
+                                "name": "Additional App Modules",
                                 "id": "appModules",
                                 "type": "multiSelect",
-                                "required": true,
                                 "options": {},
                                 "makeFieldOptions": false
                             }
@@ -6394,6 +6448,7 @@
                 "settings": {
                     "id": "settings",
                     "title": "Settings",
+                    "defaultRelease": true,
                     "masterData": {
                         "companyName": null,
                         "companyLogoUrl": null,
@@ -6430,55 +6485,64 @@
                                 "name": "Company Logo Url",
                                 "id": "companyLogoUrl",
                                 "type": "input",
-                                "inputType": "text"
+                                "inputType": "text",
+                                "defaultRelease": true
                             },
                             "companyAddress": {
                                 "name": "Company Address",
                                 "id": "companyAddress",
                                 "type": "input",
-                                "inputType": "text"
+                                "inputType": "text",
+                                "defaultRelease": true
                             },
                             "companyMobile": {
                                 "name": "Company Mobile",
                                 "id": "companyMobile",
                                 "type": "input",
-                                "inputType": "text"
+                                "inputType": "text",
+                                "defaultRelease": true
                             },
                             "companyEmail": {
                                 "name": "Company Email",
                                 "id": "companyEmail",
                                 "type": "input",
-                                "inputType": "text"
+                                "inputType": "text",
+                                "defaultRelease": true
                             },
                             "companyGstin": {
                                 "name": "Company GSTIN",
                                 "id": "companyGstin",
                                 "type": "input",
-                                "inputType": "text"
+                                "inputType": "text",
+                                "defaultRelease": true
                             },
                             "bankName": {
                                 "name": "Bank Name",
                                 "id": "bankName",
                                 "type": "input",
-                                "inputType": "text"
+                                "inputType": "text",
+                                "defaultRelease": true
                             },
                             "accountNo": {
                                 "name": "Account Number",
                                 "id": "accountNo",
                                 "type": "input",
-                                "inputType": "text"
+                                "inputType": "text",
+                                "defaultRelease": true
                             },
                             "bankIFSC": {
                                 "name": "Bank IFSC Code",
                                 "id": "bankIFSC",
                                 "type": "input",
-                                "inputType": "text"
+                                "inputType": "text",
+                                "defaultRelease": true
                             },
                             "bankBranch": {
                                 "name": "Bank Branch",
                                 "id": "bankBranch",
                                 "type": "input",
-                                "inputType": "text"
+                                "inputType": "text",
+                                "defaultRelease": true
                             },
                             "finalStageOpp": {
                                 "name": "Operation Final Stage",
@@ -6588,6 +6652,7 @@
                 "users": {
                     "id": "users",
                     "title": "Users",
+                    "defaultRelease": true,
                     "masterData": {
                         "userName": null,
                         "password": null,
@@ -6602,14 +6667,16 @@
                                 "id": "userName",
                                 "type": "input",
                                 "inputType": "text",
-                                "required": true
+                                "required": true,
+                                "defaultRelease": true
                             },
                             "password": {
                                 "name": "Password",
                                 "id": "password",
                                 "type": "input",
                                 "inputType": "password",
-                                "required": true
+                                "required": true,
+                                "defaultRelease": true
                             },
                             "userType": {
                                 "name": "User Type",

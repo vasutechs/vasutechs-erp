@@ -1,6 +1,7 @@
 erpConfig.moduleFiles.appCustomers = function(context) {
     var editKey = null;
     var editAppCustomer = null;
+    var defaultReleaseModules = [];
     return {
         callBackEdit: function() {
             editKey = context.controller.page.editKey;
@@ -17,6 +18,10 @@ erpConfig.moduleFiles.appCustomers = function(context) {
         callBackAdd: function() {
             editKey = null;
             editAppCustomer = null;
+            if(!context.controller.data.appModules){
+                context.controller.data.appModules = [];
+            }
+            context.controller.data.appModules = context.controller.data.appModules.concat(defaultReleaseModules);
         },
         callBackList: function() {
             var moduleField = context.controller.form.fields['appModules'];
@@ -32,16 +37,18 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                     'optionId': 'all'
                 }
             };
+            defaultReleaseModules = [];
             context.controller.methods.makeModuleOptions(erpConfig.modules.controllers, moduleField);
-
-
         },
         makeModuleOptions: function(modules, field, parentModule) {
             for (var i in modules) {
                 var module = angular.copy(modules[i]);
                 var optionIdVal = parentModule && parentModule.id + '/' + module.id || module.id + '/**';
                 var optionNameVal = parentModule && '-- ' + module.title || module.title;
-                if (module.defaultRelease === undefined) {
+                if (module.defaultRelease === true) {
+                    defaultReleaseModules.push(optionIdVal); 
+                }
+                // else{
                     field.allOptions[optionIdVal] = module;
                     field.allOptions[optionIdVal]['optionName'] = optionNameVal;
                     field.allOptions[optionIdVal]['optionId'] = optionIdVal;
@@ -50,7 +57,7 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                     if (!module.page) {
                         context.controller.methods.makeModuleOptions(context.commonFact.showSubModule(modules[i]), field, modules[i]);
                     }
-                }
+               // }
             }
         },
         callBackSubmit: function(data) {
@@ -73,7 +80,7 @@ erpConfig.moduleFiles.appCustomers = function(context) {
                     appCustomer: appCustomer
                 }
             };
-            editAppCustomer = angular.extend(editAppCustomer || {}, { id: appCustomer, appModules: data.appModules });
+            editAppCustomer = angular.extend(editAppCustomer || {}, { id: appCustomer, appModules: data.appModules, isSale: true, companyName: btoa(data.companyName + '-' + context.erpAppConfig.appName) });
             context.commonFact.updateData(appSettings, editAppCustomer).then(function() {
                 !editKey && context.commonFact.updateData(appUsers, userData);
             });

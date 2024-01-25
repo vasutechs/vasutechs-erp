@@ -25,7 +25,9 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     return context.commonFact.getData(context.controller, key).then(function (res) {
                         context.controller.data = res.data;
                         context.controller.printData = angular.copy(context.controller.data);
-                        context.controller.data['password'] = '';
+                        if(context.controller.data['password']){
+                            context.controller.data['password'] = '';
+                        }
                         if (context.controller.data['date']) {
                             context.controller.data['date'] = new Date(context.controller.data['date']);
                         }
@@ -99,6 +101,7 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
 
             },
             formRender: function () {
+                context.controller.form = context.commonFact.filterModuleFields(context.controller.form);
                 return context.commonFact.updateFields(context.controller.form.fields).then(function () {
                     if (context.controller.form.mapping) {
                         return context.commonFact.updateFields(context.controller.form.mapping.fields);
@@ -114,6 +117,13 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 return Math.ceil(context.commonFact.getPageData().length / context.controller.pageSize);
             },
             submit: function () {
+                if(context.controller.form.useSameVal){
+                    for(var i in context.controller.form.useSameVal){
+                        if(!context.controller.data[i]){
+                            context.controller.data[i] = context.controller.data[context.controller.form.useSameVal[i]];
+                        }
+                    }
+                }
                 return context.commonFact.updateData(context.controller, context.controller.data).then(function (res) {
                     context.commonFact.list();
                     context.controller.methods.callBackSubmit && context.controller.methods.callBackSubmit(res.data);
@@ -902,6 +912,28 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 }
 
             },
+            filterModuleFields: function(moduleForm) {
+                if(context.erpAppConfig.isSale && moduleForm && !moduleForm.defaultRelease){
+                    if(moduleForm.fields){
+                        for(var i in moduleForm.fields){
+                            if(!moduleForm.fields[i].defaultRelease){
+                                delete moduleForm.fields[i];
+                            }
+                        }
+                        if(moduleForm.mapping){
+                            for(var i in moduleForm.mapping.fields){
+                                if(!moduleForm.mapping.fields[i].defaultRelease){
+                                    delete moduleForm.mapping.fields[i];
+                                }
+                            }
+                            if(Object.keys(moduleForm.mapping.fields).length === 0){
+                                delete moduleForm.mapping;
+                            }
+                        }
+                    }
+                }
+                return moduleForm;
+            },
             appModuleAccess: function () {
                 var promiseRes = context.commonFact.getPromiseRes();
                 var isAppCustomer = context.commonFact.isAppCustomer();
@@ -909,6 +941,10 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 if (userDetail && isAppCustomer) {
                     context.commonFact.getData(context.erpAppConfig.modules.controllers.admin.settings, isAppCustomer).then(function (res) {
                         context.erpAppConfig = angular.extend(context.erpAppConfig, res.data);
+                        if(context.erpAppConfig.isSale){
+                            context.erpAppConfig.companyName = atob(context.erpAppConfig.companyName);
+                            context.erpAppConfig.companyName = context.erpAppConfig.companyName.split('-' + context.erpAppConfig.appName)[0];
+                        }
                         if (context.erpAppConfig.appModules && !context.erpAppConfig.appModules.includes('all')) {
                             for (var i in context.erpAppConfig.modules.controllers) {
                                 var module = context.erpAppConfig.modules.controllers[i];
@@ -1143,6 +1179,11 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
             },
             amendmentRateUpdate: function (data, key, field, fieldMapKey) {
                 data.rate = context.commonFact.getRate(field.options[key]);
+            },
+            purchaseRateUpdate: function(data, key, field){
+                if(context.erpAppConfig.isSale){
+                    data.rate = field.options[key].purchaseRate || 0;
+                }
             },
             accountsPayment: function () {
                 var paymentList = angular.copy(context.controller.listViewData);

@@ -26,6 +26,14 @@ erpConfig.moduleFiles.grnGeneralSupplier = function(context) {
         },
         callBackAdd: function() {
             orgItemVal = null;
+            if(context.erpAppConfig.isSale){
+                context.controller.form.fields['supplierCode'] = angular.extend(context.controller.form.fields['supplierCode'], {
+                    "updateData": ["mapping", "gst", "sgst", "cgst", "igst"],
+                    "action": "changeMapping",
+                    "updateMapping": true,
+                });
+                context.controller.form.mapping.fields['acceptedQty'].name = 'Received Qty';
+            }
         },
         callBackEdit: function(key) {
             context.controller.form.mapping.actions.delete = false;
@@ -47,7 +55,9 @@ erpConfig.moduleFiles.grnGeneralSupplier = function(context) {
                 var data = angular.copy(context.controller.data.mapping[i]);
                 var newContext = angular.copy(context);
                 data.partNo = data.id;
-                data.operationTo = context.erpAppConfig.finalStageOpp;
+                if(!context.erpAppConfig.isSale){
+                    data.operationTo = context.erpAppConfig.finalStageOpp;
+                }
                 newContext.controller.data = data;
                 newContext.controller.updatePrevStock = false;
                 if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
@@ -57,7 +67,9 @@ erpConfig.moduleFiles.grnGeneralSupplier = function(context) {
                 context.commonFact.updatePartStock(newContext);
 
             }
-            context.controller.methods.updatePoGeneralSupplier();
+            if(!context.erpAppConfig.isSale){
+                context.controller.methods.updatePoGeneralSupplier();
+            }
         }
     };
 };
