@@ -148,6 +148,7 @@ body.fixed-nav {
 @media (min-width: 992px) {
     #mainNav .navbar-brand {
         width: 125px;
+        font-size: 1rem !important;
     }
     #mainNav .navbar-collapse {
         overflow: visible;
@@ -652,4 +653,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .tbl-alert td, .tbl-alert th{
     padding: 0.25rem;
+}
+.bg-dark{
+    background-color: rgba(248, 61, 4, .9) !important;
+}
+.btn-primary{
+    background-color: rgba(248, 61, 4, .9) !important;
+    border-color: rgba(248, 61, 4, .9) !important;
 }
