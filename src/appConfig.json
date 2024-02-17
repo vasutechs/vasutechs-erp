@@ -1492,6 +1492,14 @@
                                 "type": "span",
                                 "afterMapping": true
                             },
+                            "discountAmount": {
+                                "name": "Discount Amount (-)",
+                                "id": "discountAmount",
+                                "type": "input",
+                                "inputType": "number",
+                                "action": "updatePOTotalAmount",
+                                "afterMapping": true
+                            },
                             "total": {
                                 "name": "Total",
                                 "id": "total",

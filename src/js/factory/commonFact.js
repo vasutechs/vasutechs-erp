@@ -707,7 +707,8 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 total = 0,
                 subTotal = 0,
                 mapping = context.controller.data.mapping,
-                extraAmount = context.controller.data.extraAmount || 0;
+                extraAmount = context.controller.data.extraAmount || 0,
+                discountAmount = context.controller.data.discountAmount || 0;
 
                 for (var i in mapping) {
                     subTotal += mapping[i].total && parseFloat(mapping[i].total) || 0;
@@ -717,7 +718,8 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                 igstTotal = context.controller.data.igst && ((parseFloat(extraAmount) + parseFloat(subTotal)) * parseFloat(context.controller.data.igst / 100)) || 0;
 
                 gstTotal = (parseFloat(cgstTotal) + parseFloat(sgstTotal) + parseFloat(igstTotal));
-                total = subTotal + gstTotal + extraAmount;
+                total = (subTotal + gstTotal + extraAmount) - discountAmount;
+                
                 context.controller.data.cgstTotal = parseFloat(cgstTotal).toFixed(2);
                 context.controller.data.sgstTotal = parseFloat(sgstTotal).toFixed(2);
                 context.controller.data.gstTotal = parseFloat(gstTotal).toFixed(2);
