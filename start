@@ -1,1 +1,26 @@
+SETLOCAL ENABLEDELAYEDEXPANSION
+for %%I in (.) do SET CurrDirName=%%~nxI
+SET LinkName=Vasutechs-ERP
+SET CurrentPath=%cd%
+SET Esc_LinkDest=%%HOMEDRIVE%%%%HOMEPATH%%\Desktop\!LinkName!-!CurrDirName!.lnk
+SET Esc_LinkTarget=%CurrentPath%\start.bat
+SET Icon_Location=%CurrentPath%\dist\assets\img\vasu-techs-logo.ico
+SET cSctVBS=CreateShortcut.vbs
+
+(
+if exist "%HOMEDRIVE%%HOMEPATH%\Desktop\!LinkName!.lnk" ( echo "file exist..." ) else (
+    (
+    echo Set oWS = WScript.CreateObject^("WScript.Shell"^) 
+    echo sLinkFile = oWS.ExpandEnvironmentStrings^("!Esc_LinkDest!"^)
+    echo Set oLink = oWS.CreateShortcut^(sLinkFile^) 
+    echo oLink.TargetPath = oWS.ExpandEnvironmentStrings^("!Esc_LinkTarget!"^)
+    echo oLink.IconLocation = oWS.ExpandEnvironmentStrings^("!Icon_Location!"^)
+    echo oLink.WorkingDirectory = oWS.ExpandEnvironmentStrings^("!CurrentPath!"^)
+    echo oLink.Save
+    )1>!cSctVBS! 
+    cscript //nologo .\!cSctVBS!
+    DEL !cSctVBS! /f
+ )
+)
+
 npm run app-start
