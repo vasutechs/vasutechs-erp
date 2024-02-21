@@ -1422,6 +1422,7 @@
                         "status": 0,
                         "subTotal": null,
                         "extraAmount": null,
+                        "discountAmount": null,
                         "gstTotal": null,
                         "total": null,
                         "gst": null,
@@ -2308,6 +2309,7 @@
                         "status": 0,
                         "subTotal": null,
                         "extraAmount": null,
+                        "discountAmount": null,
                         "gst": null,
                         "sgst": null,
                         "cgst": null,
@@ -2363,7 +2365,7 @@
                                 "options": {},
                                 "action": "changeMapping",
                                 "updateMapping": true,
-                                "updateData": ["mapping", "subTotal", "extraAmount", "gst", "sgst", "cgst", "igst", "gstTotal", "total"],
+                                "updateData": ["mapping", "subTotal", "extraAmount", "discountAmount", "gst", "sgst", "cgst", "igst", "gstTotal", "total"],
                                 "dataFrom": "purchase.poSupplier",
                                 "replaceName": "poNo",
                                 "valuePrefix": "VT-SP-PO-",
@@ -2402,6 +2404,14 @@
                                 "name": "Tax Total",
                                 "id": "gstTotal",
                                 "type": "span",
+                                "afterMapping": true
+                            },
+                            "discountAmount": {
+                                "name": "Discount Amount (-)",
+                                "id": "discountAmount",
+                                "type": "input",
+                                "inputType": "number",
+                                "action": "updatePOTotalAmount",
                                 "afterMapping": true
                             },
                             "total": {
