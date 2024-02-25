@@ -1517,11 +1517,10 @@
                                     "type": "select",
                                     "options": {},
                                     "action": "changeMapping",
-                                    "updateData": ["uomCode"],
+                                    "updateData": ["uomCode", "rate"],
                                     "dataFrom": "purchase.rmMaster",
                                     "replaceName": "rmName",
-                                    "valuePrefixData": "grade",
-                                    "isDisable": true
+                                    "valuePrefixData": "grade"
                                 },
                                 "qty": {
                                     "name": "Qty",
@@ -1553,9 +1552,6 @@
                                     "id": "total",
                                     "type": "span"
                                 }
-                            },
-                            "actions": {
-                                "add": false
                             }
                         }
                     },
