@@ -42,6 +42,12 @@ erpConfig.moduleFiles.customerPaymentInvoice = function (context) {
             if(!isNaN(amount)){
                 context.controller.data.balanceAmount = parseFloat(context.controller.data.total) - parseFloat(amount);
             }  
+            if (context.controller.data.balanceAmount <= 0) {
+                context.controller.form.mapping.actions.add = false;
+            }
+            else{
+                context.controller.form.mapping.actions.add = true;
+            }
         },
         validateAmount: function(data){
             var amount = 0;
@@ -51,6 +57,9 @@ erpConfig.moduleFiles.customerPaymentInvoice = function (context) {
             if(amount > context.controller.data.total){
                 data.amount = 0;
             }
+        },
+        callBackRemoveMapping: function(data){
+            context.controller.methods.updateBalanceAmount(data);
         }
     };
 };

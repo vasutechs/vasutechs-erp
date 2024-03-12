@@ -30,12 +30,18 @@ erpConfig.moduleFiles.suppilerPayment = function(context) {
                 amount += parseFloat(context.controller.data.mapping[i].amount);
             }
             context.controller.data.balanceAmount = parseFloat(context.controller.data.total) - parseFloat(amount);
-            if (context.controller.data.balanceAmount <= 0) {
-                context.controller.form.mapping.actions.add = false;
-            }
             if (context.controller.data.balanceAmount < 0) {
                 context.controller.data.balanceAmount = 0;
             }
+            if (context.controller.data.balanceAmount <= 0) {
+                context.controller.form.mapping.actions.add = false;
+            }
+            else{
+                context.controller.form.mapping.actions.add = true;
+            }
+        },
+        callBackRemoveMapping: function(data){
+            context.controller.methods.updateBalanceAmount(data);
         }
     };
 };
