@@ -1516,8 +1516,8 @@
                                     "id": "id",
                                     "type": "select",
                                     "options": {},
-                                    "action": "changeMapping",
-                                    "updateData": ["uomCode", "rate"],
+                                    "action": ["changeMapping", "amendmentRateUpdate"],
+                                    "updateData": ["uomCode"],
                                     "dataFrom": "purchase.rmMaster",
                                     "replaceName": "rmName",
                                     "valuePrefixData": "grade"
@@ -1764,7 +1764,7 @@
                                 "id": "generalSupplierCode",
                                 "type": "select",
                                 "options": {},
-                                "action": "changeMapping",
+                                "action": ["changeMapping", "amendmentRateUpdate"],
                                 "updateMapping": true,
                                 "updateData": ["gstin", "gst", "sgst", "cgst", "igst", "mapping"],
                                 "dataFrom": "purchase.generalSupplierMaster",
@@ -3202,6 +3202,56 @@
                     ],
                     "page": {
                         "link": "store/partScrap",
+                        "name": "list"
+                    }
+                },
+                "rmScrap": {
+                    "id": "rmScrap",
+                    "title": "RM Scrap",
+                    "masterData": {
+                        "rmCode": null,
+                        "rmStockQty": null
+                    },
+                    "form": {
+                        "name": "rmScrap",
+                        "id": "rmScrap",
+                        "fields": {
+                            "rmCode": {
+                                "name": "RM Code",
+                                "id": "rmCode",
+                                "type": "autoComplete",
+                                "options": {},
+                                "dataFrom": "purchase.rmMaster",
+                                "replaceName": "rmName",
+                                "valueSufixData": "grade"
+                            },
+                            "rmStockQty": {
+                                "name": "RM Qty",
+                                "id": "rmStockQty",
+                                "type": "input",
+                                "inputType": "number",
+                                "required": true,
+                                "isEditDisable": true
+                            }
+                        },
+                        "actions": {
+                            "customSubmit": "submit"
+                        }
+                    },
+                    "listView": [{
+                            "name": "Rm Name",
+                            "id": "rmCode",
+                            "dataFrom": "purchase.rmMaster",
+                            "replaceName": "rmName",
+                            "type": "autoComplete",
+                            "isFilterBy": true
+                        }, {
+                            "name": "Rm Stock Qty",
+                            "id": "rmStockQty"
+                        }
+                    ],
+                    "page": {
+                        "link": "store/rmScrap",
                         "name": "list"
                     }
                 }
