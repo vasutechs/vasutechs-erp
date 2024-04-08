@@ -87,7 +87,6 @@ erpConfig.moduleFiles.grnSupplier = function(context) {
             newContext.controller.data = context.controller.data.mapping[i];
             newContext.controller.data.operationFrom = 1;
             newContext.controller.data.operationTo = context.erpAppConfig.finalStageOpp;
-            newContext.controller.data.acceptedQty = parseInt(newContext.controller.data.qty);
             context.commonFact.updatePartStock(newContext);
         },
         callBackSubmit: function() {
