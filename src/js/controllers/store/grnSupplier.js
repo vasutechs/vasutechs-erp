@@ -1,6 +1,9 @@
 erpConfig.moduleFiles.grnSupplier = function(context) {
     var orgItemVal = null;
     return {
+        callBackList: function() {
+            context.commonFact.getPartStock();
+        },
         getPOSupplier: function(data, key, field) {
             if (context.controller.page.name !== 'add') {
                 return;
@@ -47,20 +50,26 @@ erpConfig.moduleFiles.grnSupplier = function(context) {
                 }
 
                 for (var i in context.controller.data.mapping) {
-                    existingStock = rmStock[context.controller.data.mapping[i].id];
-                    qty = context.controller.data.mapping[i].acceptedQty || context.controller.data.mapping[i].receivedQty;
-                    if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
-                        oldQty = orgItemVal.mapping[i].acceptedQty || orgItemVal.mapping[i].receivedQty;
-                        qty = parseInt(qty) - parseInt(oldQty);
+                    if(!context.controller.data.mapping[i]['needMaterialIssue'] || context.controller.data.mapping[i]['needMaterialIssue'] === undefined){
+                        context.controller.methods.updatePartStockQty(i);
                     }
-                    rmStockQty = existingStock && parseInt(existingStock.rmStockQty) + parseInt(qty) || parseInt(qty);
-                    data = {
-                        id: existingStock && existingStock.id || undefined,
-                        rmCode: context.controller.data.mapping[i].id,
-                        rmStockQty: rmStockQty,
-                        uomCode: context.controller.data.mapping[i].uomCode
+                    else{
+                        existingStock = rmStock[context.controller.data.mapping[i].id];
+                        qty = context.controller.data.mapping[i].acceptedQty || context.controller.data.mapping[i].receivedQty;
+                        if (orgItemVal && orgItemVal.mapping[i].acceptedQty) {
+                            oldQty = orgItemVal.mapping[i].acceptedQty || orgItemVal.mapping[i].receivedQty;
+                            qty = parseInt(qty) - parseInt(oldQty);
+                        }
+                        rmStockQty = existingStock && parseInt(existingStock.rmStockQty) + parseInt(qty) || parseInt(qty);
+                        data = {
+                            id: existingStock && existingStock.id || undefined,
+                            rmCode: context.controller.data.mapping[i].id,
+                            rmStockQty: rmStockQty,
+                            uomCode: context.controller.data.mapping[i].uomCode
+                        }
+                        context.commonFact.updateData('report.rmStock', data);
                     }
-                    context.commonFact.updateData('report.rmStock', data);
+                    
                 }
             });
         },
@@ -71,6 +80,15 @@ erpConfig.moduleFiles.grnSupplier = function(context) {
                 poSupplierData.id = context.controller.data.poNo;
                 context.commonFact.updateData('purchase.poSupplier', poSupplierData);
             });
+        },
+        updatePartStockQty(i){
+            var newContext = angular.copy(context);
+            newContext.controller.updatePrevStock = false;
+            newContext.controller.data = context.controller.data.mapping[i];
+            newContext.controller.data.operationFrom = 1;
+            newContext.controller.data.operationTo = context.erpAppConfig.finalStageOpp;
+            newContext.controller.data.acceptedQty = parseInt(newContext.controller.data.qty);
+            context.commonFact.updatePartStock(newContext);
         },
         callBackSubmit: function() {
             context.controller.methods.updateRMStockQty();

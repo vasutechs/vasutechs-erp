@@ -1243,6 +1243,12 @@
                                 "type": "input",
                                 "inputType": "number",
                                 "required": true
+                            },
+                            "needMaterialIssue": {
+                                "name": "Need Material Issue",
+                                "id": "needMaterialIssue",
+                                "type": "input",
+                                "inputType": "checkbox"
                             }
                         },
                         "mapping": {
