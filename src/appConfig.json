@@ -923,8 +923,13 @@
                     },
                     "listView": [{
                             "name": "Invoice No",
-                            "id": "invoiceNo",
-                            "valuePrefix": "VT-"
+                            "id": "id",
+                            "valuePrefix": "VT-",
+                            "dataFrom": "marketing.invoice",
+                            "replaceName": "invoiceNo",
+                            "isFilterBy": true,
+                            "type": "autoComplete",
+                            "options": {}
                         }, {
                             "name": "Customer",
                             "id": "customerCode",
@@ -981,8 +986,13 @@
                     },
                     "listView": [{
                             "name": "Estimate No",
-                            "id": "invoiceNo",
-                            "valuePrefix": ""
+                            "id": "id",
+                            "valuePrefix": "",
+                            "dataFrom": "marketing.cashBill",
+                            "replaceName": "invoiceNo",
+                            "isFilterBy": true,
+                            "type": "autoComplete",
+                            "options": {}
                         }
                     ],
                     "page": {
@@ -1018,8 +1028,13 @@
                     },
                     "listView": [{
                             "name": "Quote No",
-                            "id": "invoiceNo",
-                            "valuePrefix": ""
+                            "id": "id",
+                            "valuePrefix": "",
+                            "dataFrom": "marketing.quote",
+                            "replaceName": "invoiceNo",
+                            "isFilterBy": true,
+                            "type": "autoComplete",
+                            "options": {}
                         }
                     ],
                     "page": {
