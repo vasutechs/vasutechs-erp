@@ -19,6 +19,7 @@ erpConfig.moduleFiles.partStock = function(context) {
                     var stockData = context.controller.listViewData[i];
                     var partNo = stockData.partNo;
                     var partDetails = partNo && res.data[partNo];
+                    stockData.category = partDetails.category;
                     stockData.rate = context.commonFact.getRate(partDetails);
                     stockData.totalAmount = stockData.rate && (stockData.rate * stockData.partStockQty);
                 }

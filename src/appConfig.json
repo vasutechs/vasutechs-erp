@@ -4501,6 +4501,13 @@
                             "replaceName": "partNo",
                             "type": "autoComplete",
                             "isFilterBy": true
+                        },{
+                            "name":"Category",
+                            "id": "category",
+                            "dataFrom": "marketing.categoryMaster",
+                            "replaceName": "categoryName",
+                            "type": "autoComplete",
+                            "isFilterBy": true
                         }, {
                             "name": "Part Stock Qty",
                             "id": "partStockQty"
