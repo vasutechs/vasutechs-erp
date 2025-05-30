@@ -33,6 +33,7 @@ erpConfig.moduleFiles.costAnalysis = function (context) {
                             partDetails.amendmentSalesDate = context.commonFact.getRate(partDetails, frmDate, toDate, true, true);
                             partDetails.differenceInCost = context.commonFact.getRate(partDetails, frmDate, toDate) - partDetails.total;
                             partDetails.gainOrLoss = (partDetails.differenceInCost / context.commonFact.getRate(partDetails, frmDate, toDate)) * 100;
+                            partDetails.hsnCode = partDetails.hsnCode;
                             context.controller.listViewData.push(partDetails);
                         }
                     }

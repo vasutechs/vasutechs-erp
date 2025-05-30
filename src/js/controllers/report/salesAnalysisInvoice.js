@@ -24,6 +24,7 @@ erpConfig.moduleFiles.salesAnalysisInvoice = function(context) {
                                 sgst: listViewData[i].sgst,
                                 igst: listViewData[i].igst,
                                 unit: listViewData[i].mapping[j].unit,
+                                hsnCode: listViewData[i].mapping[j].hsnCode,
                                 customerCode: listViewData[i]['customerCode'],
                                 dates: context.commonFact.dateFormatChange(date),
                                 invoiceNos: !context.controller.cashBill ? 'VT-' + listViewData[i]['invoiceNo'] : listViewData[i]['invoiceNo']

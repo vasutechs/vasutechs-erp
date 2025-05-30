@@ -35,7 +35,8 @@ erpConfig.moduleFiles.salesAnalysisPart = function (context) {
                                 cgst: listViewData[i].cgst,
                                 sgst: listViewData[i].sgst,
                                 igst: listViewData[i].igst,
-                                unit: listViewData[i].mapping[j].unit
+                                unit: listViewData[i].mapping[j].unit,
+                                hsnCode: listViewData[i].mapping[j].hsnCode
                             };
 
                             if (!context.controller.cashBill) {

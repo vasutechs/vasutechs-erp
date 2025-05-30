@@ -4716,6 +4716,9 @@
                             "replaceName": "partNo",
                             "type": "select"
                         }, {
+                            "name": "HSN Code",
+                            "id": "hsnCode"
+                        }, {
                             "name": "Part Qty",
                             "id": "unit"
                         }, {
@@ -4807,8 +4810,14 @@
                             "replaceName": "partNo",
                             "type": "select"
                         }, {
+                            "name": "HSN Code",
+                            "id": "hsnCode"
+                        }, {
                             "name": "Part Qty",
                             "id": "unit"
+                        }, {
+                            "name": "HSN Code",
+                            "id": "hsnCode"
                         }, {
                             "name": "Part Price",
                             "id": "rate"
@@ -4867,6 +4876,9 @@
                             "id": "id",
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo"
+                        }, {
+                            "name": "HSN Code",
+                            "id": "hsnCode"
                         }, {
                             "name": "Input Weight",
                             "id": "inputWeight"
@@ -4986,6 +4998,9 @@
                             "dataFrom": "marketing.partMaster",
                             "replaceName": "partNo",
                             "type": "select"
+                        }, {
+                            "name": "HSN Code",
+                            "id": "hsnCode"
                         }, {
                             "name": "Operation",
                             "id": "operationTo",
