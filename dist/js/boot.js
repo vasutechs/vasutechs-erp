@@ -428,7 +428,12 @@ erpConfig.moduleFiles.commonFact = function ($filter, $location, $window, $http,
                     fieldData = field.valuePrefixData ? list[orgViewDataFieldId][field.valuePrefixData] + ' - ' + fieldData : fieldData;
                     fieldData = field.valueSufixData ? fieldData + ' - ' + list[orgViewDataFieldId][field.valueSufixData] : fieldData;
                     if (context.commonFact.isFloat(fieldData)) {
-                        fieldData = parseFloat(fieldData).toFixed(2);
+                        if(field.id === 'rate'){
+                            fieldData = parseFloat(fieldData);
+                        }
+                        else{
+                            fieldData = parseFloat(fieldData).toFixed(2);
+                        }
                     }
                     return fieldData;
                 };
